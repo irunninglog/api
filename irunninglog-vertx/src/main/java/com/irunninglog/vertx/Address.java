@@ -2,7 +2,7 @@ package com.irunninglog.vertx;
 
 public enum Address {
 
-    Profile("com.irunninglog.profile");
+    ProfileGet("com.irunninglog.profile.get");
 
     private final String address;
 

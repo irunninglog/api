@@ -29,9 +29,9 @@ public final class ProfileVerticle extends AbstractVerticle {
     public void start() throws Exception {
         super.start();
 
-        LOG.info("Profile verticle started");
+        LOG.info("ProfileGet verticle started");
 
-        vertx.eventBus().<String>consumer(Address.Profile.getAddress()).handler(handler(profileService));
+        vertx.eventBus().<String>consumer(Address.ProfileGet.getAddress()).handler(handler(profileService));
     }
 
     private Handler<Message<String>> handler(IProfileService profileService) {

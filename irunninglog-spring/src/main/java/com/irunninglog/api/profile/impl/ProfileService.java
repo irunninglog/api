@@ -29,9 +29,15 @@ public class ProfileService implements IProfileService {
             throw new ResponseStatusException(ResponseStatus.NotFound);
         }
 
+        Profile profile = new Profile()
+                .setId(entity.getId())
+                .setEmail(entity.getEmail())
+                .setFirstName(entity.getFirstName())
+                .setLastName(entity.getLastName());
+
         return new ProfileResponse()
                 .setStatus(ResponseStatus.Ok)
-                .setBody(new Profile().setId(entity.getId()).setEmail(entity.getEmail()));
+                .setBody(profile);
     }
 
 }
