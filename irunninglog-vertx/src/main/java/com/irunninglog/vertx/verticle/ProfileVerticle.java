@@ -1,8 +1,8 @@
 package com.irunninglog.vertx.verticle;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.irunninglog.api.ResponseStatus;
-import com.irunninglog.api.ResponseStatusException;
+import com.irunninglog.api.service.ResponseStatus;
+import com.irunninglog.api.service.ResponseStatusException;
 import com.irunninglog.api.profile.IProfileService;
 import com.irunninglog.api.profile.ProfileRequest;
 import com.irunninglog.api.profile.ProfileResponse;

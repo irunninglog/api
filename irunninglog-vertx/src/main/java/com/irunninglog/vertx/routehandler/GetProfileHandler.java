@@ -1,6 +1,6 @@
 package com.irunninglog.vertx.routehandler;
 
-import com.irunninglog.api.ResponseStatus;
+import com.irunninglog.api.service.ResponseStatus;
 import com.irunninglog.api.profile.ProfileRequest;
 import com.irunninglog.api.profile.ProfileResponse;
 import com.irunninglog.vertx.Address;

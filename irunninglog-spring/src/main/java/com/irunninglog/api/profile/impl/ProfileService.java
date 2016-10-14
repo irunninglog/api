@@ -1,7 +1,7 @@
 package com.irunninglog.api.profile.impl;
 
-import com.irunninglog.api.ResponseStatus;
-import com.irunninglog.api.ResponseStatusException;
+import com.irunninglog.api.service.ResponseStatus;
+import com.irunninglog.api.service.ResponseStatusException;
 import com.irunninglog.api.profile.IProfileService;
 import com.irunninglog.api.profile.Profile;
 import com.irunninglog.api.profile.ProfileRequest;
