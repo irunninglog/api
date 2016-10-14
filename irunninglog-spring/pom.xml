@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.irunninglog</groupId>
+        <artifactId>irunninlog</artifactId>
+        <version>3.0.0</version>
+    </parent>
+
+    <artifactId>irunninglog-spring</artifactId>
+
+    <name>irunninglog spring services</name>
+
+    <dependencies>
+        <!-- irunninglog dependencies -->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>irunninglog-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!-- database dependencies -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>${version.h2}</version>
+        </dependency>
+
+        <!-- hibernate dependencies -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>${version.hibernate}</version>
+        </dependency>
+
+        <!-- spring dependencies -->
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-jpa</artifactId>
+            <version>${version.spring-data-jpa}</version>
+        </dependency>
+    </dependencies>
+    
+</project>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.irunninglog</groupId>
+    <artifactId>irunninlog</artifactId>
+
+    <version>3.0.0</version>
+
+    <name>irunninglog root pom</name>
+
+    <packaging>pom</packaging>
+
+    <properties>
+        <version.guava>19.0</version.guava>
+        <version.h2>1.4.191</version.h2>
+        <version.hibernate>4.3.11.Final</version.hibernate>
+        <version.logback>1.1.7</version.logback>
+        <version.slf4j>1.7.21</version.slf4j>
+        <version.spring-data-jpa>1.10.4.RELEASE</version.spring-data-jpa>
+        <version.vertx>3.3.3</version.vertx>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${version.guava}</version>
+        </dependency>
+
+        <!-- Logging -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${version.slf4j}</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${version.logback}</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+            <version>${version.logback}</version>
+        </dependency>
+        <!-- TODO - JUL, LOG4J, JCL, SYS OUT -->
+    </dependencies>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.1</version>
+                    <configuration>
+                        <source>1.8</source>
+                        <target>1.8</target>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+    <modules>
+        <module>irunninglog-api</module>
+        <module>irunninglog-vertx</module>
+        <module>irunninglog-spring</module>
+        <module>irunninglog-main</module>
+    </modules>
+
+</project>
