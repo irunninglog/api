@@ -9,54 +9,66 @@ import io.vertx.ext.web.RoutingContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-abstract class AbstactRouteHandler<R extends AbstractResponse> implements IRouteHandler {
+abstract class AbstactRouteHandler<Q, S extends AbstractResponse> implements IRouteHandler {
 
     final Logger logger = LoggerFactory.getLogger(getClass());
     private final Vertx vertx;
+    private final Class<S> responseClass;
 
-    AbstactRouteHandler(Vertx vertx) {
+    AbstactRouteHandler(Vertx vertx, Class<S> responseClass) {
         this.vertx = vertx;
+        this.responseClass = responseClass;
     }
 
     @Override
     public final void handle(RoutingContext routingContext) {
-        logger.info("Handling {}", routingContext.currentRoute());
+        long start = System.currentTimeMillis();
 
-        String requestString = request(routingContext);
+        try {
+            logger.info("handle:start:{}", routingContext.currentRoute());
 
-        vertx.eventBus().<String>send(address().getAddress(), requestString, result -> {
-            if (result.succeeded()) {
-                logger.info("Got a successful result {}", result.result().body());
+            Q request = request(routingContext);
 
-                R response = response(result.result().body());
+            String requestString = Json.encode(request);
 
-                if (response.getStatus() == ResponseStatus.Ok) {
-                    routingContext.request().response()
-                            .setChunked(true)
-                            .putHeader("Content-Type", "application/json")
-                            .setStatusCode(response.getStatus().getCode())
-                            .write(Json.encode(response.getBody()))
-                            .end();
+            logger.info("handle:{}:{}", address(), requestString);
+
+            vertx.eventBus().<String>send(address().getAddress(), requestString, result -> {
+                if (result.succeeded()) {
+                    String resultString = result.result().body();
+
+                    logger.info("handle:{}:{}", address(), resultString);
+
+                    S response = Json.decodeValue(resultString, responseClass);
+
+                    if (response.getStatus() == ResponseStatus.Ok) {
+                        routingContext.request().response()
+                                .setChunked(true)
+                                .putHeader("Content-Type", "application/json")
+                                .setStatusCode(response.getStatus().getCode())
+                                .write(Json.encode(response.getBody()))
+                                .end();
+                    } else {
+                        routingContext.request().response()
+                                .setChunked(true)
+                                .setStatusCode(response.getStatus().getCode())
+                                .write(response.getStatus().getMessage())
+                                .end();
+                    }
                 } else {
-                    routingContext.request().response()
-                            .setChunked(true)
-                            .setStatusCode(response.getStatus().getCode())
-                            .write(response.getStatus().getMessage())
+                    routingContext.request().response().setChunked(true)
+                            .setStatusCode(ResponseStatus.Error.getCode())
+                            .write(ResponseStatus.Error.getMessage())
                             .end();
                 }
-            } else {
-                routingContext.request().response().setChunked(true)
-                        .setStatusCode(ResponseStatus.Error.getCode())
-                        .write(ResponseStatus.Error.getMessage())
-                        .end();
-            }
-        });
+            });
+        } finally {
+            logger.info("handle:end:{}:{}ms", routingContext.currentRoute(), System.currentTimeMillis() - start);
+        }
     }
 
-    protected abstract R response(String body);
+    protected abstract Q request(RoutingContext routingContext);
 
     protected abstract Address address();
-
-    protected abstract String request(RoutingContext routingContext);
 
 }

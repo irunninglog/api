@@ -12,24 +12,39 @@ public final class ServerVerticle extends AbstractVerticle {
 
     private static final Logger LOG = LoggerFactory.getLogger(ServerVerticle.class);
 
+    private final int listenPort;
+
+    public ServerVerticle(int listenPort) {
+        this.listenPort = listenPort;
+    }
+
     @Override
     public void start() throws Exception {
+        LOG.info("start:start");
+
         super.start();
 
         httpServer();
 
-        LOG.info("Server verticle started");
+        LOG.info("start:end");
     }
 
     private void httpServer() {
+        LOG.info("httpServer:start");
         HttpServer server = vertx.createHttpServer();
 
         Router router = Router.router(vertx);
 
+        LOG.info("httpServer:getProfileHandler:before");
         IRouteHandler getProfileHandler = new GetProfileHandler(vertx);
         router.route(getProfileHandler.method(), getProfileHandler.path()).handler(getProfileHandler);
+        LOG.info("httpServer:getProfileHandler:after");
 
-        server.requestHandler(router::accept).listen(8080);
+        LOG.info("httpServer:listen:before:{}", listenPort);
+        server.requestHandler(router::accept).listen(listenPort);
+        LOG.info("httpServer:listen:after");
+
+        LOG.info("httpServer:end");
     }
 
 }

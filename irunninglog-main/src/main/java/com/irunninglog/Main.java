@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.bridge.SLF4JBridgeHandler;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.core.env.Environment;
 import uk.org.lidalia.sysoutslf4j.context.SysOutOverSLF4J;
 
 public class Main {
@@ -34,7 +35,7 @@ public class Main {
         LOG.info("main:vertx:after");
 
         LOG.info("main:server:before");
-        server(vertx);
+        server(applicationContext, vertx);
         LOG.info("main:server:after");
 
         LOG.info("main:verticles:before");
@@ -45,14 +46,19 @@ public class Main {
     }
 
     private static void verticles(ApplicationContext applicationContext, Vertx vertx) {
+        LOG.info("verticles:profile:before");
         IProfileService profileService = applicationContext.getBean(IProfileService.class);
-        LOG.info("Created profile service {}", profileService);
         vertx.deployVerticle(new ProfileVerticle(profileService));
-        LOG.info("Deployed profile verticle");
+        LOG.info("verticles:profile:before");
     }
 
-    private static void server(Vertx vertx) {
-        vertx.deployVerticle(new ServerVerticle());
+    private static void server(ApplicationContext applicationContext, Vertx vertx) {
+        Environment environment = applicationContext.getEnvironment();
+
+        int port = environment.getProperty("httpServer.listenPort", Integer.class, 8080);
+        LOG.info("server:listenPort:{}", port);
+
+        vertx.deployVerticle(new ServerVerticle(port));
     }
 
     private static void logging() {
