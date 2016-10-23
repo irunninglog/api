@@ -49,7 +49,8 @@ public final class Profile {
     public String toString() {
         return MoreObjects.toStringHelper(this)
                 .add("id", id)
-                .add("email", email).add("firstName", firstName)
+                .add("email", email)
+                .add("firstName", firstName)
                 .add("lastName", lastName)
                 .toString();
     }

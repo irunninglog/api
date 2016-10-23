@@ -31,7 +31,7 @@ public class ProfileService implements IProfileService {
 
         Profile profile = new Profile()
                 .setId(entity.getId())
-                .setEmail(entity.getEmail())
+                .setEmail(entity.getUsername())
                 .setFirstName(entity.getFirstName())
                 .setLastName(entity.getLastName());
 
