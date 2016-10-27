@@ -21,6 +21,7 @@
         <version.mysql>5.1.40</version.mysql>
         <version.slf4j>1.7.21</version.slf4j>
         <version.spring-data-jpa>1.10.4.RELEASE</version.spring-data-jpa>
+        <version.spring-security-web>4.1.3.RELEASE</version.spring-security-web>
         <version.sysout-over-slf4j>1.0.2</version.sysout-over-slf4j>
         <version.vertx>3.3.3</version.vertx>
     </properties>

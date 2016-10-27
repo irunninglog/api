@@ -14,10 +14,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class ProfileService implements IProfileService {
 
-    private final IProfileRepository repository;
+    private final IProfileEntityRepository repository;
 
     @Autowired
-    public ProfileService(IProfileRepository repository) {
+    public ProfileService(IProfileEntityRepository repository) {
         this.repository = repository;
     }
 
@@ -31,7 +31,7 @@ public class ProfileService implements IProfileService {
 
         Profile profile = new Profile()
                 .setId(entity.getId())
-                .setEmail(entity.getUsername())
+                .setEmail(entity.getEmail())
                 .setFirstName(entity.getFirstName())
                 .setLastName(entity.getLastName());
 

@@ -1,6 +1,7 @@
 package com.irunninglog;
 
 import com.irunninglog.api.profile.IProfileService;
+import com.irunninglog.api.security.IAuthenticationService;
 import com.irunninglog.spring.context.ContextConfiguration;
 import com.irunninglog.vertx.verticle.ProfileVerticle;
 import com.irunninglog.vertx.verticle.ServerVerticle;
@@ -57,6 +58,9 @@ public class Main {
 
         int port = environment.getProperty("httpServer.listenPort", Integer.class, 8080);
         LOG.info("server:listenPort:{}", port);
+
+        IAuthenticationService authenticationService = applicationContext.getBean(IAuthenticationService.class);
+        LOG.info("server:authenticationService:{}", authenticationService);
 
         vertx.deployVerticle(new ServerVerticle(port));
     }

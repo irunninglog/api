@@ -5,7 +5,6 @@ import com.irunninglog.api.profile.ProfileResponse;
 import com.irunninglog.vertx.Address;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpMethod;
-import io.vertx.core.json.Json;
 import io.vertx.ext.web.RoutingContext;
 
 public final class GetProfileHandler extends AbstactRouteHandler<ProfileRequest, ProfileResponse> {

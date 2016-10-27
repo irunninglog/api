@@ -29,6 +29,11 @@
             <artifactId>vertx-web</artifactId>
             <version>${version.vertx}</version>
         </dependency>
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-auth-common</artifactId>
+            <version>${version.vertx}</version>
+        </dependency>
     </dependencies>
 
 </project>
