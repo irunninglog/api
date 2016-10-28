@@ -1,5 +1,7 @@
 package com.irunninglog.vertx.routehandler;
 
+import com.irunninglog.api.security.AuthnRequest;
+import com.irunninglog.api.security.AuthnResponse;
 import com.irunninglog.api.service.AbstractResponse;
 import com.irunninglog.api.service.ResponseStatus;
 import com.irunninglog.vertx.Address;
@@ -8,6 +10,8 @@ import io.vertx.core.json.Json;
 import io.vertx.ext.web.RoutingContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Base64;
 
 abstract class AbstactRouteHandler<Q, S extends AbstractResponse> implements IRouteHandler {
 
@@ -25,46 +29,115 @@ abstract class AbstactRouteHandler<Q, S extends AbstractResponse> implements IRo
         long start = System.currentTimeMillis();
 
         try {
-            logger.info("handle:start:{}", routingContext.currentRoute());
+            logger.info("handle:start:{}", routingContext.normalisedPath());
 
-            Q request = request(routingContext);
+            AuthnRequest authnRequest = authnRequest(routingContext);
+            if (authnRequest == null) {
+                logger.error("Unable to get authentication information from request");
 
-            String requestString = Json.encode(request);
+                fail(routingContext, ResponseStatus.Unauthnticated);
 
-            logger.info("handle:{}:{}", address(), requestString);
+                return;
+            }
 
-            vertx.eventBus().<String>send(address().getAddress(), requestString, result -> {
-                if (result.succeeded()) {
-                    String resultString = result.result().body();
+            logger.info("handle:authn:{}", authnRequest.getUsername());
 
-                    logger.info("handle:{}:{}", address(), resultString);
+            vertx.eventBus().<String>send(Address.Authenticate.getAddress(), Json.encode(authnRequest), result -> {
+                        if (result.succeeded()) {
+                            String resultString = result.result().body();
 
-                    S response = Json.decodeValue(resultString, responseClass);
+                            logger.info("handle:{}:{}", Address.Authenticate.getAddress(), resultString);
 
-                    if (response.getStatus() == ResponseStatus.Ok) {
-                        routingContext.request().response()
-                                .setChunked(true)
-                                .putHeader("Content-Type", "application/json")
-                                .setStatusCode(response.getStatus().getCode())
-                                .write(Json.encode(response.getBody()))
-                                .end();
-                    } else {
-                        routingContext.request().response()
-                                .setChunked(true)
-                                .setStatusCode(response.getStatus().getCode())
-                                .write(response.getStatus().getMessage())
-                                .end();
-                    }
-                } else {
-                    routingContext.request().response().setChunked(true)
-                            .setStatusCode(ResponseStatus.Error.getCode())
-                            .write(ResponseStatus.Error.getMessage())
-                            .end();
-                }
-            });
+                            AuthnResponse authnResponse = Json.decodeValue(resultString, AuthnResponse.class);
+
+                            logger.info("handle:{}:{}", Address.Authenticate.getAddress(), authnResponse.getStatus());
+
+                            if (authnResponse.getStatus() == ResponseStatus.Ok) {
+                                handleAuthenticated(routingContext);
+                            } else {
+                                fail(routingContext, authnResponse.getStatus());
+                            }
+                        } else {
+                            logger.error("handle:authn:failure", result.cause());
+                            logger.error("handle:authn:failure{}", routingContext.normalisedPath());
+
+                            fail(routingContext, ResponseStatus.Error);
+                        }
+                    });
         } finally {
-            logger.info("handle:end:{}:{}ms", routingContext.currentRoute(), System.currentTimeMillis() - start);
+            logger.info("handle:end:{}:{}ms", routingContext.normalisedPath(), System.currentTimeMillis() - start);
         }
+    }
+
+    private void handleAuthenticated(RoutingContext routingContext) {
+        logger.info("handleAuthenticated:start:{}", routingContext.normalisedPath());
+
+        Q request = request(routingContext);
+
+        String requestString = Json.encode(request);
+
+        logger.info("handleAuthenticated:{}:{}", address(), requestString);
+
+        vertx.eventBus().<String>send(address().getAddress(), requestString, result -> {
+            if (result.succeeded()) {
+                String resultString = result.result().body();
+
+                logger.info("handleAuthenticated:{}:{}", address(), resultString);
+
+                S response = Json.decodeValue(resultString, responseClass);
+
+                logger.info("handle:{}:{}", address(), response);
+
+                if (response.getStatus() == ResponseStatus.Ok) {
+                    succeed(routingContext, response);
+                } else {
+                    fail(routingContext, response.getStatus());
+                }
+            } else {
+                logger.error("handleAuthenticated:failure", result.cause());
+                logger.error("handleAuthenticated:failure{}", routingContext.normalisedPath());
+
+                fail(routingContext, ResponseStatus.Error);
+            }
+        });
+    }
+
+    private AuthnRequest authnRequest(RoutingContext routingContext) {
+        AuthnRequest authnRequest = null;
+
+        try {
+            String authHeader = routingContext.request().getHeader("Authorization");
+            if (authHeader != null && authHeader.toLowerCase().startsWith("basic")) {
+                String decoded = new String(Base64.getDecoder().decode(authHeader.split(" ")[1]));
+                String [] tokens = decoded.split(":");
+                authnRequest = new AuthnRequest()
+                        .setUsername(tokens[0])
+                        .setPassword(tokens[1])
+                        .setPath(routingContext.normalisedPath());
+            }
+        } catch (Exception ex) {
+            logger.error("Unable to decode authorization header", ex);
+        }
+
+        return authnRequest;
+    }
+
+    private void succeed(RoutingContext routingContext, AbstractResponse response) {
+        routingContext.request().response()
+                .setChunked(true)
+                .putHeader("Content-Type", "application/json")
+                .setStatusCode(response.getStatus().getCode())
+                .write(Json.encode(response.getBody()))
+                .end();
+    }
+
+    private void fail(RoutingContext routingContext, ResponseStatus error) {
+        logger.error("fail:{}:{}", routingContext.normalisedPath(), error);
+
+        routingContext.request().response().setChunked(true)
+                .setStatusCode(error.getCode())
+                .write(error.getMessage())
+                .end();
     }
 
     protected abstract Q request(RoutingContext routingContext);

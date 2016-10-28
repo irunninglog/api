@@ -6,20 +6,29 @@ import java.util.Set;
 
 public class User {
 
-    private final String username;
+    private String username;
 
-    private final Set<String> authorities;
+    private final Set<String> authorities = new HashSet<>();
+
+    public User() {
+        super();
+    }
 
     public User(String username, String ... authorities) {
+        this();
+
         this.username = username;
 
-        HashSet<String> hashSet = new HashSet<>();
-        Collections.addAll(hashSet, authorities);
-        this.authorities = Collections.unmodifiableSet(hashSet);
+        Collections.addAll(this.authorities, authorities);
     }
 
     public String getUsername() {
         return username;
+    }
+
+    public User setUsername(String username) {
+        this.username = username;
+        return this;
     }
 
     public Set<String> getAuthorities() {

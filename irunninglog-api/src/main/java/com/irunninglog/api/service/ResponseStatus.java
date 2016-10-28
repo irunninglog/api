@@ -4,6 +4,8 @@ public enum ResponseStatus {
 
     Ok(200, "Ok"),
     Bad(400, "Bad Request"),
+    Unauthnticated(401, "Not Authenticated"),
+    Unauthorized(403, "Not Authorized"),
     NotFound(404, "Not Found"),
     Error(500, "Unknown Error");
 

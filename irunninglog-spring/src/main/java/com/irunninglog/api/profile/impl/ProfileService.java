@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.format.DateTimeFormatter;
+
 @Service
 @Transactional
 public class ProfileService implements IProfileService {
@@ -33,7 +35,14 @@ public class ProfileService implements IProfileService {
                 .setId(entity.getId())
                 .setEmail(entity.getEmail())
                 .setFirstName(entity.getFirstName())
-                .setLastName(entity.getLastName());
+                .setLastName(entity.getLastName())
+                .setBirthday(entity.getBirthday().format(DateTimeFormatter.ISO_DATE))
+                .setGender(entity.getGender())
+                .setWeekStart(entity.getWeekStart())
+                .setPreferredUnits(entity.getPreferredUnits())
+                .setWeeklyTarget(entity.getWeeklyTarget())
+                .setMonthlyTarget(entity.getMonthlyTarget())
+                .setYearlyTarget(entity.getYearlyTarget());
 
         return new ProfileResponse()
                 .setStatus(ResponseStatus.Ok)

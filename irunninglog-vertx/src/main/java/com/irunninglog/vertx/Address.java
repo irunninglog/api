@@ -4,6 +4,7 @@ import com.google.common.base.MoreObjects;
 
 public enum Address {
 
+    Authenticate("com.irunninglog.authn"),
     ProfileGet("com.irunninglog.profile.get");
 
     private final String address;
