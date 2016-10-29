@@ -7,11 +7,13 @@ import com.irunninglog.vertx.Address;
 public class AuthnVerticle extends AbstractRequestResponseVerticle<AuthnRequest, AuthnResponse> {
 
     private final IAuthenticationService authenticationService;
+    private final IAuthorizationService authorizationService;
 
-    public AuthnVerticle(IAuthenticationService authenticationService) {
+    public AuthnVerticle(IAuthenticationService authenticationService, IAuthorizationService authorizationService) {
         super(AuthnRequest.class, AuthnResponse::new);
 
         this.authenticationService = authenticationService;
+        this.authorizationService = authorizationService;
     }
 
     @Override
@@ -20,12 +22,17 @@ public class AuthnVerticle extends AbstractRequestResponseVerticle<AuthnRequest,
         User user = null;
 
         try {
-            user = authenticationService.authenticate(request.getUsername(), request.getPassword());
+            user = authorizationService
+                    .authorize(authenticationService.authenticate(request.getUsername(),
+                            request.getPassword()), request.getPath());
 
             logger.info("handle:user:{}", user);
         } catch (AuthnException ex) {
             logger.error("Unable to authenticate", ex);
             status = ResponseStatus.Unauthnticated;
+        } catch (AuthzException ex) {
+            logger.error("Unable to authorize", ex);
+            status = ResponseStatus.Unauthorized;
         }
 
         return new AuthnResponse().setStatus(status).setBody(user);

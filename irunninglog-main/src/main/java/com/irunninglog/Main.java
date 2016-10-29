@@ -2,6 +2,7 @@ package com.irunninglog;
 
 import com.irunninglog.api.profile.IProfileService;
 import com.irunninglog.api.security.IAuthenticationService;
+import com.irunninglog.api.security.IAuthorizationService;
 import com.irunninglog.spring.context.ContextConfiguration;
 import com.irunninglog.vertx.verticle.AuthnVerticle;
 import com.irunninglog.vertx.verticle.ProfileVerticle;
@@ -50,7 +51,8 @@ public class Main {
     private static void verticles(ApplicationContext applicationContext, Vertx vertx) {
         LOG.info("verticles:authn:before");
         IAuthenticationService authnService = applicationContext.getBean(IAuthenticationService.class);
-        vertx.deployVerticle(new AuthnVerticle(authnService));
+        IAuthorizationService authzService = applicationContext.getBean(IAuthorizationService.class);
+        vertx.deployVerticle(new AuthnVerticle(authnService, authzService));
         LOG.info("verticles:authn:after");
 
         LOG.info("verticles:profile:before");

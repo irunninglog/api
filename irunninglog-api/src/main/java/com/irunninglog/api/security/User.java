@@ -6,6 +6,7 @@ import java.util.Set;
 
 public class User {
 
+    private long id;
     private String username;
 
     private final Set<String> authorities = new HashSet<>();
@@ -14,12 +15,21 @@ public class User {
         super();
     }
 
-    public User(String username, String ... authorities) {
+    public User(long id, String username, String ... authorities) {
         this();
 
         this.username = username;
+        this.id = id;
 
         Collections.addAll(this.authorities, authorities);
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getUsername() {

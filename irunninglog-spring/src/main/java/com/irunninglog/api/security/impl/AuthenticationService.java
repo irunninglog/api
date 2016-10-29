@@ -36,7 +36,7 @@ public class AuthenticationService implements IAuthenticationService {
             List<String> authorities = userEntity.getAuthorities().stream().map(AuthorityEntity::getName).collect(Collectors.toList());
 
             String[] array = authorities.toArray(new String[authorities.size()]);
-            return new User(userEntity.getUsername(), array);
+            return new User(userEntity.getId(), userEntity.getUsername(), array);
         }
     }
 
