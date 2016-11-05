@@ -55,6 +55,7 @@
                             </transformers>
                             <artifactSet>
                             </artifactSet>
+                            <finalName>irunninglog</finalName>
                         </configuration>
                     </execution>
                 </executions>
