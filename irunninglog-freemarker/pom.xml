@@ -13,7 +13,7 @@
 
     <artifactId>irunninglog-freemarker</artifactId>
 
-    <name>irunninglog freemarker templates</name>
+    <name>irunninglog freemarker configuration</name>
 
     <build>
         <plugins>
