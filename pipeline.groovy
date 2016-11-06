@@ -21,7 +21,7 @@ node {
         }
         dir ('irunninglog-freemarker/target/generated-sources/int') {
             sh "mkdir ${dest}"
-            sh "mv * ${dest}/"
+            sh "mv *.properties ${dest}/"
             stash name: "config", includes: "${dest}/**"
         }
         deleteDir()
