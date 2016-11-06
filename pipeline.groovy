@@ -20,6 +20,7 @@ node {
             stash name: "shaded-jar", includes: "${dest}/**"
         }
         dir ('irunninglog-freemarker/target/generated-sources/int') {
+            sh "ls -al"
             sh "mkdir ${dest}"
             sh "mv application.properties ${dest}/"
             stash name: "config", includes: "${dest}/**"
