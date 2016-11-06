@@ -19,16 +19,22 @@ node {
             sh "mv irunninglog.jar ${dest}/"
             stash name: "shaded-jar", includes: "${dest}/**"
         }
+        dir ('irunninglog-freemarker/target/generated-sources/int') {
+            sh "mkdir ${dest}"
+            sh "mv * ${dest}/"
+            stash name: "config", includes: "${dest}/**"
+        }
         deleteDir()
     }
 
-    stage('Install (Local)') {
+    stage('Install (INT)') {
         unstash name: "shaded-jar"
+        unstash name: "config"
         sh "ls -al"
         sh "rsync -av . ${env.DEPOT_LOCAL}"
     }
 
-    stage('Clean (Local)') {
+    stage('Clean (INT)') {
         sh "find ${env.DEPOT_LOCAL} -mtime +30 | xargs rm -rf {} \\;"
     }
 }
