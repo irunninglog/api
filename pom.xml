@@ -91,6 +91,7 @@
         <module>irunninglog-vertx</module>
         <module>irunninglog-spring</module>
         <module>irunninglog-main</module>
+        <module>irunninglog-freemarker</module>
     </modules>
 
 </project>

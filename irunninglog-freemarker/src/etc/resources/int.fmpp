@@ -1,0 +1,8 @@
+data: {
+    dataSourceDriverClassName: "com.mysql.jdbc.Driver"
+    dataSourceUrl: "jdbc:mysql://localhost:3306/irunninglog"
+    dataSourceUsername: "irunninglog"
+    dataSourcePassword: "irunninglog"
+    jpaPropertiesHbm2ddl: "update"
+    jpaPropertiesDialect: "org.hibernate.dialect.MySQL5Dialect"
+}
