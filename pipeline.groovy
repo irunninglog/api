@@ -17,24 +17,44 @@ node {
         dir ('irunninglog-main/target') {
             sh "mkdir ${dest}"
             sh "mv irunninglog.jar ${dest}/"
-            stash name: "shaded-jar", includes: "${dest}/**"
+            stash name: "int-shaded-jar", includes: "${dest}/**"
         }
         dir ('irunninglog-freemarker/target/generated-sources/fmpp/int') {
             sh "mkdir ${dest}"
             sh "mv application.properties ${dest}/"
-            stash name: "config", includes: "${dest}/**"
+            stash name: "int-config", includes: "${dest}/**"
+        }
+        def destProd = pom.version
+        dir ('irunninglog-main/target') {
+            sh "mkdir ${destProd}"
+            sh "mv irunninglog.jar ${destProd}/"
+            stash name: "prod-shaded-jar", includes: "${destProd}/**"
+        }
+        dir ('irunninglog-freemarker/target/generated-sources/fmpp/prod') {
+            sh "mkdir ${destProd}"
+            sh "mv application.properties ${destProd}/"
+            stash name: "prod-config", includes: "${destProd}/**"
         }
         deleteDir()
     }
 
     stage('Install (INT)') {
-        unstash name: "shaded-jar"
-        unstash name: "config"
+        unstash name: "int-shaded-jar"
+        unstash name: "int-config"
         sh "ls -al"
         sh "rsync -av . ${env.DEPOT_LOCAL}"
+        deleteDir()
     }
 
     stage('Clean (INT)') {
         sh "find ${env.DEPOT_LOCAL} -mtime +30 | xargs rm -rf {} \\;"
+    }
+
+    stage('Install (PROD)') {
+        unstash name: "prod-shaded-jar"
+        unstash name: "prod-config"
+        sh "ls -al"
+        //sh "rsync -av . ${env.DEPOT_LOCAL}"
+        deleteDir()
     }
 }
