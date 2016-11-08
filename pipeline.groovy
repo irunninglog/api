@@ -54,7 +54,7 @@ node {
         unstash name: "prod-shaded-jar"
         unstash name: "prod-config"
         sh "ls -al"
-        //sh "rsync -av . ${env.DEPOT_LOCAL}"
+        sh "rsync -avn . ${env.DEPOT_REMOTE}"
         deleteDir()
     }
 }
