@@ -16,23 +16,23 @@ node {
         def dest = pom.version + "-" + sh(returnStdout: true, script: 'date +%Y%m%d%H%M%S').trim()
         dir ('irunninglog-main/target') {
             sh "mkdir ${dest}"
-            sh "mv irunninglog.jar ${dest}/"
+            sh "cp irunninglog.jar ${dest}/"
             stash name: "int-shaded-jar", includes: "${dest}/**"
         }
         dir ('irunninglog-freemarker/target/generated-sources/fmpp/int') {
             sh "mkdir ${dest}"
-            sh "mv application.properties ${dest}/"
+            sh "cp application.properties ${dest}/"
             stash name: "int-config", includes: "${dest}/**"
         }
         def destProd = pom.version
         dir ('irunninglog-main/target') {
             sh "mkdir ${destProd}"
-            sh "mv irunninglog.jar ${destProd}/"
+            sh "cp irunninglog.jar ${destProd}/"
             stash name: "prod-shaded-jar", includes: "${destProd}/**"
         }
         dir ('irunninglog-freemarker/target/generated-sources/fmpp/prod') {
             sh "mkdir ${destProd}"
-            sh "mv application.properties ${destProd}/"
+            sh "cp application.properties ${destProd}/"
             stash name: "prod-config", includes: "${destProd}/**"
         }
         deleteDir()
