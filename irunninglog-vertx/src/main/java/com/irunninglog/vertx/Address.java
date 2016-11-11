@@ -5,6 +5,7 @@ import com.google.common.base.MoreObjects;
 public enum Address {
 
     Authenticate("com.irunninglog.authn"),
+    DashboardGet("com.irunninglog.profile.dashboard.get"),
     ProfileGet("com.irunninglog.profile.get");
 
     private final String address;

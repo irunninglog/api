@@ -32,7 +32,7 @@ public final class GetProfileHandler extends AbstactRouteHandler<ProfileRequest,
     protected ProfileRequest request(RoutingContext routingContext) {
         String profileId = routingContext.pathParam("profileid");
 
-        logger.info("Got profile id {}", profileId);
+        logger.info("profile:get:{}", profileId);
 
         return new ProfileRequest().setId(Integer.parseInt(profileId));
     }

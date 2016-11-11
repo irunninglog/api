@@ -1,16 +1,7 @@
 package com.irunninglog.api.profile;
 
-public final class ProfileRequest {
+import com.irunninglog.api.service.AbstractRequest;
 
-    private long id;
-
-    public long getId() {
-        return id;
-    }
-
-    public ProfileRequest setId(long id) {
-        this.id = id;
-        return this;
-    }
+public final class ProfileRequest extends AbstractRequest<ProfileRequest> {
 
 }

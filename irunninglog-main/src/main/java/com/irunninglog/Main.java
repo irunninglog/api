@@ -1,10 +1,12 @@
 package com.irunninglog;
 
+import com.irunninglog.api.dashboard.IDashboardService;
 import com.irunninglog.api.profile.IProfileService;
 import com.irunninglog.api.security.IAuthenticationService;
 import com.irunninglog.api.security.IAuthorizationService;
 import com.irunninglog.spring.context.ContextConfiguration;
 import com.irunninglog.vertx.verticle.AuthnVerticle;
+import com.irunninglog.vertx.verticle.DashboardVerticle;
 import com.irunninglog.vertx.verticle.ProfileVerticle;
 import com.irunninglog.vertx.verticle.ServerVerticle;
 import io.vertx.core.Vertx;
@@ -59,6 +61,11 @@ public class Main {
         IProfileService profileService = applicationContext.getBean(IProfileService.class);
         vertx.deployVerticle(new ProfileVerticle(profileService));
         LOG.info("verticles:profile:after");
+
+        LOG.info("verticles:dashboard:before");
+        IDashboardService dashboardService = applicationContext.getBean(IDashboardService.class);
+        vertx.deployVerticle(new DashboardVerticle(dashboardService));
+        LOG.info("verticles:dashboard:after");
     }
 
     private static void server(ApplicationContext applicationContext, Vertx vertx) {

@@ -1,5 +1,6 @@
 package com.irunninglog.vertx.verticle;
 
+import com.irunninglog.vertx.routehandler.GetDashboardHandler;
 import com.irunninglog.vertx.routehandler.GetProfileHandler;
 import com.irunninglog.vertx.routehandler.IRouteHandler;
 import io.vertx.core.AbstractVerticle;
@@ -35,16 +36,20 @@ public final class ServerVerticle extends AbstractVerticle {
 
         Router router = Router.router(vertx);
 
-        LOG.info("httpServer:getProfileHandler:before");
-        IRouteHandler getProfileHandler = new GetProfileHandler(vertx);
-        router.route(getProfileHandler.method(), getProfileHandler.path()).handler(getProfileHandler);
-        LOG.info("httpServer:getProfileHandler:after");
+        install(router, new GetProfileHandler(vertx));
+        install(router, new GetDashboardHandler(vertx));
 
         LOG.info("httpServer:listen:before:{}", listenPort);
         server.requestHandler(router::accept).listen(listenPort);
         LOG.info("httpServer:listen:after");
 
         LOG.info("httpServer:end");
+    }
+
+    private void install(Router router, IRouteHandler handler) {
+        LOG.info("httpServer:{}:before", handler.getClass());
+        router.route(handler.method(), handler.path()).handler(handler);
+        LOG.info("httpServer:{}:after", handler.getClass());
     }
 
 }
