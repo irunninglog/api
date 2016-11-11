@@ -1,42 +1,41 @@
 package com.irunninglog.api.dashboard;
 
+import com.google.common.base.MoreObjects;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class DashboardInfo {
 
-    private SummaryItem thisWeek;
-    private SummaryItem thisMonth;
-    private SummaryItem thisYear;
-    private SummaryItem lastYear;
+    private final List<ProgressInfo> progress = new ArrayList<>();
+    private final List<ProgressInfo> shoes = new ArrayList<>();
+    private final List<ProgressInfo> goals = new ArrayList<>();
+    private final List<ProgressInfo> streaks = new ArrayList<>();
 
-    public SummaryItem getThisWeek() {
-        return thisWeek;
+    public List<ProgressInfo> getProgress() {
+        return progress;
     }
 
-    public void setThisWeek(SummaryItem thisWeek) {
-        this.thisWeek = thisWeek;
+    public List<ProgressInfo> getShoes() {
+        return shoes;
     }
 
-    public SummaryItem getThisMonth() {
-        return thisMonth;
+    public List<ProgressInfo> getGoals() {
+        return goals;
     }
 
-    public void setThisMonth(SummaryItem thisMonth) {
-        this.thisMonth = thisMonth;
+    public List<ProgressInfo> getStreaks() {
+        return streaks;
     }
 
-    public SummaryItem getThisYear() {
-        return thisYear;
-    }
-
-    public void setThisYear(SummaryItem thisYear) {
-        this.thisYear = thisYear;
-    }
-
-    public SummaryItem getLastYear() {
-        return lastYear;
-    }
-
-    public void setLastYear(SummaryItem lastYear) {
-        this.lastYear = lastYear;
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("progress", progress)
+                .add("shoes", shoes)
+                .add("goals", goals)
+                .add("streaks", streaks)
+                .toString();
     }
 
 }
