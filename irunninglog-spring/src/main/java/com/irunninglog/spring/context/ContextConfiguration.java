@@ -26,8 +26,8 @@ import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
-@ComponentScan("com.irunninglog.api")
-@EnableJpaRepositories(basePackages = {"com.irunninglog.api"})
+@ComponentScan("com.irunninglog")
+@EnableJpaRepositories(basePackages = {"com.irunninglog"})
 @PropertySource(value = { "${env}" })
 public class ContextConfiguration {
 

@@ -10,7 +10,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "user_entity")
-class ProfileEntity {
+public class ProfileEntity {
 
     @javax.persistence.Id
     @javax.persistence.GeneratedValue(strategy=GenerationType.TABLE)
@@ -58,7 +58,7 @@ class ProfileEntity {
         this.id = id;
     }
 
-    public String getEmail() {
+    String getEmail() {
         return email;
     }
 
@@ -66,7 +66,7 @@ class ProfileEntity {
         this.email = email;
     }
 
-    public String getFirstName() {
+    String getFirstName() {
         return firstName;
     }
 
@@ -74,7 +74,7 @@ class ProfileEntity {
         this.firstName = firstName;
     }
 
-    public String getLastName() {
+    String getLastName() {
         return lastName;
     }
 
@@ -82,7 +82,7 @@ class ProfileEntity {
         this.lastName = lastName;
     }
 
-    public double getWeeklyTarget() {
+    double getWeeklyTarget() {
         return weeklyTarget;
     }
 
@@ -90,7 +90,7 @@ class ProfileEntity {
         this.weeklyTarget = weeklyTarget;
     }
 
-    public double getMonthlyTarget() {
+    double getMonthlyTarget() {
         return monthlyTarget;
     }
 
@@ -98,7 +98,7 @@ class ProfileEntity {
         this.monthlyTarget = monthlyTarget;
     }
 
-    public double getYearlyTarget() {
+    double getYearlyTarget() {
         return yearlyTarget;
     }
 
@@ -106,7 +106,7 @@ class ProfileEntity {
         this.yearlyTarget = yearlyTarget;
     }
 
-    public DayOfWeek getWeekStart() {
+    DayOfWeek getWeekStart() {
         return weekStart;
     }
 
@@ -122,7 +122,7 @@ class ProfileEntity {
         this.preferredUnits = preferredUnits;
     }
 
-    public LocalDate getBirthday() {
+    LocalDate getBirthday() {
         return birthday;
     }
 
@@ -130,7 +130,7 @@ class ProfileEntity {
         this.birthday = birthday;
     }
 
-    public Gender getGender() {
+    Gender getGender() {
         return gender;
     }
 
