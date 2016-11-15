@@ -1,8 +1,8 @@
 package com.irunninglog.api.security.impl;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
 
-public interface IUserEntityRepository extends JpaRepository<UserEntity, Long> {
+public interface IUserEntityRepository extends CrudRepository<UserEntity, Long> {
 
     UserEntity findByUsername(String username);
 }

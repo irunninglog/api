@@ -11,6 +11,7 @@ import com.irunninglog.api.profile.impl.IProfileEntityRepository;
 import com.irunninglog.api.profile.impl.ProfileEntity;
 import com.irunninglog.api.service.ResponseStatus;
 import com.irunninglog.api.service.ResponseStatusException;
+import com.irunninglog.api.workout.impl.IWorkoutEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,18 +30,21 @@ public class DashboardService implements IDashboardService {
 
     private final IProfileEntityRepository profileEntityRepository;
     private final IShoeEntityRepository shoeEntityRepository;
+    private final IWorkoutEntityRepository workoutEntityRepository;
     private final IMathService mathService;
     private final IDateService dateService;
 
     @Autowired
     public DashboardService(IProfileEntityRepository profileEntityRepository,
                             IShoeEntityRepository shoeEntityRepository,
+                            IWorkoutEntityRepository workoutEntityRepository,
                             IMathService mathService,
                             IDateService dateService) {
         super();
 
         this.profileEntityRepository = profileEntityRepository;
         this.shoeEntityRepository = shoeEntityRepository;
+        this.workoutEntityRepository = workoutEntityRepository;
         this.mathService = mathService;
         this.dateService = dateService;
     }
@@ -80,8 +84,10 @@ public class DashboardService implements IDashboardService {
         List<ProgressInfo> progressList = new ArrayList<>();
 
         for (ShoeEntity shoeEntity : shoeEntityRepository.dashboardShoes(profileEntity.getId())) {
-            // TODO - Calculate based on workouts
-            BigDecimal distance = BigDecimal.ZERO;
+            BigDecimal distance = workoutEntityRepository.shoeMileage(profileEntity.getId(), shoeEntity.getId());
+            if (distance == null) {
+                distance = BigDecimal.ZERO;
+            }
 
             BigDecimal target = new BigDecimal(shoeEntity.getMax());
 

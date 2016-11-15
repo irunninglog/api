@@ -1,13 +1,12 @@
 package com.irunninglog.api.data.impl;
 
-import com.irunninglog.api.security.impl.UserEntity;
-import com.irunninglog.jpa.AbstractEntity;
+import com.irunninglog.jpa.AbstractEntityWithUser;
 
 import javax.persistence.*;
 
 @MappedSuperclass
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public abstract class AbstractDataEntity extends AbstractEntity {
+public abstract class AbstractDataEntity extends AbstractEntityWithUser {
 
     @Column(nullable = false, unique = true)
     private String name;
@@ -17,9 +16,6 @@ public abstract class AbstractDataEntity extends AbstractEntity {
 
     @Column(nullable = false)
     private boolean dashboard;
-
-    @ManyToOne(optional=false)
-    private UserEntity user;
 
     public String getName() {
         return name;
@@ -45,11 +41,4 @@ public abstract class AbstractDataEntity extends AbstractEntity {
         this.dashboard = dashboard;
     }
 
-    public UserEntity getUser() {
-        return user;
-    }
-
-    public void setUser(UserEntity user) {
-        this.user = user;
-    }
 }
