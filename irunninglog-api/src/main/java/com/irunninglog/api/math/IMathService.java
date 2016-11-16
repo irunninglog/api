@@ -9,7 +9,11 @@ public interface IMathService {
 
     BigDecimal round(BigDecimal bigDecimal);
 
+    Progress progress(BigDecimal number, BigDecimal target);
+
     Progress progress(BigDecimal number, BigDecimal target, boolean inverted);
+
+    String format(double number, Unit units);
 
     String format(BigDecimal number, Unit units);
 

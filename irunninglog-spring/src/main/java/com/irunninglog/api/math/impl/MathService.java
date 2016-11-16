@@ -20,6 +20,11 @@ public class MathService implements IMathService {
     }
 
     @Override
+    public Progress progress(BigDecimal number, BigDecimal target) {
+        return progress(number, target, Boolean.FALSE);
+    }
+
+    @Override
     public Progress progress(BigDecimal number, BigDecimal target, boolean inverted) {
         Progress progress;
 
@@ -38,6 +43,11 @@ public class MathService implements IMathService {
         }
 
         return progress;
+    }
+
+    @Override
+    public String format(double number, Unit units) {
+        return format(new BigDecimal(number), units);
     }
 
     @Override
