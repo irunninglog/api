@@ -8,10 +8,13 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.text.MessageFormat;
 
 @Service
 public class MathService implements IMathService {
 
+    private static final String NO_PROGRESS = "No progress to track";
+    private static final String FORMAT_PROGRESS = "{0} of {1} ({2}%)";
     private static final BigDecimal CONVERTER = new BigDecimal(1.609344);
 
     @Override
@@ -43,6 +46,27 @@ public class MathService implements IMathService {
         }
 
         return progress;
+    }
+
+    @Override
+    public String formatProgressText(BigDecimal mileage, BigDecimal target, Unit units) {
+        if (target.doubleValue() < 1E-9) {
+            return NO_PROGRESS;
+        }
+
+        if (mileage.compareTo(target) > 0) {
+            return MessageFormat.format(FORMAT_PROGRESS,
+                    format(mileage, units),
+                    format(target, units),
+                    100);
+        } else {
+            BigDecimal percent = divide(mileage.multiply(new BigDecimal(100)), target);
+
+            return MessageFormat.format(FORMAT_PROGRESS,
+                    format(mileage, units),
+                    format(target, units),
+                    intValue(percent));
+        }
     }
 
     @Override

@@ -13,6 +13,8 @@ public interface IMathService {
 
     Progress progress(BigDecimal number, BigDecimal target, boolean inverted);
 
+    String formatProgressText(BigDecimal mileage, BigDecimal target, Unit units);
+
     String format(double number, Unit units);
 
     String format(BigDecimal number, Unit units);
