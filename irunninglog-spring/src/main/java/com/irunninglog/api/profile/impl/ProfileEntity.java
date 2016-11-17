@@ -106,7 +106,7 @@ public class ProfileEntity {
         this.yearlyTarget = yearlyTarget;
     }
 
-    DayOfWeek getWeekStart() {
+    public DayOfWeek getWeekStart() {
         return weekStart;
     }
 

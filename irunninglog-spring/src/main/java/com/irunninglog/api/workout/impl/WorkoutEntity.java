@@ -10,7 +10,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "workout_entity")
-class WorkoutEntity extends AbstractEntityWithUser {
+public class WorkoutEntity extends AbstractEntityWithUser {
 
     @Column(nullable = false)
     private double distance;

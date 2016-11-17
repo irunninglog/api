@@ -17,16 +17,19 @@ public class DashboardService implements IDashboardService {
     private final IProfileEntityRepository profileEntityRepository;
     private final DashboardShoesService shoesService;
     private final DashboardGoalsService goalsService;
+    private final DashboardProgressService progressService;
 
     @Autowired
     public DashboardService(IProfileEntityRepository profileEntityRepository,
                             DashboardGoalsService goalsService,
-                            DashboardShoesService shoesService) {
+                            DashboardShoesService shoesService,
+                            DashboardProgressService progressService) {
         super();
 
         this.profileEntityRepository = profileEntityRepository;
         this.goalsService = goalsService;
         this.shoesService = shoesService;
+        this.progressService = progressService;
     }
 
     @Override
@@ -38,7 +41,7 @@ public class DashboardService implements IDashboardService {
 
         DashboardInfo info = new DashboardInfo();
 
-        info.getProgress().addAll(progress());
+        info.getProgress().addAll(progress(userEntity, request.getOffset()));
         info.getGoals().addAll(goals(userEntity));
         info.getShoes().addAll(shoes(userEntity));
         info.getStreaks().addAll(streaks());
@@ -48,8 +51,8 @@ public class DashboardService implements IDashboardService {
                 .setStatus(ResponseStatus.Ok);
     }
 
-    private Collection<ProgressInfo> progress() {
-        return Collections.emptyList();
+    private Collection<ProgressInfo> progress(ProfileEntity profileEntity, int offset) {
+        return progressService.progress(profileEntity, offset);
     }
 
     private Collection<ProgressInfo> goals(ProfileEntity profileEntity) {

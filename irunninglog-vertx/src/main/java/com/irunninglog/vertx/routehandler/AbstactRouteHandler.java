@@ -2,6 +2,7 @@ package com.irunninglog.vertx.routehandler;
 
 import com.irunninglog.api.security.AuthnRequest;
 import com.irunninglog.api.security.AuthnResponse;
+import com.irunninglog.api.service.AbstractRequest;
 import com.irunninglog.api.service.AbstractResponse;
 import com.irunninglog.api.service.ResponseStatus;
 import com.irunninglog.vertx.Address;
@@ -13,7 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Base64;
 
-abstract class AbstactRouteHandler<Q, S extends AbstractResponse> implements IRouteHandler {
+abstract class AbstactRouteHandler<Q extends AbstractRequest, S extends AbstractResponse> implements IRouteHandler {
 
     final Logger logger = LoggerFactory.getLogger(getClass());
     private final Vertx vertx;
@@ -73,6 +74,9 @@ abstract class AbstactRouteHandler<Q, S extends AbstractResponse> implements IRo
         logger.info("handleAuthenticated:start:{}", routingContext.normalisedPath());
 
         Q request = request(routingContext);
+
+        String offset = routingContext.request().getHeader("iRunningLog-Utc-Offset");
+        request.setOffset(offset == null ? 0 : Integer.parseInt(offset));
 
         String requestString = Json.encode(request);
 

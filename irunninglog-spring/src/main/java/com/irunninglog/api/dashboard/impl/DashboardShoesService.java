@@ -8,6 +8,7 @@ import com.irunninglog.api.date.IDateService;
 import com.irunninglog.api.math.IMathService;
 import com.irunninglog.api.profile.impl.ProfileEntity;
 import com.irunninglog.api.workout.impl.IWorkoutEntityRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -23,6 +24,7 @@ public class DashboardShoesService {
     private final IMathService mathService;
     private final IDateService dateService;
 
+    @Autowired
     public DashboardShoesService(IShoeEntityRepository shoeEntityRepository,
                                  IWorkoutEntityRepository workoutEntityRepository,
                                  IMathService mathService,
