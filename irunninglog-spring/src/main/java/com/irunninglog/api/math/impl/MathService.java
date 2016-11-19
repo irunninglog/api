@@ -92,4 +92,12 @@ public class MathService implements IMathService {
         return top.divide(bottom, 2, RoundingMode.HALF_UP);
     }
 
+    public int getPercentage(int value, int max) {
+        return getPercentage(new BigDecimal(value), new BigDecimal(max));
+    }
+
+    private int getPercentage(BigDecimal value, BigDecimal max) {
+        return max.doubleValue() < 1E-9 ? 0 : intValue(divide(value.multiply(new BigDecimal(100)), max));
+    }
+
 }

@@ -4,7 +4,7 @@ import com.irunninglog.api.dashboard.ProgressInfo;
 import com.irunninglog.api.data.impl.GoalEntity;
 import com.irunninglog.api.data.impl.IGoalEntityRepository;
 import com.irunninglog.api.date.IDateService;
-import com.irunninglog.api.math.IMathService;
+import com.irunninglog.api.math.impl.MathService;
 import com.irunninglog.api.profile.impl.ProfileEntity;
 import com.irunninglog.api.workout.impl.IWorkoutEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,13 +27,13 @@ public class DashboardGoalsService {
     private final IGoalEntityRepository goalEntityRepository;
     private final IWorkoutEntityRepository workoutEntityRepository;
     private final IDateService dateService;
-    private final IMathService mathService;
+    private final MathService mathService;
 
     @Autowired
     public DashboardGoalsService(IGoalEntityRepository goalEntityRepository,
                                  IDateService dateService,
                                  IWorkoutEntityRepository workoutEntityRepository,
-                                 IMathService mathService) {
+                                 MathService mathService) {
         super();
 
         this.goalEntityRepository = goalEntityRepository;
@@ -48,16 +48,18 @@ public class DashboardGoalsService {
         for (GoalEntity goalEntity : goalEntityRepository.dashboardGoals(profile.getId())) {
             BigDecimal bigDecimal = getSum(goalEntity, profile.getId());
 
+            int value = Math.min(bigDecimal.intValue(), (int) goalEntity.getGoal());
+            int max = (int) goalEntity.getGoal();
+
             ProgressInfo progressInfo = new ProgressInfo()
                     .setTitle(goalEntity.getName())
                     .setSubTitle(goalEntity.getDescription())
                     .setTextOne(formatDates(goalEntity))
                     .setTextTwo(mathService.formatProgressText(bigDecimal.min(new BigDecimal(goalEntity.getGoal())), new BigDecimal(goalEntity.getGoal()), profile.getPreferredUnits()))
-                    .setMax((int) goalEntity.getGoal())
-                    .setValue(Math.min(bigDecimal.intValue(), (int) goalEntity.getGoal()))
+                    .setMax(max)
+                    .setValue(value)
+                    .setPercentage(mathService.getPercentage(value, max))
                     .setProgress(mathService.progress(bigDecimal, new BigDecimal(goalEntity.getGoal())));
-
-            progressInfo.setPercentage(getPercentage(progressInfo));
 
             progressList.add(progressInfo);
         }
@@ -97,13 +99,6 @@ public class DashboardGoalsService {
         }
 
         return bigDecimal == null ? new BigDecimal(0) : bigDecimal;
-    }
-
-    private int getPercentage(ProgressInfo progressInfo) {
-        BigDecimal value = new BigDecimal(progressInfo.getValue());
-        BigDecimal max = new BigDecimal(progressInfo.getMax());
-
-        return max.doubleValue() < 1E-9 ? 0 : mathService.intValue(mathService.divide(value.multiply(new BigDecimal(100)), max));
     }
 
 }

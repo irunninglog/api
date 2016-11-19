@@ -63,4 +63,36 @@ public class DateService implements IDateService {
         return utc.withZoneSameInstant(ZoneOffset.ofTotalSeconds(minutes * 60 * -1));
     }
 
+    @SuppressWarnings("MagicConstant")
+    public String getThisWeekEndFull(DayOfWeek weekStart, final int _offset) {
+        ZonedDateTime clientTime = clientTimeFromServerTime(ZonedDateTime.now(), _offset);
+        ZonedDateTime nextWeekStartDay = clientTime.with(TemporalAdjusters.next(weekStart)).minusDays(1);
+
+        return DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL).format(nextWeekStartDay);
+    }
+
+    @SuppressWarnings("MagicConstant")
+    public String getThisMonthEndFull(final int _offset) {
+        ZonedDateTime clientTime = clientTimeFromServerTime(ZonedDateTime.now(), _offset);
+        ZonedDateTime endDay = clientTime.with(TemporalAdjusters.lastDayOfMonth());
+
+        return DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL).format(endDay);
+    }
+
+    @SuppressWarnings("MagicConstant")
+    public String getLastYearEndFull(final int _offset) {
+        ZonedDateTime clientTime = clientTimeFromServerTime(ZonedDateTime.now(), _offset);
+        ZonedDateTime endDay = clientTime.with(TemporalAdjusters.lastDayOfYear()).minusYears(1);
+
+        return DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL).format(endDay);
+    }
+
+    @SuppressWarnings("MagicConstant")
+    public String getThisYearEndFull(final int _offset) {
+        ZonedDateTime clientTime = clientTimeFromServerTime(ZonedDateTime.now(), _offset);
+        ZonedDateTime endDay = clientTime.with(TemporalAdjusters.lastDayOfYear());
+
+        return DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL).format(endDay);
+    }
+
 }

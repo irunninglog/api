@@ -82,7 +82,7 @@ public class ProfileEntity {
         this.lastName = lastName;
     }
 
-    double getWeeklyTarget() {
+    public double getWeeklyTarget() {
         return weeklyTarget;
     }
 
@@ -90,7 +90,7 @@ public class ProfileEntity {
         this.weeklyTarget = weeklyTarget;
     }
 
-    double getMonthlyTarget() {
+    public  double getMonthlyTarget() {
         return monthlyTarget;
     }
 
@@ -98,7 +98,7 @@ public class ProfileEntity {
         this.monthlyTarget = monthlyTarget;
     }
 
-    double getYearlyTarget() {
+    public double getYearlyTarget() {
         return yearlyTarget;
     }
 
