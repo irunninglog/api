@@ -3,7 +3,7 @@ package com.irunninglog.api.dashboard.impl;
 import com.irunninglog.api.dashboard.ProgressInfo;
 import com.irunninglog.api.data.impl.GoalEntity;
 import com.irunninglog.api.data.impl.IGoalEntityRepository;
-import com.irunninglog.api.date.IDateService;
+import com.irunninglog.api.date.impl.DateService;
 import com.irunninglog.api.math.impl.MathService;
 import com.irunninglog.api.profile.impl.ProfileEntity;
 import com.irunninglog.api.workout.impl.IWorkoutEntityRepository;
@@ -26,12 +26,12 @@ public class DashboardGoalsService {
 
     private final IGoalEntityRepository goalEntityRepository;
     private final IWorkoutEntityRepository workoutEntityRepository;
-    private final IDateService dateService;
+    private final DateService dateService;
     private final MathService mathService;
 
     @Autowired
     public DashboardGoalsService(IGoalEntityRepository goalEntityRepository,
-                                 IDateService dateService,
+                                 DateService dateService,
                                  IWorkoutEntityRepository workoutEntityRepository,
                                  MathService mathService) {
         super();

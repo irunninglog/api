@@ -11,6 +11,8 @@ import java.util.List;
 @SuppressWarnings("JpaQlInspection")
 public interface IWorkoutEntityRepository extends CrudRepository<WorkoutEntity, Long> {
 
+    List<WorkoutEntity> findByUserId(long profileId);
+
     @Query(value = "select w from WorkoutEntity w where w.date >= :startDate and w.date <= :endDate and w.user.id = :userId")
     List<WorkoutEntity> findByDateRange(@Param("userId") long userId, @Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
 

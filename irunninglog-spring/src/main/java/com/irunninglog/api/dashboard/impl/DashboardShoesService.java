@@ -4,8 +4,8 @@ import com.irunninglog.api.Progress;
 import com.irunninglog.api.dashboard.ProgressInfo;
 import com.irunninglog.api.data.impl.IShoeEntityRepository;
 import com.irunninglog.api.data.impl.ShoeEntity;
-import com.irunninglog.api.date.IDateService;
-import com.irunninglog.api.math.IMathService;
+import com.irunninglog.api.date.impl.DateService;
+import com.irunninglog.api.math.impl.MathService;
 import com.irunninglog.api.profile.impl.ProfileEntity;
 import com.irunninglog.api.workout.impl.IWorkoutEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,14 +21,14 @@ public class DashboardShoesService {
 
     private final IShoeEntityRepository shoeEntityRepository;
     private final IWorkoutEntityRepository workoutEntityRepository;
-    private final IMathService mathService;
-    private final IDateService dateService;
+    private final MathService mathService;
+    private final DateService dateService;
 
     @Autowired
     public DashboardShoesService(IShoeEntityRepository shoeEntityRepository,
                                  IWorkoutEntityRepository workoutEntityRepository,
-                                 IMathService mathService,
-                                 IDateService dateService) {
+                                 MathService mathService,
+                                 DateService dateService) {
         super();
 
         this.shoeEntityRepository = shoeEntityRepository;

@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
-import java.util.Collections;
 
 @Service
 public class DashboardService implements IDashboardService {
@@ -18,18 +17,21 @@ public class DashboardService implements IDashboardService {
     private final DashboardShoesService shoesService;
     private final DashboardGoalsService goalsService;
     private final DashboardProgressService progressService;
+    private final DashboardStreaksService streaksService;
 
     @Autowired
     public DashboardService(IProfileEntityRepository profileEntityRepository,
                             DashboardGoalsService goalsService,
                             DashboardShoesService shoesService,
-                            DashboardProgressService progressService) {
+                            DashboardProgressService progressService,
+                            DashboardStreaksService streaksService) {
         super();
 
         this.profileEntityRepository = profileEntityRepository;
         this.goalsService = goalsService;
         this.shoesService = shoesService;
         this.progressService = progressService;
+        this.streaksService = streaksService;
     }
 
     @Override
@@ -44,7 +46,7 @@ public class DashboardService implements IDashboardService {
         info.getProgress().addAll(progress(userEntity, request.getOffset()));
         info.getGoals().addAll(goals(userEntity));
         info.getShoes().addAll(shoes(userEntity));
-        info.getStreaks().addAll(streaks());
+        info.getStreaks().addAll(streaks(userEntity));
 
         return new DashboardResponse()
                 .setBody(info)
@@ -59,8 +61,8 @@ public class DashboardService implements IDashboardService {
         return goalsService.goals(profileEntity);
     }
 
-    private Collection<ProgressInfo> streaks() {
-        return Collections.emptyList();
+    private Collection<ProgressInfo> streaks(ProfileEntity profileEntity) {
+        return streaksService.streaks(profileEntity);
     }
 
     private Collection<ProgressInfo> shoes(ProfileEntity profileEntity) {

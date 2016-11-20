@@ -1,6 +1,5 @@
 package com.irunninglog.api.workout.impl;
 
-import com.irunninglog.api.date.IDateService;
 import com.irunninglog.api.date.impl.DateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +13,7 @@ import java.util.List;
 public class WorkoutsService {
 
     private final IWorkoutEntityRepository workoutEntityRepository;
-    private final IDateService dateService;
+    private final DateService dateService;
 
     @Autowired
     public WorkoutsService(IWorkoutEntityRepository workoutEntityRepository, DateService dateService) {
