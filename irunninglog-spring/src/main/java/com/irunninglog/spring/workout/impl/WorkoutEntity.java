@@ -1,4 +1,4 @@
-package com.irunninglog.workout.impl;
+package com.irunninglog.spring.workout.impl;
 
 import com.irunninglog.Privacy;
 import com.irunninglog.data.impl.ShoeEntity;
@@ -8,9 +8,10 @@ import com.irunninglog.jpa.DateConverter;
 import javax.persistence.*;
 import java.time.LocalDate;
 
+@SuppressWarnings("unused")
 @Entity
 @Table(name = "workout_entity")
-public class WorkoutEntity extends AbstractEntityWithUser {
+public final class WorkoutEntity extends AbstractEntityWithUser {
 
     @Column(nullable = false)
     private double distance;

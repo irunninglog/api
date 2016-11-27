@@ -1,4 +1,4 @@
-package com.irunninglog.workout.impl;
+package com.irunninglog.spring.workout.impl;
 
 import com.irunninglog.date.impl.DateService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,13 +10,14 @@ import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 
 @Service
-public class WorkoutsService {
+@SuppressWarnings("unused")
+public final class WorkoutService {
 
     private final IWorkoutEntityRepository workoutEntityRepository;
     private final DateService dateService;
 
     @Autowired
-    public WorkoutsService(IWorkoutEntityRepository workoutEntityRepository, DateService dateService) {
+    public WorkoutService(IWorkoutEntityRepository workoutEntityRepository, DateService dateService) {
         this.workoutEntityRepository = workoutEntityRepository;
         this.dateService = dateService;
     }

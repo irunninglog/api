@@ -1,4 +1,4 @@
-package com.irunninglog.dashboard.impl;
+package com.irunninglog.spring.dashboard.impl;
 
 import com.irunninglog.profile.impl.IProfileEntityRepository;
 import com.irunninglog.profile.impl.ProfileEntity;
@@ -7,11 +7,11 @@ import com.irunninglog.service.ResponseStatusException;
 import com.irunninglog.dashboard.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Collection;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class DashboardService implements IDashboardService {
+@Transactional
+public final class DashboardService implements IDashboardService {
 
     private final IProfileEntityRepository profileEntityRepository;
     private final DashboardShoesService shoesService;
@@ -36,37 +36,21 @@ public class DashboardService implements IDashboardService {
 
     @Override
     public DashboardResponse get(DashboardRequest request) {
-        ProfileEntity userEntity = profileEntityRepository.findOne(request.getId());
-        if (userEntity == null) {
+        ProfileEntity profile = profileEntityRepository.findOne(request.getId());
+        if (profile == null) {
             throw new ResponseStatusException(ResponseStatus.NotFound);
         }
 
         DashboardInfo info = new DashboardInfo();
 
-        info.getProgress().addAll(progress(userEntity, request.getOffset()));
-        info.getGoals().addAll(goals(userEntity));
-        info.getShoes().addAll(shoes(userEntity));
-        info.getStreaks().addAll(streaks(userEntity));
+        info.getProgress().addAll(progressService.progress(profile, request.getOffset()));
+        info.getGoals().addAll(goalsService.goals(profile));
+        info.getShoes().addAll(shoesService.shoes(profile));
+        info.getStreaks().addAll(streaksService.streaks(profile));
 
         return new DashboardResponse()
                 .setBody(info)
                 .setStatus(ResponseStatus.Ok);
-    }
-
-    private Collection<ProgressInfo> progress(ProfileEntity profileEntity, int offset) {
-        return progressService.progress(profileEntity, offset);
-    }
-
-    private Collection<ProgressInfo> goals(ProfileEntity profileEntity) {
-        return goalsService.goals(profileEntity);
-    }
-
-    private Collection<ProgressInfo> streaks(ProfileEntity profileEntity) {
-        return streaksService.streaks(profileEntity);
-    }
-
-    private Collection<ProgressInfo> shoes(ProfileEntity profileEntity) {
-        return shoesService.shoes(profileEntity);
     }
 
 }

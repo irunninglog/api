@@ -1,4 +1,4 @@
-package com.irunninglog.dashboard.impl;
+package com.irunninglog.spring.dashboard.impl;
 
 import com.irunninglog.dashboard.ProgressInfo;
 import com.irunninglog.data.impl.GoalEntity;
@@ -6,7 +6,7 @@ import com.irunninglog.data.impl.IGoalEntityRepository;
 import com.irunninglog.date.impl.DateService;
 import com.irunninglog.math.impl.MathService;
 import com.irunninglog.profile.impl.ProfileEntity;
-import com.irunninglog.workout.impl.IWorkoutEntityRepository;
+import com.irunninglog.spring.workout.impl.IWorkoutEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +17,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Service
-public class DashboardGoalsService {
+final class DashboardGoalsService {
 
     private static final String FORMAT_GOAL_DATES_1 = "{0} through {1}";
     private static final String FORMAT_GOAL_DATES_2 = "From {0}";

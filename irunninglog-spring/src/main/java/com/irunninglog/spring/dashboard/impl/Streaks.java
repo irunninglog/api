@@ -1,7 +1,6 @@
-package com.irunninglog.dashboard.impl;
+package com.irunninglog.spring.dashboard.impl;
 
-class Streaks {
-
+final class Streaks {
 
     private Streak current;
     private Streak thisYear;
