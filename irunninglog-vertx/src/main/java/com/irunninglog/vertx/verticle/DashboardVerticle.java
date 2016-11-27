@@ -1,8 +1,8 @@
 package com.irunninglog.vertx.verticle;
 
-import com.irunninglog.api.dashboard.DashboardRequest;
-import com.irunninglog.api.dashboard.DashboardResponse;
-import com.irunninglog.api.dashboard.IDashboardService;
+import com.irunninglog.dashboard.DashboardRequest;
+import com.irunninglog.dashboard.DashboardResponse;
+import com.irunninglog.dashboard.IDashboardService;
 import com.irunninglog.vertx.Address;
 
 public class DashboardVerticle extends AbstractRequestResponseVerticle<DashboardRequest, DashboardResponse> {

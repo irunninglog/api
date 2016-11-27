@@ -1,9 +1,9 @@
 package com.irunninglog;
 
-import com.irunninglog.api.dashboard.IDashboardService;
-import com.irunninglog.api.profile.IProfileService;
-import com.irunninglog.api.security.IAuthenticationService;
-import com.irunninglog.api.security.IAuthorizationService;
+import com.irunninglog.dashboard.IDashboardService;
+import com.irunninglog.profile.IProfileService;
+import com.irunninglog.security.IAuthenticationService;
+import com.irunninglog.security.IAuthorizationService;
 import com.irunninglog.spring.context.ContextConfiguration;
 import com.irunninglog.vertx.verticle.AuthnVerticle;
 import com.irunninglog.vertx.verticle.DashboardVerticle;

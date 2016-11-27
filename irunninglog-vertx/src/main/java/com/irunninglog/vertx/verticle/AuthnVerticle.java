@@ -1,7 +1,7 @@
 package com.irunninglog.vertx.verticle;
 
-import com.irunninglog.api.security.*;
-import com.irunninglog.api.service.ResponseStatus;
+import com.irunninglog.security.*;
+import com.irunninglog.service.ResponseStatus;
 import com.irunninglog.vertx.Address;
 
 public class AuthnVerticle extends AbstractRequestResponseVerticle<AuthnRequest, AuthnResponse> {

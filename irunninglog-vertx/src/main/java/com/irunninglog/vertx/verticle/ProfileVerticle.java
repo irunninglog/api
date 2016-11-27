@@ -1,8 +1,8 @@
 package com.irunninglog.vertx.verticle;
 
-import com.irunninglog.api.profile.IProfileService;
-import com.irunninglog.api.profile.ProfileRequest;
-import com.irunninglog.api.profile.ProfileResponse;
+import com.irunninglog.profile.IProfileService;
+import com.irunninglog.profile.ProfileRequest;
+import com.irunninglog.profile.ProfileResponse;
 import com.irunninglog.vertx.Address;
 
 public final class ProfileVerticle extends AbstractRequestResponseVerticle<ProfileRequest, ProfileResponse> {

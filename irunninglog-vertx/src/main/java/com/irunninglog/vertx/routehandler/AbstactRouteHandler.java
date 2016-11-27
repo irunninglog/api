@@ -1,10 +1,10 @@
 package com.irunninglog.vertx.routehandler;
 
-import com.irunninglog.api.security.AuthnRequest;
-import com.irunninglog.api.security.AuthnResponse;
-import com.irunninglog.api.service.AbstractRequest;
-import com.irunninglog.api.service.AbstractResponse;
-import com.irunninglog.api.service.ResponseStatus;
+import com.irunninglog.security.AuthnRequest;
+import com.irunninglog.security.AuthnResponse;
+import com.irunninglog.service.AbstractRequest;
+import com.irunninglog.service.AbstractResponse;
+import com.irunninglog.service.ResponseStatus;
 import com.irunninglog.vertx.Address;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.Json;

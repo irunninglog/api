@@ -1,6 +1,6 @@
 package com.irunninglog.jpa;
 
-import com.irunninglog.api.security.impl.UserEntity;
+import com.irunninglog.security.impl.UserEntity;
 
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;

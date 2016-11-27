@@ -1,7 +1,7 @@
 package com.irunninglog.vertx.routehandler;
 
-import com.irunninglog.api.dashboard.DashboardRequest;
-import com.irunninglog.api.dashboard.DashboardResponse;
+import com.irunninglog.dashboard.DashboardRequest;
+import com.irunninglog.dashboard.DashboardResponse;
 import com.irunninglog.vertx.Address;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpMethod;

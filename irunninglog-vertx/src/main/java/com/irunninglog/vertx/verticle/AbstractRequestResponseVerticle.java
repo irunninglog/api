@@ -1,8 +1,8 @@
 package com.irunninglog.vertx.verticle;
 
-import com.irunninglog.api.service.AbstractResponse;
-import com.irunninglog.api.service.ResponseStatus;
-import com.irunninglog.api.service.ResponseStatusException;
+import com.irunninglog.service.AbstractResponse;
+import com.irunninglog.service.ResponseStatus;
+import com.irunninglog.service.ResponseStatusException;
 import com.irunninglog.vertx.Address;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Handler;
