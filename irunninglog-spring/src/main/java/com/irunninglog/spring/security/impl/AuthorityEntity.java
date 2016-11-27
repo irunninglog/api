@@ -1,12 +1,13 @@
-package com.irunninglog.security.impl;
+package com.irunninglog.spring.security.impl;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+@SuppressWarnings("unused")
 @Entity
 @Table(name = "authority_entity")
-class AuthorityEntity {
+final class AuthorityEntity {
 
     @javax.persistence.Id
     @javax.persistence.GeneratedValue(strategy=javax.persistence.GenerationType.TABLE)

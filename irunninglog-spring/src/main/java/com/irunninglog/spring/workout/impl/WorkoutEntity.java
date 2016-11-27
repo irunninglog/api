@@ -1,9 +1,9 @@
 package com.irunninglog.spring.workout.impl;
 
 import com.irunninglog.Privacy;
-import com.irunninglog.data.impl.ShoeEntity;
-import com.irunninglog.jpa.AbstractEntityWithUser;
-import com.irunninglog.jpa.DateConverter;
+import com.irunninglog.spring.data.impl.ShoeEntity;
+import com.irunninglog.spring.jpa.AbstractEntityWithUser;
+import com.irunninglog.spring.jpa.DateConverter;
 
 import javax.persistence.*;
 import java.time.LocalDate;

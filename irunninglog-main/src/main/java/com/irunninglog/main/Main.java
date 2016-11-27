@@ -1,4 +1,4 @@
-package com.irunninglog;
+package com.irunninglog.main;
 
 import com.irunninglog.dashboard.IDashboardService;
 import com.irunninglog.profile.IProfileService;

@@ -2,11 +2,11 @@ package com.irunninglog.spring.dashboard.impl;
 
 import com.irunninglog.Progress;
 import com.irunninglog.dashboard.ProgressInfo;
-import com.irunninglog.data.impl.IShoeEntityRepository;
-import com.irunninglog.data.impl.ShoeEntity;
-import com.irunninglog.date.impl.DateService;
-import com.irunninglog.math.impl.MathService;
-import com.irunninglog.profile.impl.ProfileEntity;
+import com.irunninglog.spring.data.impl.IShoeEntityRepository;
+import com.irunninglog.spring.data.impl.ShoeEntity;
+import com.irunninglog.spring.date.DateService;
+import com.irunninglog.spring.math.MathService;
+import com.irunninglog.spring.profile.impl.ProfileEntity;
 import com.irunninglog.spring.workout.impl.IWorkoutEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

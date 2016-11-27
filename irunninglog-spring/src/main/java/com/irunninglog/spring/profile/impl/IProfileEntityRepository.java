@@ -1,4 +1,4 @@
-package com.irunninglog.profile.impl;
+package com.irunninglog.spring.profile.impl;
 
 import org.springframework.data.repository.CrudRepository;
 

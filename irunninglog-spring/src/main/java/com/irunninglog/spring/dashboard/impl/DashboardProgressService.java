@@ -2,9 +2,9 @@ package com.irunninglog.spring.dashboard.impl;
 
 import com.irunninglog.Unit;
 import com.irunninglog.dashboard.ProgressInfo;
-import com.irunninglog.date.impl.DateService;
-import com.irunninglog.math.impl.MathService;
-import com.irunninglog.profile.impl.ProfileEntity;
+import com.irunninglog.spring.date.DateService;
+import com.irunninglog.spring.math.MathService;
+import com.irunninglog.spring.profile.impl.ProfileEntity;
 import com.irunninglog.spring.workout.impl.WorkoutEntity;
 import com.irunninglog.spring.workout.impl.WorkoutService;
 import org.springframework.beans.factory.annotation.Autowired;

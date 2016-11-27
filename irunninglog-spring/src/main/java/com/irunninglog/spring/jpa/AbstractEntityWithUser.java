@@ -1,11 +1,12 @@
-package com.irunninglog.jpa;
+package com.irunninglog.spring.jpa;
 
-import com.irunninglog.security.impl.UserEntity;
+import com.irunninglog.spring.security.impl.UserEntity;
 
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
+@SuppressWarnings("unused")
 public abstract class AbstractEntityWithUser extends AbstractEntity {
 
     @ManyToOne(optional=false)

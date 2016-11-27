@@ -1,4 +1,4 @@
-package com.irunninglog.date.impl;
+package com.irunninglog.spring.date;
 
 import org.springframework.stereotype.Service;
 
@@ -11,7 +11,7 @@ import java.time.format.FormatStyle;
 import java.time.temporal.TemporalAdjusters;
 
 @Service
-public class DateService {
+public final class DateService {
 
     public String formatMedium(LocalDate date) {
         return DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).format(date);

@@ -1,4 +1,4 @@
-package com.irunninglog.security.impl;
+package com.irunninglog.spring.security.impl;
 
 import com.irunninglog.security.AuthnException;
 import com.irunninglog.security.IAuthenticationService;
@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
-public class AuthenticationService implements IAuthenticationService {
+public final class AuthenticationService implements IAuthenticationService {
 
     private final IUserEntityRepository userEntityRepository;
     private final PasswordEncoder passwordEncoder;

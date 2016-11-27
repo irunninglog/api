@@ -1,4 +1,4 @@
-package com.irunninglog.security.impl;
+package com.irunninglog.spring.security.impl;
 
 import com.irunninglog.security.AuthzException;
 import com.irunninglog.security.IAuthorizationService;
@@ -13,7 +13,7 @@ import java.text.MessageFormat;
 
 @Service
 @Transactional
-public class AuthorizationService implements IAuthorizationService {
+public final class AuthorizationService implements IAuthorizationService {
 
     private static final Logger LOG = LoggerFactory.getLogger(AuthorizationService.class);
     private static final String PATTERN = "/profiles/{0}/**";

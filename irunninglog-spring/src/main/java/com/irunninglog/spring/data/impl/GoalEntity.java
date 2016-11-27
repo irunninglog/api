@@ -1,6 +1,6 @@
-package com.irunninglog.data.impl;
+package com.irunninglog.spring.data.impl;
 
-import com.irunninglog.jpa.DateConverter;
+import com.irunninglog.spring.jpa.DateConverter;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
@@ -9,8 +9,9 @@ import javax.persistence.Table;
 import java.time.LocalDate;
 
 @Entity
+@SuppressWarnings("unused")
 @Table(name="goal_entity")
-public class GoalEntity extends AbstractDataEntity {
+public final class GoalEntity extends AbstractDataEntity {
 
     @Column(name="start_date")
     @Convert(converter = DateConverter.class)

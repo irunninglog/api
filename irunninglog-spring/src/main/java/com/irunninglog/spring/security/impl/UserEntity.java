@@ -1,4 +1,4 @@
-package com.irunninglog.security.impl;
+package com.irunninglog.spring.security.impl;
 
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
@@ -6,9 +6,10 @@ import org.hibernate.annotations.LazyCollectionOption;
 import javax.persistence.*;
 import java.util.Collection;
 
+@SuppressWarnings("unused")
 @Entity
 @Table(name = "user_entity")
-public class UserEntity {
+public final class UserEntity {
 
     @javax.persistence.Id
     @javax.persistence.GeneratedValue(strategy= GenerationType.TABLE)

@@ -1,4 +1,4 @@
-package com.irunninglog.data.impl;
+package com.irunninglog.spring.data.impl;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;

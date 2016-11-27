@@ -1,10 +1,12 @@
-package com.irunninglog.jpa;
+package com.irunninglog.spring.jpa;
 
 import javax.persistence.*;
 
+
 @MappedSuperclass
+@SuppressWarnings("unused")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public class AbstractEntity {
+abstract class AbstractEntity {
 
     @Id
     @GeneratedValue(strategy= GenerationType.TABLE)

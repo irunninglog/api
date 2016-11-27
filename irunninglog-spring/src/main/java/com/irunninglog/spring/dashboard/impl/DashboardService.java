@@ -1,7 +1,7 @@
 package com.irunninglog.spring.dashboard.impl;
 
-import com.irunninglog.profile.impl.IProfileEntityRepository;
-import com.irunninglog.profile.impl.ProfileEntity;
+import com.irunninglog.spring.profile.impl.IProfileEntityRepository;
+import com.irunninglog.spring.profile.impl.ProfileEntity;
 import com.irunninglog.service.ResponseStatus;
 import com.irunninglog.service.ResponseStatusException;
 import com.irunninglog.dashboard.*;

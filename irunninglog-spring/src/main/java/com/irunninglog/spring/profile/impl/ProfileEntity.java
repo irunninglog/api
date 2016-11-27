@@ -1,8 +1,8 @@
-package com.irunninglog.profile.impl;
+package com.irunninglog.spring.profile.impl;
 
 import com.irunninglog.Gender;
 import com.irunninglog.Unit;
-import com.irunninglog.jpa.DateConverter;
+import com.irunninglog.spring.jpa.DateConverter;
 
 import javax.persistence.*;
 import java.time.DayOfWeek;
@@ -10,7 +10,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "user_entity")
-public class ProfileEntity {
+public final class ProfileEntity {
 
     @javax.persistence.Id
     @javax.persistence.GeneratedValue(strategy=GenerationType.TABLE)

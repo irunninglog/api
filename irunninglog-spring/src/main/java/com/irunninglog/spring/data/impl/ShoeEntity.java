@@ -1,13 +1,14 @@
-package com.irunninglog.data.impl;
+package com.irunninglog.spring.data.impl;
 
-import com.irunninglog.jpa.DateConverter;
+import com.irunninglog.spring.jpa.DateConverter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
+@SuppressWarnings("unused")
 @Table(name = "shoe_entity")
-public class ShoeEntity extends AbstractDataEntity {
+public final class ShoeEntity extends AbstractDataEntity {
 
     @Column(name="start_date")
     @Convert(converter = DateConverter.class)

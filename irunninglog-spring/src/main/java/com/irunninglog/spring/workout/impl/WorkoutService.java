@@ -1,6 +1,6 @@
 package com.irunninglog.spring.workout.impl;
 
-import com.irunninglog.date.impl.DateService;
+import com.irunninglog.spring.date.DateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

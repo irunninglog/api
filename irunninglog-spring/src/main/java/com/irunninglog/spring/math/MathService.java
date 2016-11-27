@@ -1,4 +1,4 @@
-package com.irunninglog.math.impl;
+package com.irunninglog.spring.math;
 
 import com.irunninglog.Progress;
 import com.irunninglog.Unit;
@@ -10,7 +10,7 @@ import java.text.DecimalFormat;
 import java.text.MessageFormat;
 
 @Service
-public class MathService {
+public final class MathService {
 
     private static final String NO_PROGRESS = "No progress to track";
     private static final String FORMAT_PROGRESS = "{0} of {1} ({2}%)";

@@ -1,4 +1,4 @@
-package com.irunninglog.profile.impl;
+package com.irunninglog.spring.profile.impl;
 
 import com.irunninglog.service.ResponseStatus;
 import com.irunninglog.service.ResponseStatusException;
@@ -14,7 +14,7 @@ import java.time.format.DateTimeFormatter;
 
 @Service
 @Transactional
-public class ProfileService implements IProfileService {
+public final class ProfileService implements IProfileService {
 
     private final IProfileEntityRepository repository;
 
