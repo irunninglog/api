@@ -1,6 +1,6 @@
 package com.irunninglog.security;
 
-public class AuthnRequest {
+public final class AuthnRequest {
 
     private String username;
     private String password;

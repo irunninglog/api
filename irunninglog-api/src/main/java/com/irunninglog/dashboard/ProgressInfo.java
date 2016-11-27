@@ -3,6 +3,7 @@ package com.irunninglog.dashboard;
 import com.google.common.base.MoreObjects;
 import com.irunninglog.Progress;
 
+@SuppressWarnings("unused")
 public final class ProgressInfo {
 
     private String title;

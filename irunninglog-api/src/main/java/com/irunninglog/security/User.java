@@ -4,15 +4,20 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-public class User {
+@SuppressWarnings({"unused", "WeakerAccess"})
+public final class User {
 
     private long id;
     private String username;
 
     private final Set<String> authorities = new HashSet<>();
 
-    public User(long id, String username, String ... authorities) {
+    public User() {
         super();
+    }
+
+    public User(long id, String username, String ... authorities) {
+        this();
 
         this.username = username;
         this.id = id;

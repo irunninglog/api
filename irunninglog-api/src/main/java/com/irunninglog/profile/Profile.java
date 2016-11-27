@@ -6,6 +6,7 @@ import com.irunninglog.Unit;
 
 import java.time.DayOfWeek;
 
+@SuppressWarnings("unused")
 public final class Profile {
 
     private long id;
