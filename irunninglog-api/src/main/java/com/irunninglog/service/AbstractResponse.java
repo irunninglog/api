@@ -10,26 +10,26 @@ public abstract class AbstractResponse<T, S extends AbstractResponse> {
     private ResponseStatus status;
     private T body;
 
-    public ResponseStatus getStatus() {
+    public final ResponseStatus getStatus() {
         return status;
     }
 
-    public S setStatus(ResponseStatus status) {
+    public final S setStatus(ResponseStatus status) {
         this.status = status;
         return myself;
     }
 
-    public T getBody() {
+    public final T getBody() {
         return body;
     }
 
-    public S setBody(T body) {
+    public final S setBody(T body) {
         this.body = body;
         return myself;
     }
 
     @Override
-    public String toString() {
+    public final String toString() {
         return MoreObjects.toStringHelper(this)
                 .add("status", status)
                 .add("body", body)

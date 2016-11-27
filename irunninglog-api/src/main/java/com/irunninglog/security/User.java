@@ -1,10 +1,12 @@
 package com.irunninglog.security;
 
+import com.google.common.base.MoreObjects;
+
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-@SuppressWarnings({"unused", "WeakerAccess"})
+@SuppressWarnings("WeakerAccess")
 public final class User {
 
     private long id;
@@ -44,6 +46,15 @@ public final class User {
 
     public Set<String> getAuthorities() {
         return authorities;
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("id", id)
+                .add("username", username)
+                .add("authorities", authorities)
+                .toString();
     }
 
 }

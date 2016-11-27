@@ -17,6 +17,7 @@
     <properties>
         <version.guava>19.0</version.guava>
         <version.hibernate>4.3.11.Final</version.hibernate>
+        <version.junit>4.12</version.junit>
         <version.logback>1.1.7</version.logback>
         <version.mysql>5.1.40</version.mysql>
         <version.slf4j>1.7.21</version.slf4j>
@@ -68,6 +69,13 @@
             <groupId>uk.org.lidalia</groupId>
             <artifactId>sysout-over-slf4j</artifactId>
             <version>${version.sysout-over-slf4j}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${version.junit}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

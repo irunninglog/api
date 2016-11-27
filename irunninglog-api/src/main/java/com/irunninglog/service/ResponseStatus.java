@@ -1,5 +1,7 @@
 package com.irunninglog.service;
 
+import com.google.common.base.MoreObjects;
+
 public enum ResponseStatus {
 
     Ok(200, "Ok"),
@@ -23,6 +25,14 @@ public enum ResponseStatus {
 
     public String getMessage() {
         return message;
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("code", code)
+                .add("message", message)
+                .toString();
     }
 
 }
