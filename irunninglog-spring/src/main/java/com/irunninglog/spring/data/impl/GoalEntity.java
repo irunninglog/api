@@ -9,8 +9,8 @@ import javax.persistence.Table;
 import java.time.LocalDate;
 
 @Entity
-@SuppressWarnings("unused")
 @Table(name="goal_entity")
+@SuppressWarnings("WeakerAccess")
 public final class GoalEntity extends AbstractDataEntity {
 
     @Column(name="start_date")

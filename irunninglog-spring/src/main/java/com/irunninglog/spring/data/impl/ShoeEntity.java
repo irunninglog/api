@@ -6,8 +6,8 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@SuppressWarnings("unused")
 @Table(name = "shoe_entity")
+@SuppressWarnings("WeakerAccess")
 public final class ShoeEntity extends AbstractDataEntity {
 
     @Column(name="start_date")
