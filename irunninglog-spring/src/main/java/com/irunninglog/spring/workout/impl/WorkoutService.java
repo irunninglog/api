@@ -10,7 +10,7 @@ import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 
 @Service
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "WeakerAccess"})
 public final class WorkoutService {
 
     private final IWorkoutEntityRepository workoutEntityRepository;
@@ -50,14 +50,14 @@ public final class WorkoutService {
         return workoutEntityRepository.findByDateRange(id, startDate, endDate);
     }
 
-    public LocalDate findWorkoutMonthBefore(LocalDate date) {
-        LocalDate localDate = workoutEntityRepository.getFirstWorkoutDateBefore(date.withDayOfMonth(1));
+    public LocalDate findWorkoutMonthBefore(long id, LocalDate date) {
+        LocalDate localDate = workoutEntityRepository.getFirstWorkoutDateBefore(id, date.withDayOfMonth(1));
 
         return localDate == null ? null : localDate.with(TemporalAdjusters.firstDayOfMonth());
     }
 
-    public LocalDate findWorkoutMonthAfter(LocalDate date) {
-        LocalDate localDate = workoutEntityRepository.getFirstWorkoutDateAfter(date.with(TemporalAdjusters.lastDayOfMonth()));
+    public LocalDate findWorkoutMonthAfter(long id, LocalDate date) {
+        LocalDate localDate = workoutEntityRepository.getFirstWorkoutDateAfter(id, date.with(TemporalAdjusters.lastDayOfMonth()));
 
         return localDate == null ? null : localDate.with(TemporalAdjusters.firstDayOfMonth());
     }

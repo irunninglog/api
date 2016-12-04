@@ -8,7 +8,6 @@ import com.irunninglog.spring.jpa.DateConverter;
 import javax.persistence.*;
 import java.time.LocalDate;
 
-@SuppressWarnings("unused")
 @Entity
 @Table(name = "workout_entity")
 public final class WorkoutEntity extends AbstractEntityWithUser {
@@ -34,15 +33,15 @@ public final class WorkoutEntity extends AbstractEntityWithUser {
         return distance;
     }
 
-    public void setDistance(double distance) {
+    void setDistance(double distance) {
         this.distance = distance;
     }
 
-    public long getDuration() {
+    long getDuration() {
         return duration;
     }
 
-    public void setDuration(long duration) {
+    void setDuration(long duration) {
         this.duration = duration;
     }
 
@@ -54,19 +53,19 @@ public final class WorkoutEntity extends AbstractEntityWithUser {
         this.date = date;
     }
 
-    public Privacy getPrivacy() {
+    Privacy getPrivacy() {
         return privacy;
     }
 
-    public void setPrivacy(Privacy privacy) {
+    void setPrivacy(Privacy privacy) {
         this.privacy = privacy;
     }
 
-    public ShoeEntity getShoe() {
+    ShoeEntity getShoe() {
         return shoe;
     }
 
-    public void setShoe(ShoeEntity shoe) {
+    void setShoe(ShoeEntity shoe) {
         this.shoe = shoe;
     }
 

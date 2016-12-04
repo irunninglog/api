@@ -31,10 +31,10 @@ public interface IWorkoutEntityRepository extends CrudRepository<WorkoutEntity, 
     @Query(value = "select sum(w.distance) as sum from WorkoutEntity w where w.date >= :startDate and w.date <= :endDate and w.user.id = :profileId")
     BigDecimal sumBetween(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate, @Param("profileId") long profileId);
 
-    @Query(value = "select max(w.date) as ddate from WorkoutEntity w where w.date < :date")
-    LocalDate getFirstWorkoutDateBefore(@Param("date") LocalDate date);
+    @Query(value = "select max(w.date) as ddate from WorkoutEntity w where w.user.id = :id and w.date < :date")
+    LocalDate getFirstWorkoutDateBefore(@Param("id") long id, @Param("date") LocalDate date);
 
-    @Query(value = "select min(w.date) as ddate from WorkoutEntity w where w.date > :date")
-    LocalDate getFirstWorkoutDateAfter(@Param("date") LocalDate date);
+    @Query(value = "select min(w.date) as ddate from WorkoutEntity w where w.user.id = :id and w.date > :date")
+    LocalDate getFirstWorkoutDateAfter(@Param("id") long id, @Param("date") LocalDate date);
 
 }
