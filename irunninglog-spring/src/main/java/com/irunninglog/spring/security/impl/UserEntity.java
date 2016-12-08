@@ -6,9 +6,9 @@ import org.hibernate.annotations.LazyCollectionOption;
 import javax.persistence.*;
 import java.util.Collection;
 
-@SuppressWarnings("unused")
 @Entity
 @Table(name = "user_entity")
+@SuppressWarnings("WeakerAccess")
 public final class UserEntity {
 
     @javax.persistence.Id
