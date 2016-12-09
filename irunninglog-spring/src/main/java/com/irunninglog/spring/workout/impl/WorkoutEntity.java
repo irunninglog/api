@@ -57,7 +57,7 @@ public final class WorkoutEntity extends AbstractEntityWithUser {
         return privacy;
     }
 
-    void setPrivacy(Privacy privacy) {
+    public void setPrivacy(Privacy privacy) {
         this.privacy = privacy;
     }
 

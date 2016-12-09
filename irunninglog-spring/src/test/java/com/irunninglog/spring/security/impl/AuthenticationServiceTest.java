@@ -33,8 +33,6 @@ public class AuthenticationServiceTest extends AbstractTest {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    private UserEntity userEntity;
-
     @Before
     public void before() {
         ProfileEntity entity = new ProfileEntity();
@@ -53,19 +51,15 @@ public class AuthenticationServiceTest extends AbstractTest {
         authorityEntity.setName("foo");
         authorityEntity = authorityEntityRepository.save(authorityEntity);
 
-        userEntity = userEntityRepository.findOne(entity.getId());
+        UserEntity userEntity = userEntityRepository.findOne(entity.getId());
         userEntity.getAuthorities().add(authorityEntity);
-        userEntity = userEntityRepository.save(userEntity);
+        userEntityRepository.save(userEntity);
     }
 
     @After
     public void after() {
-        userEntity.getAuthorities().clear();
-        userEntityRepository.save(userEntity);
-
-        authorityEntityRepository.deleteAll();
         userEntityRepository.deleteAll();
-        profileEntityRepository.deleteAll();
+        authorityEntityRepository.deleteAll();
     }
 
     @Test

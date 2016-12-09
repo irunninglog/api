@@ -6,7 +6,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "authority_entity")
-final class AuthorityEntity {
+public final class AuthorityEntity {
 
     @javax.persistence.Id
     @javax.persistence.GeneratedValue(strategy=javax.persistence.GenerationType.TABLE)

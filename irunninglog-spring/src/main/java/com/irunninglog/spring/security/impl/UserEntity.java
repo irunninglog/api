@@ -51,7 +51,7 @@ public final class UserEntity {
         this.id = id;
     }
 
-    Collection<AuthorityEntity> getAuthorities() {
+    public Collection<AuthorityEntity> getAuthorities() {
         return authorities;
     }
 
