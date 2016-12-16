@@ -33,7 +33,7 @@ public final class WorkoutEntity extends AbstractEntityWithUser {
         return distance;
     }
 
-    void setDistance(double distance) {
+    public void setDistance(double distance) {
         this.distance = distance;
     }
 

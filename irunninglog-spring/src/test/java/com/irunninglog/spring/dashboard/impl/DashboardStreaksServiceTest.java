@@ -1,26 +1,9 @@
 package com.irunninglog.spring.dashboard.impl;
 
-import com.irunninglog.Gender;
-import com.irunninglog.Privacy;
-import com.irunninglog.Unit;
 import com.irunninglog.dashboard.ProgressInfo;
-import com.irunninglog.spring.AbstractTest;
-import com.irunninglog.spring.date.DateService;
-import com.irunninglog.spring.profile.impl.IProfileEntityRepository;
-import com.irunninglog.spring.profile.impl.ProfileEntity;
-import com.irunninglog.spring.security.impl.AuthorityEntity;
-import com.irunninglog.spring.security.impl.IAuthorityEntityRepository;
-import com.irunninglog.spring.security.impl.IUserEntityRepository;
-import com.irunninglog.spring.security.impl.UserEntity;
-import com.irunninglog.spring.workout.impl.IWorkoutEntityRepository;
-import com.irunninglog.spring.workout.impl.WorkoutEntity;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Iterator;
@@ -28,55 +11,10 @@ import java.util.Iterator;
 import static org.junit.Assert.assertEquals;
 
 @SuppressWarnings("SpringJavaAutowiredMembersInspection")
-public class DashboardStreaksServiceTest extends AbstractTest {
+public class DashboardStreaksServiceTest extends AbstractDashboardServicesTest {
 
-    @Autowired
-    private IWorkoutEntityRepository workoutEntityRepository;
-    @Autowired
-    private IAuthorityEntityRepository authorityEntityRepository;
-    @Autowired
-    private IUserEntityRepository userEntityRepository;
-    @Autowired
-    private IProfileEntityRepository profileEntityRepository;
-    @Autowired
-    private DateService dateService;
     @Autowired
     private DashboardStreaksService streaksService;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    private ProfileEntity profileEntity;
-    private UserEntity userEntity;
-
-    @Before
-    public void before() {
-        profileEntity = new ProfileEntity();
-        profileEntity.setEmail("allan@irunninglog.com");
-        profileEntity.setFirstName("First");
-        profileEntity.setLastName("Last");
-        profileEntity.setPassword(passwordEncoder.encode("password"));
-        profileEntity.setWeekStart(DayOfWeek.MONDAY);
-        profileEntity.setPreferredUnits(Unit.English);
-        profileEntity.setBirthday(LocalDate.now());
-        profileEntity.setGender(Gender.Male);
-
-        profileEntity = profileEntityRepository.save(profileEntity);
-
-        AuthorityEntity authorityEntity = new AuthorityEntity();
-        authorityEntity.setName("MYPROFILE");
-        authorityEntity = authorityEntityRepository.save(authorityEntity);
-
-        userEntity = userEntityRepository.findOne(profileEntity.getId());
-        userEntity.getAuthorities().add(authorityEntity);
-        userEntity = userEntityRepository.save(userEntity);
-    }
-
-    @After
-    public void after() {
-        workoutEntityRepository.deleteAll();
-        userEntityRepository.deleteAll();
-        authorityEntityRepository.deleteAll();
-    }
 
     @Test
     public void testNoStreak() {
@@ -338,15 +276,6 @@ public class DashboardStreaksServiceTest extends AbstractTest {
         assertEquals("2 day(s)", ever.getSubTitle());
         assertEquals("3 workout(s)", ever.getTextOne());
         assertEquals(dateService.formatMedium(date.minusDays(1)) + " through " + dateService.formatMedium(date), ever.getTextTwo());
-    }
-
-    private void saveWorkout(LocalDate localDate) {
-        WorkoutEntity entity = new WorkoutEntity();
-        entity.setPrivacy(Privacy.Private);
-        entity.setDate(localDate);
-        entity.setUser(userEntity);
-
-        workoutEntityRepository.save(entity);
     }
 
 }

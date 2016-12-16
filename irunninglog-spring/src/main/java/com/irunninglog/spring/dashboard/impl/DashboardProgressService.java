@@ -124,9 +124,7 @@ final class DashboardProgressService {
     }
 
     private String formatProgressLabel(BigDecimal mileage, BigDecimal target, Unit units) {
-        if (target.doubleValue() < 1E-9) {
-            return mathService.format(mileage, units) + " of " + mathService.format(target, units) + " (0%)";
-        } else if (mileage.compareTo(target) > 0) {
+        if (mileage.compareTo(target) > 0) {
             return mathService.format(mileage, units) + " of " + mathService.format(target, units) + " (100%)";
         } else {
             BigDecimal percent = mathService.divide(mileage.multiply(new BigDecimal(100)), target);
