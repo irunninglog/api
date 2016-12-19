@@ -34,6 +34,19 @@
             <artifactId>vertx-auth-common</artifactId>
             <version>${version.vertx}</version>
         </dependency>
+
+        <!-- test dependencies -->
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-unit</artifactId>
+            <version>${version.vertx}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>${version.mockito}</version>
+        </dependency>
     </dependencies>
 
 </project>

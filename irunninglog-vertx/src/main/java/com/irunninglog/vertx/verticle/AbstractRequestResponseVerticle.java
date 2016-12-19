@@ -66,13 +66,7 @@ abstract class AbstractRequestResponseVerticle<Q, S extends AbstractResponse> ex
                         logger.info("handler:{}:{}ms", address(), System.currentTimeMillis() - start);
                     }
                 },
-                result -> {
-                    if (result.succeeded()) {
-                        msg.reply(result.result());
-                    } else {
-                        msg.fail(ResponseStatus.Error.getCode(), ResponseStatus.Error.getMessage());
-                    }
-                });
+                result -> msg.reply(result.result()));
     }
 
     protected abstract S handle(Q request);
