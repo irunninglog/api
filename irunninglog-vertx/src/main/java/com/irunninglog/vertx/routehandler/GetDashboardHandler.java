@@ -7,7 +7,7 @@ import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.ext.web.RoutingContext;
 
-public class GetDashboardHandler extends AbstactRouteHandler<DashboardRequest, DashboardResponse> {
+public final class GetDashboardHandler extends AbstactRouteHandler<DashboardRequest, DashboardResponse> {
 
     public GetDashboardHandler(Vertx vertx) {
         super(vertx, DashboardResponse.class);

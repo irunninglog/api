@@ -14,7 +14,7 @@ import org.mockito.Mockito;
 
 import static org.mockito.Matchers.any;
 
-public class DashboardVerticleTest extends AbstractVertxTest {
+public class DashboardVerticleTest extends AbstractVerticleTest {
 
     @Before
     public void before(TestContext context) {

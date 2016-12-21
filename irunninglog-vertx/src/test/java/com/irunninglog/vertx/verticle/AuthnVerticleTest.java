@@ -9,7 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-public class AuthnVerticleTest extends AbstractVertxTest {
+public class AuthnVerticleTest extends AbstractVerticleTest {
 
     private final IAuthenticationService authenticationService = Mockito.mock(IAuthenticationService.class);
     private final IAuthorizationService authorizationService = Mockito.mock(IAuthorizationService.class);

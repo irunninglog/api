@@ -15,7 +15,7 @@ import org.mockito.Mockito;
 
 import static org.mockito.Matchers.any;
 
-public class ProfileVerticleTest extends AbstractVertxTest {
+public class ProfileVerticleTest extends AbstractVerticleTest {
 
     private IProfileService profileService;
 

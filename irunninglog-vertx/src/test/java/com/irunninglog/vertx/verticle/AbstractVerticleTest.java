@@ -6,7 +6,7 @@ import org.junit.Rule;
 import org.junit.runner.RunWith;
 
 @RunWith(VertxUnitRunner.class)
-public abstract class AbstractVertxTest {
+public abstract class AbstractVerticleTest {
 
     @Rule
     public RunTestOnContext rule = new RunTestOnContext();
