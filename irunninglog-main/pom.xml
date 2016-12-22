@@ -28,6 +28,14 @@
             <artifactId>irunninglog-vertx</artifactId>
             <version>${project.version}</version>
         </dependency>
+
+        <!-- test dependencies -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>${version.h2}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
