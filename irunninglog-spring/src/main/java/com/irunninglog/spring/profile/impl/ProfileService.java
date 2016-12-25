@@ -6,14 +6,12 @@ import com.irunninglog.profile.IProfileService;
 import com.irunninglog.profile.Profile;
 import com.irunninglog.profile.ProfileRequest;
 import com.irunninglog.profile.ProfileResponse;
+import com.irunninglog.spring.service.ApiService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.format.DateTimeFormatter;
 
-@Service
-@Transactional
+@ApiService
 public final class ProfileService implements IProfileService {
 
     private final IProfileEntityRepository repository;

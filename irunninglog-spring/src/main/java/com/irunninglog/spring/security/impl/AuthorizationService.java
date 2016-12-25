@@ -3,16 +3,14 @@ package com.irunninglog.spring.security.impl;
 import com.irunninglog.security.AuthzException;
 import com.irunninglog.security.IAuthorizationService;
 import com.irunninglog.security.User;
+import com.irunninglog.spring.service.ApiService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.AntPathMatcher;
 
 import java.text.MessageFormat;
 
-@Service
-@Transactional
+@ApiService
 public final class AuthorizationService implements IAuthorizationService {
 
     private static final Logger LOG = LoggerFactory.getLogger(AuthorizationService.class);

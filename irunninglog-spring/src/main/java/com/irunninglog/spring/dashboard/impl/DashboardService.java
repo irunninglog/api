@@ -1,16 +1,14 @@
 package com.irunninglog.spring.dashboard.impl;
 
+import com.irunninglog.spring.service.ApiService;
 import com.irunninglog.spring.profile.impl.IProfileEntityRepository;
 import com.irunninglog.spring.profile.impl.ProfileEntity;
 import com.irunninglog.service.ResponseStatus;
 import com.irunninglog.service.ResponseStatusException;
 import com.irunninglog.dashboard.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-@Service
-@Transactional
+@ApiService
 public final class DashboardService implements IDashboardService {
 
     private final IProfileEntityRepository profileEntityRepository;
