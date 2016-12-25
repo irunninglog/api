@@ -2,14 +2,14 @@ package com.irunninglog.spring.math;
 
 import com.irunninglog.Progress;
 import com.irunninglog.Unit;
-import org.springframework.stereotype.Service;
+import com.irunninglog.spring.service.InternalService;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.MessageFormat;
 
-@Service
+@InternalService
 public final class MathService {
 
     private static final String NO_PROGRESS = "No progress to track";

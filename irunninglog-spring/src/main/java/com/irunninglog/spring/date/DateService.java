@@ -1,6 +1,6 @@
 package com.irunninglog.spring.date;
 
-import org.springframework.stereotype.Service;
+import com.irunninglog.spring.service.InternalService;
 import org.springframework.util.Assert;
 
 import java.time.*;
@@ -8,7 +8,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.time.temporal.TemporalAdjusters;
 
-@Service
+@InternalService
 @SuppressWarnings({"WeakerAccess", "unused"})
 public final class DateService {
 

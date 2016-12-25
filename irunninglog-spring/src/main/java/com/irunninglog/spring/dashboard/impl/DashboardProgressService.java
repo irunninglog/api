@@ -5,17 +5,17 @@ import com.irunninglog.dashboard.ProgressInfo;
 import com.irunninglog.spring.date.DateService;
 import com.irunninglog.spring.math.MathService;
 import com.irunninglog.spring.profile.impl.ProfileEntity;
+import com.irunninglog.spring.service.InternalService;
 import com.irunninglog.spring.workout.impl.WorkoutEntity;
 import com.irunninglog.spring.workout.impl.WorkoutService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-@Service
+@InternalService
 final class DashboardProgressService {
 
     private final WorkoutService workoutsService;

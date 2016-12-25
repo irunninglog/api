@@ -3,17 +3,17 @@ package com.irunninglog.spring.dashboard.impl;
 import com.irunninglog.dashboard.ProgressInfo;
 import com.irunninglog.spring.date.DateService;
 import com.irunninglog.spring.profile.impl.ProfileEntity;
+import com.irunninglog.spring.service.InternalService;
 import com.irunninglog.spring.workout.impl.IWorkoutEntityRepository;
 import com.irunninglog.spring.workout.impl.WorkoutEntity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-@Service
+@InternalService
 final class DashboardStreaksService {
 
     private final IWorkoutEntityRepository workoutEntityRepository;
