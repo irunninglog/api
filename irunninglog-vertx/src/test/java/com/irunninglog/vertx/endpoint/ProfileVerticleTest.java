@@ -1,4 +1,4 @@
-package com.irunninglog.vertx.verticle;
+package com.irunninglog.vertx.endpoint;
 
 import com.irunninglog.profile.IProfileService;
 import com.irunninglog.profile.Profile;
@@ -7,6 +7,7 @@ import com.irunninglog.profile.ProfileResponse;
 import com.irunninglog.service.ResponseStatus;
 import com.irunninglog.service.ResponseStatusException;
 import com.irunninglog.vertx.Address;
+import com.irunninglog.vertx.endpoint.profile.ProfileVerticle;
 import io.vertx.core.json.Json;
 import io.vertx.ext.unit.TestContext;
 import org.junit.Before;

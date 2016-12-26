@@ -1,4 +1,4 @@
-package com.irunninglog.vertx.verticle;
+package com.irunninglog.vertx.endpoint;
 
 import com.irunninglog.service.AbstractResponse;
 import com.irunninglog.service.ResponseStatus;
@@ -13,14 +13,14 @@ import org.slf4j.LoggerFactory;
 
 import java.util.function.Supplier;
 
-abstract class AbstractRequestResponseVerticle<Q, S extends AbstractResponse> extends AbstractVerticle {
+public abstract class AbstractRequestResponseVerticle<Q, S extends AbstractResponse> extends AbstractVerticle {
 
-    final Logger logger = LoggerFactory.getLogger(getClass());
+    protected final Logger logger = LoggerFactory.getLogger(getClass());
 
     private final Supplier<S> constructor;
     private final Class<Q> requestClass;
 
-    AbstractRequestResponseVerticle(Class<Q> requestClass, Supplier<S> responseSupplier) {
+    protected AbstractRequestResponseVerticle(Class<Q> requestClass, Supplier<S> responseSupplier) {
         this.constructor = responseSupplier;
         this.requestClass = requestClass;
     }

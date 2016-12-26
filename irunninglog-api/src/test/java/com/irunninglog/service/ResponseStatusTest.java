@@ -14,8 +14,8 @@ public class ResponseStatusTest {
         assertEquals(400, ResponseStatus.Bad.getCode());
         assertEquals("Bad Request", ResponseStatus.Bad.getMessage());
 
-        assertEquals(401, ResponseStatus.Unauthnticated.getCode());
-        assertEquals("Not Authenticated", ResponseStatus.Unauthnticated.getMessage());
+        assertEquals(401, ResponseStatus.Unauthenticated.getCode());
+        assertEquals("Not Authenticated", ResponseStatus.Unauthenticated.getMessage());
 
         assertEquals(403, ResponseStatus.Unauthorized.getCode());
         assertEquals("Not Authorized", ResponseStatus.Unauthorized.getMessage());

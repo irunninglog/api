@@ -1,4 +1,4 @@
-package com.irunninglog.vertx.verticle;
+package com.irunninglog.vertx.endpoint;
 
 import com.irunninglog.dashboard.DashboardInfo;
 import com.irunninglog.dashboard.DashboardRequest;
@@ -6,6 +6,7 @@ import com.irunninglog.dashboard.DashboardResponse;
 import com.irunninglog.dashboard.IDashboardService;
 import com.irunninglog.service.ResponseStatus;
 import com.irunninglog.vertx.Address;
+import com.irunninglog.vertx.endpoint.dashboard.DashboardVerticle;
 import io.vertx.core.json.Json;
 import io.vertx.ext.unit.TestContext;
 import org.junit.Before;

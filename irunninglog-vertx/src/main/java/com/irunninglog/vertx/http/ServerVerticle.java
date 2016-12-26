@@ -1,4 +1,4 @@
-package com.irunninglog.vertx.verticle;
+package com.irunninglog.vertx.http;
 
 import com.irunninglog.vertx.routehandler.GetDashboardHandler;
 import com.irunninglog.vertx.routehandler.GetProfileHandler;

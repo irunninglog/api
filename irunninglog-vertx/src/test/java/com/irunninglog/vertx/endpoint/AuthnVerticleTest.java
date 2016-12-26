@@ -1,8 +1,9 @@
-package com.irunninglog.vertx.verticle;
+package com.irunninglog.vertx.endpoint;
 
 import com.irunninglog.security.*;
 import com.irunninglog.service.ResponseStatus;
 import com.irunninglog.vertx.Address;
+import com.irunninglog.vertx.endpoint.authn.AuthnVerticle;
 import io.vertx.core.json.Json;
 import io.vertx.ext.unit.TestContext;
 import org.junit.Before;
@@ -50,7 +51,7 @@ public class AuthnVerticleTest extends AbstractVerticleTest {
             String s = o.body();
             AuthnResponse response = Json.decodeValue(s, AuthnResponse.class);
 
-            context.assertEquals(ResponseStatus.Unauthnticated, response.getStatus());
+            context.assertEquals(ResponseStatus.Unauthenticated, response.getStatus());
             context.assertNull(response.getBody());
         }));
     }

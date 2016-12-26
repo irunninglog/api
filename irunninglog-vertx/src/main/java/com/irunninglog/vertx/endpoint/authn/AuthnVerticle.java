@@ -1,14 +1,19 @@
-package com.irunninglog.vertx.verticle;
+package com.irunninglog.vertx.endpoint.authn;
 
 import com.irunninglog.security.*;
 import com.irunninglog.service.ResponseStatus;
 import com.irunninglog.vertx.Address;
+import com.irunninglog.vertx.endpoint.AbstractRequestResponseVerticle;
+import com.irunninglog.vertx.endpoint.EndpointConstructor;
+import com.irunninglog.vertx.endpoint.EndpointVerticle;
 
+@EndpointVerticle
 public class AuthnVerticle extends AbstractRequestResponseVerticle<AuthnRequest, AuthnResponse> {
 
     private final IAuthenticationService authenticationService;
     private final IAuthorizationService authorizationService;
 
+    @EndpointConstructor
     public AuthnVerticle(IAuthenticationService authenticationService, IAuthorizationService authorizationService) {
         super(AuthnRequest.class, AuthnResponse::new);
 
@@ -29,7 +34,7 @@ public class AuthnVerticle extends AbstractRequestResponseVerticle<AuthnRequest,
             logger.info("handle:user:{}", user);
         } catch (AuthnException ex) {
             logger.error("Unable to authenticate", ex);
-            status = ResponseStatus.Unauthnticated;
+            status = ResponseStatus.Unauthenticated;
         } catch (AuthzException ex) {
             logger.error("Unable to authorize", ex);
             status = ResponseStatus.Unauthorized;

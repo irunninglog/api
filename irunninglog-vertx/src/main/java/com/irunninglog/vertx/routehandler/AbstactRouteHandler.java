@@ -36,7 +36,7 @@ abstract class AbstactRouteHandler<Q extends AbstractRequest, S extends Abstract
             if (authnRequest == null) {
                 logger.error("Unable to get authentication information from request");
 
-                fail(routingContext, ResponseStatus.Unauthnticated);
+                fail(routingContext, ResponseStatus.Unauthenticated);
 
                 return;
             }

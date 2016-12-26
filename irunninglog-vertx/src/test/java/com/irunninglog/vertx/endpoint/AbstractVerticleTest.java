@@ -1,4 +1,4 @@
-package com.irunninglog.vertx.verticle;
+package com.irunninglog.vertx.endpoint;
 
 import io.vertx.ext.unit.junit.RunTestOnContext;
 import io.vertx.ext.unit.junit.VertxUnitRunner;
