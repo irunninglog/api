@@ -45,29 +45,33 @@ final class RunningLogApplication {
         LOG.info("start:applicationContext:after");
 
         LOG.info("start:server:before");
-        server(applicationContext, vertx);
-        LOG.info("start:server:after");
 
-        LOG.info("start:verticles:before");
-        verticles(applicationContext, vertx, asyncResultHandler);
-        LOG.info("start:verticles:after");
+        Environment environment = applicationContext.getEnvironment();
+        int port = environment.getProperty("httpServer.listenPort", Integer.class, 8080);
+        LOG.info("start:server:listenPort:{}", port);
 
-        LOG.info("start:end");
+        vertx.deployVerticle(new ServerVerticle(port), stringAsyncResult -> {
+            LOG.info("start:server:after");
+            verticles(applicationContext, vertx, asyncResultHandler);
+        });
     }
 
     private void verticles(ApplicationContext applicationContext, Vertx vertx, Handler<AsyncResult<String>> asyncResultHandler) {
         List<AbstractVerticle> list = new ArrayList<>();
 
+        LOG.info("verticles:before");
+
         Reflections reflections = new Reflections("com.irunninglog");
         Set<Class<?>> set = reflections.getTypesAnnotatedWith(EndpointVerticle.class);
         for (Class<?> clazz : set) {
-            LOG.info("Configuring endpoint verticle {}", clazz);
+            LOG.info("verticles:{}", clazz);
+
             Reflections reflections1 = new Reflections(clazz.getName(), new MethodAnnotationsScanner(), new TypeAnnotationsScanner(), new SubTypesScanner());
             Set<Constructor> constructors = reflections1.getConstructorsAnnotatedWith(EndpointConstructor.class);
             if (constructors == null || constructors.isEmpty()) {
-                LOG.error("Not suitable endpoint constructors found!");
+                LOG.error("verticles:no constructor");
             } else if (constructors.size() > 1) {
-                LOG.error("Expected exactly one constructor but found {}", constructors.size());
+                LOG.error("verticles:too many constructors ({})", constructors.size());
             } else {
                 Constructor constructor = constructors.iterator().next();
                 Parameter[] parameters = constructor.getParameters();
@@ -77,12 +81,18 @@ final class RunningLogApplication {
                 }
 
                 try {
-                    list.add((AbstractVerticle) constructor.newInstance(args));
+                    AbstractVerticle verticle = (AbstractVerticle) constructor.newInstance(args);
+
+                    LOG.info("verticles:{}", verticle);
+
+                    list.add(verticle);
                 } catch (Exception ex) {
                     LOG.error("Unable to create verticle", ex);
                 }
             }
         }
+
+        LOG.info("verticles:will deploy {} verticles", list.size());
 
         deployVerticles(list.iterator(), asyncResultHandler, vertx);
     }
@@ -90,21 +100,15 @@ final class RunningLogApplication {
     private void deployVerticles(Iterator<AbstractVerticle> iterator, Handler<AsyncResult<String>> asyncResultHandler, Vertx vertx) {
         if (iterator.hasNext()) {
             AbstractVerticle verticle = iterator.next();
+
+            LOG.info("deployVerticle:{}", verticle);
+
             if (iterator.hasNext()) {
                 vertx.deployVerticle(verticle, stringAsyncResult -> deployVerticles(iterator, asyncResultHandler, vertx));
             } else {
                 vertx.deployVerticle(verticle, asyncResultHandler);
             }
         }
-    }
-
-    private void server(ApplicationContext applicationContext, Vertx vertx) {
-        Environment environment = applicationContext.getEnvironment();
-
-        int port = environment.getProperty("httpServer.listenPort", Integer.class, 8080);
-        LOG.info("server:listenPort:{}", port);
-
-        vertx.deployVerticle(new ServerVerticle(port));
     }
 
     private void logging() {
