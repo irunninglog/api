@@ -1,26 +1,19 @@
-package com.irunninglog.vertx.routehandler;
+package com.irunninglog.vertx.route.profile;
 
 import com.irunninglog.profile.ProfileRequest;
 import com.irunninglog.profile.ProfileResponse;
 import com.irunninglog.vertx.Address;
+import com.irunninglog.vertx.route.AbstactRouteHandler;
+import com.irunninglog.vertx.route.RouteHandler;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.ext.web.RoutingContext;
 
+@RouteHandler(method = HttpMethod.GET, path = "/profiles/:profileid")
 public final class GetProfileHandler extends AbstactRouteHandler<ProfileRequest, ProfileResponse> {
 
     public GetProfileHandler(Vertx vertx) {
         super(vertx, ProfileResponse.class);
-    }
-
-    @Override
-    public HttpMethod method() {
-        return HttpMethod.GET;
-    }
-
-    @Override
-    public String path() {
-        return "/profiles/:profileid";
     }
 
     @Override

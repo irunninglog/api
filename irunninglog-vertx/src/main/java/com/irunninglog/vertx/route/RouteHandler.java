@@ -1,4 +1,6 @@
-package com.irunninglog.vertx.endpoint;
+package com.irunninglog.vertx.route;
+
+import io.vertx.core.http.HttpMethod;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -8,8 +10,10 @@ import static java.lang.annotation.ElementType.TYPE;
 
 @Target(value=TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface EndpointVerticle {
+public @interface RouteHandler {
 
-    Class<?> [] constructorArgs() default {};
+    HttpMethod method();
+
+    String path();
 
 }

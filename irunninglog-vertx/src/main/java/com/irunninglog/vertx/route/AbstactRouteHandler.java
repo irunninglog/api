@@ -1,4 +1,4 @@
-package com.irunninglog.vertx.routehandler;
+package com.irunninglog.vertx.route;
 
 import com.irunninglog.security.AuthnRequest;
 import com.irunninglog.security.AuthnResponse;
@@ -6,6 +6,7 @@ import com.irunninglog.service.AbstractRequest;
 import com.irunninglog.service.AbstractResponse;
 import com.irunninglog.service.ResponseStatus;
 import com.irunninglog.vertx.Address;
+import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.Json;
 import io.vertx.ext.web.RoutingContext;
@@ -14,13 +15,14 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Base64;
 
-abstract class AbstactRouteHandler<Q extends AbstractRequest, S extends AbstractResponse> implements IRouteHandler {
+public abstract class AbstactRouteHandler<Q extends AbstractRequest, S extends AbstractResponse> implements Handler<RoutingContext> {
 
-    final Logger logger = LoggerFactory.getLogger(getClass());
     private final Vertx vertx;
     private final Class<S> responseClass;
 
-    AbstactRouteHandler(Vertx vertx, Class<S> responseClass) {
+    protected final Logger logger = LoggerFactory.getLogger(getClass());
+
+    public AbstactRouteHandler(Vertx vertx, Class<S> responseClass) {
         this.vertx = vertx;
         this.responseClass = responseClass;
     }

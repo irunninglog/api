@@ -4,16 +4,17 @@ import com.irunninglog.security.*;
 import com.irunninglog.service.ResponseStatus;
 import com.irunninglog.vertx.Address;
 import com.irunninglog.vertx.endpoint.AbstractRequestResponseVerticle;
-import com.irunninglog.vertx.endpoint.EndpointConstructor;
 import com.irunninglog.vertx.endpoint.EndpointVerticle;
 
-@EndpointVerticle
+@EndpointVerticle(constructorArgs = {
+        IAuthenticationService.class,
+        IAuthorizationService.class
+})
 public class AuthnVerticle extends AbstractRequestResponseVerticle<AuthnRequest, AuthnResponse> {
 
     private final IAuthenticationService authenticationService;
     private final IAuthorizationService authorizationService;
 
-    @EndpointConstructor
     public AuthnVerticle(IAuthenticationService authenticationService, IAuthorizationService authorizationService) {
         super(AuthnRequest.class, AuthnResponse::new);
 

@@ -2,7 +2,6 @@ package com.irunninglog.main;
 
 import com.irunninglog.spring.context.ContextConfiguration;
 import com.irunninglog.vertx.endpoint.EndpointVerticle;
-import com.irunninglog.vertx.endpoint.EndpointConstructor;
 import com.irunninglog.vertx.http.ServerVerticle;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.AsyncResult;
@@ -11,9 +10,6 @@ import io.vertx.core.Vertx;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.reflections.Reflections;
-import org.reflections.scanners.MethodAnnotationsScanner;
-import org.reflections.scanners.SubTypesScanner;
-import org.reflections.scanners.TypeAnnotationsScanner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.bridge.SLF4JBridgeHandler;
@@ -22,8 +18,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.core.env.Environment;
 import uk.org.lidalia.sysoutslf4j.context.SysOutOverSLF4J;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Parameter;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -52,44 +47,40 @@ final class RunningLogApplication {
 
         vertx.deployVerticle(new ServerVerticle(port), stringAsyncResult -> {
             LOG.info("start:server:after");
-            verticles(applicationContext, vertx, asyncResultHandler);
+            try {
+                verticles(applicationContext, vertx, asyncResultHandler);
+            } catch (Exception ex) {
+                String errMsg = "Unable to deploy verticles";
+                LOG.error(errMsg, ex);
+                throw new IllegalStateException(errMsg, ex);
+            }
         });
     }
 
-    private void verticles(ApplicationContext applicationContext, Vertx vertx, Handler<AsyncResult<String>> asyncResultHandler) {
+    private void verticles(ApplicationContext applicationContext, Vertx vertx, Handler<AsyncResult<String>> asyncResultHandler) throws ClassNotFoundException, IllegalAccessException, InvocationTargetException, InstantiationException {
         List<AbstractVerticle> list = new ArrayList<>();
 
         LOG.info("verticles:before");
 
         Reflections reflections = new Reflections("com.irunninglog");
-        Set<Class<?>> set = reflections.getTypesAnnotatedWith(EndpointVerticle.class);
-        for (Class<?> clazz : set) {
+
+        Set<Class<?>> classes = reflections.getTypesAnnotatedWith(EndpointVerticle.class);
+
+        for (Class<?> clazz : classes) {
             LOG.info("verticles:{}", clazz);
 
-            Reflections reflections1 = new Reflections(clazz.getName(), new MethodAnnotationsScanner(), new TypeAnnotationsScanner(), new SubTypesScanner());
-            Set<Constructor> constructors = reflections1.getConstructorsAnnotatedWith(EndpointConstructor.class);
-            if (constructors == null || constructors.isEmpty()) {
-                LOG.error("verticles:no constructor");
-            } else if (constructors.size() > 1) {
-                LOG.error("verticles:too many constructors ({})", constructors.size());
-            } else {
-                Constructor constructor = constructors.iterator().next();
-                Parameter[] parameters = constructor.getParameters();
-                Object [] args = new Object[parameters.length];
-                for (int i = 0; i < parameters.length; i++) {
-                    args[i] = applicationContext.getBean(parameters[i].getType());
-                }
-
-                try {
-                    AbstractVerticle verticle = (AbstractVerticle) constructor.newInstance(args);
-
-                    LOG.info("verticles:{}", verticle);
-
-                    list.add(verticle);
-                } catch (Exception ex) {
-                    LOG.error("Unable to create verticle", ex);
-                }
+            EndpointVerticle annotation = clazz.getAnnotation(EndpointVerticle.class);
+            Class[] constructorArgs = annotation.constructorArgs();
+            Object [] args = new Object[constructorArgs.length];
+            for (int i = 0; i < constructorArgs.length; i++) {
+                args[i] = applicationContext.getBean(constructorArgs[i]);
             }
+
+            AbstractVerticle verticle = (AbstractVerticle) clazz.getConstructors()[0].newInstance(args);
+
+            LOG.info("verticles:{}", verticle);
+
+            list.add(verticle);
         }
 
         LOG.info("verticles:will deploy {} verticles", list.size());

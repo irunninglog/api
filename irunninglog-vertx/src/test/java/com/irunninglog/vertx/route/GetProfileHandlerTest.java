@@ -1,4 +1,4 @@
-package com.irunninglog.vertx.routehandler;
+package com.irunninglog.vertx.route;
 
 import com.irunninglog.profile.IProfileService;
 import com.irunninglog.profile.Profile;
