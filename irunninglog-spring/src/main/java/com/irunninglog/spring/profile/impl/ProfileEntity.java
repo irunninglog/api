@@ -2,7 +2,6 @@ package com.irunninglog.spring.profile.impl;
 
 import com.irunninglog.Gender;
 import com.irunninglog.Unit;
-import com.irunninglog.spring.jpa.DateConverter;
 
 import javax.persistence.*;
 import java.time.DayOfWeek;
@@ -46,7 +45,6 @@ public final class ProfileEntity {
     private Unit preferredUnits;
 
     @Column(nullable = false)
-    @Convert(converter = DateConverter.class)
     private LocalDate birthday;
 
     @Column(nullable = false)

@@ -3,7 +3,6 @@ package com.irunninglog.spring.workout.impl;
 import com.irunninglog.Privacy;
 import com.irunninglog.spring.data.impl.ShoeEntity;
 import com.irunninglog.spring.jpa.AbstractEntityWithUser;
-import com.irunninglog.spring.jpa.DateConverter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -19,7 +18,6 @@ public final class WorkoutEntity extends AbstractEntityWithUser {
     private long duration;
 
     @Column(nullable = false, name = "ddate")
-    @Convert(converter = DateConverter.class)
     private LocalDate date;
 
     @Column(nullable = false)

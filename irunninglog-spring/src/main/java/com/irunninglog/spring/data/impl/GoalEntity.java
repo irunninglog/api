@@ -1,9 +1,6 @@
 package com.irunninglog.spring.data.impl;
 
-import com.irunninglog.spring.jpa.DateConverter;
-
 import javax.persistence.Column;
-import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.time.LocalDate;
@@ -14,11 +11,9 @@ import java.time.LocalDate;
 public final class GoalEntity extends AbstractDataEntity {
 
     @Column(name="start_date")
-    @Convert(converter = DateConverter.class)
     private LocalDate startDate;
 
     @Column(name="end_date")
-    @Convert(converter = DateConverter.class)
     private LocalDate endDate;
 
     @Column(nullable = false)
