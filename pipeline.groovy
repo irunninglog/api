@@ -8,7 +8,7 @@ node {
     }
 
     stage('Build') {
-        sh "${m3} -B clean install -DskipTests=true"
+        sh "${m3} -B clean install"
     }
 
     stage('Stash') {
