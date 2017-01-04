@@ -44,7 +44,7 @@ public final class DashboardService implements IDashboardService {
         info.getProgress().addAll(progressService.progress(profile, request.getOffset()));
         info.getGoals().addAll(goalsService.goals(profile));
         info.getShoes().addAll(shoesService.shoes(profile));
-        info.getStreaks().addAll(streaksService.streaks(profile));
+        info.getStreaks().addAll(streaksService.streaks(profile, request.getOffset()));
 
         return new DashboardResponse()
                 .setBody(info)

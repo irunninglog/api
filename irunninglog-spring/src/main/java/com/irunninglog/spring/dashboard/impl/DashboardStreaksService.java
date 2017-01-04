@@ -6,15 +6,19 @@ import com.irunninglog.spring.profile.impl.ProfileEntity;
 import com.irunninglog.spring.service.InternalService;
 import com.irunninglog.spring.workout.impl.IWorkoutEntityRepository;
 import com.irunninglog.spring.workout.impl.WorkoutEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 @InternalService
 final class DashboardStreaksService {
+
+    private static final Logger LOG = LoggerFactory.getLogger(DashboardStreaksService.class);
 
     private final IWorkoutEntityRepository workoutEntityRepository;
     private final DateService dateService;
@@ -28,11 +32,11 @@ final class DashboardStreaksService {
         this.dateService = dateService;
     }
 
-    Collection<ProgressInfo> streaks(ProfileEntity profileEntity) {
+    Collection<ProgressInfo> streaks(ProfileEntity profileEntity, int offset) {
         List<WorkoutEntity> workouts = workoutEntityRepository.findByUserId(profileEntity.getId());
         workouts.sort((o1, o2) -> o2.getDate().compareTo(o1.getDate()));
 
-        Streaks streaks = getStreaks(workouts);
+        Streaks streaks = getStreaks(workouts, offset);
         ProgressInfo current = new ProgressInfo()
                 .setTitle("Current")
                 .setSubTitle(streaks.getCurrent().getSpan() + " day(s)")
@@ -59,7 +63,7 @@ final class DashboardStreaksService {
         return progressInfo;
     }
 
-    private Streaks getStreaks(List<WorkoutEntity> workouts) {
+    private Streaks getStreaks(List<WorkoutEntity> workouts, int offset) {
         Streak streak = null;
         List<Streak> streaks = new ArrayList<>();
         for (WorkoutEntity entity : workouts) {
@@ -67,8 +71,7 @@ final class DashboardStreaksService {
                 streak = getNewStreak(entity);
                 streaks.add(streak);
             } else if (entity.getDate().isAfter(streak.getStartDate().minusDays(2))) {
-                streak.count()
-                        .setStartDate(entity.getDate());
+                streak.count().setStartDate(entity.getDate());
             } else {
                 streak = getNewStreak(entity);
                 streaks.add(streak);
@@ -80,8 +83,18 @@ final class DashboardStreaksService {
         result.setThisYear(new Streak());
         result.setEver(new Streak());
 
+        ZonedDateTime now = ZonedDateTime.now();
+        ZonedDateTime cutoff = dateService.clientTimeFromServerTime(ZonedDateTime.now(), offset).minusDays(2);
+
+        LOG.info("Processing streaks {}->{}", now, cutoff);
+
         for (int i = 0; i < streaks.size(); i++) {
-            if (i == 0 && streaks.get(i).getEndDate().isAfter(LocalDate.now().minusDays(2))) {
+            ZonedDateTime endDate = dateService.clientTimeFromServerTime(ZonedDateTime.now(), offset);
+            endDate = (ZonedDateTime) streaks.get(i).getEndDate().adjustInto(endDate);
+
+            LOG.info("Streak from {} {} {} {}", streaks.get(i).getStartDate(), streaks.get(i).getEndDate(), endDate, cutoff);
+
+            if (i == 0 && endDate.isAfter(cutoff)) {
                 // Only first streak could be current
                 result.setCurrent(streaks.get(i));
                 result.setThisYear(streaks.get(i));

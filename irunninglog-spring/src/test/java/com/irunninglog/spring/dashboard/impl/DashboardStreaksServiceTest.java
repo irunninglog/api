@@ -15,12 +15,14 @@ import static org.junit.Assert.assertEquals;
 @SuppressWarnings("SpringJavaAutowiredMembersInspection")
 public class DashboardStreaksServiceTest extends AbstractDashboardServicesTest {
 
+    private static final int OFFSET = 600;
+
     @Autowired
     private DashboardStreaksService streaksService;
 
     @Test
     public void testNoStreak() {
-        Collection<ProgressInfo> infos = streaksService.streaks(profileEntity);
+        Collection<ProgressInfo> infos = streaksService.streaks(profileEntity, OFFSET);
         Iterator<ProgressInfo> iterator = infos.iterator();
 
         ProgressInfo current = iterator.next();
@@ -44,7 +46,7 @@ public class DashboardStreaksServiceTest extends AbstractDashboardServicesTest {
         LocalDate date = LocalDate.now();
         saveWorkout(date);
 
-        Collection<ProgressInfo> infos = streaksService.streaks(profileEntity);
+        Collection<ProgressInfo> infos = streaksService.streaks(profileEntity, OFFSET);
         Iterator<ProgressInfo> iterator = infos.iterator();
 
         ProgressInfo current = iterator.next();
@@ -73,7 +75,7 @@ public class DashboardStreaksServiceTest extends AbstractDashboardServicesTest {
         saveWorkout(date.minusDays(1));
         saveWorkout(date.minusDays(2));
 
-        Collection<ProgressInfo> infos = streaksService.streaks(profileEntity);
+        Collection<ProgressInfo> infos = streaksService.streaks(profileEntity, OFFSET);
         Iterator<ProgressInfo> iterator = infos.iterator();
 
         ProgressInfo current = iterator.next();
@@ -100,7 +102,7 @@ public class DashboardStreaksServiceTest extends AbstractDashboardServicesTest {
         LocalDate date = LocalDate.now().minusDays(1);
         saveWorkout(date);
 
-        Collection<ProgressInfo> infos = streaksService.streaks(profileEntity);
+        Collection<ProgressInfo> infos = streaksService.streaks(profileEntity, OFFSET);
         Iterator<ProgressInfo> iterator = infos.iterator();
 
         ProgressInfo current = iterator.next();
@@ -130,7 +132,7 @@ public class DashboardStreaksServiceTest extends AbstractDashboardServicesTest {
         saveWorkout(date.minusDays(2));
         saveWorkout(date.minusDays(3));
 
-        Collection<ProgressInfo> infos = streaksService.streaks(profileEntity);
+        Collection<ProgressInfo> infos = streaksService.streaks(profileEntity, OFFSET);
         Iterator<ProgressInfo> iterator = infos.iterator();
 
         ProgressInfo current = iterator.next();
@@ -158,7 +160,7 @@ public class DashboardStreaksServiceTest extends AbstractDashboardServicesTest {
         saveWorkout(date);
         saveWorkout(date.minusDays(1));
 
-        Collection<ProgressInfo> infos = streaksService.streaks(profileEntity);
+        Collection<ProgressInfo> infos = streaksService.streaks(profileEntity, OFFSET);
         Iterator<ProgressInfo> iterator = infos.iterator();
 
         ProgressInfo current = iterator.next();
@@ -168,7 +170,7 @@ public class DashboardStreaksServiceTest extends AbstractDashboardServicesTest {
         assertEquals("No current streak!", current.getTextTwo());
 
         Calendar calendar = GregorianCalendar.getInstance();
-        boolean earlyInYear = calendar.get(Calendar.DAY_OF_YEAR) < 3;
+        boolean earlyInYear = calendar.get(Calendar.DAY_OF_YEAR) < 4;
 
         ProgressInfo thsYear = iterator.next();
         assertEquals("This Year", thsYear.getTitle());
@@ -196,7 +198,7 @@ public class DashboardStreaksServiceTest extends AbstractDashboardServicesTest {
         saveWorkout(date1.minusDays(3));
         saveWorkout(date1.minusDays(4));
 
-        Collection<ProgressInfo> infos = streaksService.streaks(profileEntity);
+        Collection<ProgressInfo> infos = streaksService.streaks(profileEntity, OFFSET);
         Iterator<ProgressInfo> iterator = infos.iterator();
 
         ProgressInfo current = iterator.next();
@@ -232,10 +234,10 @@ public class DashboardStreaksServiceTest extends AbstractDashboardServicesTest {
         saveWorkout(date2.minusDays(1));
         saveWorkout(date2.minusDays(2));
 
-        Collection<ProgressInfo> infos = streaksService.streaks(profileEntity);
+        Collection<ProgressInfo> infos = streaksService.streaks(profileEntity, OFFSET);
         Iterator<ProgressInfo> iterator = infos.iterator();
 
-        boolean longerStreakLastYear = GregorianCalendar.getInstance().get(Calendar.DAY_OF_YEAR) < 3;
+        boolean longerStreakLastYear = GregorianCalendar.getInstance().get(Calendar.DAY_OF_YEAR) < 4;
 
         ProgressInfo current = iterator.next();
         assertEquals("Current", current.getTitle());
@@ -263,7 +265,7 @@ public class DashboardStreaksServiceTest extends AbstractDashboardServicesTest {
         saveWorkout(date.minusDays(1));
         saveWorkout(date.minusDays(1));
 
-        Collection<ProgressInfo> infos = streaksService.streaks(profileEntity);
+        Collection<ProgressInfo> infos = streaksService.streaks(profileEntity, OFFSET);
         Iterator<ProgressInfo> iterator = infos.iterator();
 
         ProgressInfo current = iterator.next();

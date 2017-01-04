@@ -56,7 +56,7 @@ public final class DateService {
         return zonedDateTime.toLocalDate();
     }
 
-    ZonedDateTime clientTimeFromServerTime(ZonedDateTime time, int minutes) {
+    public ZonedDateTime clientTimeFromServerTime(ZonedDateTime time, int minutes) {
         ZonedDateTime utc = time.withZoneSameInstant(ZoneOffset.UTC);
         return utc.withZoneSameInstant(ZoneOffset.ofTotalSeconds(minutes * 60 * -1));
     }
