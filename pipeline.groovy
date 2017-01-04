@@ -8,7 +8,7 @@ node {
     }
 
     stage('Build') {
-        sh "${m3} -B clean install"
+        sh "${m3} -B clean install -Dmaven.test.skip=true"
     }
 
     stage('Stash') {
