@@ -1,6 +1,6 @@
 data: {
     dataSourceDriverClassName: "com.mysql.jdbc.Driver"
-    dataSourceUrl: "jdbc:mysql://prod.database-001.irunninglog.com:3306/irunninglog_prod_1"
+    dataSourceUrl: "jdbc:mysql://prod1.cuhajjsrsy1w.us-east-1.rds.amazonaws.com:3306/irunninglog_prod_1"
     dataSourceUsername: "irunninglog"
     dataSourcePassword: "irlogadmin"
     jpaPropertiesHbm2ddl: "validate"
