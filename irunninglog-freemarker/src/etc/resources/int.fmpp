@@ -5,4 +5,5 @@ data: {
     dataSourcePassword: "irunninglog"
     jpaPropertiesHbm2ddl: "update"
     jpaPropertiesDialect: "org.hibernate.dialect.MySQL5Dialect"
+    logDirectory: "/var/log/irunninglog"
 }

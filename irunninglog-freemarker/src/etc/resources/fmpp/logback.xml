@@ -1,9 +1,9 @@
-<configuration>
+<configuration scan="true" scanPeriod="30 seconds">
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>/var/log/irunninglog/irunninglog.log</file>
+        <file>${logDirectory}/irunninglog.log</file>
 
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>/var/log/irunninglog/irunninglog.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>${logDirectory}/irunninglog.%d{yyyy-MM-dd}.log</fileNamePattern>
 
             <maxHistory>7</maxHistory>
         </rollingPolicy>
@@ -13,7 +13,11 @@
         </encoder>
     </appender>
 
-    <root level="INFO">
+    <appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
         <appender-ref ref="FILE" />
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="ASYNC" />
     </root>
 </configuration>

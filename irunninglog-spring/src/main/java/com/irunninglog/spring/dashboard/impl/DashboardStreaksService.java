@@ -86,13 +86,13 @@ final class DashboardStreaksService {
         ZonedDateTime now = ZonedDateTime.now();
         ZonedDateTime cutoff = dateService.clientTimeFromServerTime(ZonedDateTime.now(), offset).minusDays(2);
 
-        LOG.info("Processing streaks {}->{}", now, cutoff);
+        LOG.debug("Processing streaks {}->{}", now, cutoff);
 
         for (int i = 0; i < streaks.size(); i++) {
             ZonedDateTime endDate = dateService.clientTimeFromServerTime(ZonedDateTime.now(), offset);
             endDate = (ZonedDateTime) streaks.get(i).getEndDate().adjustInto(endDate);
 
-            LOG.info("Streak from {} {} {} {}", streaks.get(i).getStartDate(), streaks.get(i).getEndDate(), endDate, cutoff);
+            LOG.debug("Streak from {} {} {} {}", streaks.get(i).getStartDate(), streaks.get(i).getEndDate(), endDate, cutoff);
 
             if (i == 0 && endDate.isAfter(cutoff)) {
                 // Only first streak could be current
