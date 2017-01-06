@@ -33,6 +33,7 @@ node {
         dir ('irunninglog-freemarker/target/generated-sources/fmpp/prod') {
             sh "mkdir ${destProd}"
             sh "cp application.properties ${destProd}/"
+            sh "cp logback.xml ${destProd}/"
             stash name: "prod-config", includes: "${destProd}/**"
         }
         deleteDir()
