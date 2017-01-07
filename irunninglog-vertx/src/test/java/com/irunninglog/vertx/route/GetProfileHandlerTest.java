@@ -7,7 +7,7 @@ import com.irunninglog.profile.ProfileResponse;
 import com.irunninglog.security.*;
 import com.irunninglog.service.ResponseStatus;
 import com.irunninglog.service.ResponseStatusException;
-import com.irunninglog.vertx.endpoint.profile.ProfileVerticle;
+import com.irunninglog.vertx.endpoint.profile.GetProfileVerticle;
 import io.vertx.ext.unit.TestContext;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -22,8 +22,8 @@ public class GetProfileHandlerTest extends AbstractHandlerTest {
 
     @Override
     protected void afterBefore(TestContext context) {
-        ProfileVerticle profileVerticle = new ProfileVerticle(profileService);
-        vertx.deployVerticle(profileVerticle, context.asyncAssertSuccess(s -> profileVerticleId = s));
+        GetProfileVerticle getProfileVerticle = new GetProfileVerticle(profileService);
+        vertx.deployVerticle(getProfileVerticle, context.asyncAssertSuccess(s -> profileVerticleId = s));
     }
 
     @Test

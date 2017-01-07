@@ -1,15 +1,14 @@
 package com.irunninglog.vertx.route;
 
-import com.irunninglog.security.AccessControl;
 import com.irunninglog.security.AuthnRequest;
 import com.irunninglog.security.AuthnResponse;
 import com.irunninglog.service.AbstractRequest;
 import com.irunninglog.service.AbstractResponse;
+import com.irunninglog.service.Endpoint;
 import com.irunninglog.service.ResponseStatus;
-import com.irunninglog.vertx.Address;
+import com.irunninglog.vertx.security.AuthnVerticle;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
-import io.vertx.core.http.HttpMethod;
 import io.vertx.core.json.Json;
 import io.vertx.ext.web.RoutingContext;
 import org.slf4j.Logger;
@@ -17,26 +16,20 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Base64;
 
-public abstract class AbstactRouteHandler<Q extends AbstractRequest, S extends AbstractResponse> implements Handler<RoutingContext> {
+public abstract class AbstractRouteHandler<Q extends AbstractRequest, S extends AbstractResponse> implements Handler<RoutingContext> {
 
     private final Vertx vertx;
     private final Class<S> responseClass;
-    private final Address address;
-    private final HttpMethod method;
-    private final AccessControl access;
-    private final String path;
+    private final Endpoint endpoint;
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
-    public AbstactRouteHandler(Vertx vertx, Class<S> responseClass) {
+    public AbstractRouteHandler(Vertx vertx, Class<S> responseClass) {
         this.vertx = vertx;
         this.responseClass = responseClass;
 
         RouteHandler routeHandler = this.getClass().getAnnotation(RouteHandler.class);
-        this.address = routeHandler.address();
-        this.method = routeHandler.method();
-        this.access = routeHandler.access();
-        this.path = routeHandler.path();
+        this.endpoint = routeHandler.endpoint();
     }
 
     @Override
@@ -57,15 +50,15 @@ public abstract class AbstactRouteHandler<Q extends AbstractRequest, S extends A
 
             logger.info("handle:authn:{}", authnRequest.getUsername());
 
-            vertx.eventBus().<String>send(Address.Authenticate.getAddress(), Json.encode(authnRequest), result -> {
+            vertx.eventBus().<String>send(AuthnVerticle.ADDRESS, Json.encode(authnRequest), result -> {
                         if (result.succeeded()) {
                             String resultString = result.result().body();
 
-                            logger.info("handle:{}:{}", Address.Authenticate.getAddress(), resultString);
+                            logger.info("handle:{}:{}", AuthnVerticle.ADDRESS, resultString);
 
                             AuthnResponse authnResponse = Json.decodeValue(resultString, AuthnResponse.class);
 
-                            logger.info("handle:{}:{}", Address.Authenticate.getAddress(), authnResponse.getStatus());
+                            logger.info("handle:{}:{}", AuthnVerticle.ADDRESS, authnResponse.getStatus());
 
                             if (authnResponse.getStatus() == ResponseStatus.Ok) {
                                 handleAuthenticated(routingContext);
@@ -94,17 +87,17 @@ public abstract class AbstactRouteHandler<Q extends AbstractRequest, S extends A
 
         String requestString = Json.encode(request);
 
-        logger.info("handleAuthenticated:{}:{}", address, requestString);
+        logger.info("handleAuthenticated:{}:{}", endpoint.getId(), requestString);
 
-        vertx.eventBus().<String>send(address.getAddress(), requestString, result -> {
+        vertx.eventBus().<String>send(endpoint.getId(), requestString, result -> {
             if (result.succeeded()) {
                 String resultString = result.result().body();
 
-                logger.info("handleAuthenticated:{}:{}", address, resultString);
+                logger.info("handleAuthenticated:{}:{}", endpoint.getId(), resultString);
 
                 S response = Json.decodeValue(resultString, responseClass);
 
-                logger.info("handle:{}:{}", address, response);
+                logger.info("handle:{}:{}", endpoint.getId(), response);
 
                 if (response.getStatus() == ResponseStatus.Ok) {
                     succeed(routingContext, response);
@@ -160,12 +153,8 @@ public abstract class AbstactRouteHandler<Q extends AbstractRequest, S extends A
 
     protected abstract Q request(RoutingContext routingContext);
 
-    public final String path() {
-        return path;
-    }
-
-    public final HttpMethod method() {
-        return method;
+    public final Endpoint endpoint() {
+        return endpoint;
     }
 
 }

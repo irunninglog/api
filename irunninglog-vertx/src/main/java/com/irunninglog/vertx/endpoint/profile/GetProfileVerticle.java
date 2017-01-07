@@ -3,18 +3,17 @@ package com.irunninglog.vertx.endpoint.profile;
 import com.irunninglog.profile.IProfileService;
 import com.irunninglog.profile.ProfileRequest;
 import com.irunninglog.profile.ProfileResponse;
-import com.irunninglog.vertx.Address;
-import com.irunninglog.vertx.endpoint.AbstractRequestResponseVerticle;
+import com.irunninglog.service.Endpoint;
+import com.irunninglog.vertx.endpoint.AbstractEndpointVerticle;
 import com.irunninglog.vertx.endpoint.EndpointVerticle;
 
-@EndpointVerticle(constructorArgs = {
-        IProfileService.class
-})
-public final class ProfileVerticle extends AbstractRequestResponseVerticle<ProfileRequest, ProfileResponse> {
+@EndpointVerticle(endpoint = Endpoint.GetProfile,
+        constructorArgs = {IProfileService.class})
+public final class GetProfileVerticle extends AbstractEndpointVerticle<ProfileRequest, ProfileResponse> {
 
     private final IProfileService profileService;
 
-    public ProfileVerticle(IProfileService profileService) {
+    public GetProfileVerticle(IProfileService profileService) {
         super(ProfileRequest.class, ProfileResponse::new);
         this.profileService = profileService;
     }
@@ -22,11 +21,6 @@ public final class ProfileVerticle extends AbstractRequestResponseVerticle<Profi
     @Override
     protected ProfileResponse handle(ProfileRequest request) {
         return profileService.get(request);
-    }
-
-    @Override
-    protected Address address() {
-        return Address.ProfileGet;
     }
 
 }

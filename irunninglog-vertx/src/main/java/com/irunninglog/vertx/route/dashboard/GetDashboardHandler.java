@@ -2,19 +2,14 @@ package com.irunninglog.vertx.route.dashboard;
 
 import com.irunninglog.dashboard.DashboardRequest;
 import com.irunninglog.dashboard.DashboardResponse;
-import com.irunninglog.security.AccessControl;
-import com.irunninglog.vertx.Address;
-import com.irunninglog.vertx.route.AbstactRouteHandler;
+import com.irunninglog.service.Endpoint;
+import com.irunninglog.vertx.route.AbstractRouteHandler;
 import com.irunninglog.vertx.route.RouteHandler;
 import io.vertx.core.Vertx;
-import io.vertx.core.http.HttpMethod;
 import io.vertx.ext.web.RoutingContext;
 
-@RouteHandler(method = HttpMethod.GET,
-        path = "/profiles/:profileid/dashboard",
-        address = Address.DashboardGet,
-        access = AccessControl.AllowProfile)
-public final class GetDashboardHandler extends AbstactRouteHandler<DashboardRequest, DashboardResponse> {
+@RouteHandler(endpoint = Endpoint.GetDashboard)
+public final class GetDashboardHandler extends AbstractRouteHandler<DashboardRequest, DashboardResponse> {
 
     public GetDashboardHandler(Vertx vertx) {
         super(vertx, DashboardResponse.class);

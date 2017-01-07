@@ -1,8 +1,11 @@
 package com.irunninglog.main;
 
+import com.irunninglog.security.IAuthenticationService;
+import com.irunninglog.security.IAuthorizationService;
 import com.irunninglog.spring.context.ContextConfiguration;
 import com.irunninglog.vertx.endpoint.EndpointVerticle;
 import com.irunninglog.vertx.http.ServerVerticle;
+import com.irunninglog.vertx.security.AuthnVerticle;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
@@ -85,7 +88,10 @@ final class RunningLogApplication {
 
         LOG.info("verticles:will deploy {} verticles", list.size());
 
-        deployVerticles(list.iterator(), asyncResultHandler, vertx);
+        IAuthenticationService authn = applicationContext.getBean(IAuthenticationService.class);
+        IAuthorizationService authz = applicationContext.getBean(IAuthorizationService.class);
+        vertx.deployVerticle(new AuthnVerticle(authn, authz),
+                stringAsyncResult -> deployVerticles(list.iterator(), asyncResultHandler, vertx));
     }
 
     private void deployVerticles(Iterator<AbstractVerticle> iterator, Handler<AsyncResult<String>> asyncResultHandler, Vertx vertx) {

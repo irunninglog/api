@@ -1,7 +1,7 @@
 package com.irunninglog.vertx.route;
 
 import com.irunninglog.security.*;
-import com.irunninglog.vertx.endpoint.authn.AuthnVerticle;
+import com.irunninglog.vertx.security.AuthnVerticle;
 import com.irunninglog.vertx.http.ServerVerticle;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpClient;

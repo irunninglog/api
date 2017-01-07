@@ -2,19 +2,14 @@ package com.irunninglog.vertx.route.profile;
 
 import com.irunninglog.profile.ProfileRequest;
 import com.irunninglog.profile.ProfileResponse;
-import com.irunninglog.security.AccessControl;
-import com.irunninglog.vertx.Address;
-import com.irunninglog.vertx.route.AbstactRouteHandler;
+import com.irunninglog.service.Endpoint;
+import com.irunninglog.vertx.route.AbstractRouteHandler;
 import com.irunninglog.vertx.route.RouteHandler;
 import io.vertx.core.Vertx;
-import io.vertx.core.http.HttpMethod;
 import io.vertx.ext.web.RoutingContext;
 
-@RouteHandler(method = HttpMethod.GET,
-        path = "/profiles/:profileid",
-        address = Address.ProfileGet,
-        access = AccessControl.AllowProfile)
-public final class GetProfileHandler extends AbstactRouteHandler<ProfileRequest, ProfileResponse> {
+@RouteHandler(endpoint = Endpoint.GetProfile)
+public final class GetProfileHandler extends AbstractRouteHandler<ProfileRequest, ProfileResponse> {
 
     public GetProfileHandler(Vertx vertx) {
         super(vertx, ProfileResponse.class);

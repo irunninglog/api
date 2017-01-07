@@ -1,8 +1,9 @@
 package com.irunninglog.vertx.http;
 
-import com.irunninglog.vertx.route.AbstactRouteHandler;
+import com.irunninglog.vertx.route.AbstractRouteHandler;
 import com.irunninglog.vertx.route.RouteHandler;
 import io.vertx.core.AbstractVerticle;
+import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.HttpServer;
 import io.vertx.ext.web.Router;
 import org.reflections.Reflections;
@@ -53,10 +54,10 @@ public final class ServerVerticle extends AbstractVerticle {
         Set<Class<?>> set = reflections.getTypesAnnotatedWith(RouteHandler.class);
 
         for (Class<?> clazz : set) {
-            AbstactRouteHandler<?, ?> handler = (AbstactRouteHandler) clazz.getConstructors()[0].newInstance(vertx);
+            AbstractRouteHandler<?, ?> handler = (AbstractRouteHandler) clazz.getConstructors()[0].newInstance(vertx);
 
             LOG.info("httpServer:{}:before", handler);
-            router.route(handler.method(), handler.path()).handler(handler);
+            router.route(HttpMethod.valueOf(handler.endpoint().getMethod().name()), handler.endpoint().getPath()).handler(handler);
             LOG.info("httpServer:{}:after", handler);
         }
     }

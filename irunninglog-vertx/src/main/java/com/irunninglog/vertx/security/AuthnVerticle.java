@@ -1,16 +1,12 @@
-package com.irunninglog.vertx.endpoint.authn;
+package com.irunninglog.vertx.security;
 
 import com.irunninglog.security.*;
 import com.irunninglog.service.ResponseStatus;
-import com.irunninglog.vertx.Address;
 import com.irunninglog.vertx.endpoint.AbstractRequestResponseVerticle;
-import com.irunninglog.vertx.endpoint.EndpointVerticle;
 
-@EndpointVerticle(constructorArgs = {
-        IAuthenticationService.class,
-        IAuthorizationService.class
-})
-public class AuthnVerticle extends AbstractRequestResponseVerticle<AuthnRequest, AuthnResponse> {
+public final class AuthnVerticle extends AbstractRequestResponseVerticle<AuthnRequest, AuthnResponse> {
+
+    public static final String ADDRESS = "18680d22-5eff-4dd3-ad31-5eed34198143";
 
     private final IAuthenticationService authenticationService;
     private final IAuthorizationService authorizationService;
@@ -45,8 +41,8 @@ public class AuthnVerticle extends AbstractRequestResponseVerticle<AuthnRequest,
     }
 
     @Override
-    protected Address address() {
-        return Address.Authenticate;
+    protected String address() {
+        return ADDRESS;
     }
 
 }

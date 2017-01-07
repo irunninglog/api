@@ -3,7 +3,6 @@ package com.irunninglog.vertx.endpoint;
 import com.irunninglog.service.AbstractResponse;
 import com.irunninglog.service.ResponseStatus;
 import com.irunninglog.service.ResponseStatusException;
-import com.irunninglog.vertx.Address;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Handler;
 import io.vertx.core.eventbus.Message;
@@ -21,6 +20,8 @@ public abstract class AbstractRequestResponseVerticle<Q, S extends AbstractRespo
     private final Class<Q> requestClass;
 
     protected AbstractRequestResponseVerticle(Class<Q> requestClass, Supplier<S> responseSupplier) {
+        super();
+
         this.constructor = responseSupplier;
         this.requestClass = requestClass;
     }
@@ -31,7 +32,7 @@ public abstract class AbstractRequestResponseVerticle<Q, S extends AbstractRespo
 
         super.start();
 
-        vertx.eventBus().<String>consumer(address().getAddress()).handler(handler());
+        vertx.eventBus().<String>consumer(address()).handler(handler());
 
         logger.info("start:end");
     }
@@ -69,9 +70,9 @@ public abstract class AbstractRequestResponseVerticle<Q, S extends AbstractRespo
                 result -> msg.reply(result.result()));
     }
 
-    protected abstract S handle(Q request);
+    protected abstract String address();
 
-    protected abstract Address address();
+    protected abstract S handle(Q request);
 
     private S fromException(Exception ex) {
         S response = constructor.get();

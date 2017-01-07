@@ -2,8 +2,7 @@ package com.irunninglog.vertx.endpoint;
 
 import com.irunninglog.security.*;
 import com.irunninglog.service.ResponseStatus;
-import com.irunninglog.vertx.Address;
-import com.irunninglog.vertx.endpoint.authn.AuthnVerticle;
+import com.irunninglog.vertx.security.AuthnVerticle;
 import io.vertx.core.json.Json;
 import io.vertx.ext.unit.TestContext;
 import org.junit.Before;
@@ -36,7 +35,7 @@ public class AuthnVerticleTest extends AbstractVerticleTest {
 
     @Test
     public void good(TestContext context) {
-        rule.vertx().eventBus().<String>send(Address.Authenticate.getAddress(), Json.encode(goodRequest), context.asyncAssertSuccess(o -> {
+        rule.vertx().eventBus().<String>send(AuthnVerticle.ADDRESS, Json.encode(goodRequest), context.asyncAssertSuccess(o -> {
             String s = o.body();
             AuthnResponse response = Json.decodeValue(s, AuthnResponse.class);
 
@@ -47,7 +46,7 @@ public class AuthnVerticleTest extends AbstractVerticleTest {
 
     @Test
     public void authn(TestContext context) {
-        rule.vertx().eventBus().<String>send(Address.Authenticate.getAddress(), Json.encode(authn), context.asyncAssertSuccess(o -> {
+        rule.vertx().eventBus().<String>send(AuthnVerticle.ADDRESS, Json.encode(authn), context.asyncAssertSuccess(o -> {
             String s = o.body();
             AuthnResponse response = Json.decodeValue(s, AuthnResponse.class);
 
@@ -58,7 +57,7 @@ public class AuthnVerticleTest extends AbstractVerticleTest {
 
     @Test
     public void authz(TestContext context) {
-        rule.vertx().eventBus().<String>send(Address.Authenticate.getAddress(), Json.encode(authz), context.asyncAssertSuccess(o -> {
+        rule.vertx().eventBus().<String>send(AuthnVerticle.ADDRESS, Json.encode(authz), context.asyncAssertSuccess(o -> {
             String s = o.body();
             AuthnResponse response = Json.decodeValue(s, AuthnResponse.class);
 

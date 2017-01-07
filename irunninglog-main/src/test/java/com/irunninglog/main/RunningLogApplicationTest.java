@@ -6,9 +6,10 @@ import com.irunninglog.profile.ProfileRequest;
 import com.irunninglog.profile.ProfileResponse;
 import com.irunninglog.security.AuthnRequest;
 import com.irunninglog.security.AuthnResponse;
+import com.irunninglog.service.Endpoint;
 import com.irunninglog.service.ResponseStatus;
-import com.irunninglog.vertx.Address;
 import com.irunninglog.vertx.http.ServerVerticle;
+import com.irunninglog.vertx.security.AuthnVerticle;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.Json;
 import io.vertx.ext.unit.Async;
@@ -49,7 +50,7 @@ public class RunningLogApplicationTest {
     @Test
     public void authn(TestContext context) {
         Async async = context.async();
-        vertx.eventBus().<String>send(Address.Authenticate.getAddress(),
+        vertx.eventBus().<String>send(AuthnVerticle.ADDRESS,
                 Json.encode(new AuthnRequest()),
                 messageAsyncResult -> {
                     context.assertTrue(messageAsyncResult.succeeded());
@@ -64,7 +65,7 @@ public class RunningLogApplicationTest {
     @Test
     public void profileGet(TestContext context) {
         Async async = context.async();
-        vertx.eventBus().<String>send(Address.ProfileGet.getAddress(),
+        vertx.eventBus().<String>send(Endpoint.GetProfile.getId(),
                 Json.encode(new ProfileRequest().setId(1).setOffset(300)),
                 messageAsyncResult -> {
                     context.assertTrue(messageAsyncResult.succeeded());
@@ -79,7 +80,7 @@ public class RunningLogApplicationTest {
     @Test
     public void dashbaordGet(TestContext context) {
         Async async = context.async();
-        vertx.eventBus().<String>send(Address.DashboardGet.getAddress(),
+        vertx.eventBus().<String>send(Endpoint.GetDashboard.getId(),
                 Json.encode(new DashboardRequest().setId(1).setOffset(300)),
                 messageAsyncResult -> {
                     context.assertTrue(messageAsyncResult.succeeded());

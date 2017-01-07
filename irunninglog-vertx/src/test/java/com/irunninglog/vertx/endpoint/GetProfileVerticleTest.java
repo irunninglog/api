@@ -4,10 +4,10 @@ import com.irunninglog.profile.IProfileService;
 import com.irunninglog.profile.Profile;
 import com.irunninglog.profile.ProfileRequest;
 import com.irunninglog.profile.ProfileResponse;
+import com.irunninglog.service.Endpoint;
 import com.irunninglog.service.ResponseStatus;
 import com.irunninglog.service.ResponseStatusException;
-import com.irunninglog.vertx.Address;
-import com.irunninglog.vertx.endpoint.profile.ProfileVerticle;
+import com.irunninglog.vertx.endpoint.profile.GetProfileVerticle;
 import io.vertx.core.json.Json;
 import io.vertx.ext.unit.TestContext;
 import org.junit.Before;
@@ -16,7 +16,7 @@ import org.mockito.Mockito;
 
 import static org.mockito.Matchers.any;
 
-public class ProfileVerticleTest extends AbstractVerticleTest {
+public class GetProfileVerticleTest extends AbstractVerticleTest {
 
     private IProfileService profileService;
 
@@ -24,15 +24,15 @@ public class ProfileVerticleTest extends AbstractVerticleTest {
     public void before(TestContext context) {
         profileService = Mockito.mock(IProfileService.class);
 
-        ProfileVerticle profileVerticle = new ProfileVerticle(profileService);
-        rule.vertx().deployVerticle(profileVerticle, context.asyncAssertSuccess());
+        GetProfileVerticle getProfileVerticle = new GetProfileVerticle(profileService);
+        rule.vertx().deployVerticle(getProfileVerticle, context.asyncAssertSuccess());
     }
 
     @Test
     public void ok(TestContext context) {
         Mockito.when(profileService.get(any(ProfileRequest.class))).thenReturn(new ProfileResponse().setStatus(ResponseStatus.Ok).setBody(new Profile()));
 
-        rule.vertx().eventBus().<String>send(Address.ProfileGet.getAddress(), Json.encode(new ProfileRequest()), context.asyncAssertSuccess(o -> {
+        rule.vertx().eventBus().<String>send(Endpoint.GetProfile.getId(), Json.encode(new ProfileRequest()), context.asyncAssertSuccess(o -> {
             String s = o.body();
             ProfileResponse response = Json.decodeValue(s, ProfileResponse.class);
 
@@ -45,7 +45,7 @@ public class ProfileVerticleTest extends AbstractVerticleTest {
     public void statusException(TestContext context) {
         Mockito.when(profileService.get(any(ProfileRequest.class))).thenThrow(new ResponseStatusException(ResponseStatus.NotFound));
 
-        rule.vertx().eventBus().<String>send(Address.ProfileGet.getAddress(), Json.encode(new ProfileRequest()), context.asyncAssertSuccess(o -> {
+        rule.vertx().eventBus().<String>send(Endpoint.GetProfile.getId(), Json.encode(new ProfileRequest()), context.asyncAssertSuccess(o -> {
             String s = o.body();
             ProfileResponse response = Json.decodeValue(s, ProfileResponse.class);
 
@@ -58,7 +58,7 @@ public class ProfileVerticleTest extends AbstractVerticleTest {
     public void error(TestContext context) {
         Mockito.when(profileService.get(any(ProfileRequest.class))).thenThrow(new RuntimeException());
 
-        rule.vertx().eventBus().<String>send(Address.ProfileGet.getAddress(), Json.encode(new ProfileRequest()), context.asyncAssertSuccess(o -> {
+        rule.vertx().eventBus().<String>send(Endpoint.GetProfile.getId(), Json.encode(new ProfileRequest()), context.asyncAssertSuccess(o -> {
             String s = o.body();
             ProfileResponse response = Json.decodeValue(s, ProfileResponse.class);
 
