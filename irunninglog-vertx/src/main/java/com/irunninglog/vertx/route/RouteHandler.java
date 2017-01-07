@@ -1,5 +1,7 @@
 package com.irunninglog.vertx.route;
 
+import com.irunninglog.security.AccessControl;
+import com.irunninglog.vertx.Address;
 import io.vertx.core.http.HttpMethod;
 
 import java.lang.annotation.Retention;
@@ -15,5 +17,9 @@ public @interface RouteHandler {
     HttpMethod method();
 
     String path();
+
+    Address address();
+
+    AccessControl access() default AccessControl.DenyAll;
 
 }

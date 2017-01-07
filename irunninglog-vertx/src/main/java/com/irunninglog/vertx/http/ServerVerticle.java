@@ -1,11 +1,10 @@
 package com.irunninglog.vertx.http;
 
+import com.irunninglog.vertx.route.AbstactRouteHandler;
 import com.irunninglog.vertx.route.RouteHandler;
 import io.vertx.core.AbstractVerticle;
-import io.vertx.core.Handler;
 import io.vertx.core.http.HttpServer;
 import io.vertx.ext.web.Router;
-import io.vertx.ext.web.RoutingContext;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,13 +53,11 @@ public final class ServerVerticle extends AbstractVerticle {
         Set<Class<?>> set = reflections.getTypesAnnotatedWith(RouteHandler.class);
 
         for (Class<?> clazz : set) {
-            Handler<RoutingContext> handler = (Handler<RoutingContext>) clazz.getConstructors()[0].newInstance(vertx);
+            AbstactRouteHandler<?, ?> handler = (AbstactRouteHandler) clazz.getConstructors()[0].newInstance(vertx);
 
-            RouteHandler routeHandler = clazz.getAnnotation(RouteHandler.class);
-
-            LOG.info("httpServer:{}:{}:before", routeHandler, handler);
-            router.route(routeHandler.method(), routeHandler.path()).handler(handler);
-            LOG.info("httpServer:{}:{}:after", routeHandler, handler);
+            LOG.info("httpServer:{}:before", handler);
+            router.route(handler.method(), handler.path()).handler(handler);
+            LOG.info("httpServer:{}:after", handler);
         }
     }
 

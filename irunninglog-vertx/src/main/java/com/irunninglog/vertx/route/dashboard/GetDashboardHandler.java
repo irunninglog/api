@@ -2,6 +2,7 @@ package com.irunninglog.vertx.route.dashboard;
 
 import com.irunninglog.dashboard.DashboardRequest;
 import com.irunninglog.dashboard.DashboardResponse;
+import com.irunninglog.security.AccessControl;
 import com.irunninglog.vertx.Address;
 import com.irunninglog.vertx.route.AbstactRouteHandler;
 import com.irunninglog.vertx.route.RouteHandler;
@@ -9,7 +10,10 @@ import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.ext.web.RoutingContext;
 
-@RouteHandler(method = HttpMethod.GET, path = "/profiles/:profileid/dashboard")
+@RouteHandler(method = HttpMethod.GET,
+        path = "/profiles/:profileid/dashboard",
+        address = Address.DashboardGet,
+        access = AccessControl.AllowProfile)
 public final class GetDashboardHandler extends AbstactRouteHandler<DashboardRequest, DashboardResponse> {
 
     public GetDashboardHandler(Vertx vertx) {
@@ -23,11 +27,6 @@ public final class GetDashboardHandler extends AbstactRouteHandler<DashboardRequ
         logger.info("dashboard:get:{}", profileId);
 
         return new DashboardRequest().setId(Integer.parseInt(profileId));
-    }
-
-    @Override
-    protected Address address() {
-        return Address.DashboardGet;
     }
 
 }
