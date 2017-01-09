@@ -17,20 +17,20 @@ public enum Endpoint {
             AccessControl.AllowAll,
             EndpointMethod.GET);
 
-    private final String id;
+    private final String address;
     private final String path;
     private final AccessControl control;
     private final EndpointMethod method;
 
-    Endpoint(String id, String path, AccessControl control, EndpointMethod method) {
-        this.id = id;
+    Endpoint(String address, String path, AccessControl control, EndpointMethod method) {
+        this.address = address;
         this.path = path;
         this.control = control;
         this.method = method;
     }
 
-    public String getId() {
-        return id;
+    public String getAddress() {
+        return address;
     }
 
     public String getPath() {

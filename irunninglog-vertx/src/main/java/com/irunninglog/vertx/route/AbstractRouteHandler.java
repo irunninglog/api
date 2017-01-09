@@ -87,17 +87,17 @@ public abstract class AbstractRouteHandler<Q extends AbstractRequest, S extends 
 
         String requestString = Json.encode(request);
 
-        logger.info("handleAuthenticated:{}:{}", endpoint.getId(), requestString);
+        logger.info("handleAuthenticated:{}:{}", endpoint.getAddress(), requestString);
 
-        vertx.eventBus().<String>send(endpoint.getId(), requestString, result -> {
+        vertx.eventBus().<String>send(endpoint.getAddress(), requestString, result -> {
             if (result.succeeded()) {
                 String resultString = result.result().body();
 
-                logger.info("handleAuthenticated:{}:{}", endpoint.getId(), resultString);
+                logger.info("handleAuthenticated:{}:{}", endpoint.getAddress(), resultString);
 
                 S response = Json.decodeValue(resultString, responseClass);
 
-                logger.info("handle:{}:{}", endpoint.getId(), response);
+                logger.info("handle:{}:{}", endpoint.getAddress(), response);
 
                 if (response.getStatus() == ResponseStatus.Ok) {
                     succeed(routingContext, response);

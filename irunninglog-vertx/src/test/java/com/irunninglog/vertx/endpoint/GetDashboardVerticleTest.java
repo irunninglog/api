@@ -28,7 +28,7 @@ public class GetDashboardVerticleTest extends AbstractVerticleTest {
 
     @Test
     public void ok(TestContext context) {
-        rule.vertx().eventBus().<String>send(Endpoint.GetDashboard.getId(), Json.encode(new DashboardRequest()), context.asyncAssertSuccess(o ->  {
+        rule.vertx().eventBus().<String>send(Endpoint.GetDashboard.getAddress(), Json.encode(new DashboardRequest()), context.asyncAssertSuccess(o ->  {
             String s = o.body();
             DashboardResponse response = Json.decodeValue(s, DashboardResponse.class);
 

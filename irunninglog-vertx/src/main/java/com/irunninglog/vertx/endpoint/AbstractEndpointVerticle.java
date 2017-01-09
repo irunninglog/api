@@ -12,7 +12,7 @@ public abstract class AbstractEndpointVerticle<Q, S extends AbstractResponse> ex
         super(requestClass, responseSupplier);
 
         EndpointVerticle endpointVerticle = getClass().getAnnotation(EndpointVerticle.class);
-        address = endpointVerticle.endpoint().getId();
+        address = endpointVerticle.endpoint().getAddress();
     }
 
     @Override

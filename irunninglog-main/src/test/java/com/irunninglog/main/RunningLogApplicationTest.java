@@ -65,7 +65,7 @@ public class RunningLogApplicationTest {
     @Test
     public void profileGet(TestContext context) {
         Async async = context.async();
-        vertx.eventBus().<String>send(Endpoint.GetProfile.getId(),
+        vertx.eventBus().<String>send(Endpoint.GetProfile.getAddress(),
                 Json.encode(new ProfileRequest().setId(1).setOffset(300)),
                 messageAsyncResult -> {
                     context.assertTrue(messageAsyncResult.succeeded());
@@ -80,7 +80,7 @@ public class RunningLogApplicationTest {
     @Test
     public void dashbaordGet(TestContext context) {
         Async async = context.async();
-        vertx.eventBus().<String>send(Endpoint.GetDashboard.getId(),
+        vertx.eventBus().<String>send(Endpoint.GetDashboard.getAddress(),
                 Json.encode(new DashboardRequest().setId(1).setOffset(300)),
                 messageAsyncResult -> {
                     context.assertTrue(messageAsyncResult.succeeded());
