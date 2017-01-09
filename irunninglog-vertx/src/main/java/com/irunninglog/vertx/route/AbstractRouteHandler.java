@@ -124,7 +124,7 @@ public abstract class AbstractRouteHandler<Q extends AbstractRequest, S extends 
                 authnRequest = new AuthnRequest()
                         .setUsername(tokens[0])
                         .setPassword(tokens[1])
-                        .setPath(routingContext.normalisedPath());
+                        .setEndpoint(endpoint());
             }
         } catch (Exception ex) {
             logger.error("Unable to decode authorization header", ex);

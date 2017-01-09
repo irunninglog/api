@@ -2,9 +2,8 @@ package com.irunninglog.spring.security.impl;
 
 import com.irunninglog.Gender;
 import com.irunninglog.Unit;
-import com.irunninglog.security.AuthnException;
-import com.irunninglog.security.IAuthenticationService;
-import com.irunninglog.security.User;
+import com.irunninglog.security.*;
+import com.irunninglog.service.Endpoint;
 import com.irunninglog.spring.AbstractTest;
 import com.irunninglog.spring.profile.impl.IProfileEntityRepository;
 import com.irunninglog.spring.profile.impl.ProfileEntity;
@@ -63,16 +62,20 @@ public class AuthenticationServiceTest extends AbstractTest {
     }
 
     @Test
-    public void success() throws AuthnException {
-        User user = authenticationService.authenticate("allan@irunninglog.com", "password");
+    public void success() throws AuthnException, AuthzException {
+        User user = authenticationService.authenticate(new AuthnRequest()
+                .setUsername("allan@irunninglog.com")
+                .setPassword("password").setEndpoint(Endpoint.Ping));
         assertEquals("allan@irunninglog.com", user.getUsername());
         assertEquals(1, user.getAuthorities().size());
     }
 
     @Test
-    public void notFound() {
+    public void notFound() throws AuthzException {
         try {
-            authenticationService.authenticate("nobody@irunninglog.com", "password");
+            authenticationService.authenticate(new AuthnRequest()
+                    .setUsername("nobody@irunninglog.com")
+                    .setPassword("password").setEndpoint(Endpoint.Ping));
             fail("Should have thrown");
         } catch (AuthnException ex) {
             assertTrue(ex.getMessage().contains("not found"));
@@ -80,9 +83,12 @@ public class AuthenticationServiceTest extends AbstractTest {
     }
 
     @Test
-    public void wrongPassword() {
+    public void wrongPassword() throws AuthzException {
         try {
-            authenticationService.authenticate("allan@irunninglog.com", "wrong");
+            authenticationService.authenticate(new AuthnRequest()
+                    .setUsername("allan@irunninglog.com")
+                    .setPassword("wrong")
+                    .setEndpoint(Endpoint.Ping));
             fail("Should have thrown");
         } catch (AuthnException ex) {
             assertTrue(ex.getMessage().contains("don't match"));

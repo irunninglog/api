@@ -9,13 +9,11 @@ public final class AuthnVerticle extends AbstractRequestResponseVerticle<AuthnRe
     public static final String ADDRESS = "18680d22-5eff-4dd3-ad31-5eed34198143";
 
     private final IAuthenticationService authenticationService;
-    private final IAuthorizationService authorizationService;
 
-    public AuthnVerticle(IAuthenticationService authenticationService, IAuthorizationService authorizationService) {
+    public AuthnVerticle(IAuthenticationService authenticationService) {
         super(AuthnRequest.class, AuthnResponse::new);
 
         this.authenticationService = authenticationService;
-        this.authorizationService = authorizationService;
     }
 
     @Override
@@ -24,17 +22,15 @@ public final class AuthnVerticle extends AbstractRequestResponseVerticle<AuthnRe
         User user = null;
 
         try {
-            user = authorizationService
-                    .authorize(authenticationService.authenticate(request.getUsername(),
-                            request.getPassword()), request.getPath());
+            user = authenticationService.authenticate(request);
 
             logger.info("handle:user:{}", user);
-        } catch (AuthnException ex) {
-            logger.error("Unable to authenticate", ex);
-            status = ResponseStatus.Unauthenticated;
         } catch (AuthzException ex) {
             logger.error("Unable to authorize", ex);
             status = ResponseStatus.Unauthorized;
+        } catch (Exception ex) {
+            logger.error("Unable to authenticate", ex);
+            status = ResponseStatus.Unauthenticated;
         }
 
         return new AuthnResponse().setStatus(status).setBody(user);

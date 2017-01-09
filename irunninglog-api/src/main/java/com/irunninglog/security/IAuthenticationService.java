@@ -2,6 +2,6 @@ package com.irunninglog.security;
 
 public interface IAuthenticationService {
 
-    User authenticate(String username, String password) throws AuthnException;
+    User authenticate(AuthnRequest request) throws AuthnException, AuthzException;
 
 }

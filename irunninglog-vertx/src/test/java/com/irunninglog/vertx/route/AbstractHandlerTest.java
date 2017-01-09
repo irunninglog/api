@@ -22,7 +22,6 @@ public abstract class AbstractHandlerTest {
     final static String TOKEN = "Basic dXNlcm5hbWU6cGFzc3dvcmQ=";
 
     final IAuthenticationService authenticationService = Mockito.mock(IAuthenticationService.class);
-    private final IAuthorizationService authorizationService = Mockito.mock(IAuthorizationService.class);
 
     Vertx vertx;
     String authVerticleId;
@@ -34,7 +33,7 @@ public abstract class AbstractHandlerTest {
         ServerVerticle verticle = new ServerVerticle(8889);
         vertx.deployVerticle(verticle, context.asyncAssertSuccess());
 
-        AuthnVerticle authnVerticle = new AuthnVerticle(authenticationService, authorizationService);
+        AuthnVerticle authnVerticle = new AuthnVerticle(authenticationService);
         vertx.deployVerticle(authnVerticle, context.asyncAssertSuccess(s -> authVerticleId = s));
 
         afterBefore(context);
@@ -49,8 +48,7 @@ public abstract class AbstractHandlerTest {
 
     final void authn() throws AuthnException, AuthzException {
         User user = new User();
-        Mockito.when(authenticationService.authenticate(any(String.class), any(String.class))).thenReturn(user);
-        Mockito.when(authorizationService.authorize(any(User.class), any(String.class))).thenReturn(user);
+        Mockito.when(authenticationService.authenticate(any(AuthnRequest.class))).thenReturn(user);
     }
 
     final int request(TestContext context, String path, String token) {

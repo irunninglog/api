@@ -1,10 +1,12 @@
 package com.irunninglog.security;
 
+import com.irunninglog.service.Endpoint;
+
 public final class AuthnRequest {
 
     private String username;
     private String password;
-    private String path;
+    private Endpoint endpoint;
 
     public String getUsername() {
         return username;
@@ -24,12 +26,12 @@ public final class AuthnRequest {
         return this;
     }
 
-    public String getPath() {
-        return path;
+    public Endpoint getEndpoint() {
+        return endpoint;
     }
 
-    public AuthnRequest setPath(String path) {
-        this.path = path;
+    public AuthnRequest setEndpoint(Endpoint endpoint) {
+        this.endpoint = endpoint;
         return this;
     }
 
