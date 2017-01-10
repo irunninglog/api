@@ -13,10 +13,12 @@ public class AuthnRequestTest {
         request.setPassword("password");
         request.setEndpoint(Endpoint.Ping);
         request.setUsername("junit@irunninglog.com");
+        request.setPath("/path");
 
         assertEquals("password", request.getPassword());
         assertEquals(Endpoint.Ping, request.getEndpoint());
         assertEquals("junit@irunninglog.com", request.getUsername());
+        assertEquals("/path", request.getPath());
     }
 
 }

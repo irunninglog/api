@@ -7,8 +7,7 @@ import com.irunninglog.service.Endpoint;
 import com.irunninglog.vertx.endpoint.AbstractEndpointVerticle;
 import com.irunninglog.vertx.endpoint.EndpointVerticle;
 
-@EndpointVerticle(endpoint = Endpoint.GetProfile,
-        constructorArgs = {IProfileService.class})
+@EndpointVerticle(endpoint = Endpoint.GetProfile)
 public final class GetProfileVerticle extends AbstractEndpointVerticle<ProfileRequest, ProfileResponse> {
 
     private final IProfileService profileService;

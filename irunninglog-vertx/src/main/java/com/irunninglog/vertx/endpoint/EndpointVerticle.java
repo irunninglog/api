@@ -14,6 +14,4 @@ public @interface EndpointVerticle {
 
     Endpoint endpoint();
 
-    Class<?> [] constructorArgs() default {};
-
 }

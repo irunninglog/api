@@ -3,6 +3,8 @@ package com.irunninglog.spring.security.impl;
 import com.irunninglog.security.*;
 import com.irunninglog.service.Endpoint;
 import com.irunninglog.spring.service.ApiService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.AntPathMatcher;
@@ -14,6 +16,7 @@ import java.util.stream.Collectors;
 @ApiService
 public final class AuthenticationService implements IAuthenticationService {
 
+    private static final Logger LOG = LoggerFactory.getLogger(AuthenticationService.class);
     private static final String PATTERN = "/profiles/{0}/**";
 
     private final IUserEntityRepository userEntityRepository;
@@ -34,7 +37,7 @@ public final class AuthenticationService implements IAuthenticationService {
 
         User user = authenticate(request, userEntityRepository.findByUsername(request.getUsername()));
 
-        authorize(user, request.getEndpoint());
+        authorize(user, request.getEndpoint(), request.getPath());
 
         return user;
     }
@@ -52,19 +55,21 @@ public final class AuthenticationService implements IAuthenticationService {
         }
     }
 
-    private void authorize(User user, Endpoint endpoint) throws AuthzException {
-        if (endpoint.getControl() != AccessControl.AllowAll) {
-            if (endpoint.getControl() == AccessControl.AllowProfile && !isUserAllowsd(user, endpoint)) {
-                throw new AuthzException("User " + user.getUsername() + " cannot access " + endpoint.getPath());
-            } else if (!hasRole(user, "ADMIN")) {
-                throw new AuthzException("Only an admin could access this");
-            }
+    private void authorize(User user, Endpoint endpoint, String path) throws AuthzException {
+        if (endpoint.getControl() == AccessControl.AllowAll) {
+            LOG.info("authorize:AllowAll:{}:{}:{}", user.getUsername(), endpoint, path);
+        } else if (endpoint.getControl() == AccessControl.AllowProfile && isUserAllowed(user, path)) {
+            LOG.info("authorize:AllowProfile:{}:{}:{}", user.getUsername(), endpoint, path);
+        } else if (hasRole(user, "ADMIN")) {
+            LOG.info("authorize:admin:{}:{}:{}", user.getUsername(), endpoint, path);
+        } else {
+            throw new AuthzException("User " + user.getUsername() + " cannot access " + path);
         }
     }
 
-    private boolean isUserAllowsd(User user, Endpoint endpoint) {
+    private boolean isUserAllowed(User user, String path) {
         return hasRole(user, "MYPROFILE") &&
-                matcher.match(MessageFormat.format(PATTERN, user.getId()), endpoint.getPath());
+                matcher.match(MessageFormat.format(PATTERN, user.getId()), path);
     }
 
     private boolean hasRole(User user, String role) {

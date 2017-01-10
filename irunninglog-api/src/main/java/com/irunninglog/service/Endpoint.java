@@ -1,5 +1,6 @@
 package com.irunninglog.service;
 
+import com.google.common.base.MoreObjects;
 import com.irunninglog.security.AccessControl;
 
 public enum Endpoint {
@@ -15,6 +16,10 @@ public enum Endpoint {
     Ping("6678d445-030f-4aad-b360-6304588c07b6",
             "/ping",
             AccessControl.AllowAll,
+            EndpointMethod.GET),
+    Forbidden("a797bebb-80e7-4739-ac38-9154f4de740c",
+            "/forbidden",
+            AccessControl.DenyAll,
             EndpointMethod.GET);
 
     private final String address;
@@ -43,6 +48,16 @@ public enum Endpoint {
 
     public EndpointMethod getMethod() {
         return method;
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("address", address)
+                .add("path", path)
+                .add("control", control)
+                .add("method", method)
+                .toString();
     }
 
 }

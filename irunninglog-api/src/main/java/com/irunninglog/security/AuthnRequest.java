@@ -7,6 +7,7 @@ public final class AuthnRequest {
     private String username;
     private String password;
     private Endpoint endpoint;
+    private String path;
 
     public String getUsername() {
         return username;
@@ -35,4 +36,12 @@ public final class AuthnRequest {
         return this;
     }
 
+    public String getPath() {
+        return path;
+    }
+
+    public AuthnRequest setPath(String path) {
+        this.path = path;
+        return this;
+    }
 }

@@ -7,9 +7,7 @@ import com.irunninglog.service.Endpoint;
 import com.irunninglog.vertx.endpoint.AbstractEndpointVerticle;
 import com.irunninglog.vertx.endpoint.EndpointVerticle;
 
-@EndpointVerticle(
-        endpoint = Endpoint.GetDashboard,
-        constructorArgs = {IDashboardService.class})
+@EndpointVerticle(endpoint = Endpoint.GetDashboard)
 public class GetDashboardVerticle extends AbstractEndpointVerticle<DashboardRequest, DashboardResponse> {
 
     private final IDashboardService service;

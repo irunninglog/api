@@ -32,11 +32,21 @@ public class AuthenticationServiceTest extends AbstractTest {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    private ProfileEntity myprofile;
+    private ProfileEntity admin;
+    private ProfileEntity none;
+
     @Before
     public void before() {
+        myprofile = save("allan@irunninglog.com", "password", "MYPROFILE");
+        admin = save("admin@irunninglog.com", "password", "ADMIN");
+        none = save("none@irunninglog.com", "password");
+    }
+
+    private ProfileEntity save(String email, String password, String ... authorities) {
         ProfileEntity entity = new ProfileEntity();
-        entity.setEmail("allan@irunninglog.com");
-        entity.setPassword(passwordEncoder.encode("password"));
+        entity.setEmail(email);
+        entity.setPassword(passwordEncoder.encode(password));
         entity.setFirstName("Allan");
         entity.setLastName("Lewis");
         entity.setBirthday(LocalDate.now());
@@ -46,13 +56,17 @@ public class AuthenticationServiceTest extends AbstractTest {
 
         entity = profileEntityRepository.save(entity);
 
-        AuthorityEntity authorityEntity = new AuthorityEntity();
-        authorityEntity.setName("foo");
-        authorityEntity = authorityEntityRepository.save(authorityEntity);
-
         UserEntity userEntity = userEntityRepository.findOne(entity.getId());
-        userEntity.getAuthorities().add(authorityEntity);
+        for (String authority : authorities) {
+            AuthorityEntity authorityEntity = new AuthorityEntity();
+            authorityEntity.setName(authority);
+            authorityEntity = authorityEntityRepository.save(authorityEntity);
+
+            userEntity.getAuthorities().add(authorityEntity);
+        }
         userEntityRepository.save(userEntity);
+
+        return entity;
     }
 
     @After
@@ -76,6 +90,7 @@ public class AuthenticationServiceTest extends AbstractTest {
             authenticationService.authenticate(new AuthnRequest()
                     .setUsername("nobody@irunninglog.com")
                     .setPassword("password").setEndpoint(Endpoint.Ping));
+
             fail("Should have thrown");
         } catch (AuthnException ex) {
             assertTrue(ex.getMessage().contains("not found"));
@@ -89,9 +104,61 @@ public class AuthenticationServiceTest extends AbstractTest {
                     .setUsername("allan@irunninglog.com")
                     .setPassword("wrong")
                     .setEndpoint(Endpoint.Ping));
+
             fail("Should have thrown");
         } catch (AuthnException ex) {
             assertTrue(ex.getMessage().contains("don't match"));
+        }
+    }
+
+    @Test
+    public void denyAll() throws AuthnException {
+        try {
+            authenticationService.authenticate(new AuthnRequest()
+                    .setUsername("allan@irunninglog.com")
+                    .setPassword("password")
+                    .setEndpoint(Endpoint.Forbidden));
+
+            fail("Should have thrown");
+        } catch (AuthzException ex) {
+            assertTrue(ex.getMessage().contains("Nobody is allowed"));
+        }
+    }
+
+    @Test
+    public void canViewMyProfile() throws AuthnException, AuthzException {
+        User user = authenticationService.authenticate(new AuthnRequest()
+                .setUsername("allan@irunninglog.com")
+                .setPassword("password")
+                .setEndpoint(Endpoint.GetProfile)
+                .setPath("/profiles/" + myprofile.getId()));
+
+        assertNotNull(user);
+    }
+
+    @Test
+    public void admin() throws AuthnException, AuthzException {
+        User user = authenticationService.authenticate(new AuthnRequest()
+                .setUsername("admin@irunninglog.com")
+                .setPassword("password")
+                .setEndpoint(Endpoint.GetProfile)
+                .setPath("/profiles/" + myprofile.getId() + "" + admin.getId()));
+
+        assertNotNull(user);
+    }
+
+    @Test
+    public void none() throws AuthnException {
+        try {
+            authenticationService.authenticate(new AuthnRequest()
+                    .setUsername("none@irunninglog.com")
+                    .setPassword("password")
+                    .setEndpoint(Endpoint.GetProfile)
+                    .setPath("/profiles/" + none.getId()));
+
+            fail("Should have thrown");
+        } catch (AuthzException ex) {
+            ex.printStackTrace();
         }
     }
 

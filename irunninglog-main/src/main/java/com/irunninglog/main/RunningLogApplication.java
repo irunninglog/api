@@ -20,6 +20,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.core.env.Environment;
 import uk.org.lidalia.sysoutslf4j.context.SysOutOverSLF4J;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -71,18 +72,22 @@ final class RunningLogApplication {
         for (Class<?> clazz : classes) {
             LOG.info("verticles:{}", clazz);
 
-            EndpointVerticle annotation = clazz.getAnnotation(EndpointVerticle.class);
-            Class[] constructorArgs = annotation.constructorArgs();
-            Object [] args = new Object[constructorArgs.length];
-            for (int i = 0; i < constructorArgs.length; i++) {
-                args[i] = applicationContext.getBean(constructorArgs[i]);
+            Constructor [] constructors = clazz.getConstructors();
+            if (constructors.length != 1) {
+                LOG.error("verticles:can't find constructor:{}:{}", clazz, constructors.length);
+            } else {
+                Constructor constructor = constructors[0];
+                Object [] args = new Object[constructor.getParameters().length];
+                for (int i = 0; i < constructor.getParameters().length; i++) {
+                    args[i] = applicationContext.getBean(constructor.getParameters()[i].getType());
+                }
+
+                AbstractVerticle verticle = (AbstractVerticle) clazz.getConstructors()[0].newInstance(args);
+
+                LOG.info("verticles:{}", verticle);
+
+                list.add(verticle);
             }
-
-            AbstractVerticle verticle = (AbstractVerticle) clazz.getConstructors()[0].newInstance(args);
-
-            LOG.info("verticles:{}", verticle);
-
-            list.add(verticle);
         }
 
         LOG.info("verticles:will deploy {} verticles", list.size());
