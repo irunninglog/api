@@ -2,7 +2,6 @@ package com.irunninglog.spring.dashboard.impl;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalAdjusters;
 
 final class Streak {
 
