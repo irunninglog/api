@@ -99,7 +99,7 @@ final class DashboardStreaksService {
                 result.setCurrent(streaks.get(i));
                 result.setThisYear(streaks.get(i));
                 result.setEver(streaks.get(i));
-            } else if (streaks.get(i).isThisYear() && streaks.get(i).getCount() > result.getThisYear().getCount()) {
+            } else if (isThisYearStreak(streaks.get(i), offset) && streaks.get(i).getCount() > result.getThisYear().getCount()) {
                 result.setThisYear(streaks.get(i));
 
                 if (streaks.get(i).getCount() > result.getEver().getCount()) {
@@ -111,6 +111,10 @@ final class DashboardStreaksService {
         }
 
         return result;
+    }
+
+    private boolean isThisYearStreak(Streak streak, int offset) {
+        return streak.getEndDate().isAfter(dateService.getYearStartDate(offset).minusDays(1));
     }
 
     private Streak getNewStreak(WorkoutEntity entity) {

@@ -37,10 +37,6 @@ final class Streak {
         return this;
     }
 
-    boolean isThisYear() {
-        return getEndDate() != null && getEndDate().isAfter(LocalDate.now().with(TemporalAdjusters.firstDayOfYear()).minusDays(1));
-    }
-
     long getSpan() {
         if (getStartDate() == null || getEndDate() == null) {
             return 0;
