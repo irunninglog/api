@@ -1,8 +1,6 @@
 package com.irunninglog.vertx.endpoint;
 
-import com.irunninglog.service.AbstractResponse;
-import com.irunninglog.service.ResponseStatus;
-import com.irunninglog.service.ResponseStatusException;
+import com.irunninglog.service.*;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Handler;
 import io.vertx.core.eventbus.Message;
@@ -12,7 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.function.Supplier;
 
-public abstract class AbstractRequestResponseVerticle<Q, S extends AbstractResponse> extends AbstractVerticle {
+public abstract class AbstractRequestResponseVerticle<Q extends AbstractRequest, S extends AbstractResponse> extends AbstractVerticle {
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 

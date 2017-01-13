@@ -1,8 +1,8 @@
 package com.irunninglog.profile;
 
-import com.irunninglog.service.AbstractRequest;
+import com.irunninglog.service.AbstractProfileIdRequest;
 
-public final class ProfileRequest extends AbstractRequest<ProfileRequest> {
+public final class ProfileRequest extends AbstractProfileIdRequest<ProfileRequest> {
 
     public ProfileRequest() {
         super();

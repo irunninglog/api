@@ -1,10 +1,11 @@
 package com.irunninglog.vertx.endpoint;
 
+import com.irunninglog.service.AbstractRequest;
 import com.irunninglog.service.AbstractResponse;
 
 import java.util.function.Supplier;
 
-public abstract class AbstractEndpointVerticle<Q, S extends AbstractResponse> extends AbstractRequestResponseVerticle<Q, S> {
+public abstract class AbstractEndpointVerticle<Q extends AbstractRequest, S extends AbstractResponse> extends AbstractRequestResponseVerticle<Q, S> {
 
     private final String address;
 

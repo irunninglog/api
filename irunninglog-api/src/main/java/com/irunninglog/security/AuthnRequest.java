@@ -1,8 +1,9 @@
 package com.irunninglog.security;
 
+import com.irunninglog.service.AbstractProfileIdRequest;
 import com.irunninglog.service.Endpoint;
 
-public final class AuthnRequest {
+public final class AuthnRequest extends AbstractProfileIdRequest<AuthnRequest> {
 
     private String username;
     private String password;
