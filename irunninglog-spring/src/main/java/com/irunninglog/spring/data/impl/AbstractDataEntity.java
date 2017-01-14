@@ -1,13 +1,13 @@
 package com.irunninglog.spring.data.impl;
 
-import com.irunninglog.spring.jpa.AbstractEntityWithUser;
+import com.irunninglog.spring.jpa.AbstractEntityWithProfile;
 
 import javax.persistence.*;
 
 @MappedSuperclass
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "WeakerAccess"})
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-abstract class AbstractDataEntity extends AbstractEntityWithUser {
+abstract class AbstractDataEntity extends AbstractEntityWithProfile {
 
     @Column(nullable = false, unique = true)
     private String name;

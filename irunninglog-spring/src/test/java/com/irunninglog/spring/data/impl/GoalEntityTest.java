@@ -1,7 +1,7 @@
 package com.irunninglog.spring.data.impl;
 
 import com.irunninglog.spring.AbstractTest;
-import com.irunninglog.spring.security.impl.UserEntity;
+import com.irunninglog.spring.profile.impl.ProfileEntity;
 import org.junit.Test;
 
 import java.time.LocalDate;
@@ -23,11 +23,11 @@ public class GoalEntityTest extends AbstractTest {
         entity.setDashboard(Boolean.FALSE);
         entity.setName("Name");
         entity.setDescription("Description");
-        entity.setUser(new UserEntity());
+        entity.setProfile(new ProfileEntity());
 
         assertNotNull(entity.getStartDate());
         assertNotNull(entity.getEndDate());
-        assertNotNull(entity.getUser());
+        assertNotNull(entity.getProfile());
         assertEquals(1, entity.getId());
         assertEquals("Name", entity.getName());
         assertEquals("Description", entity.getDescription());

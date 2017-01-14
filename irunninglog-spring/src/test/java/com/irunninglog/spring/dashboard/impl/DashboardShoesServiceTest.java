@@ -21,11 +21,11 @@ public class DashboardShoesServiceTest extends AbstractDashboardServicesTest {
     public void oneShoe() {
         ShoeEntity one = new ShoeEntity();
         one.setName("One");
-        one.setUser(userEntity);
+        one.setProfile(profileEntity);
 
         ShoeEntity two = new ShoeEntity();
         two.setName("Two");
-        two.setUser(userEntity);
+        two.setProfile(profileEntity);
         two.setDashboard(Boolean.TRUE);
 
         shoeEntityRepository.save(one);

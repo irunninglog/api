@@ -72,7 +72,7 @@ public class WorkoutServiceTest extends AbstractTest {
         WorkoutEntity today = new WorkoutEntity();
         today.setDate(LocalDate.now());
         today.setPrivacy(Privacy.Private);
-        today.setUser(userEntity);
+        today.setProfile(profileEntity);
         workoutEntityRepository.save(today);
 
         // Noise profile/workout
@@ -91,7 +91,7 @@ public class WorkoutServiceTest extends AbstractTest {
         WorkoutEntity noiseWorkout = new WorkoutEntity();
         noiseWorkout.setPrivacy(Privacy.Private);
         noiseWorkout.setDate(LocalDate.now());
-        noiseWorkout.setUser(userEntityRepository.findByUsername("noise@irunninglog.com"));
+        noiseWorkout.setProfile(profileEntityRepository.findByEmail("noise@irunninglog.com"));
         workoutEntityRepository.save(noiseWorkout);
     }
 
@@ -159,7 +159,7 @@ public class WorkoutServiceTest extends AbstractTest {
         calendar1.add(Calendar.DAY_OF_MONTH, beginShift);
 
         WorkoutEntity one = new WorkoutEntity();
-        one.setUser(userEntity);
+        one.setProfile(profileEntity);
         one.setPrivacy(Privacy.Private);
         one.setDate(create(calendar1.getTime()));
         workoutEntityRepository.save(one);
@@ -172,7 +172,7 @@ public class WorkoutServiceTest extends AbstractTest {
         calendar2.add(Calendar.DAY_OF_MONTH, endShift);
 
         WorkoutEntity two = new WorkoutEntity();
-        two.setUser(userEntity);
+        two.setProfile(profileEntity);
         two.setPrivacy(Privacy.Private);
         two.setDate(create(calendar.getTime()));
         workoutEntityRepository.save(two);
@@ -197,7 +197,7 @@ public class WorkoutServiceTest extends AbstractTest {
         calendar.set(Calendar.DAY_OF_MONTH, 1);
 
         WorkoutEntity one = new WorkoutEntity();
-        one.setUser(userEntity);
+        one.setProfile(profileEntity);
         one.setPrivacy(Privacy.Private);
         one.setDate(create(calendar.getTime()));
         workoutEntityRepository.save(one);
@@ -206,7 +206,7 @@ public class WorkoutServiceTest extends AbstractTest {
         calendar.add(Calendar.DAY_OF_YEAR, -1);
 
         WorkoutEntity two = new WorkoutEntity();
-        two.setUser(userEntity);
+        two.setProfile(profileEntity);
         two.setPrivacy(Privacy.Private);
         two.setDate(create(calendar.getTime()));
         workoutEntityRepository.save(two);
@@ -226,19 +226,19 @@ public class WorkoutServiceTest extends AbstractTest {
         WorkoutEntity one = new WorkoutEntity();
         one.setDate(create(new Date(dateFormat.parse(thisYear + "-01-01").getTime())));
         one.setPrivacy(Privacy.Private);
-        one.setUser(userEntity);
+        one.setProfile(profileEntity);
         workoutEntityRepository.save(one);
 
         WorkoutEntity two = new WorkoutEntity();
         two.setDate(create(new Date(dateFormat.parse(thisYear + "-12-31").getTime())));
         two.setPrivacy(Privacy.Private);
-        two.setUser(userEntity);
+        two.setProfile(profileEntity);
         workoutEntityRepository.save(two);
 
         WorkoutEntity three = new WorkoutEntity();
         three.setDate(create(new Date(dateFormat.parse(thisYear + "-07-04").getTime())));
         three.setPrivacy(Privacy.Private);
-        three.setUser(userEntity);
+        three.setProfile(profileEntity);
         workoutEntityRepository.save(three);
     }
 
@@ -270,7 +270,7 @@ public class WorkoutServiceTest extends AbstractTest {
         WorkoutEntity one = new WorkoutEntity();
         one.setDate(create(new Date(dateFormat.parse(lastYear + "-01-01").getTime())));
         one.setPrivacy(Privacy.Private);
-        one.setUser(userEntity);
+        one.setProfile(profileEntity);
         workoutEntityRepository.save(one);
 
         Calendar calendar = GregorianCalendar.getInstance();
@@ -279,7 +279,7 @@ public class WorkoutServiceTest extends AbstractTest {
         WorkoutEntity two = new WorkoutEntity();
         two.setDate(create(new Date(calendar.getTime().getTime())));
         two.setPrivacy(Privacy.Private);
-        two.setUser(userEntity);
+        two.setProfile(profileEntity);
         workoutEntityRepository.save(two);
     }
 

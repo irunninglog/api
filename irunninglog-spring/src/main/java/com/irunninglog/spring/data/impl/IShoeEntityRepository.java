@@ -9,7 +9,7 @@ import java.util.List;
 @SuppressWarnings("JpaQlInspection")
 public interface IShoeEntityRepository extends CrudRepository<ShoeEntity, Long> {
 
-    @Query(value = "select s from ShoeEntity s where s.user.id = :id and s.dashboard = true")
+    @Query(value = "select s from ShoeEntity s where s.profile.id = :id and s.dashboard = true")
     List<ShoeEntity> dashboardShoes(@Param("id") long id);
 
 }

@@ -44,7 +44,6 @@ abstract class AbstractDashboardServicesTest extends AbstractTest {
     protected PasswordEncoder passwordEncoder;
 
     ProfileEntity profileEntity;
-    UserEntity userEntity;
 
     @Before
     public void before() {
@@ -64,9 +63,9 @@ abstract class AbstractDashboardServicesTest extends AbstractTest {
         authorityEntity.setName("MYPROFILE");
         authorityEntity = authorityEntityRepository.save(authorityEntity);
 
-        userEntity = userEntityRepository.findOne(profileEntity.getId());
+        UserEntity userEntity = userEntityRepository.findOne(profileEntity.getId());
         userEntity.getAuthorities().add(authorityEntity);
-        userEntity = userEntityRepository.save(userEntity);
+        userEntityRepository.save(userEntity);
     }
 
     @After
@@ -87,7 +86,7 @@ abstract class AbstractDashboardServicesTest extends AbstractTest {
         entity.setPrivacy(Privacy.Private);
         entity.setDate(localDate);
         entity.setDistance(distance);
-        entity.setUser(userEntity);
+        entity.setProfile(profileEntity);
 
         workoutEntityRepository.save(entity);
     }

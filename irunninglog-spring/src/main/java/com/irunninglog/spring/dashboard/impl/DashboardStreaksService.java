@@ -33,7 +33,7 @@ final class DashboardStreaksService {
     }
 
     Collection<ProgressInfo> streaks(ProfileEntity profileEntity, int offset) {
-        List<WorkoutEntity> workouts = workoutEntityRepository.findByUserId(profileEntity.getId());
+        List<WorkoutEntity> workouts = workoutEntityRepository.findByProfileId(profileEntity.getId());
         workouts.sort((o1, o2) -> o2.getDate().compareTo(o1.getDate()));
 
         Streaks streaks = getStreaks(workouts, offset);

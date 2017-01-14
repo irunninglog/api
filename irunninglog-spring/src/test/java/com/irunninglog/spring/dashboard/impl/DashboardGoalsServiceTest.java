@@ -24,11 +24,11 @@ public class DashboardGoalsServiceTest extends AbstractDashboardServicesTest {
     public void oneGoal() {
         GoalEntity one = new GoalEntity();
         one.setName("One");
-        one.setUser(userEntity);
+        one.setProfile(profileEntity);
 
         GoalEntity two = new GoalEntity();
         two.setName("Two");
-        two.setUser(userEntity);
+        two.setProfile(profileEntity);
         two.setDashboard(Boolean.TRUE);
 
         goalEntityRepository.save(one);
@@ -65,7 +65,7 @@ public class DashboardGoalsServiceTest extends AbstractDashboardServicesTest {
         goal.setEndDate(end);
         goal.setName("Goal");
         goal.setDashboard(Boolean.TRUE);
-        goal.setUser(userEntity);
+        goal.setProfile(profileEntity);
 
         goalEntityRepository.save(goal);
     }
