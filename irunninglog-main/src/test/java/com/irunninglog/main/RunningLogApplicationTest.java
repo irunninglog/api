@@ -34,7 +34,7 @@ public class RunningLogApplicationTest {
 
         vertx = Vertx.vertx();
 
-        ServerVerticle verticle = new ServerVerticle(8889);
+        ServerVerticle verticle = new ServerVerticle(8889, context.asyncAssertSuccess());
         vertx.deployVerticle(verticle, context.asyncAssertSuccess());
 
         new RunningLogApplication().start(vertx, context.asyncAssertSuccess());

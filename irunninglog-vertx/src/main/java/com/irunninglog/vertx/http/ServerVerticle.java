@@ -3,6 +3,8 @@ package com.irunninglog.vertx.http;
 import com.irunninglog.vertx.route.AbstractRouteHandler;
 import com.irunninglog.vertx.route.RouteHandler;
 import io.vertx.core.AbstractVerticle;
+import io.vertx.core.AsyncResult;
+import io.vertx.core.Handler;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.HttpServer;
 import io.vertx.ext.web.Router;
@@ -18,9 +20,11 @@ public final class ServerVerticle extends AbstractVerticle {
     private static final Logger LOG = LoggerFactory.getLogger(ServerVerticle.class);
 
     private final int listenPort;
+    private final Handler<AsyncResult<HttpServer>> listenHandler;
 
-    public ServerVerticle(int listenPort) {
+    public ServerVerticle(int listenPort, Handler<AsyncResult<HttpServer>> listenHandler) {
         this.listenPort = listenPort;
+        this.listenHandler = listenHandler;
     }
 
     @Override
@@ -42,7 +46,7 @@ public final class ServerVerticle extends AbstractVerticle {
         install(router);
 
         LOG.info("httpServer:listen:before:{}", listenPort);
-        server.requestHandler(router::accept).listen(listenPort);
+        server.requestHandler(router::accept).listen(listenPort, listenHandler);
         LOG.info("httpServer:listen:after");
 
         LOG.info("httpServer:end");

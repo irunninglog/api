@@ -35,7 +35,9 @@ public abstract class AbstractHandlerTest {
 
         vertx = Vertx.vertx();
 
-        ServerVerticle verticle = new ServerVerticle(8889);
+        Async async = context.async();
+
+        ServerVerticle verticle = new ServerVerticle(8889, context.asyncAssertSuccess(event -> async.complete()));
         vertx.deployVerticle(verticle, context.asyncAssertSuccess(s -> logger.info("Server verticle deployed {}", s)));
 
         AuthnVerticle authnVerticle = new AuthnVerticle(authenticationService);
@@ -48,6 +50,8 @@ public abstract class AbstractHandlerTest {
         logger.info("Before afterBefore {}", context);
         afterBefore(context);
         logger.info("After afterBefore {}", context);
+
+        async.awaitSuccess(10000);
     }
 
     @After
@@ -77,7 +81,7 @@ public abstract class AbstractHandlerTest {
         });
         req.end();
 
-        async.awaitSuccess(60000);
+        async.awaitSuccess(10000);
 
         return responseCode[0];
     }

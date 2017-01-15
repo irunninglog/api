@@ -48,7 +48,7 @@ final class RunningLogApplication {
         int port = environment.getProperty("httpServer.listenPort", Integer.class, 8080);
         LOG.info("start:server:listenPort:{}", port);
 
-        vertx.deployVerticle(new ServerVerticle(port), stringAsyncResult -> {
+        vertx.deployVerticle(new ServerVerticle(port, event -> LOG.info("start:server:listening")), stringAsyncResult -> {
             LOG.info("start:server:after");
             try {
                 verticles(applicationContext, vertx, asyncResultHandler);
