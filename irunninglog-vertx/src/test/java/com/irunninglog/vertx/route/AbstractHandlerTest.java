@@ -31,6 +31,8 @@ public abstract class AbstractHandlerTest {
 
     @Before
     public final void before(TestContext context) {
+        logger.info("Before {}", context);
+
         vertx = Vertx.vertx();
 
         ServerVerticle verticle = new ServerVerticle(8889);
@@ -43,7 +45,9 @@ public abstract class AbstractHandlerTest {
             authVerticleId = s;
         }));
 
+        logger.info("Before afterBefore {}", context);
         afterBefore(context);
+        logger.info("After afterBefore {}", context);
     }
 
     @After
