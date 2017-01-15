@@ -13,6 +13,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static org.mockito.Matchers.any;
 
@@ -21,6 +23,7 @@ public abstract class AbstractHandlerTest {
 
     final static String TOKEN = "Basic dXNlcm5hbWU6cGFzc3dvcmQ=";
 
+    final Logger logger = LoggerFactory.getLogger(getClass());
     final IAuthenticationService authenticationService = Mockito.mock(IAuthenticationService.class);
 
     Vertx vertx;
@@ -31,10 +34,14 @@ public abstract class AbstractHandlerTest {
         vertx = Vertx.vertx();
 
         ServerVerticle verticle = new ServerVerticle(8889);
-        vertx.deployVerticle(verticle, context.asyncAssertSuccess());
+        vertx.deployVerticle(verticle, context.asyncAssertSuccess(s -> logger.info("Server verticle deployed {}", s)));
 
         AuthnVerticle authnVerticle = new AuthnVerticle(authenticationService);
-        vertx.deployVerticle(authnVerticle, context.asyncAssertSuccess(s -> authVerticleId = s));
+        vertx.deployVerticle(authnVerticle, context.asyncAssertSuccess(s -> {
+            logger.info("Auth verticle deployed {}", s);
+
+            authVerticleId = s;
+        }));
 
         afterBefore(context);
     }
@@ -52,6 +59,8 @@ public abstract class AbstractHandlerTest {
     }
 
     final int request(TestContext context, String path, String token) {
+        logger.info("Sending request {}", path);
+
         HttpClient client = vertx.createHttpClient();
         Async async = context.async();
         HttpClientRequest req = client.get(8889, "localhost", path);

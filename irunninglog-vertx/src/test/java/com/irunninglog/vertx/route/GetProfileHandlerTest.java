@@ -23,11 +23,17 @@ public class GetProfileHandlerTest extends AbstractHandlerTest {
     @Override
     protected void afterBefore(TestContext context) {
         GetProfileVerticle getProfileVerticle = new GetProfileVerticle(profileService);
-        vertx.deployVerticle(getProfileVerticle, context.asyncAssertSuccess(s -> profileVerticleId = s));
+        vertx.deployVerticle(getProfileVerticle, context.asyncAssertSuccess(s -> {
+            logger.info("Profile verticle deployed {}", s);
+
+            profileVerticleId = s;
+        }));
     }
 
     @Test
     public void ok(TestContext context) throws AuthnException, AuthzException {
+        logger.info("ok");
+
         authn();
 
         Mockito.when(profileService.get(any(ProfileRequest.class)))
@@ -38,6 +44,8 @@ public class GetProfileHandlerTest extends AbstractHandlerTest {
 
     @Test
     public void notFound(TestContext context) throws AuthnException, AuthzException {
+        logger.info("notFound");
+
         authn();
 
         Mockito.when(profileService.get(any(ProfileRequest.class)))
@@ -48,6 +56,8 @@ public class GetProfileHandlerTest extends AbstractHandlerTest {
 
     @Test
     public void unauthenticated1(TestContext context) throws AuthnException, AuthzException {
+        logger.info("unauthenticated1");
+
         authn();
 
         context.assertEquals(401, request(context, "/profiles/1", ""));
@@ -55,6 +65,8 @@ public class GetProfileHandlerTest extends AbstractHandlerTest {
 
     @Test
     public void unauthenticated2(TestContext context) throws AuthnException, AuthzException {
+        logger.info("unauthenticated2");
+
         Mockito.when(authenticationService.authenticate(any(AuthnRequest.class))).thenThrow(new AuthnException("Unauthenticated"));
 
         context.assertEquals(401, request(context, "/profiles/1", TOKEN));
@@ -62,6 +74,8 @@ public class GetProfileHandlerTest extends AbstractHandlerTest {
 
     @Test
     public void unauthenticated3(TestContext context) throws AuthnException, AuthzException {
+        logger.info("unauthenticated3");
+
         authn();
 
         context.assertEquals(401, request(context, "/profiles/1", "Basic @@@"));
@@ -69,6 +83,8 @@ public class GetProfileHandlerTest extends AbstractHandlerTest {
 
     @Test
     public void error1(TestContext context) throws AuthnException, AuthzException {
+        logger.info("error1");
+
         authn();
 
         vertx.undeploy(profileVerticleId);
@@ -77,6 +93,8 @@ public class GetProfileHandlerTest extends AbstractHandlerTest {
 
     @Test
     public void error2(TestContext context) throws AuthnException, AuthzException {
+        logger.info("error2");
+
         authn();
 
         vertx.undeploy(authVerticleId);
