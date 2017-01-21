@@ -12,7 +12,7 @@ public class EndpointTest {
     public void ping() {
         assertEquals("6678d445-030f-4aad-b360-6304588c07b6", Endpoint.Ping.getAddress());
         assertEquals("/ping", Endpoint.Ping.getPath());
-        assertEquals(AccessControl.AllowAll, Endpoint.Ping.getControl());
+        assertEquals(AccessControl.AllowAnonymous, Endpoint.Ping.getControl());
         assertEquals(EndpointMethod.GET, Endpoint.Ping.getMethod());
     }
 

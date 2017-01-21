@@ -5,6 +5,7 @@ public enum AccessControl {
     DenyAll,
     AllowAll,
     AllowAdmin,
-    AllowProfile
+    AllowProfile,
+    AllowAnonymous
 
 }

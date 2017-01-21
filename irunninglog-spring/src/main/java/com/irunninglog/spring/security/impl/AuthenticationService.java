@@ -33,6 +33,9 @@ public final class AuthenticationService implements IAuthenticationService {
     public User authenticate(AuthnRequest request) throws AuthnException, AuthzException {
         if (request.getEndpoint().getControl() == AccessControl.DenyAll) {
             throw new AuthzException("Nobody is allowed to access endpoint: " + request.getEndpoint());
+        } else if (request.getEndpoint().getControl() == AccessControl.AllowAnonymous) {
+            LOG.debug("Everyone is allowed to access endpoint {}", request.getEndpoint());
+            return null;
         }
 
         User user = authenticate(request, userEntityRepository.findByUsername(request.getUsername()));

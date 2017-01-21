@@ -15,7 +15,7 @@ public enum Endpoint {
             EndpointMethod.GET),
     Ping("6678d445-030f-4aad-b360-6304588c07b6",
             "/ping",
-            AccessControl.AllowAll,
+            AccessControl.AllowAnonymous,
             EndpointMethod.GET),
     Forbidden("a797bebb-80e7-4739-ac38-9154f4de740c",
             "/forbidden",

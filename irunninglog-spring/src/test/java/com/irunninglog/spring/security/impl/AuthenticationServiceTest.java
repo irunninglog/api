@@ -79,7 +79,9 @@ public class AuthenticationServiceTest extends AbstractTest {
     public void success() throws AuthnException, AuthzException {
         User user = authenticationService.authenticate(new AuthnRequest()
                 .setUsername("allan@irunninglog.com")
-                .setPassword("password").setEndpoint(Endpoint.Ping));
+                .setPassword("password")
+                .setEndpoint(Endpoint.GetDashboard)
+                .setPath("/profiles/" + myprofile.getId()));
         assertEquals("allan@irunninglog.com", user.getUsername());
         assertEquals(1, user.getAuthorities().size());
     }
@@ -89,7 +91,7 @@ public class AuthenticationServiceTest extends AbstractTest {
         try {
             authenticationService.authenticate(new AuthnRequest()
                     .setUsername("nobody@irunninglog.com")
-                    .setPassword("password").setEndpoint(Endpoint.Ping));
+                    .setPassword("password").setEndpoint(Endpoint.GetDashboard));
 
             fail("Should have thrown");
         } catch (AuthnException ex) {
@@ -103,7 +105,7 @@ public class AuthenticationServiceTest extends AbstractTest {
             authenticationService.authenticate(new AuthnRequest()
                     .setUsername("allan@irunninglog.com")
                     .setPassword("wrong")
-                    .setEndpoint(Endpoint.Ping));
+                    .setEndpoint(Endpoint.GetDashboard));
 
             fail("Should have thrown");
         } catch (AuthnException ex) {
