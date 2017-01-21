@@ -39,6 +39,7 @@ public abstract class AbstractRouteHandler<Q extends AbstractRequest, S extends 
 
             AuthnRequest authnRequest = new AuthnRequest()
                     .setToken(routingContext.request().getHeader("Authorization"))
+                    .setPath(routingContext.normalisedPath())
                     .setEndpoint(endpoint());
 
             logger.info("handle:authn:{}", authnRequest);
