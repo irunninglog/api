@@ -16,10 +16,10 @@ public class AuthnVerticleTest extends AbstractVerticleTest {
 
     private final IAuthenticationService authenticationService = Mockito.mock(IAuthenticationService.class);
 
-    private final AuthnRequest goodRequest = new AuthnRequest().setUsername("good").setPassword("pass").setEndpoint(Endpoint.GetProfile);
+    private final AuthnRequest goodRequest = new AuthnRequest().setToken("foo").setEndpoint(Endpoint.GetProfile);
     private final User goodUser = new User();
-    private final AuthnRequest authn = new AuthnRequest().setUsername("authn").setPassword("pass").setEndpoint(Endpoint.GetProfile);
-    private final AuthnRequest authz = new AuthnRequest().setUsername("authz").setPassword("pass").setEndpoint(Endpoint.GetProfile);
+    private final AuthnRequest authn = new AuthnRequest().setToken("foo").setEndpoint(Endpoint.GetProfile);
+    private final AuthnRequest authz = new AuthnRequest().setToken("foo").setEndpoint(Endpoint.GetProfile);
 
     @Before
     public void before(TestContext context) throws AuthnException, AuthzException {

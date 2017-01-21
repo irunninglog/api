@@ -14,8 +14,6 @@ import io.vertx.ext.web.RoutingContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Base64;
-
 public abstract class AbstractRouteHandler<Q extends AbstractRequest, S extends AbstractResponse> implements Handler<RoutingContext> {
 
     private final Vertx vertx;
@@ -39,16 +37,11 @@ public abstract class AbstractRouteHandler<Q extends AbstractRequest, S extends 
         try {
             logger.info("handle:start:{}", routingContext.normalisedPath());
 
-            AuthnRequest authnRequest = authnRequest(routingContext);
-            if (authnRequest == null) {
-                logger.error("Unable to get authentication information from request");
+            AuthnRequest authnRequest = new AuthnRequest()
+                    .setToken(routingContext.request().getHeader("Authorization"))
+                    .setEndpoint(endpoint());
 
-                fail(routingContext, ResponseStatus.Unauthenticated);
-
-                return;
-            }
-
-            logger.info("handle:authn:{}", authnRequest.getUsername());
+            logger.info("handle:authn:{}", authnRequest);
 
             vertx.eventBus().<String>send(AuthnVerticle.ADDRESS, Json.encode(authnRequest), result -> {
                         if (result.succeeded()) {
@@ -111,26 +104,6 @@ public abstract class AbstractRouteHandler<Q extends AbstractRequest, S extends 
                 fail(routingContext, ResponseStatus.Error);
             }
         });
-    }
-
-    private AuthnRequest authnRequest(RoutingContext routingContext) {
-        AuthnRequest authnRequest = null;
-
-        try {
-            String authHeader = routingContext.request().getHeader("Authorization");
-            if (authHeader != null && authHeader.toLowerCase().startsWith("basic")) {
-                String decoded = new String(Base64.getDecoder().decode(authHeader.split(" ")[1]));
-                String [] tokens = decoded.split(":");
-                authnRequest = new AuthnRequest()
-                        .setUsername(tokens[0])
-                        .setPassword(tokens[1])
-                        .setEndpoint(endpoint());
-            }
-        } catch (Exception ex) {
-            logger.error("Unable to decode authorization header", ex);
-        }
-
-        return authnRequest;
     }
 
     private void succeed(RoutingContext routingContext, AbstractResponse response) {

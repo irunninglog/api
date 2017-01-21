@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.AntPathMatcher;
 
 import java.text.MessageFormat;
+import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,24 +32,48 @@ public final class AuthenticationService implements IAuthenticationService {
 
     @Override
     public User authenticate(AuthnRequest request) throws AuthnException, AuthzException {
+        LOG.info("authenticate:{}", request);
+
         if (request.getEndpoint().getControl() == AccessControl.DenyAll) {
-            throw new AuthzException("Nobody is allowed to access endpoint: " + request.getEndpoint());
+            LOG.info("authenticate:denyAll:{}", request);
+            throw new AuthzException("Not authorized for endpoint " + request.getEndpoint());
         } else if (request.getEndpoint().getControl() == AccessControl.AllowAnonymous) {
-            LOG.debug("Everyone is allowed to access endpoint {}", request.getEndpoint());
+            LOG.info("authenticate:allowAll:{}", request);
             return null;
         }
 
-        User user = authenticate(request, userEntityRepository.findByUsername(request.getUsername()));
+        Credential credential = credential(request.getToken());
+
+        LOG.info("authenticate:{}:{}", request, credential.username);
+
+        User user = authenticate(credential, userEntityRepository.findByUsername(credential.username));
 
         authorize(user, request.getEndpoint(), request.getPath());
 
         return user;
     }
 
-    private User authenticate(AuthnRequest request, UserEntity userEntity) throws AuthnException {
+    private Credential credential(String token) throws AuthnException {
+        try {
+            String decoded = new String(Base64.getDecoder().decode(token.split(" ")[1]));
+            String [] tokens = decoded.split(":");
+            Credential credential = new Credential();
+            credential.username = tokens[0];
+            credential.password = tokens[1];
+
+            return credential;
+        } catch (Exception ex) {
+            LOG.error("credential", ex);
+            throw new AuthnException("Unable to decode credential");
+        }
+    }
+
+    private User authenticate(Credential credential, UserEntity userEntity) throws AuthnException {
         if (userEntity == null) {
-            throw new AuthnException("User not found: " + request.getUsername());
-        } else if (!passwordEncoder.matches(request.getPassword(), userEntity.getPassword())) {
+            LOG.error("authenticate:notFound:{}", credential.username);
+            throw new AuthnException("User not found: " + credential.username);
+        } else if (!passwordEncoder.matches(credential.password, userEntity.getPassword())) {
+            LOG.error("authenticate:wrongPassword", credential.username);
             throw new AuthnException("Passwords don't match!");
         } else {
             List<String> authorities = userEntity.getAuthorities().stream().map(AuthorityEntity::getName).collect(Collectors.toList());
@@ -83,6 +108,11 @@ public final class AuthenticationService implements IAuthenticationService {
         }
 
         return false;
+    }
+
+    private class Credential {
+        private String username;
+        private String password;
     }
 
 }

@@ -58,7 +58,7 @@ public class GetProfileHandlerTest extends AbstractHandlerTest {
     public void unauthenticated1(TestContext context) throws AuthnException, AuthzException {
         logger.info("unauthenticated1");
 
-        authn();
+        Mockito.when(authenticationService.authenticate(any(AuthnRequest.class))).thenThrow(new AuthnException("Unauthenticated"));
 
         context.assertEquals(401, request(context, "/profiles/1", ""));
     }
@@ -76,7 +76,7 @@ public class GetProfileHandlerTest extends AbstractHandlerTest {
     public void unauthenticated3(TestContext context) throws AuthnException, AuthzException {
         logger.info("unauthenticated3");
 
-        authn();
+        Mockito.when(authenticationService.authenticate(any(AuthnRequest.class))).thenThrow(new AuthnException("Unauthenticated"));
 
         context.assertEquals(401, request(context, "/profiles/1", "Basic @@@"));
     }

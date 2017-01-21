@@ -5,26 +5,16 @@ import com.irunninglog.service.Endpoint;
 
 public final class AuthnRequest extends AbstractProfileIdRequest<AuthnRequest> {
 
-    private String username;
-    private String password;
     private Endpoint endpoint;
     private String path;
+    private String token;
 
-    public String getUsername() {
-        return username;
+    public String getToken() {
+        return token;
     }
 
-    public AuthnRequest setUsername(String username) {
-        this.username = username;
-        return this;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public AuthnRequest setPassword(String password) {
-        this.password = password;
+    public AuthnRequest setToken(String token) {
+        this.token = token;
         return this;
     }
 
@@ -45,4 +35,5 @@ public final class AuthnRequest extends AbstractProfileIdRequest<AuthnRequest> {
         this.path = path;
         return this;
     }
+
 }

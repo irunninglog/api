@@ -78,8 +78,7 @@ public class AuthenticationServiceTest extends AbstractTest {
     @Test
     public void success() throws AuthnException, AuthzException {
         User user = authenticationService.authenticate(new AuthnRequest()
-                .setUsername("allan@irunninglog.com")
-                .setPassword("password")
+                .setToken("Basic YWxsYW5AaXJ1bm5pbmdsb2cuY29tOnBhc3N3b3Jk")
                 .setEndpoint(Endpoint.GetDashboard)
                 .setPath("/profiles/" + myprofile.getId()));
         assertEquals("allan@irunninglog.com", user.getUsername());
@@ -90,8 +89,8 @@ public class AuthenticationServiceTest extends AbstractTest {
     public void notFound() throws AuthzException {
         try {
             authenticationService.authenticate(new AuthnRequest()
-                    .setUsername("nobody@irunninglog.com")
-                    .setPassword("password").setEndpoint(Endpoint.GetDashboard));
+                    .setToken("Basic bm9ib2R5QGlydW5uaW5nbG9nLmNvbTpwYXNzd29yZA==")
+                    .setEndpoint(Endpoint.GetDashboard));
 
             fail("Should have thrown");
         } catch (AuthnException ex) {
@@ -103,8 +102,7 @@ public class AuthenticationServiceTest extends AbstractTest {
     public void wrongPassword() throws AuthzException {
         try {
             authenticationService.authenticate(new AuthnRequest()
-                    .setUsername("allan@irunninglog.com")
-                    .setPassword("wrong")
+                    .setToken("Basic YWxsYW5AaXJ1bm5pbmdsb2cuY29tOndyb25n")
                     .setEndpoint(Endpoint.GetDashboard));
 
             fail("Should have thrown");
@@ -117,21 +115,19 @@ public class AuthenticationServiceTest extends AbstractTest {
     public void denyAll() throws AuthnException {
         try {
             authenticationService.authenticate(new AuthnRequest()
-                    .setUsername("allan@irunninglog.com")
-                    .setPassword("password")
+                    .setToken("Basic YWxsYW5AaXJ1bm5pbmdsb2cuY29tOnBhc3N3b3Jk")
                     .setEndpoint(Endpoint.Forbidden));
 
             fail("Should have thrown");
         } catch (AuthzException ex) {
-            assertTrue(ex.getMessage().contains("Nobody is allowed"));
+            assertTrue(ex.getMessage().contains("Not authorized for endpoint"));
         }
     }
 
     @Test
     public void canViewMyProfile() throws AuthnException, AuthzException {
         User user = authenticationService.authenticate(new AuthnRequest()
-                .setUsername("allan@irunninglog.com")
-                .setPassword("password")
+                .setToken("Basic YWxsYW5AaXJ1bm5pbmdsb2cuY29tOnBhc3N3b3Jk")
                 .setEndpoint(Endpoint.GetProfile)
                 .setPath("/profiles/" + myprofile.getId()));
 
@@ -141,8 +137,7 @@ public class AuthenticationServiceTest extends AbstractTest {
     @Test
     public void admin() throws AuthnException, AuthzException {
         User user = authenticationService.authenticate(new AuthnRequest()
-                .setUsername("admin@irunninglog.com")
-                .setPassword("password")
+                .setToken("Basic YWRtaW5AaXJ1bm5pbmdsb2cuY29tOnBhc3N3b3Jk")
                 .setEndpoint(Endpoint.GetProfile)
                 .setPath("/profiles/" + myprofile.getId() + "" + admin.getId()));
 
@@ -153,8 +148,7 @@ public class AuthenticationServiceTest extends AbstractTest {
     public void none() throws AuthnException {
         try {
             authenticationService.authenticate(new AuthnRequest()
-                    .setUsername("none@irunninglog.com")
-                    .setPassword("password")
+                    .setToken("Basic bm9uZUBpcnVubmluZ2xvZy5jb206cGFzc3dvcmQ=")
                     .setEndpoint(Endpoint.GetProfile)
                     .setPath("/profiles/" + none.getId()));
 

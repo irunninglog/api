@@ -10,14 +10,12 @@ public class AuthnRequestTest {
     @Test
     public void sanity() {
         AuthnRequest request = new AuthnRequest();
-        request.setPassword("password");
+        request.setToken("foo");
         request.setEndpoint(Endpoint.Ping);
-        request.setUsername("junit@irunninglog.com");
         request.setPath("/path");
 
-        assertEquals("password", request.getPassword());
+        assertEquals("foo", request.getToken());
         assertEquals(Endpoint.Ping, request.getEndpoint());
-        assertEquals("junit@irunninglog.com", request.getUsername());
         assertEquals("/path", request.getPath());
     }
 

@@ -62,8 +62,7 @@ public abstract class AbstractHandlerTest {
     protected abstract void afterBefore(TestContext context);
 
     final void authn() throws AuthnException, AuthzException {
-        User user = new User();
-        Mockito.when(authenticationService.authenticate(any(AuthnRequest.class))).thenReturn(user);
+        Mockito.when(authenticationService.authenticate(any(AuthnRequest.class))).thenReturn(new User());
     }
 
     final int request(TestContext context, String path, String token) {
