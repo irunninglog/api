@@ -3,6 +3,7 @@ data: {
     dataSourceUrl: "jdbc:mysql://192.168.0.250:3306/irunninglog"
     dataSourceUsername: "irunninglog"
     dataSourcePassword: "irunninglog"
+    httpServerListenPort: 8080
     jpaPropertiesHbm2ddl: "update"
     jpaPropertiesDialect: "org.hibernate.dialect.MySQL5Dialect"
     logDirectory: "/var/log/irunninglog"
