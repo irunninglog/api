@@ -1,0 +1,224 @@
+@import url(../third/angular-material.css);
+@import url(../third/nv.d3.css);
+.irl-title-sub {
+  color: #FFBD92; }
+
+.irl-title-main {
+  line-height: 36px; }
+
+.irl-title-version {
+  color: #FFBD92; }
+
+.irl-dialog-text {
+  color: rgba(0, 0, 0, 0.54);
+  text-align: justify;
+  font-size: 14px;
+  width: 250px; }
+
+md-tabs md-ink-bar {
+  color: #FFBD92;
+  background-color: #FFBD92; }
+
+.md-button.md-fab.md-fab-bottom-right {
+  top: auto;
+  right: 20px;
+  bottom: 20px;
+  left: auto;
+  position: fixed; }
+
+.irl-login-content {
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto; }
+
+md-icon:not(.irl-login-icon-inactive) {
+  color: #FFBD92; }
+
+md-icon.irl-login-icon-inactive {
+  color: rgba(0, 0, 0, 0.26); }
+
+.irl-login-input-container {
+  margin-left: 8px;
+  margin-right: 8px; }
+
+md-checkbox.irl-login-checkbox {
+  margin-left: 0; }
+
+div.irl-login-button {
+  margin-left: 8px;
+  margin-right: 8px; }
+
+button.irl-login-button {
+  margin-left: 0;
+  margin-right: 0;
+  width: 100%; }
+
+.irl-profile-content {
+  font-size: 13px;
+  font-style: italic; }
+
+text.nvd3.nv-noData {
+  fill: #FFBD92;
+  font-style: italic;
+  font-weight: normal; }
+
+.irl-chart-container-even {
+  background: #ffffff; }
+
+.irl-chart-container-odd {
+  background: #f2f2f2; }
+
+.irl-chart-title {
+  text-align: center; }
+
+.irl-dashboard-items-title {
+  color: #FF6600; }
+
+.irl-no-items-header {
+  color: #FFBD92; }
+
+.dashboard-entry-content {
+  color: #ffffff;
+  background-color: #3949ab; }
+
+.dashboard-entry-form {
+  background-color: #9c27b0; }
+
+.dashboard-entry-form-row-1 {
+  background-color: #8bc34a; }
+
+.dashboard-entry-form-row-2 {
+  background-color: #deb867; }
+
+.irl-dashboard-items-title {
+  margin-left: 16px;
+  margin-top: 0;
+  margin-bottom: 0; }
+
+.irl-4-line {
+  height: 104px !important; }
+
+dashboard-view {
+  margin-top: 8px; }
+
+.irl-no-items-graph {
+  color: rgba(0, 0, 0, 0.54);
+  text-align: justify;
+  font-size: 14px; }
+
+div .irl-no-items {
+  margin-left: 16px;
+  margin-right: 16px; }
+
+.irl-dashboard-list-item {
+  margin-top: 8px !important; }
+
+.irl-workouts-header-header {
+  color: #FF6600;
+  margin: 0; }
+
+.irl-workouts-header-header-primary {
+  color: #4caf50;
+  margin: 0 0 4px 0; }
+
+.irl-workouts-header-header-accent {
+  color: #ffd740;
+  margin: 0 0 4px 0; }
+
+.irl-workouts-header-header-warn {
+  color: #f44336;
+  margin: 0 0 4px 0; }
+
+.irl-workouts-header-prev, .irl-workouts-header-next {
+  color: #ffffff; }
+
+.irl-workouts-content {
+  margin-top: 8px; }
+
+.irl-no-workouts-header {
+  color: #FFBD92; }
+
+.irl-no-workouts-graph {
+  color: rgba(0, 0, 0, 0.54);
+  text-align: justify;
+  font-size: 14px; }
+
+.irl-workouts-header-button {
+  margin: 0 !important; }
+
+.irl-workout-content {
+  height: 108px; }
+
+.irl-workout-date-text {
+  margin: 0;
+  color: #FFBD92; }
+
+.irl-workout-item-data-description {
+  color: rgba(0, 0, 0, 0.54);
+  font-size: 14px;
+  margin-top: 2px;
+  margin-left: 4px; }
+
+.irl-workout-item-data-name {
+  color: black;
+  font-size: 14px;
+  margin-top: 2px;
+  margin-left: 4px; }
+
+.irl-workout-item-data-label {
+  color: #FF6600;
+  font-size: 14px;
+  margin-top: 2px; }
+
+.irl-workout-item-data-row {
+  padding: 2px !important; }
+
+.irl-workout-item-data-title {
+  padding: 4px 4px 4px 2px !important; }
+
+.irl-workout-item-title-token {
+  font-weight: bold;
+  color: #FF6600; }
+
+.irl-workout-date-separator {
+  width: 16px; }
+
+.irl-workout-entry-input {
+  padding-left: 4px;
+  padding-right: 4px;
+  min-width: 176px;
+  width: 100%; }
+
+.irl-success-toast {
+  background: #4caf50;
+  font-weight: bold; }
+
+.irl-error-toast {
+  background: #f44336;
+  font-weight: bold; }
+
+.irl-workout-entry-one, .irl-workout-entry-two, .irl-workout-entry-three, .irl-workout-entry-four, .irl-workout-entry-five, .irl-workout-entry-six {
+  min-width: 200px; }
+
+.irl-workout-entry-select-container {
+  height: 54px; }
+
+.irl-workout-entry-select {
+  min-width: 168px; }
+
+body {
+  margin: 0; }
+
+pre {
+  font-family: inherit; }
+
+.md-title {
+  color: #FF6600; }
+
+div.md-toast-content.irl-toast-warn {
+  background-color: #f44336;
+  font-weight: bold; }
+
+div.md-toast-content.irl-toast-primary {
+  background-color: #4caf50;
+  font-weight: bold; }
