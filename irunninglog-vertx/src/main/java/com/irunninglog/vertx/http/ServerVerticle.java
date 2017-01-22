@@ -8,6 +8,7 @@ import io.vertx.core.Handler;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.HttpServer;
 import io.vertx.ext.web.Router;
+import io.vertx.ext.web.handler.StaticHandler;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,6 +65,8 @@ public final class ServerVerticle extends AbstractVerticle {
             router.route(HttpMethod.valueOf(handler.endpoint().getMethod().name()), handler.endpoint().getPath()).handler(handler);
             LOG.info("httpServer:{}:after", handler);
         }
+
+        router.route("/*").handler(StaticHandler.create().setCachingEnabled(Boolean.FALSE));
     }
 
 }
