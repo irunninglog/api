@@ -55,6 +55,7 @@ public abstract class AbstractRouteHandler<Q extends AbstractRequest, S extends 
                             logger.info("handle:{}:{}", AuthnVerticle.ADDRESS, authnResponse.getStatus());
 
                             if (authnResponse.getStatus() == ResponseStatus.Ok) {
+                                routingContext.put("user", authnResponse.getBody());
                                 handleAuthenticated(routingContext);
                             } else {
                                 fail(routingContext, authnResponse.getStatus());

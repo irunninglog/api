@@ -5,6 +5,10 @@ import com.irunninglog.security.AccessControl;
 
 public enum Endpoint {
 
+    Login("407a8fc3-ce60-4076-81d6-a7432dd7defb",
+            "/authn",
+            AccessControl.AllowAll,
+            EndpointMethod.POST),
     GetDashboard("c83068b3-2d60-4578-b981-a6c173441ba4",
             "/profiles/:profileid/dashboard",
             AccessControl.AllowProfile,

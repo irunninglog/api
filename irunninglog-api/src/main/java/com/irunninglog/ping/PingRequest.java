@@ -2,6 +2,6 @@ package com.irunninglog.ping;
 
 import com.irunninglog.service.AbstractRequest;
 
-public class PingRequest extends AbstractRequest<PingRequest> {
+public final class PingRequest extends AbstractRequest<PingRequest> {
 
 }
