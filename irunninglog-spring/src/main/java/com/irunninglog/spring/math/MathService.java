@@ -64,6 +64,10 @@ public final class MathService {
         }
     }
 
+    public String format(double number, Unit units) {
+        return format(new BigDecimal(number), units);
+    }
+
     public String format(BigDecimal number, Unit units) {
         if (units == Unit.Metric) {
             number = number.multiply(CONVERTER);
