@@ -12,17 +12,20 @@ import java.util.List;
 @ApiService
 public final class DataService implements IDataService {
 
+    private final IRouteEntityRespository routeEntityRespository;
     private final IRunEntityRepository runEntityRepository;
     private final IShoeEntityRepository shoeEntityRepository;
     private final DateService dateService;
     private final MathService mathService;
 
     @Autowired
-    public DataService(IRunEntityRepository runEntityRepository,
+    public DataService(IRouteEntityRespository routeEntityRespository,
+                       IRunEntityRepository runEntityRepository,
                        IShoeEntityRepository shoeEntityRepository,
                        DateService dateService,
                        MathService mathService) {
 
+        this.routeEntityRespository = routeEntityRespository;
         this.runEntityRepository = runEntityRepository;
         this.shoeEntityRepository = shoeEntityRepository;
         this.dateService = dateService;
@@ -76,6 +79,25 @@ public final class DataService implements IDataService {
         runs.getRuns().sort((o1, o2) -> o1.getName().compareTo(o2.getName()));
 
         return new GetRunsResponse().setBody(runs).setStatus(ResponseStatus.Ok);
+    }
+
+
+    @Override
+    public GetRoutesResponse routes(GetDataRequest request) {
+        List<RouteEntity> routeEntityList = routeEntityRespository.findByProfileId(request.getId());
+
+        Routes routes = new Routes();
+        for (RouteEntity routeEntity : routeEntityList) {
+            routes.getRoutes().add(new Route()
+                    .setId(routeEntity.getId())
+                    .setName(routeEntity.getName())
+                    .setDescription(routeEntity.getDescription())
+                    .setDashboard(routeEntity.isDashboard()));
+        }
+
+        routes.getRoutes().sort((o1, o2) -> o1.getName().compareTo(o2.getName()));
+
+        return new GetRoutesResponse().setBody(routes).setStatus(ResponseStatus.Ok);
     }
 
 }

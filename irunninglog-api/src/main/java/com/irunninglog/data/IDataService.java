@@ -6,4 +6,6 @@ public interface IDataService {
 
     GetRunsResponse runs(GetDataRequest request);
 
+    GetRoutesResponse routes(GetDataRequest request);
+
 }

@@ -6,7 +6,7 @@ import com.irunninglog.vertx.route.RouteHandler;
 import io.vertx.core.Vertx;
 
 @RouteHandler(endpoint = Endpoint.GetShoes)
-public class GetShoesHandler extends AbstractGetDataHandler<GetShoesResponse> {
+public final class GetShoesHandler extends AbstractGetDataHandler<GetShoesResponse> {
 
     public GetShoesHandler(Vertx vertx) {
         super(vertx, GetShoesResponse.class);
