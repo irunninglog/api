@@ -12,7 +12,6 @@ public interface IShoeEntityRepository extends CrudRepository<ShoeEntity, Long> 
     @Query(value = "select s from ShoeEntity s where s.profile.id = :id and s.dashboard = true")
     List<ShoeEntity> dashboardShoes(@Param("id") long id);
 
-    @Query(value = "select s from ShoeEntity s where s.profile.id = :id")
-    List<ShoeEntity> shoes(@Param("id") long id);
+    List<ShoeEntity> findByProfileId(long id);
 
 }

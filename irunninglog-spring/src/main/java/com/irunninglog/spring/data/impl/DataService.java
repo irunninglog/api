@@ -10,17 +10,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 
 @ApiService
-public class DataService implements IDataService {
+public final class DataService implements IDataService {
 
+    private final IRunEntityRepository runEntityRepository;
     private final IShoeEntityRepository shoeEntityRepository;
     private final DateService dateService;
     private final MathService mathService;
 
     @Autowired
-    public DataService(IShoeEntityRepository shoeEntityRepository,
+    public DataService(IRunEntityRepository runEntityRepository,
+                       IShoeEntityRepository shoeEntityRepository,
                        DateService dateService,
                        MathService mathService) {
 
+        this.runEntityRepository = runEntityRepository;
         this.shoeEntityRepository = shoeEntityRepository;
         this.dateService = dateService;
         this.mathService = mathService;
@@ -28,7 +31,7 @@ public class DataService implements IDataService {
 
     @Override
     public GetShoesResponse shoes(GetDataRequest request) {
-        List<ShoeEntity> shoeEntityList = shoeEntityRepository.shoes(request.getId());
+        List<ShoeEntity> shoeEntityList = shoeEntityRepository.findByProfileId(request.getId());
 
         Shoes shoes = new Shoes();
         for (ShoeEntity shoeEntity : shoeEntityList) {
@@ -55,6 +58,24 @@ public class DataService implements IDataService {
         });
 
         return new GetShoesResponse().setBody(shoes).setStatus(ResponseStatus.Ok);
+    }
+
+    @Override
+    public GetRunsResponse runs(GetDataRequest request) {
+        List<RunEntity> runEntityList = runEntityRepository.findByProfileId(request.getId());
+
+        Runs runs = new Runs();
+        for (RunEntity runEntity : runEntityList) {
+            runs.getRuns().add(new Run()
+                    .setId(runEntity.getId())
+                    .setName(runEntity.getName())
+                    .setDescription(runEntity.getDescription())
+                    .setDashboard(runEntity.isDashboard()));
+        }
+
+        runs.getRuns().sort((o1, o2) -> o1.getName().compareTo(o2.getName()));
+
+        return new GetRunsResponse().setBody(runs).setStatus(ResponseStatus.Ok);
     }
 
 }

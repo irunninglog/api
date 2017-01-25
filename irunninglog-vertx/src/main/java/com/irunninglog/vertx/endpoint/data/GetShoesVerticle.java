@@ -4,18 +4,13 @@ import com.irunninglog.data.GetDataRequest;
 import com.irunninglog.data.GetShoesResponse;
 import com.irunninglog.data.IDataService;
 import com.irunninglog.service.Endpoint;
-import com.irunninglog.vertx.endpoint.AbstractEndpointVerticle;
 import com.irunninglog.vertx.endpoint.EndpointVerticle;
 
 @EndpointVerticle(endpoint = Endpoint.GetShoes)
-public class GetShoesVerticle extends AbstractEndpointVerticle<GetDataRequest, GetShoesResponse> {
-
-    private final IDataService dataService;
+public class GetShoesVerticle extends AbstractGetDataVerticle<GetShoesResponse> {
 
     public GetShoesVerticle(IDataService dataService) {
-        super(GetDataRequest.class, GetShoesResponse::new);
-
-        this.dataService = dataService;
+        super(dataService, GetShoesResponse::new);
     }
 
     @Override
