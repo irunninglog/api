@@ -77,8 +77,9 @@ public abstract class AbstractRouteHandler<Q extends AbstractRequest, S extends 
 
         Q request = request(routingContext);
 
-        String offset = routingContext.request().getHeader("iRunningLog-Utc-Offset");
-        request.setOffset(offset == null ? 0 : Integer.parseInt(offset));
+        String offsetString = routingContext.request().getHeader("iRunningLog-Utc-Offset");
+        int offset = offsetString == null ? 0 : Integer.parseInt(offsetString);
+        request.setOffset(offset);
 
         String requestString = Json.encode(request);
 

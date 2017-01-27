@@ -2,7 +2,6 @@ package com.irunninglog.vertx.route.security;
 
 import com.irunninglog.security.LoginRequest;
 import com.irunninglog.security.LoginResponse;
-import com.irunninglog.security.User;
 import com.irunninglog.service.Endpoint;
 import com.irunninglog.vertx.route.AbstractRouteHandler;
 import com.irunninglog.vertx.route.RouteHandler;

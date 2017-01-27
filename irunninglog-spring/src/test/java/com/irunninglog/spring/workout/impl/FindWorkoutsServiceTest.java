@@ -27,7 +27,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 @SuppressWarnings("SpringJavaAutowiredMembersInspection")
-public class WorkoutServiceTest extends AbstractTest {
+public class FindWorkoutsServiceTest extends AbstractTest {
 
     @Autowired
     private IProfileEntityRepository profileEntityRepository;
@@ -36,7 +36,7 @@ public class WorkoutServiceTest extends AbstractTest {
     @Autowired
     private IUserEntityRepository userEntityRepository;
     @Autowired
-    private WorkoutService workoutsService;
+    private FindWorkoutsService workoutsService;
     @Autowired
     private PasswordEncoder passwordEncoder;
 

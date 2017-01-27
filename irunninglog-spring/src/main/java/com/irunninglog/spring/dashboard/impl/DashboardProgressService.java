@@ -7,7 +7,7 @@ import com.irunninglog.spring.math.MathService;
 import com.irunninglog.spring.profile.impl.ProfileEntity;
 import com.irunninglog.spring.service.InternalService;
 import com.irunninglog.spring.workout.impl.WorkoutEntity;
-import com.irunninglog.spring.workout.impl.WorkoutService;
+import com.irunninglog.spring.workout.impl.FindWorkoutsService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
@@ -18,12 +18,12 @@ import java.util.List;
 @InternalService
 final class DashboardProgressService {
 
-    private final WorkoutService workoutsService;
+    private final FindWorkoutsService workoutsService;
     private final MathService mathService;
     private final DateService dateService;
 
     @Autowired
-    public DashboardProgressService(WorkoutService workoutsService,
+    public DashboardProgressService(FindWorkoutsService workoutsService,
                                     MathService mathService,
                                     DateService dateService) {
         super();
