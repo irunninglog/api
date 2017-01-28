@@ -7,7 +7,7 @@ import javax.persistence.*;
 @MappedSuperclass
 @SuppressWarnings({"unused", "WeakerAccess"})
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-abstract class AbstractDataEntity extends AbstractEntityWithProfile {
+public abstract class AbstractDataEntity extends AbstractEntityWithProfile {
 
     @Column(nullable = false, unique = true)
     private String name;

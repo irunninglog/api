@@ -2,6 +2,7 @@ package com.irunninglog.workout;
 
 import com.irunninglog.Privacy;
 
+@SuppressWarnings("unused")
 public final class Workout {
 
     private long id;
@@ -9,6 +10,7 @@ public final class Workout {
     private String date;
     private String distance;
     private String duration;
+    private String pace;
     private Privacy privacy;
 
     private WorkoutData route;
@@ -57,6 +59,15 @@ public final class Workout {
 
     public Workout setDuration(String duration) {
         this.duration = duration;
+        return this;
+    }
+
+    public String getPace() {
+        return pace;
+    }
+
+    public Workout setPace(String pace) {
+        this.pace = pace;
         return this;
     }
 
