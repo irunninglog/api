@@ -138,4 +138,8 @@ public final class DateService {
         return DateTimeFormatter.ofPattern("MMMM yyyy").format(clientTime);
     }
 
+    public String formatMonthMedium(LocalDate localDate) {
+        return DateTimeFormatter.ofPattern("MMMM yyyy").format(localDate);
+    }
+
 }

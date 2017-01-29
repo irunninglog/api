@@ -76,7 +76,7 @@ public class WorkoutService implements IWorkoutService {
                 mathService.intValue(new BigDecimal(profileEntity.getMonthlyTarget())));
 
         return new WorkoutsSummary()
-                .setTitle(dateService.formatMedium(localDate))
+                .setTitle(dateService.formatMonthMedium(localDate))
                 .setCount(workoutEntities.size())
                 .setMileage(mileageString)
                 .setProgress(progress)
@@ -85,7 +85,7 @@ public class WorkoutService implements IWorkoutService {
 
     private WorkoutsMonth month(LocalDate month) {
         return month == null ? null : new WorkoutsMonth()
-                .setTitle(dateService.formatMedium(month))
+                .setTitle(dateService.formatMonthMedium(month))
                 .setDate(dateService.format(month));
     }
 
