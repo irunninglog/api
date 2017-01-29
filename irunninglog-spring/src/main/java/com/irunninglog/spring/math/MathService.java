@@ -91,4 +91,14 @@ public final class MathService {
         return max.doubleValue() < 1E-9 ? 0 : intValue(divide(value.multiply(new BigDecimal(100)), max));
     }
 
+    public String formatShort(double total, Unit units) {
+        BigDecimal number = new BigDecimal(total);
+
+        if (units == Unit.Metric) {
+            number = number.multiply(CONVERTER);
+        }
+
+        return number.setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString();
+    }
+
 }
