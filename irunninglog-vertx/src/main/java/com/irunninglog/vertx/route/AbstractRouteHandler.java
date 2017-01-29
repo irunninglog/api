@@ -2,10 +2,7 @@ package com.irunninglog.vertx.route;
 
 import com.irunninglog.security.AuthnRequest;
 import com.irunninglog.security.AuthnResponse;
-import com.irunninglog.service.AbstractRequest;
-import com.irunninglog.service.AbstractResponse;
-import com.irunninglog.service.Endpoint;
-import com.irunninglog.service.ResponseStatus;
+import com.irunninglog.service.*;
 import com.irunninglog.vertx.security.AuthnVerticle;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
@@ -75,8 +72,15 @@ public abstract class AbstractRouteHandler<Q extends AbstractRequest, S extends 
     private void handleAuthenticated(RoutingContext routingContext) {
         logger.info("handleAuthenticated:start:{}", routingContext.normalisedPath());
 
-        Q request = request(routingContext);
+        try {
+            Q request = request(routingContext);
+            handle(routingContext, request);
+        } catch (ResponseStatusException ex) {
+            fail(routingContext, ResponseStatus.NotFound);
+        }
+    }
 
+    private void handle(RoutingContext routingContext, Q request) {
         String offsetString = routingContext.request().getHeader("iRunningLog-Utc-Offset");
         int offset = offsetString == null ? 0 : Integer.parseInt(offsetString);
         request.setOffset(offset);

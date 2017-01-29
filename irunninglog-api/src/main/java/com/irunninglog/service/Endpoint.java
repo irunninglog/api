@@ -30,7 +30,7 @@ public enum Endpoint {
             AccessControl.AllowProfile,
             EndpointMethod.GET),
     GetWorkouts("8f639fb2-f4ac-431e-83cb-25c957d0c835",
-            "/profiles/:profileid/workouts",
+            "/profiles/:profileid/workouts*",
             AccessControl.AllowProfile,
             EndpointMethod.GET),
     Ping("6678d445-030f-4aad-b360-6304588c07b6",

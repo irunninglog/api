@@ -42,7 +42,9 @@ public class WorkoutService implements IWorkoutService {
 
     @Override
     public GetWorkoutsResponse get(GetWorkoutsRequest request) {
-        LocalDate localDate = dateService.getMonthStartDate(request.getOffset());
+        LocalDate localDate = request.getDate() == null
+                ? dateService.getMonthStartDate(request.getOffset())
+                : dateService.parse(request.getDate());
 
         ProfileEntity profileEntity = profileEntityRepository.findOne(request.getId());
 
