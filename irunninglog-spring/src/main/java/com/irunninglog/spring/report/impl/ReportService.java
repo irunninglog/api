@@ -1,10 +1,8 @@
 package com.irunninglog.spring.report.impl;
 
-import com.irunninglog.Progress;
 import com.irunninglog.report.*;
 import com.irunninglog.service.ResponseStatus;
 import com.irunninglog.spring.data.impl.*;
-import com.irunninglog.spring.math.MathService;
 import com.irunninglog.spring.profile.impl.IProfileEntityRepository;
 import com.irunninglog.spring.profile.impl.ProfileEntity;
 import com.irunninglog.spring.service.ApiService;
@@ -12,8 +10,6 @@ import com.irunninglog.spring.workout.impl.IWorkoutEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 @ApiService
 public final class ReportService implements IReportService {
@@ -23,7 +19,8 @@ public final class ReportService implements IReportService {
     private final IRunEntityRepository runEntityRepository;
     private final IShoeEntityRepository shoeEntityRepository;
     private final IWorkoutEntityRepository workoutEntityRepository;
-    private final MathService mathService;
+    private final MileageByDataService mileageByDataService;
+    private final MileageByMonthService mileageByMonthService;
 
     @Autowired
     public ReportService(IProfileEntityRepository profileEntityRepository,
@@ -31,109 +28,73 @@ public final class ReportService implements IReportService {
                          IRunEntityRepository runEntityRepository,
                          IShoeEntityRepository shoeEntityRepository,
                          IWorkoutEntityRepository workoutEntityRepository,
-                         MathService mathService) {
+                         MileageByDataService mileageByDataService,
+                         MileageByMonthService mileageByMonthService) {
 
         this.profileEntityRepository = profileEntityRepository;
         this.routeEntityRespository = routeEntityRespository;
         this.runEntityRepository = runEntityRepository;
         this.shoeEntityRepository = shoeEntityRepository;
         this.workoutEntityRepository = workoutEntityRepository;
-        this.mathService = mathService;
+        this.mileageByDataService = mileageByDataService;
+        this.mileageByMonthService = mileageByMonthService;
     }
 
     @Override
     public GetMultiSetResponse mileageByMonth(GetReportRequest request) {
-        return new GetMultiSetResponse().setBody(new MultiSet()).setStatus(ResponseStatus.Ok);
+        ProfileEntity profileEntity = profileEntityRepository.findOne(request.getId());
+
+        MultiSet multiSet = mileageByMonthService.multiSet(workoutEntityRepository.findByProfileId(profileEntity.getId()), profileEntity);
+
+        return new GetMultiSetResponse().setBody(multiSet).setStatus(ResponseStatus.Ok);
     }
 
     @Override
     public GetDataSetResponse mileageByRoute(GetReportRequest request) {
-        return new GetDataSetResponse().setBody(routesDataSet(request.getId())).setStatus(ResponseStatus.Ok);
+        ProfileEntity profileEntity = profileEntityRepository.findOne(request.getId());
+
+        DataSet dataSet = mileageByDataService.dataSet(routeEntityRespository.findByProfileId(profileEntity.getId()),
+                this::routeTotal,
+                profileEntity.getId(),
+                profileEntity.getPreferredUnits());
+
+        return new GetDataSetResponse().setBody(dataSet).setStatus(ResponseStatus.Ok);
     }
 
-    private DataSet routesDataSet(long id) {
-        ProfileEntity profileEntity = profileEntityRepository.findOne(id);
-
-        List<RouteEntity> routes = routeEntityRespository.findByProfileId(profileEntity.getId());
-        List<DataPoint> points = new ArrayList<>();
-        for (RouteEntity route : routes) {
-            BigDecimal distance = workoutEntityRepository.routeMileage(route.getId());
-            if (distance != null && distance.compareTo(BigDecimal.ZERO) > 0) {
-                DataPoint dataPoint = new DataPoint()
-                        .setLabel(route.getName())
-                        .setValue(mathService.formatShort(distance.doubleValue(), profileEntity.getPreferredUnits()))
-                        .setProgress(Progress.None);
-
-                points.add(dataPoint);
-            }
-        }
-
-        points.sort((o1, o2) -> o1.getLabel().compareTo(o2.getLabel()));
-
-        DataSet dataSet = new DataSet();
-        points.forEach(dataSet::add);
-
-        return dataSet;
+    private BigDecimal routeTotal(IdParameters parameters) {
+        return workoutEntityRepository.routeMileage(parameters.profileId, parameters.dataId);
     }
 
     @Override
     public GetDataSetResponse mileageByRun(GetReportRequest request) {
-        return new GetDataSetResponse().setBody(runsDataSet(request.getId())).setStatus(ResponseStatus.Ok);
+        ProfileEntity profileEntity = profileEntityRepository.findOne(request.getId());
+
+        DataSet dataSet = mileageByDataService.dataSet(runEntityRepository.findByProfileId(profileEntity.getId()),
+                this::runTotal,
+                profileEntity.getId(),
+                profileEntity.getPreferredUnits());
+
+        return new GetDataSetResponse().setBody(dataSet).setStatus(ResponseStatus.Ok);
     }
 
-    private DataSet runsDataSet(long id) {
-        ProfileEntity profileEntity = profileEntityRepository.findOne(id);
-
-        List<RunEntity> runs = runEntityRepository.findByProfileId(profileEntity.getId());
-        List<DataPoint> points = new ArrayList<>();
-        for (RunEntity run : runs) {
-            BigDecimal distance = workoutEntityRepository.runMileage(run.getId());
-            if (distance != null && distance.compareTo(BigDecimal.ZERO) > 0) {
-                DataPoint dataPoint = new DataPoint()
-                        .setLabel(run.getName())
-                        .setValue(mathService.formatShort(distance.doubleValue(), profileEntity.getPreferredUnits()))
-                        .setProgress(Progress.None);
-
-                points.add(dataPoint);
-            }
-        }
-
-        points.sort((o1, o2) -> o1.getLabel().compareTo(o2.getLabel()));
-
-        DataSet dataSet = new DataSet();
-        points.forEach(dataSet::add);
-
-        return dataSet;
+    private BigDecimal runTotal(IdParameters parameters) {
+        return workoutEntityRepository.runMileage(parameters.profileId, parameters.dataId);
     }
 
     @Override
     public GetDataSetResponse mileageByShoe(GetReportRequest request) {
-        return new GetDataSetResponse().setBody(shoesDataSet(request.getId())).setStatus(ResponseStatus.Ok);
+        ProfileEntity profileEntity = profileEntityRepository.findOne(request.getId());
+
+        DataSet dataSet = mileageByDataService.dataSet(shoeEntityRepository.findByProfileId(profileEntity.getId()),
+                this::shoeTotal,
+                profileEntity.getId(),
+                profileEntity.getPreferredUnits());
+
+        return new GetDataSetResponse().setBody(dataSet).setStatus(ResponseStatus.Ok);
     }
 
-    private DataSet shoesDataSet(long id) {
-        ProfileEntity profileEntity = profileEntityRepository.findOne(id);
-
-        List<ShoeEntity> shoes = shoeEntityRepository.findByProfileId(profileEntity.getId());
-        List<DataPoint> points = new ArrayList<>();
-        for (ShoeEntity shoe : shoes) {
-            BigDecimal distance = workoutEntityRepository.shoeMileage(profileEntity.getId(), shoe.getId());
-            if (distance != null && distance.compareTo(BigDecimal.ZERO) > 0) {
-                DataPoint dataPoint = new DataPoint()
-                        .setLabel(shoe.getName())
-                        .setValue(mathService.formatShort(distance.doubleValue(), profileEntity.getPreferredUnits()))
-                        .setProgress(Progress.None);
-
-                points.add(dataPoint);
-            }
-        }
-
-        points.sort((o1, o2) -> o1.getLabel().compareTo(o2.getLabel()));
-
-        DataSet dataSet = new DataSet();
-        points.forEach(dataSet::add);
-
-        return dataSet;
+    private BigDecimal shoeTotal(IdParameters parameters) {
+        return workoutEntityRepository.shoeMileage(parameters.profileId, parameters.dataId);
     }
 
 }

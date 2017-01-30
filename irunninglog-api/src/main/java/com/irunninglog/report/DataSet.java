@@ -1,9 +1,32 @@
 package com.irunninglog.report;
 
+import com.irunninglog.Unit;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public final class DataSet {
+
+    private String key;
+    private Unit units;
+
+    public String getKey() {
+        return key;
+    }
+
+    public DataSet setKey(String key) {
+        this.key = key;
+        return this;
+    }
+
+    public Unit getUnits() {
+        return units;
+    }
+
+    public DataSet setUnits(Unit units) {
+        this.units = units;
+        return this;
+    }
 
     private final List<DataPoint> data = new ArrayList<>();
 

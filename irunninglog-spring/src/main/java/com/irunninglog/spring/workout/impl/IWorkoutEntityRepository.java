@@ -16,11 +16,11 @@ public interface IWorkoutEntityRepository extends CrudRepository<WorkoutEntity, 
     @Query(value = "select w from WorkoutEntity w where w.date >= :startDate and w.date <= :endDate and w.profile.id = :profileId")
     List<WorkoutEntity> findByDateRange(@Param("profileId") long profileId, @Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
 
-    @Query(value = "select sum(w.distance) as sum from WorkoutEntity w where w.route.id = :routeId")
-    BigDecimal routeMileage(@Param("routeId") long routeId);
+    @Query(value = "select sum(w.distance) as sum from WorkoutEntity w where w.profile.id = :profileId and  w.route.id = :routeId")
+    BigDecimal routeMileage(@Param("profileId") long profileId, @Param("routeId") long routeId);
 
-    @Query(value = "select sum(w.distance) as sum from WorkoutEntity w where w.run.id = :runId")
-    BigDecimal runMileage(@Param("runId") long runId);
+    @Query(value = "select sum(w.distance) as sum from WorkoutEntity w where w.profile.id = :profileId and w.run.id = :runId")
+    BigDecimal runMileage(@Param("profileId") long profileId, @Param("runId") long runId);
 
     @Query(value = "select sum(w.distance) as sum from WorkoutEntity w where w.profile.id = :profileId and w.shoe.id = :shoeId")
     BigDecimal shoeMileage(@Param("profileId") long profileId, @Param("shoeId") long shoeId);

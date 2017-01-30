@@ -37,6 +37,10 @@ public final class DateService {
         return asLocalDate(clientTime.with(TemporalAdjusters.firstDayOfMonth()));
     }
 
+    public LocalDate getMonthStartDate(LocalDate date) {
+        return date.with(TemporalAdjusters.firstDayOfMonth());
+    }
+
     public LocalDate getMonthEndDate(int offset) {
         ZonedDateTime clientTime = clientTimeFromServerTime(ZonedDateTime.now(), offset);
         return asLocalDate(clientTime.with(TemporalAdjusters.lastDayOfMonth()));
@@ -140,6 +144,14 @@ public final class DateService {
 
     public String formatMonthMedium(LocalDate localDate) {
         return DateTimeFormatter.ofPattern("MMMM yyyy").format(localDate);
+    }
+
+    public String formatYear(LocalDate date) {
+        return DateTimeFormatter.ofPattern("yyyy").format(date);
+    }
+
+    public String formatMonthShort(LocalDate localDate) {
+        return DateTimeFormatter.ofPattern("MMM").format(localDate);
     }
 
 }
