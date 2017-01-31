@@ -51,6 +51,10 @@ public final class DateService {
         return asLocalDate(clientTime.with(TemporalAdjusters.firstDayOfYear()));
     }
 
+    public LocalDate getYearStartDate(LocalDate date) {
+        return date.with(TemporalAdjusters.firstDayOfYear());
+    }
+
     public LocalDate getYearEndDate(int offset) {
         ZonedDateTime clientTime = clientTimeFromServerTime(ZonedDateTime.now(), offset);
         return asLocalDate(clientTime.with(TemporalAdjusters.lastDayOfYear()));

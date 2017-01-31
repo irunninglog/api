@@ -40,7 +40,10 @@ class MileageByDataService {
 
         points.sort((o1, o2) -> o1.getLabel().compareTo(o2.getLabel()));
 
-        DataSet dataSet = new DataSet();
+        DataSet dataSet = new DataSet()
+                .setKey(String.valueOf(profileId))
+                .setUnits(unit);
+
         points.forEach(dataSet::add);
 
         return dataSet;

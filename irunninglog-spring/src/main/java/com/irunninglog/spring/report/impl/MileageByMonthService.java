@@ -54,7 +54,7 @@ class MileageByMonthService {
         MultiSet multiSet = new MultiSet();
         while (!workoutEntities.isEmpty()) {
             String year = dateService.formatYear(workoutEntities.get(0).getDate());
-            LocalDate yearStart = dateService.getYearStartDate(workoutEntities.get(0).getDate().getYear());
+            LocalDate yearStart = dateService.getYearStartDate(workoutEntities.get(0).getDate());
             DataSet yearDataSet = new DataSet()
                     .setKey(year)
                     .setUnits(profileEntity.getPreferredUnits());
