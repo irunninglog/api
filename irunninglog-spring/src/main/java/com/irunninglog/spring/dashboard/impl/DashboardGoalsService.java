@@ -64,6 +64,8 @@ final class DashboardGoalsService {
             progressList.add(progressInfo);
         }
 
+        progressList.sort(new ProgressInfoComparator());
+
         return progressList;
     }
 

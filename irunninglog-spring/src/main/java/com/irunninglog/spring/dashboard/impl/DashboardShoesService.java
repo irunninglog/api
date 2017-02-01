@@ -62,6 +62,8 @@ final class DashboardShoesService {
             progressList.add(progressInfo);
         }
 
+        progressList.sort(new ProgressInfoComparator());
+
         return progressList;
     }
 

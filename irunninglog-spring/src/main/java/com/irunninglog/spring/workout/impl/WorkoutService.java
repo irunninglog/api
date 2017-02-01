@@ -60,6 +60,8 @@ public class WorkoutService implements IWorkoutService {
             workouts.getWorkouts().add(workout(workoutEntity, profileEntity));
         }
 
+        workouts.getWorkouts().sort((o1, o2) -> o2.getDate().compareTo(o1.getDate()));
+
         return new GetWorkoutsResponse()
                 .setBody(workouts)
                 .setStatus(ResponseStatus.Ok);
