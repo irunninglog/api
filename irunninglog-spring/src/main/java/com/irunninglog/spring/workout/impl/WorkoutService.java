@@ -77,6 +77,8 @@ public class WorkoutService implements IWorkoutService {
         int percentage = mathService.getPercentage(mathService.intValue(mileage),
                 mathService.intValue(new BigDecimal(profileEntity.getMonthlyTarget())));
 
+        percentage = Math.min(100, percentage);
+
         return new WorkoutsSummary()
                 .setTitle(dateService.formatMonthMedium(localDate))
                 .setCount(workoutEntities.size())
