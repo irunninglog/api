@@ -40,7 +40,10 @@ public final class ProfileService implements IProfileService {
                 .setPreferredUnits(entity.getPreferredUnits())
                 .setWeeklyTarget(entity.getWeeklyTarget())
                 .setMonthlyTarget(entity.getMonthlyTarget())
-                .setYearlyTarget(entity.getYearlyTarget());
+                .setYearlyTarget(entity.getYearlyTarget())
+                .setDefaultRouteId(entity.getDefaultRoute() == null ? -1 : entity.getDefaultRoute().getId())
+                .setDefaultRunId(entity.getDefaultRun() == null ? -1 : entity.getDefaultRun().getId())
+                .setDefaultShoeId(entity.getDefaultShoe() == null ? -1 : entity.getDefaultShoe().getId());
 
         return new ProfileResponse()
                 .setStatus(ResponseStatus.Ok)

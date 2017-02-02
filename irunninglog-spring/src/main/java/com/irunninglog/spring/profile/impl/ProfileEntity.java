@@ -2,11 +2,15 @@ package com.irunninglog.spring.profile.impl;
 
 import com.irunninglog.Gender;
 import com.irunninglog.Unit;
+import com.irunninglog.spring.data.impl.RouteEntity;
+import com.irunninglog.spring.data.impl.RunEntity;
+import com.irunninglog.spring.data.impl.ShoeEntity;
 
 import javax.persistence.*;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 
+@SuppressWarnings({"unused", "WeakerAccess"})
 @Entity
 @Table(name = "user_entity")
 public final class ProfileEntity {
@@ -50,6 +54,18 @@ public final class ProfileEntity {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Gender gender;
+
+    @ManyToOne
+    @JoinColumn(name = "default_shoe_id")
+    private ShoeEntity defaultShoe;
+
+    @ManyToOne
+    @JoinColumn(name = "default_route_id")
+    private RouteEntity defaultRoute;
+
+    @ManyToOne
+    @JoinColumn(name = "default_run_id")
+    private RunEntity defaultRun;
 
     public long getId() {
         return id;
@@ -145,6 +161,30 @@ public final class ProfileEntity {
 
     public void setGender(Gender gender) {
         this.gender = gender;
+    }
+
+    public ShoeEntity getDefaultShoe() {
+        return defaultShoe;
+    }
+
+    public void setDefaultShoe(ShoeEntity defaultShoe) {
+        this.defaultShoe = defaultShoe;
+    }
+
+    public RouteEntity getDefaultRoute() {
+        return defaultRoute;
+    }
+
+    public void setDefaultRoute(RouteEntity defaultRoute) {
+        this.defaultRoute = defaultRoute;
+    }
+
+    public RunEntity getDefaultRun() {
+        return defaultRun;
+    }
+
+    public void setDefaultRun(RunEntity defaultRun) {
+        this.defaultRun = defaultRun;
     }
 
 }

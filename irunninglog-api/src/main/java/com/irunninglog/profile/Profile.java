@@ -6,7 +6,7 @@ import com.irunninglog.Unit;
 
 import java.time.DayOfWeek;
 
-@SuppressWarnings("WeakerAccess")
+@SuppressWarnings({"WeakerAccess", "unused"})
 public final class Profile {
 
     private long id;
@@ -20,6 +20,9 @@ public final class Profile {
     private double weeklyTarget;
     private double monthlyTarget;
     private double yearlyTarget;
+    private long defaultRouteId;
+    private long defaultRunId;
+    private long defaultShoeId;
 
     public long getId() {
         return id;
@@ -120,6 +123,33 @@ public final class Profile {
         return this;
     }
 
+    public long getDefaultRouteId() {
+        return defaultRouteId;
+    }
+
+    public Profile setDefaultRouteId(long defaultRouteId) {
+        this.defaultRouteId = defaultRouteId;
+        return this;
+    }
+
+    public long getDefaultRunId() {
+        return defaultRunId;
+    }
+
+    public Profile setDefaultRunId(long defaultRunId) {
+        this.defaultRunId = defaultRunId;
+        return this;
+    }
+
+    public long getDefaultShoeId() {
+        return defaultShoeId;
+    }
+
+    public Profile setDefaultShoeId(long defaultShoeId) {
+        this.defaultShoeId = defaultShoeId;
+        return this;
+    }
+
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
@@ -134,6 +164,9 @@ public final class Profile {
                 .add("weeklyTarget", weeklyTarget)
                 .add("monthlyTarget", monthlyTarget)
                 .add("yearlyTarget", yearlyTarget)
+                .add("defaultRouteId", defaultRouteId)
+                .add("defaultRunId", defaultRunId)
+                .add("defaultShoeId", defaultShoeId)
                 .toString();
     }
 
