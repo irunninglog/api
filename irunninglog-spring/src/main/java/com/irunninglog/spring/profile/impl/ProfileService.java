@@ -2,8 +2,8 @@ package com.irunninglog.spring.profile.impl;
 
 import com.irunninglog.api.IFactory;
 import com.irunninglog.api.profile.IProfile;
-import com.irunninglog.service.ResponseStatus;
-import com.irunninglog.service.ResponseStatusException;
+import com.irunninglog.api.ResponseStatus;
+import com.irunninglog.api.ResponseStatusException;
 import com.irunninglog.api.profile.IProfileService;
 import com.irunninglog.spring.service.ApiService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,24 +1,15 @@
 package com.irunninglog.vertx.route.report;
 
-import com.irunninglog.report.GetReportRequest;
-import com.irunninglog.service.AbstractResponse;
-import com.irunninglog.vertx.route.AbstractRouteHandler;
+import com.irunninglog.api.IFactory;
+import com.irunninglog.api.IResponse;
+import com.irunninglog.api.report.IGetReportRequest;
+import com.irunninglog.vertx.route.AbstractProfileIdRouteHandler;
 import io.vertx.core.Vertx;
-import io.vertx.ext.web.RoutingContext;
 
-abstract class AbstractGetReportHandler<T extends AbstractResponse> extends AbstractRouteHandler<GetReportRequest, T> {
+abstract class AbstractGetReportHandler<T extends IResponse> extends AbstractProfileIdRouteHandler<IGetReportRequest, T> {
 
-    AbstractGetReportHandler(Vertx vertx, Class<T> responseClass) {
-        super(vertx, responseClass);
-    }
-
-    @Override
-    protected final GetReportRequest request(RoutingContext routingContext) {
-        String profileId = routingContext.pathParam("profileid");
-
-        logger.info("profile:get:{}", profileId);
-
-        return new GetReportRequest().setId(Long.parseLong(profileId));
+    AbstractGetReportHandler(Vertx vertx, IFactory factory, Class<T> responseClass) {
+        super(vertx, factory, IGetReportRequest.class, responseClass);
     }
 
 }

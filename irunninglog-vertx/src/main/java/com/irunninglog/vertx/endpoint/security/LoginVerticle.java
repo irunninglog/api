@@ -1,36 +1,32 @@
 package com.irunninglog.vertx.endpoint.security;
 
-import com.irunninglog.security.Login;
-import com.irunninglog.security.LoginRequest;
-import com.irunninglog.security.LoginResponse;
-import com.irunninglog.security.User;
-import com.irunninglog.service.Endpoint;
-import com.irunninglog.service.ResponseStatus;
-import com.irunninglog.service.ResponseStatusException;
+import com.irunninglog.api.IFactory;
+import com.irunninglog.api.security.ILoginRequest;
+import com.irunninglog.api.security.ILoginResponse;
+import com.irunninglog.api.security.ILoginService;
+import com.irunninglog.api.security.IUser;
+import com.irunninglog.api.Endpoint;
+import com.irunninglog.api.ResponseStatus;
 import com.irunninglog.vertx.endpoint.AbstractEndpointVerticle;
 import com.irunninglog.vertx.endpoint.EndpointVerticle;
 
 @EndpointVerticle(endpoint = Endpoint.Login)
-public class LoginVerticle extends AbstractEndpointVerticle<LoginRequest, LoginResponse> {
+public class LoginVerticle extends AbstractEndpointVerticle<ILoginRequest, ILoginResponse> {
 
-    public LoginVerticle() {
-        super(LoginRequest.class, LoginResponse::new);
+    private final ILoginService loginService;
+
+    public LoginVerticle(IFactory factory, ILoginService loginService) {
+        super(factory, ILoginRequest.class, ILoginResponse.class);
+
+        this.loginService = loginService;
     }
 
     @Override
-    protected LoginResponse handle(LoginRequest request) {
-        User user = request.getUser();
-        if (user == null) {
-            logger.error("Not user found, throwing an exception");
-            throw new ResponseStatusException(ResponseStatus.Unauthenticated);
-        }
+    protected void handle(ILoginRequest request, ILoginResponse response) {
+        IUser user = request.getUser();
 
-        return new LoginResponse()
-                .setStatus(ResponseStatus.Ok)
-                .setBody(new Login()
-                        .setId(user.getId())
-                        .setName(user.getUsername())
-                        .addRoles(user.getAuthorities()));
+        response.setStatus(ResponseStatus.Ok)
+                .setBody(loginService.login(user));
     }
 
 }

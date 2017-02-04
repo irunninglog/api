@@ -2,7 +2,7 @@ package com.irunninglog.spring.workout.impl;
 
 import com.irunninglog.api.Progress;
 import com.irunninglog.api.workout.IWorkoutService;
-import com.irunninglog.service.ResponseStatus;
+import com.irunninglog.api.ResponseStatus;
 import com.irunninglog.spring.data.impl.AbstractDataEntity;
 import com.irunninglog.spring.date.DateService;
 import com.irunninglog.spring.math.MathService;

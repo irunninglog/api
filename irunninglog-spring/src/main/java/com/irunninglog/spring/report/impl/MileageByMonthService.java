@@ -1,8 +1,8 @@
 package com.irunninglog.spring.report.impl;
 
-import com.irunninglog.report.DataPoint;
-import com.irunninglog.report.DataSet;
-import com.irunninglog.report.MultiSet;
+import com.irunninglog.api.report.IDataPoint;
+import com.irunninglog.api.report.IDataSet;
+import com.irunninglog.api.report.IMultiSet;
 import com.irunninglog.spring.date.DateService;
 import com.irunninglog.spring.math.MathService;
 import com.irunninglog.spring.profile.impl.ProfileEntity;
@@ -48,14 +48,14 @@ class MileageByMonthService {
         this.mathService = mathService;
     }
 
-    MultiSet multiSet(List<WorkoutEntity> workoutEntities, ProfileEntity profileEntity) {
+    IMultiSet multiSet(List<WorkoutEntity> workoutEntities, ProfileEntity profileEntity) {
         workoutEntities.sort((o1, o2) -> o2.getDate().compareTo(o1.getDate()));
 
-        MultiSet multiSet = new MultiSet();
+        IMultiSet multiSet = new IMultiSet();
         while (!workoutEntities.isEmpty()) {
             String year = dateService.formatYear(workoutEntities.get(0).getDate());
             LocalDate yearStart = dateService.getYearStartDate(workoutEntities.get(0).getDate());
-            DataSet yearDataSet = new DataSet()
+            IDataSet yearDataSet = new IDataSet()
                     .setKey(year)
                     .setUnits(profileEntity.getPreferredUnits());
             multiSet.getData().add(yearDataSet);
@@ -73,7 +73,7 @@ class MileageByMonthService {
         return multiSet;
     }
 
-    private void addMonthsToYear(List<WorkoutEntity> workouts, LocalDate yearStart, DataSet yearDataSet, ProfileEntity profileEntity) {
+    private void addMonthsToYear(List<WorkoutEntity> workouts, LocalDate yearStart, IDataSet yearDataSet, ProfileEntity profileEntity) {
         while (!workouts.isEmpty()) {
             WorkoutEntity workoutEntity = workouts.get(0);
             if (!workoutEntity.getDate().isBefore(yearStart)) {
@@ -90,7 +90,7 @@ class MileageByMonthService {
                     }
                 }
 
-                DataPoint monthDataPoint = new DataPoint()
+                IDataPoint monthDataPoint = new IDataPoint()
                         .setLabel(dateService.formatMonthShort(monthStart))
                         .setValue(mathService.formatShort(total, profileEntity.getPreferredUnits()))
                         .setProgress(mathService.progress(new BigDecimal(total), new BigDecimal(profileEntity.getMonthlyTarget())));

@@ -4,8 +4,8 @@ import com.irunninglog.api.IFactory;
 import com.irunninglog.api.ping.IPingRequest;
 import com.irunninglog.api.ping.IPingResponse;
 import com.irunninglog.api.ping.IPingService;
-import com.irunninglog.service.Endpoint;
-import com.irunninglog.service.ResponseStatus;
+import com.irunninglog.api.Endpoint;
+import com.irunninglog.api.ResponseStatus;
 import com.irunninglog.vertx.endpoint.AbstractEndpointVerticle;
 import com.irunninglog.vertx.endpoint.EndpointVerticle;
 

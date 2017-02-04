@@ -3,7 +3,7 @@ package com.irunninglog.vertx.route.profile;
 import com.irunninglog.api.IFactory;
 import com.irunninglog.api.profile.IGetProfileRequest;
 import com.irunninglog.api.profile.IGetProfileResponse;
-import com.irunninglog.service.Endpoint;
+import com.irunninglog.api.Endpoint;
 import com.irunninglog.vertx.route.AbstractProfileIdRouteHandler;
 import com.irunninglog.vertx.route.RouteHandler;
 import io.vertx.core.Vertx;

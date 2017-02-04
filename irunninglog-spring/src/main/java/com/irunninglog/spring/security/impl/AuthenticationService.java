@@ -1,7 +1,11 @@
 package com.irunninglog.spring.security.impl;
 
-import com.irunninglog.security.*;
-import com.irunninglog.service.Endpoint;
+import com.irunninglog.api.AccessControl;
+import com.irunninglog.api.security.AuthnException;
+import com.irunninglog.api.security.IAuthnRequest;
+import com.irunninglog.api.security.AuthzException;
+import com.irunninglog.api.security.*;
+import com.irunninglog.api.Endpoint;
 import com.irunninglog.spring.service.ApiService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +35,7 @@ public final class AuthenticationService implements IAuthenticationService {
     }
 
     @Override
-    public User authenticate(AuthnRequest request) throws AuthnException, AuthzException {
+    public User authenticate(IAuthnRequest request) throws AuthnException, AuthzException {
         LOG.info("authenticate:{}", request);
 
         if (request.getEndpoint().getControl() == AccessControl.DenyAll) {

@@ -4,7 +4,7 @@ import com.irunninglog.dashboard.DashboardInfo;
 import com.irunninglog.dashboard.DashboardRequest;
 import com.irunninglog.dashboard.DashboardResponse;
 import com.irunninglog.api.dashboard.IDashboardService;
-import com.irunninglog.service.ResponseStatus;
+import com.irunninglog.api.ResponseStatus;
 import io.vertx.ext.unit.TestContext;
 import org.junit.Test;
 import org.mockito.Mockito;

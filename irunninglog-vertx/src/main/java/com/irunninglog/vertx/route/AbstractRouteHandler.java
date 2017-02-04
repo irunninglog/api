@@ -1,11 +1,8 @@
 package com.irunninglog.vertx.route;
 
-import com.irunninglog.api.IFactory;
-import com.irunninglog.api.IRequest;
-import com.irunninglog.api.IResponse;
-import com.irunninglog.security.AuthnRequest;
-import com.irunninglog.security.AuthnResponse;
-import com.irunninglog.service.*;
+import com.irunninglog.api.*;
+import com.irunninglog.api.security.IAuthnRequest;
+import com.irunninglog.api.security.IAuthnResponse;
 import com.irunninglog.vertx.security.AuthnVerticle;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
@@ -41,7 +38,7 @@ public abstract class AbstractRouteHandler<Q extends IRequest, S extends IRespon
         try {
             logger.info("handle:start:{}", routingContext.normalisedPath());
 
-            AuthnRequest authnRequest = new AuthnRequest()
+            IAuthnRequest authnRequest = factory.get(IAuthnRequest.class)
                     .setToken(routingContext.request().getHeader("Authorization"))
                     .setPath(routingContext.normalisedPath())
                     .setEndpoint(endpoint());
@@ -54,7 +51,7 @@ public abstract class AbstractRouteHandler<Q extends IRequest, S extends IRespon
 
                             logger.info("handle:{}:{}", AuthnVerticle.ADDRESS, resultString);
 
-                            AuthnResponse authnResponse = Json.decodeValue(resultString, AuthnResponse.class);
+                            IAuthnResponse authnResponse = Json.decodeValue(resultString, IAuthnResponse.class);
 
                             logger.info("handle:{}:{}", AuthnVerticle.ADDRESS, authnResponse.getStatus());
 

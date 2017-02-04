@@ -3,8 +3,8 @@ package com.irunninglog.spring.dashboard.impl;
 import com.irunninglog.dashboard.DashboardRequest;
 import com.irunninglog.dashboard.DashboardResponse;
 import com.irunninglog.api.dashboard.IDashboardService;
-import com.irunninglog.service.ResponseStatus;
-import com.irunninglog.service.ResponseStatusException;
+import com.irunninglog.api.ResponseStatus;
+import com.irunninglog.api.ResponseStatusException;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

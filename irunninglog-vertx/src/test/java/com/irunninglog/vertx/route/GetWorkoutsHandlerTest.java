@@ -1,8 +1,8 @@
 package com.irunninglog.vertx.route;
 
-import com.irunninglog.security.AuthnException;
-import com.irunninglog.security.AuthzException;
-import com.irunninglog.service.ResponseStatus;
+import com.irunninglog.api.security.AuthnException;
+import com.irunninglog.api.security.AuthzException;
+import com.irunninglog.api.ResponseStatus;
 import com.irunninglog.vertx.endpoint.workout.GetWorkoutsVerticle;
 import com.irunninglog.api.workout.IWorkoutService;
 import com.irunninglog.workout.Workouts;

@@ -4,10 +4,10 @@ import com.irunninglog.dashboard.DashboardRequest;
 import com.irunninglog.dashboard.DashboardResponse;
 import com.irunninglog.profile.ProfileRequest;
 import com.irunninglog.profile.ProfileResponse;
-import com.irunninglog.security.AuthnRequest;
-import com.irunninglog.security.AuthnResponse;
-import com.irunninglog.service.Endpoint;
-import com.irunninglog.service.ResponseStatus;
+import com.irunninglog.api.security.IAuthnRequest;
+import com.irunninglog.api.security.IAuthnResponse;
+import com.irunninglog.api.Endpoint;
+import com.irunninglog.api.ResponseStatus;
 import com.irunninglog.vertx.http.ServerVerticle;
 import com.irunninglog.vertx.security.AuthnVerticle;
 import io.vertx.core.Vertx;
@@ -51,10 +51,10 @@ public class RunningLogApplicationTest {
     public void authn(TestContext context) {
         Async async = context.async();
         vertx.eventBus().<String>send(AuthnVerticle.ADDRESS,
-                Json.encode(new AuthnRequest()),
+                Json.encode(new IAuthnRequest()),
                 messageAsyncResult -> {
                     context.assertTrue(messageAsyncResult.succeeded());
-                    AuthnResponse response = Json.decodeValue(messageAsyncResult.result().body(), AuthnResponse.class);
+                    IAuthnResponse response = Json.decodeValue(messageAsyncResult.result().body(), IAuthnResponse.class);
                     context.assertEquals(ResponseStatus.Unauthenticated, response.getStatus());
                     async.complete();
                 });

@@ -1,23 +1,24 @@
 package com.irunninglog.vertx.route.security;
 
-import com.irunninglog.security.LoginRequest;
-import com.irunninglog.security.LoginResponse;
-import com.irunninglog.service.Endpoint;
+import com.irunninglog.api.IFactory;
+import com.irunninglog.api.security.ILoginRequest;
+import com.irunninglog.api.security.ILoginResponse;
+import com.irunninglog.api.Endpoint;
 import com.irunninglog.vertx.route.AbstractRouteHandler;
 import com.irunninglog.vertx.route.RouteHandler;
 import io.vertx.core.Vertx;
 import io.vertx.ext.web.RoutingContext;
 
 @RouteHandler(endpoint = Endpoint.Login)
-public class LoginHandler extends AbstractRouteHandler<LoginRequest, LoginResponse> {
+public class LoginHandler extends AbstractRouteHandler<ILoginRequest, ILoginResponse> {
 
-    public LoginHandler(Vertx vertx) {
-        super(vertx, LoginResponse.class);
+    public LoginHandler(Vertx vertx, IFactory factory) {
+        super(vertx, factory, ILoginRequest.class, ILoginResponse.class);
     }
 
     @Override
-    protected LoginRequest request(RoutingContext routingContext) {
-        return new LoginRequest().setUser(routingContext.get("user"));
+    protected void request(ILoginRequest request, RoutingContext routingContext) {
+        request.setUser(routingContext.get("user"));
     }
 
 }

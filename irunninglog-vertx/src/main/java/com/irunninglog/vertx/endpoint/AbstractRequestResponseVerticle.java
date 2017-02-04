@@ -1,9 +1,6 @@
 package com.irunninglog.vertx.endpoint;
 
-import com.irunninglog.api.IFactory;
-import com.irunninglog.api.IRequest;
-import com.irunninglog.api.IResponse;
-import com.irunninglog.service.*;
+import com.irunninglog.api.*;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Handler;
 import io.vertx.core.eventbus.Message;

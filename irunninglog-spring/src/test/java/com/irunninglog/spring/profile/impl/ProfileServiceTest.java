@@ -4,7 +4,7 @@ import com.irunninglog.api.Gender;
 import com.irunninglog.api.Unit;
 import com.irunninglog.api.profile.IProfileService;
 import com.irunninglog.profile.ProfileRequest;
-import com.irunninglog.service.ResponseStatusException;
+import com.irunninglog.api.ResponseStatusException;
 import com.irunninglog.spring.AbstractTest;
 import org.junit.After;
 import org.junit.Before;

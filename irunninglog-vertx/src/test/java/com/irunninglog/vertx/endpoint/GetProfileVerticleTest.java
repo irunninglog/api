@@ -1,12 +1,10 @@
 package com.irunninglog.vertx.endpoint;
 
+import com.irunninglog.api.*;
+import com.irunninglog.api.profile.IGetProfileRequest;
+import com.irunninglog.api.profile.IGetProfileResponse;
+import com.irunninglog.api.profile.IProfile;
 import com.irunninglog.api.profile.IProfileService;
-import com.irunninglog.profile.Profile;
-import com.irunninglog.profile.ProfileRequest;
-import com.irunninglog.profile.ProfileResponse;
-import com.irunninglog.service.Endpoint;
-import com.irunninglog.service.ResponseStatus;
-import com.irunninglog.service.ResponseStatusException;
 import com.irunninglog.vertx.endpoint.profile.GetProfileVerticle;
 import io.vertx.core.json.Json;
 import io.vertx.ext.unit.TestContext;
@@ -24,17 +22,17 @@ public class GetProfileVerticleTest extends AbstractVerticleTest {
     public void before(TestContext context) {
         profileService = Mockito.mock(IProfileService.class);
 
-        GetProfileVerticle getProfileVerticle = new GetProfileVerticle(profileService);
+        GetProfileVerticle getProfileVerticle = new GetProfileVerticle(Mockito.mock(IFactory.class), profileService);
         rule.vertx().deployVerticle(getProfileVerticle, context.asyncAssertSuccess());
     }
 
     @Test
     public void ok(TestContext context) {
-        Mockito.when(profileService.get(any(ProfileRequest.class))).thenReturn(new ProfileResponse().setStatus(ResponseStatus.Ok).setBody(new Profile()));
+        Mockito.when(profileService.get(any(Long.class))).thenReturn(Mockito.mock(IProfile.class));
 
-        rule.vertx().eventBus().<String>send(Endpoint.GetProfile.getAddress(), Json.encode(new ProfileRequest()), context.asyncAssertSuccess(o -> {
+        rule.vertx().eventBus().<String>send(Endpoint.GetProfile.getAddress(), Json.encode(Mockito.mock(IGetProfileRequest.class)), context.asyncAssertSuccess(o -> {
             String s = o.body();
-            ProfileResponse response = Json.decodeValue(s, ProfileResponse.class);
+            IGetProfileResponse response = Json.decodeValue(s, IGetProfileResponse.class);
 
             context.assertEquals(ResponseStatus.Ok, response.getStatus());
             context.assertNotNull(response.getBody());
@@ -43,11 +41,11 @@ public class GetProfileVerticleTest extends AbstractVerticleTest {
 
     @Test
     public void statusException(TestContext context) {
-        Mockito.when(profileService.get(any(ProfileRequest.class))).thenThrow(new ResponseStatusException(ResponseStatus.NotFound));
+        Mockito.when(profileService.get(any(Long.class))).thenThrow(new ResponseStatusException(ResponseStatus.NotFound));
 
-        rule.vertx().eventBus().<String>send(Endpoint.GetProfile.getAddress(), Json.encode(new ProfileRequest()), context.asyncAssertSuccess(o -> {
+        rule.vertx().eventBus().<String>send(Endpoint.GetProfile.getAddress(), Json.encode(Mockito.mock(IGetProfileRequest.class)), context.asyncAssertSuccess(o -> {
             String s = o.body();
-            ProfileResponse response = Json.decodeValue(s, ProfileResponse.class);
+            IGetProfileResponse response = Json.decodeValue(s, IGetProfileResponse.class);
 
             context.assertEquals(ResponseStatus.NotFound, response.getStatus());
             context.assertNull(response.getBody());
@@ -56,11 +54,11 @@ public class GetProfileVerticleTest extends AbstractVerticleTest {
 
     @Test
     public void error(TestContext context) {
-        Mockito.when(profileService.get(any(ProfileRequest.class))).thenThrow(new RuntimeException());
+        Mockito.when(profileService.get(any(Long.class))).thenThrow(new RuntimeException());
 
-        rule.vertx().eventBus().<String>send(Endpoint.GetProfile.getAddress(), Json.encode(new ProfileRequest()), context.asyncAssertSuccess(o -> {
+        rule.vertx().eventBus().<String>send(Endpoint.GetProfile.getAddress(), Json.encode(Mockito.mock(IGetProfileRequest.class)), context.asyncAssertSuccess(o -> {
             String s = o.body();
-            ProfileResponse response = Json.decodeValue(s, ProfileResponse.class);
+            IGetProfileResponse response = Json.decodeValue(s, IGetProfileResponse.class);
 
             context.assertEquals(ResponseStatus.Error, response.getStatus());
             context.assertNull(response.getBody());

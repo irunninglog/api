@@ -2,8 +2,11 @@ package com.irunninglog.spring.security.impl;
 
 import com.irunninglog.api.Gender;
 import com.irunninglog.api.Unit;
-import com.irunninglog.security.*;
-import com.irunninglog.service.Endpoint;
+import com.irunninglog.api.security.AuthnException;
+import com.irunninglog.api.security.IAuthnRequest;
+import com.irunninglog.api.security.AuthzException;
+import com.irunninglog.api.security.*;
+import com.irunninglog.api.Endpoint;
 import com.irunninglog.spring.AbstractTest;
 import com.irunninglog.spring.profile.impl.IProfileEntityRepository;
 import com.irunninglog.spring.profile.impl.ProfileEntity;
@@ -77,7 +80,7 @@ public class AuthenticationServiceTest extends AbstractTest {
 
     @Test
     public void success() throws AuthnException, AuthzException {
-        User user = authenticationService.authenticate(new AuthnRequest()
+        User user = authenticationService.authenticate(new IAuthnRequest()
                 .setToken("Basic YWxsYW5AaXJ1bm5pbmdsb2cuY29tOnBhc3N3b3Jk")
                 .setEndpoint(Endpoint.GetDashboard)
                 .setPath("/profiles/" + myprofile.getId()));
@@ -88,7 +91,7 @@ public class AuthenticationServiceTest extends AbstractTest {
     @Test
     public void notFound() throws AuthzException {
         try {
-            authenticationService.authenticate(new AuthnRequest()
+            authenticationService.authenticate(new IAuthnRequest()
                     .setToken("Basic bm9ib2R5QGlydW5uaW5nbG9nLmNvbTpwYXNzd29yZA==")
                     .setEndpoint(Endpoint.GetDashboard));
 
@@ -101,7 +104,7 @@ public class AuthenticationServiceTest extends AbstractTest {
     @Test
     public void wrongPassword() throws AuthzException {
         try {
-            authenticationService.authenticate(new AuthnRequest()
+            authenticationService.authenticate(new IAuthnRequest()
                     .setToken("Basic YWxsYW5AaXJ1bm5pbmdsb2cuY29tOndyb25n")
                     .setEndpoint(Endpoint.GetDashboard));
 
@@ -114,7 +117,7 @@ public class AuthenticationServiceTest extends AbstractTest {
     @Test
     public void denyAll() throws AuthnException {
         try {
-            authenticationService.authenticate(new AuthnRequest()
+            authenticationService.authenticate(new IAuthnRequest()
                     .setToken("Basic YWxsYW5AaXJ1bm5pbmdsb2cuY29tOnBhc3N3b3Jk")
                     .setEndpoint(Endpoint.Forbidden));
 
@@ -126,7 +129,7 @@ public class AuthenticationServiceTest extends AbstractTest {
 
     @Test
     public void canViewMyProfile() throws AuthnException, AuthzException {
-        User user = authenticationService.authenticate(new AuthnRequest()
+        User user = authenticationService.authenticate(new IAuthnRequest()
                 .setToken("Basic YWxsYW5AaXJ1bm5pbmdsb2cuY29tOnBhc3N3b3Jk")
                 .setEndpoint(Endpoint.GetProfile)
                 .setPath("/profiles/" + myprofile.getId()));
@@ -136,7 +139,7 @@ public class AuthenticationServiceTest extends AbstractTest {
 
     @Test
     public void admin() throws AuthnException, AuthzException {
-        User user = authenticationService.authenticate(new AuthnRequest()
+        User user = authenticationService.authenticate(new IAuthnRequest()
                 .setToken("Basic YWRtaW5AaXJ1bm5pbmdsb2cuY29tOnBhc3N3b3Jk")
                 .setEndpoint(Endpoint.GetProfile)
                 .setPath("/profiles/" + myprofile.getId() + "" + admin.getId()));
@@ -147,7 +150,7 @@ public class AuthenticationServiceTest extends AbstractTest {
     @Test
     public void none() throws AuthnException {
         try {
-            authenticationService.authenticate(new AuthnRequest()
+            authenticationService.authenticate(new IAuthnRequest()
                     .setToken("Basic bm9uZUBpcnVubmluZ2xvZy5jb206cGFzc3dvcmQ=")
                     .setEndpoint(Endpoint.GetProfile)
                     .setPath("/profiles/" + none.getId()));

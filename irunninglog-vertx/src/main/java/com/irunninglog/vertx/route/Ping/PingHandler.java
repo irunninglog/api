@@ -3,7 +3,7 @@ package com.irunninglog.vertx.route.Ping;
 import com.irunninglog.api.IFactory;
 import com.irunninglog.api.ping.IPingRequest;
 import com.irunninglog.api.ping.IPingResponse;
-import com.irunninglog.service.Endpoint;
+import com.irunninglog.api.Endpoint;
 import com.irunninglog.vertx.route.AbstractRouteHandler;
 import com.irunninglog.vertx.route.RouteHandler;
 import io.vertx.core.Vertx;

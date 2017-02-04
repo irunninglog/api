@@ -1,6 +1,6 @@
 package com.irunninglog.main;
 
-import com.irunninglog.security.IAuthenticationService;
+import com.irunninglog.api.security.IAuthenticationService;
 import com.irunninglog.spring.context.ContextConfiguration;
 import com.irunninglog.vertx.endpoint.EndpointVerticle;
 import com.irunninglog.vertx.http.ServerVerticle;

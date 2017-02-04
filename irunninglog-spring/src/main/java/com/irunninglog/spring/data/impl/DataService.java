@@ -2,7 +2,7 @@ package com.irunninglog.spring.data.impl;
 
 import com.irunninglog.api.data.*;
 import com.irunninglog.data.*;
-import com.irunninglog.service.ResponseStatus;
+import com.irunninglog.api.ResponseStatus;
 import com.irunninglog.spring.date.DateService;
 import com.irunninglog.spring.math.MathService;
 import com.irunninglog.spring.service.ApiService;

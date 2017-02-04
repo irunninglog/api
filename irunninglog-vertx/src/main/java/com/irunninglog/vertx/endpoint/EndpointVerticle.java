@@ -1,6 +1,6 @@
 package com.irunninglog.vertx.endpoint;
 
-import com.irunninglog.service.Endpoint;
+import com.irunninglog.api.Endpoint;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

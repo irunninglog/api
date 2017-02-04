@@ -1,6 +1,9 @@
 package com.irunninglog.vertx.route;
 
-import com.irunninglog.security.*;
+import com.irunninglog.api.security.AuthnException;
+import com.irunninglog.api.security.IAuthnRequest;
+import com.irunninglog.api.security.AuthzException;
+import com.irunninglog.api.security.*;
 import com.irunninglog.vertx.security.AuthnVerticle;
 import com.irunninglog.vertx.http.ServerVerticle;
 import io.vertx.core.Vertx;
@@ -62,7 +65,7 @@ public abstract class AbstractHandlerTest {
     protected abstract void afterBefore(TestContext context);
 
     final void authn() throws AuthnException, AuthzException {
-        Mockito.when(authenticationService.authenticate(any(AuthnRequest.class))).thenReturn(new User());
+        Mockito.when(authenticationService.authenticate(any(IAuthnRequest.class))).thenReturn(new User());
     }
 
     final int request(TestContext context, String path, String token) {

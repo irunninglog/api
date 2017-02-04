@@ -4,8 +4,8 @@ import com.irunninglog.api.dashboard.IDashboardService;
 import com.irunninglog.spring.service.ApiService;
 import com.irunninglog.spring.profile.impl.IProfileEntityRepository;
 import com.irunninglog.spring.profile.impl.ProfileEntity;
-import com.irunninglog.service.ResponseStatus;
-import com.irunninglog.service.ResponseStatusException;
+import com.irunninglog.api.ResponseStatus;
+import com.irunninglog.api.ResponseStatusException;
 import com.irunninglog.dashboard.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
