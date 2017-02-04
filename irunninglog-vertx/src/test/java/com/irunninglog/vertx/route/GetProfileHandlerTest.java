@@ -1,6 +1,6 @@
 package com.irunninglog.vertx.route;
 
-import com.irunninglog.profile.IProfileService;
+import com.irunninglog.api.profile.IProfileService;
 import com.irunninglog.profile.Profile;
 import com.irunninglog.profile.ProfileRequest;
 import com.irunninglog.profile.ProfileResponse;

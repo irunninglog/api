@@ -1,7 +1,7 @@
 package com.irunninglog.spring.security.impl;
 
-import com.irunninglog.Gender;
-import com.irunninglog.Unit;
+import com.irunninglog.api.Gender;
+import com.irunninglog.api.Unit;
 import com.irunninglog.security.*;
 import com.irunninglog.service.Endpoint;
 import com.irunninglog.spring.AbstractTest;

@@ -2,7 +2,7 @@ package com.irunninglog.spring.dashboard.impl;
 
 import com.irunninglog.dashboard.DashboardRequest;
 import com.irunninglog.dashboard.DashboardResponse;
-import com.irunninglog.dashboard.IDashboardService;
+import com.irunninglog.api.dashboard.IDashboardService;
 import com.irunninglog.service.ResponseStatus;
 import com.irunninglog.service.ResponseStatusException;
 import org.junit.Test;

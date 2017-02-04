@@ -1,7 +1,7 @@
 package com.irunninglog.spring.math;
 
-import com.irunninglog.Progress;
-import com.irunninglog.Unit;
+import com.irunninglog.api.Progress;
+import com.irunninglog.api.Unit;
 import com.irunninglog.spring.AbstractTest;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;

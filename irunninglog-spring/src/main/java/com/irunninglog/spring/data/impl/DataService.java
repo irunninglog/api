@@ -1,5 +1,6 @@
 package com.irunninglog.spring.data.impl;
 
+import com.irunninglog.api.data.*;
 import com.irunninglog.data.*;
 import com.irunninglog.service.ResponseStatus;
 import com.irunninglog.spring.date.DateService;
@@ -33,7 +34,7 @@ public final class DataService implements IDataService {
     }
 
     @Override
-    public GetShoesResponse shoes(GetDataRequest request) {
+    public IGetShoesResponse shoes(IGetDataRequest request) {
         List<ShoeEntity> shoeEntityList = shoeEntityRepository.findByProfileId(request.getId());
 
         Shoes shoes = new Shoes();
@@ -60,11 +61,11 @@ public final class DataService implements IDataService {
             }
         });
 
-        return new GetShoesResponse().setBody(shoes).setStatus(ResponseStatus.Ok);
+        return new IGetShoesResponse().setBody(shoes).setStatus(ResponseStatus.Ok);
     }
 
     @Override
-    public GetRunsResponse runs(GetDataRequest request) {
+    public IGetRunsResponse runs(IGetDataRequest request) {
         List<RunEntity> runEntityList = runEntityRepository.findByProfileId(request.getId());
 
         Runs runs = new Runs();
@@ -78,12 +79,12 @@ public final class DataService implements IDataService {
 
         runs.getRuns().sort((o1, o2) -> o1.getName().compareTo(o2.getName()));
 
-        return new GetRunsResponse().setBody(runs).setStatus(ResponseStatus.Ok);
+        return new IGetRunsResponse().setBody(runs).setStatus(ResponseStatus.Ok);
     }
 
 
     @Override
-    public GetRoutesResponse routes(GetDataRequest request) {
+    public IGetRoutesResponse routes(IGetDataRequest request) {
         List<RouteEntity> routeEntityList = routeEntityRespository.findByProfileId(request.getId());
 
         Routes routes = new Routes();
@@ -97,7 +98,7 @@ public final class DataService implements IDataService {
 
         routes.getRoutes().sort((o1, o2) -> o1.getName().compareTo(o2.getName()));
 
-        return new GetRoutesResponse().setBody(routes).setStatus(ResponseStatus.Ok);
+        return new IGetRoutesResponse().setBody(routes).setStatus(ResponseStatus.Ok);
     }
 
 }

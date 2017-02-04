@@ -1,6 +1,6 @@
 package com.irunninglog.spring.dashboard.impl;
 
-import com.irunninglog.Unit;
+import com.irunninglog.api.Unit;
 import com.irunninglog.dashboard.ProgressInfo;
 import com.irunninglog.spring.date.DateService;
 import com.irunninglog.spring.math.MathService;

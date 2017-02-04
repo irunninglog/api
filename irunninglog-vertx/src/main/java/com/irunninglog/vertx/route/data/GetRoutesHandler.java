@@ -1,15 +1,18 @@
 package com.irunninglog.vertx.route.data;
 
-import com.irunninglog.data.GetRoutesResponse;
+import com.irunninglog.api.IFactory;
+import com.irunninglog.api.data.IGetDataRequest;
+import com.irunninglog.api.data.IGetRoutesResponse;
 import com.irunninglog.service.Endpoint;
+import com.irunninglog.vertx.route.AbstractProfileIdRouteHandler;
 import com.irunninglog.vertx.route.RouteHandler;
 import io.vertx.core.Vertx;
 
 @RouteHandler(endpoint = Endpoint.GetRoutes)
-public final class GetRoutesHandler extends AbstractGetDataHandler<GetRoutesResponse> {
+public final class GetRoutesHandler extends AbstractProfileIdRouteHandler<IGetDataRequest, IGetRoutesResponse> {
 
-    public GetRoutesHandler(Vertx vertx) {
-        super(vertx, GetRoutesResponse.class);
+    public GetRoutesHandler(Vertx vertx, IFactory factory) {
+        super(vertx, factory, IGetDataRequest.class, IGetRoutesResponse.class);
     }
 
 }

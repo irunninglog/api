@@ -1,7 +1,7 @@
 package com.irunninglog.spring.profile.impl;
 
-import com.irunninglog.Gender;
-import com.irunninglog.Unit;
+import com.irunninglog.api.Gender;
+import com.irunninglog.api.Unit;
 import com.irunninglog.spring.data.impl.RouteEntity;
 import com.irunninglog.spring.data.impl.RunEntity;
 import com.irunninglog.spring.data.impl.ShoeEntity;

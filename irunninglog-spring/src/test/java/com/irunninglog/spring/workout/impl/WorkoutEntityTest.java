@@ -1,6 +1,6 @@
 package com.irunninglog.spring.workout.impl;
 
-import com.irunninglog.Privacy;
+import com.irunninglog.api.Privacy;
 import com.irunninglog.spring.AbstractTest;
 import org.junit.Test;
 

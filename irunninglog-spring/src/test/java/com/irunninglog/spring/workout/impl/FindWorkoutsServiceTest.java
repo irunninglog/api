@@ -1,8 +1,8 @@
 package com.irunninglog.spring.workout.impl;
 
-import com.irunninglog.Gender;
-import com.irunninglog.Privacy;
-import com.irunninglog.Unit;
+import com.irunninglog.api.Gender;
+import com.irunninglog.api.Privacy;
+import com.irunninglog.api.Unit;
 import com.irunninglog.spring.AbstractTest;
 import com.irunninglog.spring.profile.impl.IProfileEntityRepository;
 import com.irunninglog.spring.profile.impl.ProfileEntity;

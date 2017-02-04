@@ -1,27 +1,30 @@
 package com.irunninglog.vertx.endpoint.workout;
 
+import com.irunninglog.api.IFactory;
+import com.irunninglog.api.workout.IGetWorkoutsRequest;
+import com.irunninglog.api.workout.IGetWorkoutsResponse;
 import com.irunninglog.service.Endpoint;
+import com.irunninglog.service.ResponseStatus;
 import com.irunninglog.vertx.endpoint.AbstractEndpointVerticle;
 import com.irunninglog.vertx.endpoint.EndpointVerticle;
-import com.irunninglog.workout.GetWorkoutsRequest;
-import com.irunninglog.workout.GetWorkoutsResponse;
-import com.irunninglog.workout.IWorkoutService;
+import com.irunninglog.api.workout.IWorkoutService;
 
 
 @EndpointVerticle(endpoint = Endpoint.GetWorkouts)
-public final class GetWorkoutsVerticle extends AbstractEndpointVerticle<GetWorkoutsRequest, GetWorkoutsResponse> {
+public final class GetWorkoutsVerticle extends AbstractEndpointVerticle<IGetWorkoutsRequest, IGetWorkoutsResponse> {
 
     private final IWorkoutService workoutService;
 
-    public GetWorkoutsVerticle(IWorkoutService workoutService) {
-        super(GetWorkoutsRequest.class, GetWorkoutsResponse::new);
+    public GetWorkoutsVerticle(IWorkoutService workoutService, IFactory factory) {
+        super(factory, IGetWorkoutsRequest.class, IGetWorkoutsResponse.class);
 
         this.workoutService = workoutService;
     }
 
     @Override
-    protected GetWorkoutsResponse handle(GetWorkoutsRequest request) {
-        return workoutService.get(request);
+    protected void handle(IGetWorkoutsRequest request, IGetWorkoutsResponse response) {
+        response.setStatus(ResponseStatus.Ok)
+                .setBody(workoutService.get(request.getProfileId(), request.getOffset()));
     }
 
 }

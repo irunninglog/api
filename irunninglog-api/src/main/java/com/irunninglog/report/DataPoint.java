@@ -1,6 +1,6 @@
 package com.irunninglog.report;
 
-import com.irunninglog.Progress;
+import com.irunninglog.api.Progress;
 
 @SuppressWarnings({"unused", "WeakerAccess"})
 public final class DataPoint {

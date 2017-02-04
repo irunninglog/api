@@ -1,6 +1,6 @@
 package com.irunninglog.spring.dashboard.impl;
 
-import com.irunninglog.Progress;
+import com.irunninglog.api.Progress;
 import com.irunninglog.dashboard.ProgressInfo;
 import com.irunninglog.spring.data.impl.IShoeEntityRepository;
 import com.irunninglog.spring.data.impl.ShoeEntity;

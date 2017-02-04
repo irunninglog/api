@@ -1,5 +1,8 @@
 package com.irunninglog.vertx.endpoint;
 
+import com.irunninglog.api.IFactory;
+import com.irunninglog.api.IRequest;
+import com.irunninglog.api.IResponse;
 import com.irunninglog.service.*;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Handler;
@@ -8,19 +11,19 @@ import io.vertx.core.json.Json;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.function.Supplier;
-
-public abstract class AbstractRequestResponseVerticle<Q extends AbstractRequest, S extends AbstractResponse> extends AbstractVerticle {
+public abstract class AbstractRequestResponseVerticle<Q extends IRequest, S extends IResponse> extends AbstractVerticle {
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
-    private final Supplier<S> constructor;
+    private final IFactory factory;
+    private final Class<S> responseClass;
     private final Class<Q> requestClass;
 
-    protected AbstractRequestResponseVerticle(Class<Q> requestClass, Supplier<S> responseSupplier) {
+    protected AbstractRequestResponseVerticle(IFactory factory, Class<Q> requestClass, Class<S> responseClass) {
         super();
 
-        this.constructor = responseSupplier;
+        this.factory = factory;
+        this.responseClass = responseClass;
         this.requestClass = requestClass;
     }
 
@@ -48,7 +51,8 @@ public abstract class AbstractRequestResponseVerticle<Q extends AbstractRequest,
 
                         logger.info("handler:request:{}", request);
 
-                        S response = handle(request);
+                        S response = factory.get(responseClass);
+                        handle(request, response);
 
                         logger.info("handler:response:{}", response);
 
@@ -70,10 +74,10 @@ public abstract class AbstractRequestResponseVerticle<Q extends AbstractRequest,
 
     protected abstract String address();
 
-    protected abstract S handle(Q request);
+    protected abstract void handle(Q request, S response);
 
     private S fromException(Exception ex) {
-        S response = constructor.get();
+        S response = factory.get(responseClass);
 
         ResponseStatus status;
         boolean statusException = ex instanceof ResponseStatusException;

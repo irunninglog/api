@@ -1,5 +1,6 @@
 package com.irunninglog.spring.dashboard.impl;
 
+import com.irunninglog.api.dashboard.IDashboardService;
 import com.irunninglog.spring.service.ApiService;
 import com.irunninglog.spring.profile.impl.IProfileEntityRepository;
 import com.irunninglog.spring.profile.impl.ProfileEntity;

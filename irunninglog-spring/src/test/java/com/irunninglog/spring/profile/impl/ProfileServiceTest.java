@@ -1,8 +1,8 @@
 package com.irunninglog.spring.profile.impl;
 
-import com.irunninglog.Gender;
-import com.irunninglog.Unit;
-import com.irunninglog.profile.IProfileService;
+import com.irunninglog.api.Gender;
+import com.irunninglog.api.Unit;
+import com.irunninglog.api.profile.IProfileService;
 import com.irunninglog.profile.ProfileRequest;
 import com.irunninglog.service.ResponseStatusException;
 import com.irunninglog.spring.AbstractTest;

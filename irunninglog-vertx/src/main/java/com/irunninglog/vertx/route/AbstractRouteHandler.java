@@ -1,5 +1,8 @@
 package com.irunninglog.vertx.route;
 
+import com.irunninglog.api.IFactory;
+import com.irunninglog.api.IRequest;
+import com.irunninglog.api.IResponse;
 import com.irunninglog.security.AuthnRequest;
 import com.irunninglog.security.AuthnResponse;
 import com.irunninglog.service.*;
@@ -11,16 +14,20 @@ import io.vertx.ext.web.RoutingContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class AbstractRouteHandler<Q extends AbstractRequest, S extends AbstractResponse> implements Handler<RoutingContext> {
+public abstract class AbstractRouteHandler<Q extends IRequest, S extends IResponse> implements Handler<RoutingContext> {
 
     private final Vertx vertx;
+    private final IFactory factory;
+    private final Class<Q> requestClass;
     private final Class<S> responseClass;
     private final Endpoint endpoint;
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
-    public AbstractRouteHandler(Vertx vertx, Class<S> responseClass) {
+    public AbstractRouteHandler(Vertx vertx, IFactory factory, Class<Q> requestClass, Class<S> responseClass) {
         this.vertx = vertx;
+        this.factory = factory;
+        this.requestClass = requestClass;
         this.responseClass = responseClass;
 
         RouteHandler routeHandler = this.getClass().getAnnotation(RouteHandler.class);
@@ -73,12 +80,17 @@ public abstract class AbstractRouteHandler<Q extends AbstractRequest, S extends 
         logger.info("handleAuthenticated:start:{}", routingContext.normalisedPath());
 
         try {
-            Q request = request(routingContext);
+            Q request = factory.get(requestClass);
+
+            request(request, routingContext);
+
             handle(routingContext, request);
         } catch (ResponseStatusException ex) {
             fail(routingContext, ResponseStatus.NotFound);
         }
     }
+
+    protected abstract void request(Q request, RoutingContext routingContext);
 
     private void handle(RoutingContext routingContext, Q request) {
         String offsetString = routingContext.request().getHeader("iRunningLog-Utc-Offset");
@@ -113,7 +125,7 @@ public abstract class AbstractRouteHandler<Q extends AbstractRequest, S extends 
         });
     }
 
-    private void succeed(RoutingContext routingContext, AbstractResponse response) {
+    private void succeed(RoutingContext routingContext, IResponse response) {
         routingContext.request().response()
                 .setChunked(true)
                 .putHeader("Content-Type", "application/json")
@@ -130,8 +142,6 @@ public abstract class AbstractRouteHandler<Q extends AbstractRequest, S extends 
                 .write(error.getMessage())
                 .end();
     }
-
-    protected abstract Q request(RoutingContext routingContext);
 
     public final Endpoint endpoint() {
         return endpoint;

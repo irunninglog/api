@@ -3,7 +3,7 @@ package com.irunninglog.vertx.route;
 import com.irunninglog.dashboard.DashboardInfo;
 import com.irunninglog.dashboard.DashboardRequest;
 import com.irunninglog.dashboard.DashboardResponse;
-import com.irunninglog.dashboard.IDashboardService;
+import com.irunninglog.api.dashboard.IDashboardService;
 import com.irunninglog.service.ResponseStatus;
 import io.vertx.ext.unit.TestContext;
 import org.junit.Test;

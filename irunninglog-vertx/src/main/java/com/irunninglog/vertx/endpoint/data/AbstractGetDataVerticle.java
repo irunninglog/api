@@ -1,18 +1,17 @@
 package com.irunninglog.vertx.endpoint.data;
 
-import com.irunninglog.data.GetDataRequest;
-import com.irunninglog.data.IDataService;
-import com.irunninglog.service.AbstractResponse;
+import com.irunninglog.api.IFactory;
+import com.irunninglog.api.IResponse;
+import com.irunninglog.api.data.IGetDataRequest;
+import com.irunninglog.api.data.IDataService;
 import com.irunninglog.vertx.endpoint.AbstractEndpointVerticle;
 
-import java.util.function.Supplier;
-
-abstract class AbstractGetDataVerticle<T extends AbstractResponse> extends AbstractEndpointVerticle<GetDataRequest, T> {
+abstract class AbstractGetDataVerticle<T extends IResponse> extends AbstractEndpointVerticle<IGetDataRequest, T> {
 
     final IDataService dataService;
 
-    AbstractGetDataVerticle(IDataService dataService, Supplier<T> responseSupplier) {
-        super(GetDataRequest.class, responseSupplier);
+    AbstractGetDataVerticle(IDataService dataService, IFactory factory, Class<T> responseClass) {
+        super(factory, IGetDataRequest.class, responseClass);
 
         this.dataService = dataService;
     }

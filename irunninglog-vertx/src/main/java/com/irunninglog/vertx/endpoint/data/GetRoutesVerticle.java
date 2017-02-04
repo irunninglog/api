@@ -1,21 +1,23 @@
 package com.irunninglog.vertx.endpoint.data;
 
-import com.irunninglog.data.GetDataRequest;
-import com.irunninglog.data.GetRoutesResponse;
-import com.irunninglog.data.IDataService;
+import com.irunninglog.api.IFactory;
+import com.irunninglog.api.data.IGetDataRequest;
+import com.irunninglog.api.data.IGetRoutesResponse;
+import com.irunninglog.api.data.IDataService;
 import com.irunninglog.service.Endpoint;
+import com.irunninglog.service.ResponseStatus;
 import com.irunninglog.vertx.endpoint.EndpointVerticle;
 
 @EndpointVerticle(endpoint = Endpoint.GetRoutes)
-public class GetRoutesVerticle extends AbstractGetDataVerticle<GetRoutesResponse> {
+public class GetRoutesVerticle extends AbstractGetDataVerticle<IGetRoutesResponse> {
 
-    public GetRoutesVerticle(IDataService dataService) {
-        super(dataService, GetRoutesResponse::new);
+    public GetRoutesVerticle(IDataService dataService, IFactory factory) {
+        super(dataService, factory, IGetRoutesResponse.class);
     }
 
     @Override
-    protected GetRoutesResponse handle(GetDataRequest request) {
-        return dataService.routes(request);
+    protected void handle(IGetDataRequest request, IGetRoutesResponse response) {
+        response.setStatus(ResponseStatus.Ok).setBody(dataService.routes(request.getProfileId()));
     }
 
 }

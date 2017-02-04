@@ -3,7 +3,7 @@ package com.irunninglog.vertx.endpoint;
 import com.irunninglog.dashboard.DashboardInfo;
 import com.irunninglog.dashboard.DashboardRequest;
 import com.irunninglog.dashboard.DashboardResponse;
-import com.irunninglog.dashboard.IDashboardService;
+import com.irunninglog.api.dashboard.IDashboardService;
 import com.irunninglog.service.Endpoint;
 import com.irunninglog.service.ResponseStatus;
 import com.irunninglog.vertx.endpoint.dashboard.GetDashboardVerticle;

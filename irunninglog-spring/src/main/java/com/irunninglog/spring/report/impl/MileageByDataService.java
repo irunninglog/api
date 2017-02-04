@@ -1,7 +1,7 @@
 package com.irunninglog.spring.report.impl;
 
-import com.irunninglog.Progress;
-import com.irunninglog.Unit;
+import com.irunninglog.api.Progress;
+import com.irunninglog.api.Unit;
 import com.irunninglog.report.DataPoint;
 import com.irunninglog.report.DataSet;
 import com.irunninglog.spring.data.impl.AbstractDataEntity;

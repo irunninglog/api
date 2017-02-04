@@ -1,6 +1,6 @@
 package com.irunninglog.report;
 
-import com.irunninglog.Unit;
+import com.irunninglog.api.Unit;
 
 import java.util.ArrayList;
 import java.util.List;
