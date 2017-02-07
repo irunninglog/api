@@ -1,6 +1,6 @@
 package com.irunninglog.spring.profile.impl;
 
-import com.irunninglog.api.IFactory;
+import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.profile.IProfile;
 import com.irunninglog.api.ResponseStatus;
 import com.irunninglog.api.ResponseStatusException;

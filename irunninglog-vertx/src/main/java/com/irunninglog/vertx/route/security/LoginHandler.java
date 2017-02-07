@@ -1,6 +1,7 @@
 package com.irunninglog.vertx.route.security;
 
-import com.irunninglog.api.IFactory;
+import com.irunninglog.api.factory.IFactory;
+import com.irunninglog.api.mapping.IMapper;
 import com.irunninglog.api.security.ILoginRequest;
 import com.irunninglog.api.security.ILoginResponse;
 import com.irunninglog.api.Endpoint;
@@ -12,8 +13,8 @@ import io.vertx.ext.web.RoutingContext;
 @RouteHandler(endpoint = Endpoint.Login)
 public class LoginHandler extends AbstractRouteHandler<ILoginRequest, ILoginResponse> {
 
-    public LoginHandler(Vertx vertx, IFactory factory) {
-        super(vertx, factory, ILoginRequest.class, ILoginResponse.class);
+    public LoginHandler(Vertx vertx, IFactory factory, IMapper mapper) {
+        super(vertx, factory, mapper, ILoginRequest.class, ILoginResponse.class);
     }
 
     @Override

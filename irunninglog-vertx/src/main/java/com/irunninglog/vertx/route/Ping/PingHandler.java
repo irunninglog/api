@@ -1,6 +1,7 @@
 package com.irunninglog.vertx.route.Ping;
 
-import com.irunninglog.api.IFactory;
+import com.irunninglog.api.factory.IFactory;
+import com.irunninglog.api.mapping.IMapper;
 import com.irunninglog.api.ping.IPingRequest;
 import com.irunninglog.api.ping.IPingResponse;
 import com.irunninglog.api.Endpoint;
@@ -12,8 +13,8 @@ import io.vertx.ext.web.RoutingContext;
 @RouteHandler(endpoint = Endpoint.Ping)
 public final class PingHandler extends AbstractRouteHandler<IPingRequest, IPingResponse> {
 
-    public PingHandler(Vertx vertx, IFactory factory) {
-        super(vertx, factory, IPingRequest.class,  IPingResponse.class);
+    public PingHandler(Vertx vertx, IFactory factory, IMapper mapper) {
+        super(vertx, factory, mapper, IPingRequest.class,  IPingResponse.class);
     }
 
     @Override

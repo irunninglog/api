@@ -1,6 +1,7 @@
 package com.irunninglog.vertx.endpoint.security;
 
-import com.irunninglog.api.IFactory;
+import com.irunninglog.api.factory.IFactory;
+import com.irunninglog.api.mapping.IMapper;
 import com.irunninglog.api.security.ILoginRequest;
 import com.irunninglog.api.security.ILoginResponse;
 import com.irunninglog.api.security.ILoginService;
@@ -15,8 +16,8 @@ public class LoginVerticle extends AbstractEndpointVerticle<ILoginRequest, ILogi
 
     private final ILoginService loginService;
 
-    public LoginVerticle(IFactory factory, ILoginService loginService) {
-        super(factory, ILoginRequest.class, ILoginResponse.class);
+    public LoginVerticle(IFactory factory, IMapper mapper, ILoginService loginService) {
+        super(factory, mapper, ILoginRequest.class, ILoginResponse.class);
 
         this.loginService = loginService;
     }

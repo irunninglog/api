@@ -1,6 +1,7 @@
 package com.irunninglog.vertx.endpoint.ping;
 
-import com.irunninglog.api.IFactory;
+import com.irunninglog.api.factory.IFactory;
+import com.irunninglog.api.mapping.IMapper;
 import com.irunninglog.api.ping.IPingRequest;
 import com.irunninglog.api.ping.IPingResponse;
 import com.irunninglog.api.ping.IPingService;
@@ -14,8 +15,8 @@ public class PingVerticle extends AbstractEndpointVerticle<IPingRequest, IPingRe
 
     private final IPingService pingService;
 
-    public PingVerticle(IFactory factory, IPingService pingService) {
-        super(factory, IPingRequest.class, IPingResponse.class);
+    public PingVerticle(IFactory factory, IMapper mapper, IPingService pingService) {
+        super(factory, mapper, IPingRequest.class, IPingResponse.class);
 
         this.pingService = pingService;
     }

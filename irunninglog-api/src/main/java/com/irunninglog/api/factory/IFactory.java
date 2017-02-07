@@ -1,4 +1,4 @@
-package com.irunninglog.api;
+package com.irunninglog.api.factory;
 
 public interface IFactory {
 

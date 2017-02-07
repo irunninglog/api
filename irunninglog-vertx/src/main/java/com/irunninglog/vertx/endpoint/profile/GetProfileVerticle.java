@@ -1,6 +1,7 @@
 package com.irunninglog.vertx.endpoint.profile;
 
-import com.irunninglog.api.IFactory;
+import com.irunninglog.api.factory.IFactory;
+import com.irunninglog.api.mapping.IMapper;
 import com.irunninglog.api.profile.IGetProfileRequest;
 import com.irunninglog.api.profile.IGetProfileResponse;
 import com.irunninglog.api.profile.IProfileService;
@@ -14,8 +15,9 @@ public final class GetProfileVerticle extends AbstractEndpointVerticle<IGetProfi
 
     private final IProfileService profileService;
 
-    public GetProfileVerticle(IFactory factory, IProfileService profileService) {
-        super(factory, IGetProfileRequest.class, IGetProfileResponse.class);
+    public GetProfileVerticle(IFactory factory, IMapper mapper, IProfileService profileService) {
+        super(factory, mapper, IGetProfileRequest.class, IGetProfileResponse.class);
+
         this.profileService = profileService;
     }
 

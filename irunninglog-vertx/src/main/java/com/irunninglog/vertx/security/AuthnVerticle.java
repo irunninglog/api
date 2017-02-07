@@ -1,6 +1,7 @@
 package com.irunninglog.vertx.security;
 
-import com.irunninglog.api.IFactory;
+import com.irunninglog.api.factory.IFactory;
+import com.irunninglog.api.mapping.IMapper;
 import com.irunninglog.api.security.IAuthnRequest;
 import com.irunninglog.api.security.IAuthnResponse;
 import com.irunninglog.api.security.AuthzException;
@@ -14,8 +15,8 @@ public final class AuthnVerticle extends AbstractRequestResponseVerticle<IAuthnR
 
     private final IAuthenticationService authenticationService;
 
-    public AuthnVerticle(IAuthenticationService authenticationService, IFactory factory) {
-        super(factory, IAuthnRequest.class, IAuthnResponse.class);
+    public AuthnVerticle(IAuthenticationService authenticationService, IFactory factory, IMapper mapper) {
+        super(factory, mapper, IAuthnRequest.class, IAuthnResponse.class);
 
         this.authenticationService = authenticationService;
     }

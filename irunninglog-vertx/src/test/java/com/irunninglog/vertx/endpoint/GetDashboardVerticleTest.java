@@ -1,11 +1,12 @@
 package com.irunninglog.vertx.endpoint;
 
-import com.irunninglog.dashboard.DashboardInfo;
-import com.irunninglog.dashboard.DashboardRequest;
-import com.irunninglog.dashboard.DashboardResponse;
+import com.irunninglog.api.factory.IFactory;
+import com.irunninglog.api.dashboard.IDashboardInfo;
 import com.irunninglog.api.dashboard.IDashboardService;
 import com.irunninglog.api.Endpoint;
 import com.irunninglog.api.ResponseStatus;
+import com.irunninglog.api.dashboard.IGetDashboardRequest;
+import com.irunninglog.api.dashboard.IGetDashboardResponse;
 import com.irunninglog.vertx.endpoint.dashboard.GetDashboardVerticle;
 import io.vertx.core.json.Json;
 import io.vertx.ext.unit.TestContext;
@@ -20,17 +21,17 @@ public class GetDashboardVerticleTest extends AbstractVerticleTest {
     @Before
     public void before(TestContext context) {
         IDashboardService dashboardService = Mockito.mock(IDashboardService.class);
-        Mockito.when(dashboardService.get(any(DashboardRequest.class))).thenReturn(new DashboardResponse().setStatus(ResponseStatus.Ok).setBody(new DashboardInfo()));
+        Mockito.when(dashboardService.get(any(Long.class), any(Integer.class))).thenReturn(Mockito.mock(IDashboardInfo.class));
 
-        GetDashboardVerticle verticle = new GetDashboardVerticle(dashboardService);
+        GetDashboardVerticle verticle = new GetDashboardVerticle(dashboardService, Mockito.mock(IFactory.class), mapper);
         rule.vertx().deployVerticle(verticle, context.asyncAssertSuccess());
     }
 
     @Test
     public void ok(TestContext context) {
-        rule.vertx().eventBus().<String>send(Endpoint.GetDashboard.getAddress(), Json.encode(new DashboardRequest()), context.asyncAssertSuccess(o ->  {
+        rule.vertx().eventBus().<String>send(Endpoint.GetDashboard.getAddress(), Json.encode(Mockito.mock(IGetDashboardRequest.class)), context.asyncAssertSuccess(o ->  {
             String s = o.body();
-            DashboardResponse response = Json.decodeValue(s, DashboardResponse.class);
+            IGetDashboardResponse response = Json.decodeValue(s, IGetDashboardResponse.class);
 
             context.assertEquals(ResponseStatus.Ok, response.getStatus());
             context.assertNotNull(response.getBody());

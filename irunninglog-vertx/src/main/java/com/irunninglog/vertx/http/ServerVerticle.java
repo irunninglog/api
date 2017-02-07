@@ -1,5 +1,7 @@
 package com.irunninglog.vertx.http;
 
+import com.irunninglog.api.factory.IFactory;
+import com.irunninglog.api.mapping.IMapper;
 import com.irunninglog.vertx.route.AbstractRouteHandler;
 import com.irunninglog.vertx.route.RouteHandler;
 import io.vertx.core.AbstractVerticle;
@@ -22,10 +24,14 @@ public final class ServerVerticle extends AbstractVerticle {
 
     private final int listenPort;
     private final Handler<AsyncResult<HttpServer>> listenHandler;
+    private final IFactory factory;
+    private final IMapper mapper;
 
-    public ServerVerticle(int listenPort, Handler<AsyncResult<HttpServer>> listenHandler) {
+    public ServerVerticle(int listenPort, Handler<AsyncResult<HttpServer>> listenHandler, IFactory factory, IMapper mapper) {
         this.listenPort = listenPort;
         this.listenHandler = listenHandler;
+        this.factory = factory;
+        this.mapper = mapper;
     }
 
     @Override
@@ -59,7 +65,7 @@ public final class ServerVerticle extends AbstractVerticle {
         Set<Class<?>> set = reflections.getTypesAnnotatedWith(RouteHandler.class);
 
         for (Class<?> clazz : set) {
-            AbstractRouteHandler<?, ?> handler = (AbstractRouteHandler) clazz.getConstructors()[0].newInstance(vertx);
+            AbstractRouteHandler<?, ?> handler = (AbstractRouteHandler) clazz.getConstructors()[0].newInstance(vertx, factory, mapper);
 
             LOG.info("httpServer:{}:before", handler);
             router.route(HttpMethod.valueOf(handler.endpoint().getMethod().name()), handler.endpoint().getPath()).handler(handler);

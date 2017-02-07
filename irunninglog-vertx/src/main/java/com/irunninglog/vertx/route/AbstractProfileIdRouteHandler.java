@@ -1,15 +1,16 @@
 package com.irunninglog.vertx.route;
 
-import com.irunninglog.api.IFactory;
+import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.IProfileIdRequest;
 import com.irunninglog.api.IResponse;
+import com.irunninglog.api.mapping.IMapper;
 import io.vertx.core.Vertx;
 import io.vertx.ext.web.RoutingContext;
 
 public abstract class AbstractProfileIdRouteHandler<Q extends IProfileIdRequest<Q>, R extends IResponse> extends AbstractRouteHandler<Q, R> {
 
-    public AbstractProfileIdRouteHandler(Vertx vertx, IFactory factory, Class<Q> requestClass, Class<R> responseClass) {
-        super(vertx, factory, requestClass, responseClass);
+    public AbstractProfileIdRouteHandler(Vertx vertx, IFactory factory, IMapper mapper, Class<Q> requestClass, Class<R> responseClass) {
+        super(vertx, factory, mapper, requestClass, responseClass);
     }
 
     @Override

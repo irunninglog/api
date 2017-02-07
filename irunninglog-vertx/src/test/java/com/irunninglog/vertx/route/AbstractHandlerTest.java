@@ -1,9 +1,12 @@
 package com.irunninglog.vertx.route;
 
+import com.irunninglog.api.Endpoint;
+import com.irunninglog.api.factory.IFactory;
+import com.irunninglog.api.mapping.IMapper;
 import com.irunninglog.api.security.AuthnException;
-import com.irunninglog.api.security.IAuthnRequest;
 import com.irunninglog.api.security.AuthzException;
 import com.irunninglog.api.security.*;
+import com.irunninglog.vertx.*;
 import com.irunninglog.vertx.security.AuthnVerticle;
 import com.irunninglog.vertx.http.ServerVerticle;
 import io.vertx.core.Vertx;
@@ -28,6 +31,8 @@ public abstract class AbstractHandlerTest {
 
     final Logger logger = LoggerFactory.getLogger(getClass());
     final IAuthenticationService authenticationService = Mockito.mock(IAuthenticationService.class);
+    final IMapper mapper = new MockMapper();
+    final IFactory factory = new MockFactory();
 
     Vertx vertx;
     String authVerticleId;
@@ -40,10 +45,10 @@ public abstract class AbstractHandlerTest {
 
         Async async = context.async();
 
-        ServerVerticle verticle = new ServerVerticle(8889, context.asyncAssertSuccess(event -> async.complete()));
+        ServerVerticle verticle = new ServerVerticle(8889, context.asyncAssertSuccess(event -> async.complete()), factory, mapper);
         vertx.deployVerticle(verticle, context.asyncAssertSuccess(s -> logger.info("Server verticle deployed {}", s)));
 
-        AuthnVerticle authnVerticle = new AuthnVerticle(authenticationService);
+        AuthnVerticle authnVerticle = new AuthnVerticle(authenticationService, factory, mapper);
         vertx.deployVerticle(authnVerticle, context.asyncAssertSuccess(s -> {
             logger.info("Auth verticle deployed {}", s);
 
@@ -65,7 +70,8 @@ public abstract class AbstractHandlerTest {
     protected abstract void afterBefore(TestContext context);
 
     final void authn() throws AuthnException, AuthzException {
-        Mockito.when(authenticationService.authenticate(any(IAuthnRequest.class))).thenReturn(new User());
+        Mockito.when(authenticationService.authenticate(any(Endpoint.class), any(String.class), any(String.class)))
+                .thenReturn(new MockUser());
     }
 
     final int request(TestContext context, String path, String token) {

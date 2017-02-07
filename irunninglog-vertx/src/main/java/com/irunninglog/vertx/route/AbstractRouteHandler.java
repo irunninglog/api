@@ -1,12 +1,13 @@
 package com.irunninglog.vertx.route;
 
 import com.irunninglog.api.*;
+import com.irunninglog.api.factory.IFactory;
+import com.irunninglog.api.mapping.IMapper;
 import com.irunninglog.api.security.IAuthnRequest;
 import com.irunninglog.api.security.IAuthnResponse;
 import com.irunninglog.vertx.security.AuthnVerticle;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
-import io.vertx.core.json.Json;
 import io.vertx.ext.web.RoutingContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,15 +16,22 @@ public abstract class AbstractRouteHandler<Q extends IRequest, S extends IRespon
 
     private final Vertx vertx;
     private final IFactory factory;
+    private final IMapper mapper;
     private final Class<Q> requestClass;
     private final Class<S> responseClass;
     private final Endpoint endpoint;
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
-    public AbstractRouteHandler(Vertx vertx, IFactory factory, Class<Q> requestClass, Class<S> responseClass) {
+    public AbstractRouteHandler(Vertx vertx,
+                                IFactory factory,
+                                IMapper mapper,
+                                Class<Q> requestClass,
+                                Class<S> responseClass) {
+
         this.vertx = vertx;
         this.factory = factory;
+        this.mapper = mapper;
         this.requestClass = requestClass;
         this.responseClass = responseClass;
 
@@ -45,13 +53,13 @@ public abstract class AbstractRouteHandler<Q extends IRequest, S extends IRespon
 
             logger.info("handle:authn:{}", authnRequest);
 
-            vertx.eventBus().<String>send(AuthnVerticle.ADDRESS, Json.encode(authnRequest), result -> {
+            vertx.eventBus().<String>send(AuthnVerticle.ADDRESS, mapper.encode(authnRequest), result -> {
                         if (result.succeeded()) {
                             String resultString = result.result().body();
 
                             logger.info("handle:{}:{}", AuthnVerticle.ADDRESS, resultString);
 
-                            IAuthnResponse authnResponse = Json.decodeValue(resultString, IAuthnResponse.class);
+                            IAuthnResponse authnResponse = mapper.decode(resultString, IAuthnResponse.class);
 
                             logger.info("handle:{}:{}", AuthnVerticle.ADDRESS, authnResponse.getStatus());
 
@@ -94,7 +102,7 @@ public abstract class AbstractRouteHandler<Q extends IRequest, S extends IRespon
         int offset = offsetString == null ? 0 : Integer.parseInt(offsetString);
         request.setOffset(offset);
 
-        String requestString = Json.encode(request);
+        String requestString = mapper.encode(request);
 
         logger.info("handleAuthenticated:{}:{}", endpoint.getAddress(), requestString);
 
@@ -104,7 +112,7 @@ public abstract class AbstractRouteHandler<Q extends IRequest, S extends IRespon
 
                 logger.info("handleAuthenticated:{}:{}", endpoint.getAddress(), resultString);
 
-                S response = Json.decodeValue(resultString, responseClass);
+                S response = mapper.decode(resultString, responseClass);
 
                 logger.info("handle:{}:{}", endpoint.getAddress(), response);
 
@@ -127,7 +135,7 @@ public abstract class AbstractRouteHandler<Q extends IRequest, S extends IRespon
                 .setChunked(true)
                 .putHeader("Content-Type", "application/json")
                 .setStatusCode(response.getStatus().getCode())
-                .write(Json.encode(response.getBody()))
+                .write(mapper.encode(response.getBody()))
                 .end();
     }
 

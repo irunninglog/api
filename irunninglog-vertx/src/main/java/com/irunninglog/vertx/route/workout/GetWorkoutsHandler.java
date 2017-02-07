@@ -1,6 +1,7 @@
 package com.irunninglog.vertx.route.workout;
 
-import com.irunninglog.api.IFactory;
+import com.irunninglog.api.factory.IFactory;
+import com.irunninglog.api.mapping.IMapper;
 import com.irunninglog.api.workout.IGetWorkoutsRequest;
 import com.irunninglog.api.workout.IGetWorkoutsResponse;
 import com.irunninglog.api.Endpoint;
@@ -19,8 +20,8 @@ public final class GetWorkoutsHandler extends AbstractProfileIdRouteHandler<IGet
     private static final Pattern PATTERN1 = Pattern.compile("^\\bworkouts\\b$");
     private static final Pattern PATTERN2 = Pattern.compile("^\\bworkouts\\b/(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])-(19|20)\\d\\d$");
 
-    public GetWorkoutsHandler(Vertx vertx, IFactory factory) {
-        super(vertx, factory, IGetWorkoutsRequest.class, IGetWorkoutsResponse.class);
+    public GetWorkoutsHandler(Vertx vertx, IFactory factory, IMapper mapper) {
+        super(vertx, factory, mapper, IGetWorkoutsRequest.class, IGetWorkoutsResponse.class);
     }
 
     @Override

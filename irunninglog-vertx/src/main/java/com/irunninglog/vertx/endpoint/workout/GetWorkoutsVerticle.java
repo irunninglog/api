@@ -1,6 +1,7 @@
 package com.irunninglog.vertx.endpoint.workout;
 
-import com.irunninglog.api.IFactory;
+import com.irunninglog.api.factory.IFactory;
+import com.irunninglog.api.mapping.IMapper;
 import com.irunninglog.api.workout.IGetWorkoutsRequest;
 import com.irunninglog.api.workout.IGetWorkoutsResponse;
 import com.irunninglog.api.Endpoint;
@@ -15,8 +16,8 @@ public final class GetWorkoutsVerticle extends AbstractEndpointVerticle<IGetWork
 
     private final IWorkoutService workoutService;
 
-    public GetWorkoutsVerticle(IWorkoutService workoutService, IFactory factory) {
-        super(factory, IGetWorkoutsRequest.class, IGetWorkoutsResponse.class);
+    public GetWorkoutsVerticle(IWorkoutService workoutService, IFactory factory, IMapper mapper) {
+        super(factory, mapper, IGetWorkoutsRequest.class, IGetWorkoutsResponse.class);
 
         this.workoutService = workoutService;
     }
