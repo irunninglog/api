@@ -6,7 +6,7 @@ import com.irunninglog.spring.data.impl.*;
 import com.irunninglog.spring.profile.impl.IProfileEntityRepository;
 import com.irunninglog.spring.profile.impl.ProfileEntity;
 import com.irunninglog.spring.service.ApiService;
-import com.irunninglog.spring.workout.impl.IWorkoutEntityRepository;
+import com.irunninglog.spring.workout.IWorkoutEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;

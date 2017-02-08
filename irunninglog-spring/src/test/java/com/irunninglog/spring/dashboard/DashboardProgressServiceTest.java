@@ -1,6 +1,6 @@
-package com.irunninglog.spring.dashboard.impl;
+package com.irunninglog.spring.dashboard;
 
-import com.irunninglog.dashboard.ProgressInfo;
+import com.irunninglog.api.dashboard.IProgressInfo;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -39,16 +39,16 @@ public class DashboardProgressServiceTest extends AbstractDashboardServicesTest 
         saveWorkout(LocalDate.now(), 10);
         saveWorkout(LocalDate.now(), 11);
 
-        Collection<ProgressInfo> progress = progressService.progress(profileEntity, 300);
-        Iterator<ProgressInfo> iterator = progress.iterator();
+        Collection<IProgressInfo> progress = progressService.progress(profileEntity, 300);
+        Iterator<IProgressInfo> iterator = progress.iterator();
 
-        ProgressInfo thisWeek = iterator.next();
+        IProgressInfo thisWeek = iterator.next();
         assertTrue(thisWeek.getTextTwo().contains("100%"));
 
-        ProgressInfo thisMonth = iterator.next();
+        IProgressInfo thisMonth = iterator.next();
         assertTrue(thisMonth.getTextTwo().contains("31%"));
 
-        ProgressInfo thisYear = iterator.next();
+        IProgressInfo thisYear = iterator.next();
         assertEquals("31 mi", thisYear.getTextTwo());
     }
 

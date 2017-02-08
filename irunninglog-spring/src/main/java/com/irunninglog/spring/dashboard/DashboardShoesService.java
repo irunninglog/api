@@ -1,14 +1,15 @@
-package com.irunninglog.spring.dashboard.impl;
+package com.irunninglog.spring.dashboard;
 
 import com.irunninglog.api.Progress;
-import com.irunninglog.dashboard.ProgressInfo;
+import com.irunninglog.api.dashboard.IProgressInfo;
+import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.spring.data.impl.IShoeEntityRepository;
 import com.irunninglog.spring.data.impl.ShoeEntity;
 import com.irunninglog.spring.date.DateService;
 import com.irunninglog.spring.math.MathService;
 import com.irunninglog.spring.profile.impl.ProfileEntity;
 import com.irunninglog.spring.service.InternalService;
-import com.irunninglog.spring.workout.impl.IWorkoutEntityRepository;
+import com.irunninglog.spring.workout.IWorkoutEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
@@ -23,22 +24,25 @@ final class DashboardShoesService {
     private final IWorkoutEntityRepository workoutEntityRepository;
     private final MathService mathService;
     private final DateService dateService;
+    private final IFactory factory;
 
     @Autowired
     public DashboardShoesService(IShoeEntityRepository shoeEntityRepository,
                                  IWorkoutEntityRepository workoutEntityRepository,
                                  MathService mathService,
-                                 DateService dateService) {
+                                 DateService dateService,
+                                 IFactory factory) {
         super();
 
         this.shoeEntityRepository = shoeEntityRepository;
         this.workoutEntityRepository = workoutEntityRepository;
         this.mathService = mathService;
         this.dateService = dateService;
+        this.factory = factory;
     }
 
-    Collection<ProgressInfo> shoes(ProfileEntity profile) {
-        List<ProgressInfo> progressList = new ArrayList<>();
+    Collection<IProgressInfo> shoes(ProfileEntity profile) {
+        List<IProgressInfo> progressList = new ArrayList<>();
 
         for (ShoeEntity shoeEntity : shoeEntityRepository.dashboardShoes(profile.getId())) {
             BigDecimal distance = workoutEntityRepository.shoeMileage(profile.getId(), shoeEntity.getId());
@@ -50,7 +54,7 @@ final class DashboardShoesService {
 
             Progress progress = mathService.progress(distance, target, Boolean.TRUE);
 
-            ProgressInfo progressInfo = new ProgressInfo()
+            IProgressInfo progressInfo = factory.get(IProgressInfo.class)
                     .setTitle(shoeEntity.getName())
                     .setSubTitle(shoeEntity.getDescription())
                     .setTextOne(formatStart(shoeEntity))

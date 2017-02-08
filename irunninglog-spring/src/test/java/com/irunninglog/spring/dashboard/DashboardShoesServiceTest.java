@@ -1,4 +1,4 @@
-package com.irunninglog.spring.dashboard.impl;
+package com.irunninglog.spring.dashboard;
 
 import com.irunninglog.spring.data.impl.ShoeEntity;
 import org.junit.Test;

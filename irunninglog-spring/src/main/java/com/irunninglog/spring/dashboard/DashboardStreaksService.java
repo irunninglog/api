@@ -1,11 +1,12 @@
-package com.irunninglog.spring.dashboard.impl;
+package com.irunninglog.spring.dashboard;
 
-import com.irunninglog.dashboard.ProgressInfo;
+import com.irunninglog.api.dashboard.IProgressInfo;
+import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.spring.date.DateService;
 import com.irunninglog.spring.profile.impl.ProfileEntity;
 import com.irunninglog.spring.service.InternalService;
-import com.irunninglog.spring.workout.impl.IWorkoutEntityRepository;
-import com.irunninglog.spring.workout.impl.WorkoutEntity;
+import com.irunninglog.spring.workout.IWorkoutEntityRepository;
+import com.irunninglog.spring.workout.WorkoutEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,40 +23,43 @@ final class DashboardStreaksService {
 
     private final IWorkoutEntityRepository workoutEntityRepository;
     private final DateService dateService;
+    private final IFactory factory;
 
     @Autowired
     public DashboardStreaksService(IWorkoutEntityRepository workoutEntityRepository,
-                                   DateService dateService) {
+                                   DateService dateService,
+                                   IFactory factory) {
         super();
 
         this.workoutEntityRepository = workoutEntityRepository;
         this.dateService = dateService;
+        this.factory = factory;
     }
 
-    Collection<ProgressInfo> streaks(ProfileEntity profileEntity, int offset) {
+    Collection<IProgressInfo> streaks(ProfileEntity profileEntity, int offset) {
         List<WorkoutEntity> workouts = workoutEntityRepository.findByProfileId(profileEntity.getId());
         workouts.sort((o1, o2) -> o2.getDate().compareTo(o1.getDate()));
 
         Streaks streaks = getStreaks(workouts, offset);
-        ProgressInfo current = new ProgressInfo()
+        IProgressInfo current = factory.get(IProgressInfo.class)
                 .setTitle("Current")
                 .setSubTitle(streaks.getCurrent().getSpan() + " day(s)")
                 .setTextOne(streaks.getCurrent().getCount() + " workout(s)")
                 .setTextTwo(streaks.getCurrent().getCount() == 0 ? "No current streak!" : formatStreak(streaks.getCurrent()));
 
-        ProgressInfo thisYear = new ProgressInfo()
+        IProgressInfo thisYear = factory.get(IProgressInfo.class)
                 .setTitle("This Year")
                 .setSubTitle(streaks.getThisYear().getSpan() + " day(s)")
                 .setTextOne(streaks.getThisYear().getCount() + " workout(s)")
                 .setTextTwo(streaks.getThisYear().getCount() == 0 ? "No streaks this year!" : formatStreak(streaks.getThisYear()));
 
-        ProgressInfo ever = new ProgressInfo()
+        IProgressInfo ever = factory.get(IProgressInfo.class)
                 .setTitle("Ever")
                 .setSubTitle(streaks.getEver().getSpan() + " day(s)")
                 .setTextOne(streaks.getEver().getCount() + " workout(s)")
                 .setTextTwo(streaks.getEver().getCount() == 0 ? "No streaks this year!" : formatStreak(streaks.getEver()));
 
-        List<ProgressInfo> progressInfo = new ArrayList<>(3);
+        List<IProgressInfo> progressInfo = new ArrayList<>(3);
         progressInfo.add(current);
         progressInfo.add(thisYear);
         progressInfo.add(ever);

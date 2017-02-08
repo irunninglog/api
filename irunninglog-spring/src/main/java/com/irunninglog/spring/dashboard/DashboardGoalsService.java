@@ -1,13 +1,14 @@
-package com.irunninglog.spring.dashboard.impl;
+package com.irunninglog.spring.dashboard;
 
-import com.irunninglog.dashboard.ProgressInfo;
+import com.irunninglog.api.dashboard.IProgressInfo;
+import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.spring.data.impl.GoalEntity;
 import com.irunninglog.spring.data.impl.IGoalEntityRepository;
 import com.irunninglog.spring.date.DateService;
 import com.irunninglog.spring.math.MathService;
 import com.irunninglog.spring.profile.impl.ProfileEntity;
 import com.irunninglog.spring.service.InternalService;
-import com.irunninglog.spring.workout.impl.IWorkoutEntityRepository;
+import com.irunninglog.spring.workout.IWorkoutEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
@@ -28,22 +29,25 @@ final class DashboardGoalsService {
     private final IWorkoutEntityRepository workoutEntityRepository;
     private final DateService dateService;
     private final MathService mathService;
+    private final IFactory factory;
 
     @Autowired
     public DashboardGoalsService(IGoalEntityRepository goalEntityRepository,
                                  DateService dateService,
                                  IWorkoutEntityRepository workoutEntityRepository,
-                                 MathService mathService) {
+                                 MathService mathService,
+                                 IFactory factory) {
         super();
 
         this.goalEntityRepository = goalEntityRepository;
         this.workoutEntityRepository = workoutEntityRepository;
         this.dateService = dateService;
         this.mathService = mathService;
+        this.factory = factory;
     }
 
-    Collection<ProgressInfo> goals(ProfileEntity profile) {
-        List<ProgressInfo> progressList = new ArrayList<>();
+    Collection<IProgressInfo> goals(ProfileEntity profile) {
+        List<IProgressInfo> progressList = new ArrayList<>();
 
         for (GoalEntity goalEntity : goalEntityRepository.dashboardGoals(profile.getId())) {
             BigDecimal bigDecimal = getSum(goalEntity, profile.getId());
@@ -51,7 +55,7 @@ final class DashboardGoalsService {
             int value = Math.min(bigDecimal.intValue(), (int) goalEntity.getGoal());
             int max = (int) goalEntity.getGoal();
 
-            ProgressInfo progressInfo = new ProgressInfo()
+            IProgressInfo progressInfo = factory.get(IProgressInfo.class)
                     .setTitle(goalEntity.getName())
                     .setSubTitle(goalEntity.getDescription())
                     .setTextOne(formatDates(goalEntity))

@@ -25,7 +25,7 @@ public final class GetWorkoutsVerticle extends AbstractEndpointVerticle<IGetWork
     @Override
     protected void handle(IGetWorkoutsRequest request, IGetWorkoutsResponse response) {
         response.setStatus(ResponseStatus.Ok)
-                .setBody(workoutService.get(request.getProfileId(), request.getOffset()));
+                .setBody(workoutService.get(request.getProfileId(), null, request.getOffset()));
     }
 
 }

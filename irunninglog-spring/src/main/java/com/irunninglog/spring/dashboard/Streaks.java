@@ -1,4 +1,4 @@
-package com.irunninglog.spring.dashboard.impl;
+package com.irunninglog.spring.dashboard;
 
 final class Streaks {
 

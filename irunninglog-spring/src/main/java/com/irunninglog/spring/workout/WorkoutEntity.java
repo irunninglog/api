@@ -1,4 +1,4 @@
-package com.irunninglog.spring.workout.impl;
+package com.irunninglog.spring.workout;
 
 import com.irunninglog.api.Privacy;
 import com.irunninglog.spring.data.impl.RouteEntity;

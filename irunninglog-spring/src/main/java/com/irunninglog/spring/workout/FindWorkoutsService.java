@@ -1,4 +1,4 @@
-package com.irunninglog.spring.workout.impl;
+package com.irunninglog.spring.workout;
 
 import com.irunninglog.spring.date.DateService;
 import com.irunninglog.spring.service.InternalService;

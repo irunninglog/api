@@ -1,4 +1,4 @@
-package com.irunninglog.spring.dashboard.impl;
+package com.irunninglog.spring.dashboard;
 
 import com.irunninglog.dashboard.DashboardRequest;
 import com.irunninglog.dashboard.DashboardResponse;

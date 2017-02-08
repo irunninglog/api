@@ -1,4 +1,4 @@
-package com.irunninglog.spring.dashboard.impl;
+package com.irunninglog.spring.dashboard;
 
 import com.irunninglog.api.Gender;
 import com.irunninglog.api.Privacy;
@@ -13,8 +13,8 @@ import com.irunninglog.spring.security.impl.AuthorityEntity;
 import com.irunninglog.spring.security.impl.IAuthorityEntityRepository;
 import com.irunninglog.spring.security.impl.IUserEntityRepository;
 import com.irunninglog.spring.security.impl.UserEntity;
-import com.irunninglog.spring.workout.impl.IWorkoutEntityRepository;
-import com.irunninglog.spring.workout.impl.WorkoutEntity;
+import com.irunninglog.spring.workout.IWorkoutEntityRepository;
+import com.irunninglog.spring.workout.WorkoutEntity;
 import org.junit.After;
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;

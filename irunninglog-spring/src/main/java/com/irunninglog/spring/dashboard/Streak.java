@@ -1,4 +1,4 @@
-package com.irunninglog.spring.dashboard.impl;
+package com.irunninglog.spring.dashboard;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;

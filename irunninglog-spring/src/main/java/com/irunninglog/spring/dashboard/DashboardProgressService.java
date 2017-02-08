@@ -1,13 +1,14 @@
-package com.irunninglog.spring.dashboard.impl;
+package com.irunninglog.spring.dashboard;
 
 import com.irunninglog.api.Unit;
-import com.irunninglog.dashboard.ProgressInfo;
+import com.irunninglog.api.dashboard.IProgressInfo;
+import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.spring.date.DateService;
 import com.irunninglog.spring.math.MathService;
 import com.irunninglog.spring.profile.impl.ProfileEntity;
 import com.irunninglog.spring.service.InternalService;
-import com.irunninglog.spring.workout.impl.WorkoutEntity;
-import com.irunninglog.spring.workout.impl.FindWorkoutsService;
+import com.irunninglog.spring.workout.WorkoutEntity;
+import com.irunninglog.spring.workout.FindWorkoutsService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
@@ -21,26 +22,29 @@ final class DashboardProgressService {
     private final FindWorkoutsService workoutsService;
     private final MathService mathService;
     private final DateService dateService;
+    private final IFactory factory;
 
     @Autowired
     public DashboardProgressService(FindWorkoutsService workoutsService,
                                     MathService mathService,
-                                    DateService dateService) {
+                                    DateService dateService,
+                                    IFactory factory) {
         super();
 
         this.workoutsService = workoutsService;
         this.mathService = mathService;
         this.dateService = dateService;
+        this.factory = factory;
     }
 
-    Collection<ProgressInfo> progress(ProfileEntity profile, int offset) {
-        List<ProgressInfo> list = new ArrayList<>();
+    Collection<IProgressInfo> progress(ProfileEntity profile, int offset) {
+        List<IProgressInfo> list = new ArrayList<>();
 
         list.add(thisWeek(profile, offset));
         list.add(thisMonth(profile, offset));
         list.add(currentYear(profile, offset));
 
-        ProgressInfo previousYear = previousYear(profile, offset);
+        IProgressInfo previousYear = previousYear(profile, offset);
         if (previousYear != null) {
             list.add(previousYear(profile, offset));
         }
@@ -48,7 +52,7 @@ final class DashboardProgressService {
         return list;
     }
 
-    private ProgressInfo thisWeek(ProfileEntity profile, int offset) {
+    private IProgressInfo thisWeek(ProfileEntity profile, int offset) {
         List<WorkoutEntity> weekly = workoutsService.findWorkoutsThisWeek(profile.getId(), profile.getWeekStart(), offset);
         BigDecimal thisWeek = new BigDecimal(profile.getWeeklyTarget());
 
@@ -59,7 +63,7 @@ final class DashboardProgressService {
                 dateService.getThisWeekEndFull(profile.getWeekStart(), offset));
     }
 
-    private ProgressInfo thisMonth(ProfileEntity profile, int offset) {
+    private IProgressInfo thisMonth(ProfileEntity profile, int offset) {
         List<WorkoutEntity> monthly = workoutsService.findWorkoutsThisMonth(profile.getId(), offset);
         BigDecimal thisMonth = new BigDecimal(profile.getMonthlyTarget());
 
@@ -70,7 +74,7 @@ final class DashboardProgressService {
                 dateService.getThisMonthEndFull(offset));
     }
 
-    private ProgressInfo currentYear(ProfileEntity profile, int offset) {
+    private IProgressInfo currentYear(ProfileEntity profile, int offset) {
         List<WorkoutEntity> yearly = workoutsService.findWorkoutsThisYear(profile.getId(), offset);
         BigDecimal thisYear = new BigDecimal(profile.getYearlyTarget());
 
@@ -81,7 +85,7 @@ final class DashboardProgressService {
                 dateService.getThisYearEndFull(offset));
     }
 
-    private ProgressInfo previousYear(ProfileEntity profile, int offset) {
+    private IProgressInfo previousYear(ProfileEntity profile, int offset) {
         List<WorkoutEntity> lastYears = workoutsService.findWorkoutsLastYear(profile.getId(), offset);
         if (!lastYears.isEmpty()) {
             BigDecimal lastYear = new BigDecimal(profile.getYearlyTarget());
@@ -96,7 +100,7 @@ final class DashboardProgressService {
         }
     }
 
-    private ProgressInfo getProgressInfo(List<WorkoutEntity> entities, BigDecimal target, Unit units, String title, String subTitle) {
+    private IProgressInfo getProgressInfo(List<WorkoutEntity> entities, BigDecimal target, Unit units, String title, String subTitle) {
         BigDecimal mileage = new BigDecimal("0.0");
 
         for (WorkoutEntity workout : entities) {
@@ -106,7 +110,7 @@ final class DashboardProgressService {
         int max = mathService.intValue(target);
         int value = Math.min(mathService.intValue(mileage), max);
 
-        ProgressInfo progressInfo = new ProgressInfo();
+        IProgressInfo progressInfo = factory.get(IProgressInfo.class);
         progressInfo.setTitle(title);
         progressInfo.setSubTitle(subTitle);
         progressInfo.setTextOne(entities.size() + " workout(s)");

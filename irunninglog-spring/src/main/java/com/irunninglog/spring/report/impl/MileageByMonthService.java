@@ -7,7 +7,7 @@ import com.irunninglog.spring.date.DateService;
 import com.irunninglog.spring.math.MathService;
 import com.irunninglog.spring.profile.impl.ProfileEntity;
 import com.irunninglog.spring.service.InternalService;
-import com.irunninglog.spring.workout.impl.WorkoutEntity;
+import com.irunninglog.spring.workout.WorkoutEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;

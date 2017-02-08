@@ -1,15 +1,14 @@
-package com.irunninglog.spring.workout.impl;
+package com.irunninglog.spring.workout;
 
 import com.irunninglog.api.Progress;
-import com.irunninglog.api.workout.IWorkoutService;
-import com.irunninglog.api.ResponseStatus;
+import com.irunninglog.api.factory.IFactory;
+import com.irunninglog.api.workout.*;
 import com.irunninglog.spring.data.impl.AbstractDataEntity;
 import com.irunninglog.spring.date.DateService;
 import com.irunninglog.spring.math.MathService;
 import com.irunninglog.spring.profile.impl.IProfileEntityRepository;
 import com.irunninglog.spring.profile.impl.ProfileEntity;
 import com.irunninglog.spring.service.ApiService;
-import com.irunninglog.workout.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
@@ -28,31 +27,34 @@ public class WorkoutService implements IWorkoutService {
     private final FindWorkoutsService findWorkoutsService;
     private final DateService dateService;
     private final MathService mathService;
+    private final IFactory factory;
 
     @Autowired
     public WorkoutService(IProfileEntityRepository profileEntityRepository,
                           FindWorkoutsService findWorkoutsService,
                           DateService dateService,
-                          MathService mathService) {
+                          MathService mathService,
+                          IFactory factory) {
 
         this.profileEntityRepository = profileEntityRepository;
         this.findWorkoutsService = findWorkoutsService;
         this.dateService = dateService;
         this.mathService = mathService;
+        this.factory = factory;
     }
 
     @Override
-    public GetWorkoutsResponse get(GetWorkoutsRequest request) {
-        LocalDate localDate = request.getDate() == null
-                ? dateService.getMonthStartDate(request.getOffset())
-                : dateService.parse(request.getDate());
+    public IWorkouts get(long profileId, String date, int offset) {
+        LocalDate localDate = date == null
+                ? dateService.getMonthStartDate(offset)
+                : dateService.parse(date);
 
-        ProfileEntity profileEntity = profileEntityRepository.findOne(request.getId());
+        ProfileEntity profileEntity = profileEntityRepository.findOne(profileId);
 
         List<WorkoutEntity> workoutEntities =
                 findWorkoutsService.findWorkoutsForMonth(profileEntity.getId(), localDate);
 
-        Workouts workouts = new Workouts()
+        IWorkouts workouts = factory.get(IWorkouts.class)
                 .setSummary(summary(localDate, workoutEntities, profileEntity))
                 .setPrevious(month(findWorkoutsService.findWorkoutMonthBefore(profileEntity.getId(), localDate)))
                 .setNext(month(findWorkoutsService.findWorkoutMonthAfter(profileEntity.getId(), localDate)));
@@ -63,12 +65,10 @@ public class WorkoutService implements IWorkoutService {
 
         workouts.getWorkouts().sort((o1, o2) -> o2.getDate().compareTo(o1.getDate()));
 
-        return new GetWorkoutsResponse()
-                .setBody(workouts)
-                .setStatus(ResponseStatus.Ok);
+        return workouts;
     }
 
-    private WorkoutsSummary summary(LocalDate localDate, List<WorkoutEntity> workoutEntities, ProfileEntity profileEntity) {
+    private IWorkoutsSummary summary(LocalDate localDate, List<WorkoutEntity> workoutEntities, ProfileEntity profileEntity) {
         BigDecimal mileage = new BigDecimal(workoutEntities.stream().mapToDouble(WorkoutEntity::getDistance).sum());
 
         String mileageString = mathService.format(mileage, profileEntity.getPreferredUnits());
@@ -80,7 +80,7 @@ public class WorkoutService implements IWorkoutService {
 
         percentage = Math.min(100, percentage);
 
-        return new WorkoutsSummary()
+        return factory.get(IWorkoutsSummary.class)
                 .setTitle(dateService.formatMonthMedium(localDate))
                 .setCount(workoutEntities.size())
                 .setMileage(mileageString)
@@ -88,18 +88,18 @@ public class WorkoutService implements IWorkoutService {
                 .setPercentage(percentage);
     }
 
-    private WorkoutsMonth month(LocalDate month) {
-        return month == null ? null : new WorkoutsMonth()
+    private IWorkoutsMonth month(LocalDate month) {
+        return month == null ? null : factory.get(IWorkoutsMonth.class)
                 .setTitle(dateService.formatMonthMedium(month))
                 .setDate(dateService.format(month));
     }
 
-    private Workout workout(WorkoutEntity workoutEntity, ProfileEntity profileEntity) {
+    private IWorkout workout(WorkoutEntity workoutEntity, ProfileEntity profileEntity) {
         String distance = workoutEntity.getDistance() > 1E-9 ? mathService.format(workoutEntity.getDistance(), profileEntity.getPreferredUnits()) : "--";
         String duration = workoutEntity.getDuration() > 0 ? dateService.formatTime((workoutEntity.getDuration())) : "--";
         String pace = workoutEntity.getDuration() > 0 && workoutEntity.getDistance() > 0 ? dateService.formatTime((long) (workoutEntity.getDuration() / workoutEntity.getDistance())) : "--";
 
-        return new Workout()
+        return factory.get(IWorkout.class)
                 .setId(workoutEntity.getId())
                 .setPrivacy(workoutEntity.getPrivacy())
                 .setDate(dateService.format(workoutEntity.getDate()))
@@ -128,8 +128,8 @@ public class WorkoutService implements IWorkoutService {
         return title;
     }
 
-    private WorkoutData data(AbstractDataEntity data) {
-        return data == null ? null : new WorkoutData()
+    private IWorkoutData data(AbstractDataEntity data) {
+        return data == null ? null : factory.get(IWorkoutData.class)
                 .setId(data.getId())
                 .setName(data.getName())
                 .setDescription(data.getDescription());
