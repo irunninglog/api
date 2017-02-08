@@ -1,6 +1,6 @@
 package com.irunninglog.spring.dashboard;
 
-import com.irunninglog.spring.data.impl.GoalEntity;
+import com.irunninglog.spring.data.GoalEntity;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

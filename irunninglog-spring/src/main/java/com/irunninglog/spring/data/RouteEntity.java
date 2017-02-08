@@ -1,4 +1,4 @@
-package com.irunninglog.spring.data.impl;
+package com.irunninglog.spring.data;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;

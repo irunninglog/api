@@ -5,7 +5,7 @@ import com.irunninglog.api.dashboard.IProgressInfo;
 import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.spring.date.DateService;
 import com.irunninglog.spring.math.MathService;
-import com.irunninglog.spring.profile.impl.ProfileEntity;
+import com.irunninglog.spring.profile.ProfileEntity;
 import com.irunninglog.spring.service.InternalService;
 import com.irunninglog.spring.workout.WorkoutEntity;
 import com.irunninglog.spring.workout.FindWorkoutsService;

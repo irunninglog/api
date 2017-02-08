@@ -1,7 +1,7 @@
-package com.irunninglog.spring.data.impl;
+package com.irunninglog.spring.data;
 
 import com.irunninglog.spring.AbstractTest;
-import com.irunninglog.spring.profile.impl.ProfileEntity;
+import com.irunninglog.spring.profile.ProfileEntity;
 import org.junit.Test;
 
 import java.time.LocalDate;

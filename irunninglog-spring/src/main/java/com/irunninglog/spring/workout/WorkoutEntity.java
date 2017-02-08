@@ -1,9 +1,9 @@
 package com.irunninglog.spring.workout;
 
 import com.irunninglog.api.Privacy;
-import com.irunninglog.spring.data.impl.RouteEntity;
-import com.irunninglog.spring.data.impl.RunEntity;
-import com.irunninglog.spring.data.impl.ShoeEntity;
+import com.irunninglog.spring.data.RouteEntity;
+import com.irunninglog.spring.data.RunEntity;
+import com.irunninglog.spring.data.ShoeEntity;
 import com.irunninglog.spring.jpa.AbstractEntityWithProfile;
 
 import javax.persistence.*;

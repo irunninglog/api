@@ -1,4 +1,4 @@
-package com.irunninglog.spring.security.impl;
+package com.irunninglog.spring.security;
 
 import com.irunninglog.api.Gender;
 import com.irunninglog.api.Unit;
@@ -8,8 +8,8 @@ import com.irunninglog.api.security.AuthzException;
 import com.irunninglog.api.security.*;
 import com.irunninglog.api.Endpoint;
 import com.irunninglog.spring.AbstractTest;
-import com.irunninglog.spring.profile.impl.IProfileEntityRepository;
-import com.irunninglog.spring.profile.impl.ProfileEntity;
+import com.irunninglog.spring.profile.IProfileEntityRepository;
+import com.irunninglog.spring.profile.ProfileEntity;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

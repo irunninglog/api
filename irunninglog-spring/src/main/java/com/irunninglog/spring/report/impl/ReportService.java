@@ -2,9 +2,12 @@ package com.irunninglog.spring.report.impl;
 
 import com.irunninglog.api.report.*;
 import com.irunninglog.api.ResponseStatus;
+import com.irunninglog.spring.data.IRouteEntityRespository;
+import com.irunninglog.spring.data.IRunEntityRepository;
+import com.irunninglog.spring.data.IShoeEntityRepository;
 import com.irunninglog.spring.data.impl.*;
-import com.irunninglog.spring.profile.impl.IProfileEntityRepository;
-import com.irunninglog.spring.profile.impl.ProfileEntity;
+import com.irunninglog.spring.profile.IProfileEntityRepository;
+import com.irunninglog.spring.profile.ProfileEntity;
 import com.irunninglog.spring.service.ApiService;
 import com.irunninglog.spring.workout.IWorkoutEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;

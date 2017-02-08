@@ -1,4 +1,4 @@
-package com.irunninglog.spring.security.impl;
+package com.irunninglog.spring.security;
 
 import com.irunninglog.spring.AbstractTest;
 import org.junit.Test;

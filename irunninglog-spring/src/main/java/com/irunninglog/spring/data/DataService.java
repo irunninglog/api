@@ -1,8 +1,7 @@
-package com.irunninglog.spring.data.impl;
+package com.irunninglog.spring.data;
 
 import com.irunninglog.api.data.*;
-import com.irunninglog.data.*;
-import com.irunninglog.api.ResponseStatus;
+import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.spring.date.DateService;
 import com.irunninglog.spring.math.MathService;
 import com.irunninglog.spring.service.ApiService;
@@ -18,28 +17,31 @@ public final class DataService implements IDataService {
     private final IShoeEntityRepository shoeEntityRepository;
     private final DateService dateService;
     private final MathService mathService;
+    private final IFactory factory;
 
     @Autowired
     public DataService(IRouteEntityRespository routeEntityRespository,
                        IRunEntityRepository runEntityRepository,
                        IShoeEntityRepository shoeEntityRepository,
                        DateService dateService,
-                       MathService mathService) {
+                       MathService mathService,
+                       IFactory factory) {
 
         this.routeEntityRespository = routeEntityRespository;
         this.runEntityRepository = runEntityRepository;
         this.shoeEntityRepository = shoeEntityRepository;
         this.dateService = dateService;
         this.mathService = mathService;
+        this.factory = factory;
     }
 
     @Override
-    public IGetShoesResponse shoes(IGetDataRequest request) {
-        List<ShoeEntity> shoeEntityList = shoeEntityRepository.findByProfileId(request.getId());
+    public IShoes shoes(long profileId) {
+        List<ShoeEntity> shoeEntityList = shoeEntityRepository.findByProfileId(profileId);
 
-        Shoes shoes = new Shoes();
+        IShoes shoes = factory.get(IShoes.class);
         for (ShoeEntity shoeEntity : shoeEntityList) {
-            shoes.getShoes().add(new Shoe()
+            shoes.getShoes().add(factory.get(IShoe.class)
                     .setId(shoeEntity.getId())
                     .setName(shoeEntity.getName())
                     .setDescription(shoeEntity.getDescription())
@@ -61,16 +63,16 @@ public final class DataService implements IDataService {
             }
         });
 
-        return new IGetShoesResponse().setBody(shoes).setStatus(ResponseStatus.Ok);
+        return shoes;
     }
 
     @Override
-    public IGetRunsResponse runs(IGetDataRequest request) {
-        List<RunEntity> runEntityList = runEntityRepository.findByProfileId(request.getId());
+    public IRuns runs(long profileId) {
+        List<RunEntity> runEntityList = runEntityRepository.findByProfileId(profileId);
 
-        Runs runs = new Runs();
+        IRuns runs = factory.get(IRuns.class);
         for (RunEntity runEntity : runEntityList) {
-            runs.getRuns().add(new Run()
+            runs.getRuns().add(factory.get(IRun.class)
                     .setId(runEntity.getId())
                     .setName(runEntity.getName())
                     .setDescription(runEntity.getDescription())
@@ -79,17 +81,17 @@ public final class DataService implements IDataService {
 
         runs.getRuns().sort((o1, o2) -> o1.getName().compareTo(o2.getName()));
 
-        return new IGetRunsResponse().setBody(runs).setStatus(ResponseStatus.Ok);
+        return runs;
     }
 
 
     @Override
-    public IGetRoutesResponse routes(IGetDataRequest request) {
-        List<RouteEntity> routeEntityList = routeEntityRespository.findByProfileId(request.getId());
+    public IRoutes routes(long profileId) {
+        List<RouteEntity> routeEntityList = routeEntityRespository.findByProfileId(profileId);
 
-        Routes routes = new Routes();
+        IRoutes routes = factory.get(IRoutes.class);
         for (RouteEntity routeEntity : routeEntityList) {
-            routes.getRoutes().add(new Route()
+            routes.getRoutes().add(factory.get(IRoute.class)
                     .setId(routeEntity.getId())
                     .setName(routeEntity.getName())
                     .setDescription(routeEntity.getDescription())
@@ -98,7 +100,7 @@ public final class DataService implements IDataService {
 
         routes.getRoutes().sort((o1, o2) -> o1.getName().compareTo(o2.getName()));
 
-        return new IGetRoutesResponse().setBody(routes).setStatus(ResponseStatus.Ok);
+        return routes;
     }
 
 }

@@ -1,4 +1,4 @@
-package com.irunninglog.spring.profile.impl;
+package com.irunninglog.spring.profile;
 
 import com.irunninglog.api.Gender;
 import com.irunninglog.api.Unit;

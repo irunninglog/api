@@ -1,10 +1,10 @@
-package com.irunninglog.spring.profile.impl;
+package com.irunninglog.spring.profile;
 
 import com.irunninglog.api.Gender;
 import com.irunninglog.api.Unit;
-import com.irunninglog.spring.data.impl.RouteEntity;
-import com.irunninglog.spring.data.impl.RunEntity;
-import com.irunninglog.spring.data.impl.ShoeEntity;
+import com.irunninglog.spring.data.RouteEntity;
+import com.irunninglog.spring.data.RunEntity;
+import com.irunninglog.spring.data.ShoeEntity;
 
 import javax.persistence.*;
 import java.time.DayOfWeek;

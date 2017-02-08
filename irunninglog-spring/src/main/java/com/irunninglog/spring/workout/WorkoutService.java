@@ -3,11 +3,11 @@ package com.irunninglog.spring.workout;
 import com.irunninglog.api.Progress;
 import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.workout.*;
-import com.irunninglog.spring.data.impl.AbstractDataEntity;
+import com.irunninglog.spring.data.AbstractDataEntity;
 import com.irunninglog.spring.date.DateService;
 import com.irunninglog.spring.math.MathService;
-import com.irunninglog.spring.profile.impl.IProfileEntityRepository;
-import com.irunninglog.spring.profile.impl.ProfileEntity;
+import com.irunninglog.spring.profile.IProfileEntityRepository;
+import com.irunninglog.spring.profile.ProfileEntity;
 import com.irunninglog.spring.service.ApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 

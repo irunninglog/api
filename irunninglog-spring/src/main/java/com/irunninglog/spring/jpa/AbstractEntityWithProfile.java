@@ -1,6 +1,6 @@
 package com.irunninglog.spring.jpa;
 
-import com.irunninglog.spring.profile.impl.ProfileEntity;
+import com.irunninglog.spring.profile.ProfileEntity;
 
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;

@@ -5,7 +5,7 @@ import com.irunninglog.api.report.IDataSet;
 import com.irunninglog.api.report.IMultiSet;
 import com.irunninglog.spring.date.DateService;
 import com.irunninglog.spring.math.MathService;
-import com.irunninglog.spring.profile.impl.ProfileEntity;
+import com.irunninglog.spring.profile.ProfileEntity;
 import com.irunninglog.spring.service.InternalService;
 import com.irunninglog.spring.workout.WorkoutEntity;
 import org.springframework.beans.factory.annotation.Autowired;

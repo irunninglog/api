@@ -1,6 +1,6 @@
 package com.irunninglog.spring.dashboard;
 
-import com.irunninglog.spring.data.impl.ShoeEntity;
+import com.irunninglog.spring.data.ShoeEntity;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

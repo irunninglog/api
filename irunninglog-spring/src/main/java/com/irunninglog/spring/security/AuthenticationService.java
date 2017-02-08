@@ -1,8 +1,8 @@
-package com.irunninglog.spring.security.impl;
+package com.irunninglog.spring.security;
 
 import com.irunninglog.api.AccessControl;
+import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.security.AuthnException;
-import com.irunninglog.api.security.IAuthnRequest;
 import com.irunninglog.api.security.AuthzException;
 import com.irunninglog.api.security.*;
 import com.irunninglog.api.Endpoint;
@@ -26,33 +26,38 @@ public final class AuthenticationService implements IAuthenticationService {
 
     private final IUserEntityRepository userEntityRepository;
     private final PasswordEncoder passwordEncoder;
+    private final IFactory factory;
     private final AntPathMatcher matcher = new AntPathMatcher();
 
     @Autowired
-    public AuthenticationService(IUserEntityRepository userEntityRepository, PasswordEncoder passwordEncoder) {
+    public AuthenticationService(IUserEntityRepository userEntityRepository,
+                                 PasswordEncoder passwordEncoder,
+                                 IFactory factory) {
+
         this.userEntityRepository = userEntityRepository;
         this.passwordEncoder = passwordEncoder;
+        this.factory = factory;
     }
 
     @Override
-    public User authenticate(IAuthnRequest request) throws AuthnException, AuthzException {
-        LOG.info("authenticate:{}", request);
+    public IUser authenticate(Endpoint endpoint, String path, String token) throws AuthnException, AuthzException {
+        LOG.info("authenticate:{}:{}", endpoint, path);
 
-        if (request.getEndpoint().getControl() == AccessControl.DenyAll) {
-            LOG.info("authenticate:denyAll:{}", request);
-            throw new AuthzException("Not authorized for endpoint " + request.getEndpoint());
-        } else if (request.getEndpoint().getControl() == AccessControl.AllowAnonymous) {
-            LOG.info("authenticate:allowAll:{}", request);
+        if (endpoint.getControl() == AccessControl.DenyAll) {
+            LOG.info("authenticate:denyAll:{}", endpoint);
+            throw new AuthzException("Not authorized for endpoint " + endpoint);
+        } else if (endpoint.getControl() == AccessControl.AllowAnonymous) {
+            LOG.info("authenticate:allowAll:{}", endpoint);
             return null;
         }
 
-        Credential credential = credential(request.getToken());
+        Credential credential = credential(token);
 
-        LOG.info("authenticate:{}:{}", request, credential.username);
+        LOG.info("authenticate:{}:{}", endpoint, credential.username);
 
-        User user = authenticate(credential, userEntityRepository.findByUsername(credential.username));
+        IUser user = authenticate(credential, userEntityRepository.findByUsername(credential.username));
 
-        authorize(user, request.getEndpoint(), request.getPath());
+        authorize(user, endpoint, path);
 
         return user;
     }
@@ -72,7 +77,7 @@ public final class AuthenticationService implements IAuthenticationService {
         }
     }
 
-    private User authenticate(Credential credential, UserEntity userEntity) throws AuthnException {
+    private IUser authenticate(Credential credential, UserEntity userEntity) throws AuthnException {
         if (userEntity == null) {
             LOG.error("authenticate:notFound:{}", credential.username);
             throw new AuthnException("User not found: " + credential.username);
@@ -82,12 +87,14 @@ public final class AuthenticationService implements IAuthenticationService {
         } else {
             List<String> authorities = userEntity.getAuthorities().stream().map(AuthorityEntity::getName).collect(Collectors.toList());
 
-            String[] array = authorities.toArray(new String[authorities.size()]);
-            return new User(userEntity.getId(), userEntity.getUsername(), array);
+            return factory.get(IUser.class)
+                    .setId(userEntity.getId())
+                    .setUsername(userEntity.getUsername())
+                    .setAuthorities(authorities);
         }
     }
 
-    private void authorize(User user, Endpoint endpoint, String path) throws AuthzException {
+    private void authorize(IUser user, Endpoint endpoint, String path) throws AuthzException {
         if (endpoint.getControl() == AccessControl.AllowAll) {
             LOG.info("authorize:AllowAll:{}:{}:{}", user.getUsername(), endpoint, path);
         } else if (endpoint.getControl() == AccessControl.AllowProfile && isUserAllowed(user, path)) {
@@ -99,12 +106,12 @@ public final class AuthenticationService implements IAuthenticationService {
         }
     }
 
-    private boolean isUserAllowed(User user, String path) {
+    private boolean isUserAllowed(IUser user, String path) {
         return hasRole(user, "MYPROFILE") &&
                 matcher.match(MessageFormat.format(PATTERN, user.getId()), path);
     }
 
-    private boolean hasRole(User user, String role) {
+    private boolean hasRole(IUser user, String role) {
         for (String string : user.getAuthorities()) {
             if (string.equals(role)) {
                 return true;

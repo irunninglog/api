@@ -1,4 +1,4 @@
-package com.irunninglog.spring.profile.impl;
+package com.irunninglog.spring.profile;
 
 import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.profile.IProfile;

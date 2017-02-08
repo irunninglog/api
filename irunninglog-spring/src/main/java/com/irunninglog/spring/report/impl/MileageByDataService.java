@@ -4,7 +4,7 @@ import com.irunninglog.api.Progress;
 import com.irunninglog.api.Unit;
 import com.irunninglog.api.report.IDataPoint;
 import com.irunninglog.api.report.IDataSet;
-import com.irunninglog.spring.data.impl.AbstractDataEntity;
+import com.irunninglog.spring.data.AbstractDataEntity;
 import com.irunninglog.spring.math.MathService;
 import com.irunninglog.spring.service.InternalService;
 import org.springframework.beans.factory.annotation.Autowired;
