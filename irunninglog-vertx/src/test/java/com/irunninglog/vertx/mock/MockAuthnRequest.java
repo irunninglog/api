@@ -1,4 +1,4 @@
-package com.irunninglog.vertx;
+package com.irunninglog.vertx.mock;
 
 import com.irunninglog.api.Endpoint;
 import com.irunninglog.api.security.IAuthnRequest;

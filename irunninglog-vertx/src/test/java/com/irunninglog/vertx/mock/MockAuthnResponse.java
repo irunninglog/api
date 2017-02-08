@@ -1,11 +1,11 @@
-package com.irunninglog.vertx;
+package com.irunninglog.vertx.mock;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.irunninglog.api.ResponseStatus;
 import com.irunninglog.api.security.IAuthnResponse;
 import com.irunninglog.api.security.IUser;
 
-public class MockAuthnResponse implements IAuthnResponse {
+class MockAuthnResponse implements IAuthnResponse {
 
     private ResponseStatus status;
     @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, defaultImpl = MockUser.class)

@@ -1,7 +1,8 @@
-package com.irunninglog.vertx;
+package com.irunninglog.vertx.mock;
 
 import com.irunninglog.api.security.IUser;
 
+@SuppressWarnings("unused")
 public class MockUser implements IUser {
 
     private String username;

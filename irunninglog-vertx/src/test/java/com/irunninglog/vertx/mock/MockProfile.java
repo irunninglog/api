@@ -1,4 +1,4 @@
-package com.irunninglog.vertx;
+package com.irunninglog.vertx.mock;
 
 import com.irunninglog.api.Gender;
 import com.irunninglog.api.Unit;
@@ -6,6 +6,7 @@ import com.irunninglog.api.profile.IProfile;
 
 import java.time.DayOfWeek;
 
+@SuppressWarnings("unused")
 public class MockProfile implements IProfile {
 
     private long id;

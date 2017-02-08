@@ -1,13 +1,12 @@
 package com.irunninglog.vertx.route;
 
 import com.irunninglog.api.Endpoint;
-import com.irunninglog.api.profile.IProfile;
 import com.irunninglog.api.profile.IProfileService;
 import com.irunninglog.api.security.AuthnException;
 import com.irunninglog.api.security.AuthzException;
 import com.irunninglog.api.ResponseStatus;
 import com.irunninglog.api.ResponseStatusException;
-import com.irunninglog.vertx.MockProfile;
+import com.irunninglog.vertx.mock.MockProfile;
 import com.irunninglog.vertx.endpoint.profile.GetProfileVerticle;
 import io.vertx.ext.unit.TestContext;
 import org.junit.Test;

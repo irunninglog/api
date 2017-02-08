@@ -5,6 +5,7 @@ import com.irunninglog.api.security.AuthzException;
 import com.irunninglog.api.workout.IWorkouts;
 import com.irunninglog.vertx.endpoint.workout.GetWorkoutsVerticle;
 import com.irunninglog.api.workout.IWorkoutService;
+import com.irunninglog.vertx.mock.MockWorkouts;
 import io.vertx.ext.unit.TestContext;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -20,7 +21,7 @@ public class GetWorkoutsHandlerTest extends AbstractHandlerTest{
         vertx.deployVerticle(new GetWorkoutsVerticle(workoutService, factory, mapper), context.asyncAssertSuccess());
 
         Mockito.when(workoutService.get(any(Long.class), any(Integer.class)))
-                .thenReturn(Mockito.mock(IWorkouts.class));
+                .thenReturn(new MockWorkouts());
     }
 
     @Test
