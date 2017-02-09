@@ -1,10 +1,14 @@
-package com.irunninglog.vertx.mock;
+package com.irunninglog.spring.security;
 
 import com.irunninglog.api.security.IUser;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-public class MockUser implements IUser {
+@Component
+@Scope("prototype")
+public class User implements IUser {
 
     private long id;
     private String username;

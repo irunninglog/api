@@ -1,7 +1,8 @@
-package com.irunninglog.spring.report.impl;
+package com.irunninglog.spring.report;
 
 import com.irunninglog.api.Progress;
 import com.irunninglog.api.Unit;
+import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.report.IDataPoint;
 import com.irunninglog.api.report.IDataSet;
 import com.irunninglog.spring.data.AbstractDataEntity;
@@ -18,10 +19,12 @@ import java.util.function.Function;
 class MileageByDataService {
 
     private final MathService mathService;
+    private final IFactory factory;
 
     @Autowired
-    MileageByDataService(MathService mathService) {
+    MileageByDataService(MathService mathService, IFactory factory) {
         this.mathService = mathService;
+        this.factory = factory;
     }
 
     IDataSet dataSet(List<? extends AbstractDataEntity> list, Function<IdParameters, BigDecimal> total, long profileId, Unit unit) {
@@ -29,7 +32,7 @@ class MileageByDataService {
         for (AbstractDataEntity entity : list) {
             BigDecimal distance = total.apply(new IdParameters(entity.getId(), profileId));
             if (distance != null && distance.compareTo(BigDecimal.ZERO) > 0) {
-                IDataPoint dataPoint = new IDataPoint()
+                IDataPoint dataPoint = factory.get(IDataPoint.class)
                         .setLabel(entity.getName())
                         .setValue(mathService.formatShort(distance.doubleValue(), unit))
                         .setProgress(Progress.None);
@@ -40,7 +43,7 @@ class MileageByDataService {
 
         points.sort((o1, o2) -> o1.getLabel().compareTo(o2.getLabel()));
 
-        IDataSet dataSet = new IDataSet()
+        IDataSet dataSet = factory.get(IDataSet.class)
                 .setKey(String.valueOf(profileId))
                 .setUnits(unit);
 

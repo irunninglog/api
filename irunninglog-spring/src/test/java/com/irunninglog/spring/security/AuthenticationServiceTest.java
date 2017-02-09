@@ -3,7 +3,6 @@ package com.irunninglog.spring.security;
 import com.irunninglog.api.Gender;
 import com.irunninglog.api.Unit;
 import com.irunninglog.api.security.AuthnException;
-import com.irunninglog.api.security.IAuthnRequest;
 import com.irunninglog.api.security.AuthzException;
 import com.irunninglog.api.security.*;
 import com.irunninglog.api.Endpoint;
@@ -80,10 +79,9 @@ public class AuthenticationServiceTest extends AbstractTest {
 
     @Test
     public void success() throws AuthnException, AuthzException {
-        User user = authenticationService.authenticate(new IAuthnRequest()
-                .setToken("Basic YWxsYW5AaXJ1bm5pbmdsb2cuY29tOnBhc3N3b3Jk")
-                .setEndpoint(Endpoint.GetDashboard)
-                .setPath("/profiles/" + myprofile.getId()));
+        IUser user = authenticationService.authenticate(Endpoint.GetDashboard,
+                "/profiles/" + myprofile.getId(),
+                "Basic YWxsYW5AaXJ1bm5pbmdsb2cuY29tOnBhc3N3b3Jk");
         assertEquals("allan@irunninglog.com", user.getUsername());
         assertEquals(1, user.getAuthorities().size());
     }
@@ -91,9 +89,9 @@ public class AuthenticationServiceTest extends AbstractTest {
     @Test
     public void notFound() throws AuthzException {
         try {
-            authenticationService.authenticate(new IAuthnRequest()
-                    .setToken("Basic bm9ib2R5QGlydW5uaW5nbG9nLmNvbTpwYXNzd29yZA==")
-                    .setEndpoint(Endpoint.GetDashboard));
+            authenticationService.authenticate(Endpoint.GetDashboard,
+                    null,
+                    "Basic bm9ib2R5QGlydW5uaW5nbG9nLmNvbTpwYXNzd29yZA==");
 
             fail("Should have thrown");
         } catch (AuthnException ex) {
@@ -104,9 +102,9 @@ public class AuthenticationServiceTest extends AbstractTest {
     @Test
     public void wrongPassword() throws AuthzException {
         try {
-            authenticationService.authenticate(new IAuthnRequest()
-                    .setToken("Basic YWxsYW5AaXJ1bm5pbmdsb2cuY29tOndyb25n")
-                    .setEndpoint(Endpoint.GetDashboard));
+            authenticationService.authenticate(Endpoint.GetDashboard,
+                    null,
+                    "Basic YWxsYW5AaXJ1bm5pbmdsb2cuY29tOndyb25n");
 
             fail("Should have thrown");
         } catch (AuthnException ex) {
@@ -117,9 +115,9 @@ public class AuthenticationServiceTest extends AbstractTest {
     @Test
     public void denyAll() throws AuthnException {
         try {
-            authenticationService.authenticate(new IAuthnRequest()
-                    .setToken("Basic YWxsYW5AaXJ1bm5pbmdsb2cuY29tOnBhc3N3b3Jk")
-                    .setEndpoint(Endpoint.Forbidden));
+            authenticationService.authenticate(Endpoint.Forbidden,
+                    null,
+                    "Basic YWxsYW5AaXJ1bm5pbmdsb2cuY29tOnBhc3N3b3Jk");
 
             fail("Should have thrown");
         } catch (AuthzException ex) {
@@ -129,20 +127,18 @@ public class AuthenticationServiceTest extends AbstractTest {
 
     @Test
     public void canViewMyProfile() throws AuthnException, AuthzException {
-        User user = authenticationService.authenticate(new IAuthnRequest()
-                .setToken("Basic YWxsYW5AaXJ1bm5pbmdsb2cuY29tOnBhc3N3b3Jk")
-                .setEndpoint(Endpoint.GetProfile)
-                .setPath("/profiles/" + myprofile.getId()));
+        IUser user = authenticationService.authenticate(Endpoint.GetProfile,
+                "/profiles/" + myprofile.getId(),
+                "Basic YWxsYW5AaXJ1bm5pbmdsb2cuY29tOnBhc3N3b3Jk");
 
         assertNotNull(user);
     }
 
     @Test
     public void admin() throws AuthnException, AuthzException {
-        User user = authenticationService.authenticate(new IAuthnRequest()
-                .setToken("Basic YWRtaW5AaXJ1bm5pbmdsb2cuY29tOnBhc3N3b3Jk")
-                .setEndpoint(Endpoint.GetProfile)
-                .setPath("/profiles/" + myprofile.getId() + "" + admin.getId()));
+        IUser user = authenticationService.authenticate(Endpoint.GetProfile,
+                "/profiles/" + myprofile.getId() + "" + admin.getId(),
+                "Basic YWRtaW5AaXJ1bm5pbmdsb2cuY29tOnBhc3N3b3Jk");
 
         assertNotNull(user);
     }
@@ -150,10 +146,9 @@ public class AuthenticationServiceTest extends AbstractTest {
     @Test
     public void none() throws AuthnException {
         try {
-            authenticationService.authenticate(new IAuthnRequest()
-                    .setToken("Basic bm9uZUBpcnVubmluZ2xvZy5jb206cGFzc3dvcmQ=")
-                    .setEndpoint(Endpoint.GetProfile)
-                    .setPath("/profiles/" + none.getId()));
+            authenticationService.authenticate(Endpoint.GetProfile,
+                    "/profiles/" + none.getId(),
+                    "Basic bm9uZUBpcnVubmluZ2xvZy5jb206cGFzc3dvcmQ=");
 
             fail("Should have thrown");
         } catch (AuthzException ex) {

@@ -1,4 +1,4 @@
-package com.irunninglog.spring.report.impl;
+package com.irunninglog.spring.report;
 
 final class IdParameters {
 

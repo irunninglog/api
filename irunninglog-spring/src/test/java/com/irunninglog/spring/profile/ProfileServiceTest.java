@@ -3,7 +3,6 @@ package com.irunninglog.spring.profile;
 import com.irunninglog.api.Gender;
 import com.irunninglog.api.Unit;
 import com.irunninglog.api.profile.IProfileService;
-import com.irunninglog.profile.ProfileRequest;
 import com.irunninglog.api.ResponseStatusException;
 import com.irunninglog.spring.AbstractTest;
 import org.junit.After;
@@ -56,14 +55,13 @@ public class ProfileServiceTest extends AbstractTest {
 
     @Test
     public void good() {
-        ProfileRequest request = new ProfileRequest().setId(goodId);
-        assertNotNull(profileService.get(request));
+        assertNotNull(profileService.get(goodId));
     }
 
     @Test
     public void bad() {
         try {
-            profileService.get(new ProfileRequest().setId(badId));
+            profileService.get(badId);
             fail("Should have thrown");
         } catch (ResponseStatusException ex) {
             assertTrue(Boolean.TRUE);

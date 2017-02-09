@@ -1,5 +1,6 @@
-package com.irunninglog.spring.report.impl;
+package com.irunninglog.spring.report;
 
+import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.report.IDataPoint;
 import com.irunninglog.api.report.IDataSet;
 import com.irunninglog.api.report.IMultiSet;
@@ -39,23 +40,26 @@ class MileageByMonthService {
 
     private final DateService dateService;
     private final MathService mathService;
+    private final IFactory factory;
 
     @Autowired
     MileageByMonthService(DateService dateService,
-                          MathService mathService) {
+                          MathService mathService,
+                          IFactory factory) {
 
         this.dateService = dateService;
         this.mathService = mathService;
+        this.factory = factory;
     }
 
     IMultiSet multiSet(List<WorkoutEntity> workoutEntities, ProfileEntity profileEntity) {
         workoutEntities.sort((o1, o2) -> o2.getDate().compareTo(o1.getDate()));
 
-        IMultiSet multiSet = new IMultiSet();
+        IMultiSet multiSet = factory.get(IMultiSet.class);
         while (!workoutEntities.isEmpty()) {
             String year = dateService.formatYear(workoutEntities.get(0).getDate());
             LocalDate yearStart = dateService.getYearStartDate(workoutEntities.get(0).getDate());
-            IDataSet yearDataSet = new IDataSet()
+            IDataSet yearDataSet = factory.get(IDataSet.class)
                     .setKey(year)
                     .setUnits(profileEntity.getPreferredUnits());
             multiSet.getData().add(yearDataSet);
@@ -90,7 +94,7 @@ class MileageByMonthService {
                     }
                 }
 
-                IDataPoint monthDataPoint = new IDataPoint()
+                IDataPoint monthDataPoint = factory.get(IDataPoint.class)
                         .setLabel(dateService.formatMonthShort(monthStart))
                         .setValue(mathService.formatShort(total, profileEntity.getPreferredUnits()))
                         .setProgress(mathService.progress(new BigDecimal(total), new BigDecimal(profileEntity.getMonthlyTarget())));

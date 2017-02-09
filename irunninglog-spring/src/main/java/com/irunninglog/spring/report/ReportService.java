@@ -1,11 +1,9 @@
-package com.irunninglog.spring.report.impl;
+package com.irunninglog.spring.report;
 
 import com.irunninglog.api.report.*;
-import com.irunninglog.api.ResponseStatus;
 import com.irunninglog.spring.data.IRouteEntityRespository;
 import com.irunninglog.spring.data.IRunEntityRepository;
 import com.irunninglog.spring.data.IShoeEntityRepository;
-import com.irunninglog.spring.data.impl.*;
 import com.irunninglog.spring.profile.IProfileEntityRepository;
 import com.irunninglog.spring.profile.ProfileEntity;
 import com.irunninglog.spring.service.ApiService;
@@ -44,24 +42,20 @@ public final class ReportService implements IReportService {
     }
 
     @Override
-    public IGetMultiSetResponse mileageByMonth(IGetReportRequest request) {
-        ProfileEntity profileEntity = profileEntityRepository.findOne(request.getId());
+    public IMultiSet mileageByMonth(long profileId) {
+        ProfileEntity profileEntity = profileEntityRepository.findOne(profileId);
 
-        IMultiSet multiSet = mileageByMonthService.multiSet(workoutEntityRepository.findByProfileId(profileEntity.getId()), profileEntity);
-
-        return new IGetMultiSetResponse().setBody(multiSet).setStatus(ResponseStatus.Ok);
+        return mileageByMonthService.multiSet(workoutEntityRepository.findByProfileId(profileEntity.getId()), profileEntity);
     }
 
     @Override
-    public IGetDataSetResponse mileageByRoute(IGetReportRequest request) {
-        ProfileEntity profileEntity = profileEntityRepository.findOne(request.getId());
+    public IDataSet mileageByRoute(long profileId) {
+        ProfileEntity profileEntity = profileEntityRepository.findOne(profileId);
 
-        IDataSet dataSet = mileageByDataService.dataSet(routeEntityRespository.findByProfileId(profileEntity.getId()),
+        return mileageByDataService.dataSet(routeEntityRespository.findByProfileId(profileEntity.getId()),
                 this::routeTotal,
                 profileEntity.getId(),
                 profileEntity.getPreferredUnits());
-
-        return new IGetDataSetResponse().setBody(dataSet).setStatus(ResponseStatus.Ok);
     }
 
     private BigDecimal routeTotal(IdParameters parameters) {
@@ -69,15 +63,13 @@ public final class ReportService implements IReportService {
     }
 
     @Override
-    public IGetDataSetResponse mileageByRun(IGetReportRequest request) {
-        ProfileEntity profileEntity = profileEntityRepository.findOne(request.getId());
+    public IDataSet mileageByRun(long profileId) {
+        ProfileEntity profileEntity = profileEntityRepository.findOne(profileId);
 
-        IDataSet dataSet = mileageByDataService.dataSet(runEntityRepository.findByProfileId(profileEntity.getId()),
+        return mileageByDataService.dataSet(runEntityRepository.findByProfileId(profileEntity.getId()),
                 this::runTotal,
                 profileEntity.getId(),
                 profileEntity.getPreferredUnits());
-
-        return new IGetDataSetResponse().setBody(dataSet).setStatus(ResponseStatus.Ok);
     }
 
     private BigDecimal runTotal(IdParameters parameters) {
@@ -85,15 +77,13 @@ public final class ReportService implements IReportService {
     }
 
     @Override
-    public IGetDataSetResponse mileageByShoe(IGetReportRequest request) {
-        ProfileEntity profileEntity = profileEntityRepository.findOne(request.getId());
+    public IDataSet mileageByShoe(long profileId) {
+        ProfileEntity profileEntity = profileEntityRepository.findOne(profileId);
 
-        IDataSet dataSet = mileageByDataService.dataSet(shoeEntityRepository.findByProfileId(profileEntity.getId()),
+        return mileageByDataService.dataSet(shoeEntityRepository.findByProfileId(profileEntity.getId()),
                 this::shoeTotal,
                 profileEntity.getId(),
                 profileEntity.getPreferredUnits());
-
-        return new IGetDataSetResponse().setBody(dataSet).setStatus(ResponseStatus.Ok);
     }
 
     private BigDecimal shoeTotal(IdParameters parameters) {
