@@ -1,9 +1,9 @@
 package com.irunninglog.api.security;
 
-import com.irunninglog.api.IProfileIdRequest;
 import com.irunninglog.api.Endpoint;
+import com.irunninglog.api.IRequest;
 
-public interface IAuthnRequest extends IProfileIdRequest<IAuthnRequest> {
+public interface IAuthnRequest<T extends IAuthnRequest> extends IRequest<T> {
 
     String getToken();
 

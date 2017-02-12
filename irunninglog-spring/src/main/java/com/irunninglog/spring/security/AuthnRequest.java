@@ -1,25 +1,18 @@
-package com.irunninglog.vertx.mock;
+package com.irunninglog.spring.security;
 
 import com.irunninglog.api.Endpoint;
 import com.irunninglog.api.security.IAuthnRequest;
+import com.irunninglog.spring.AbstractRequest;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
-public class MockAuthnRequest implements IAuthnRequest {
+@Component
+@Scope("prototype")
+final class AuthnRequest extends AbstractRequest<AuthnRequest> implements IAuthnRequest<AuthnRequest> {
 
-    private int offset;
-    private String token;
     private Endpoint endpoint;
     private String path;
-
-    @Override
-    public IAuthnRequest setOffset(int offset) {
-        this.offset = offset;
-        return this;
-    }
-
-    @Override
-    public int getOffset() {
-        return offset;
-    }
+    private String token;
 
     @Override
     public String getToken() {
@@ -27,7 +20,7 @@ public class MockAuthnRequest implements IAuthnRequest {
     }
 
     @Override
-    public IAuthnRequest setToken(String token) {
+    public AuthnRequest setToken(String token) {
         this.token = token;
         return this;
     }
@@ -38,7 +31,7 @@ public class MockAuthnRequest implements IAuthnRequest {
     }
 
     @Override
-    public IAuthnRequest setEndpoint(Endpoint endpoint) {
+    public AuthnRequest setEndpoint(Endpoint endpoint) {
         this.endpoint = endpoint;
         return this;
     }
@@ -49,7 +42,7 @@ public class MockAuthnRequest implements IAuthnRequest {
     }
 
     @Override
-    public IAuthnRequest setPath(String path) {
+    public AuthnRequest setPath(String path) {
         this.path = path;
         return this;
     }

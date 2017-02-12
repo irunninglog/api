@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.time.format.DateTimeFormatter;
 
 @ApiService
-public final class ProfileService implements IProfileService {
+final class ProfileService implements IProfileService {
 
     private final IProfileEntityRepository repository;
     private final IFactory factory;

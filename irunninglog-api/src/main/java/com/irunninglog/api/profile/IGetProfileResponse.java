@@ -2,6 +2,6 @@ package com.irunninglog.api.profile;
 
 import com.irunninglog.api.IResponse;
 
-public interface IGetProfileResponse extends IResponse<IProfile, IGetProfileResponse> {
+public interface IGetProfileResponse<T extends IGetProfileResponse> extends IResponse<IProfile, T> {
 
 }

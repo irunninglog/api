@@ -5,14 +5,14 @@ import com.irunninglog.api.ResponseStatus;
 import com.irunninglog.api.profile.IGetProfileResponse;
 import com.irunninglog.api.profile.IProfile;
 
-class MockGetProfileResponse implements IGetProfileResponse {
+class MockGetProfileResponse implements IGetProfileResponse<MockGetProfileResponse> {
 
     private ResponseStatus status;
     @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, defaultImpl = MockProfile.class)
     private IProfile body;
 
     @Override
-    public IGetProfileResponse setStatus(ResponseStatus status) {
+    public MockGetProfileResponse setStatus(ResponseStatus status) {
         this.status = status;
         return this;
     }
@@ -23,7 +23,7 @@ class MockGetProfileResponse implements IGetProfileResponse {
     }
 
     @Override
-    public IGetProfileResponse setBody(IProfile body) {
+    public MockGetProfileResponse setBody(IProfile body) {
         this.body = body;
         return this;
     }
