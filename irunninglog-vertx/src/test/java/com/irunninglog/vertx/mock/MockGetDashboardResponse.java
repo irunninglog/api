@@ -5,14 +5,14 @@ import com.irunninglog.api.ResponseStatus;
 import com.irunninglog.api.dashboard.IDashboardInfo;
 import com.irunninglog.api.dashboard.IGetDashboardResponse;
 
-class MockGetDashboardResponse implements IGetDashboardResponse {
+class MockGetDashboardResponse implements IGetDashboardResponse<MockGetDashboardResponse> {
 
     private ResponseStatus status;
     @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, defaultImpl = MockDashboardInfo.class)
     private IDashboardInfo body;
 
     @Override
-    public IGetDashboardResponse setStatus(ResponseStatus status) {
+    public MockGetDashboardResponse setStatus(ResponseStatus status) {
         this.status = status;
         return this;
     }
@@ -23,7 +23,7 @@ class MockGetDashboardResponse implements IGetDashboardResponse {
     }
 
     @Override
-    public IGetDashboardResponse setBody(IDashboardInfo body) {
+    public MockGetDashboardResponse setBody(IDashboardInfo body) {
         this.body = body;
         return this;
     }

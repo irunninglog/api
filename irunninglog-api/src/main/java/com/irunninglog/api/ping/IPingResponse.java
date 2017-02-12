@@ -2,6 +2,6 @@ package com.irunninglog.api.ping;
 
 import com.irunninglog.api.IResponse;
 
-public interface IPingResponse extends IResponse<IPing, IPingResponse> {
+public interface IPingResponse<T extends IPingResponse> extends IResponse<IPing, T> {
 
 }

@@ -3,12 +3,12 @@ package com.irunninglog.spring.ping;
 import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.ping.IPing;
 import com.irunninglog.api.ping.IPingService;
+import com.irunninglog.spring.service.ApiService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 
-@Component
+@ApiService
 final class PingService implements IPingService {
 
     private final IFactory factory;

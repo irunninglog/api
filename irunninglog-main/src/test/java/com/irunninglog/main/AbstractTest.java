@@ -1,10 +1,9 @@
-package com.irunninglog.main.security;
+package com.irunninglog.main;
 
 import com.irunninglog.api.Gender;
 import com.irunninglog.api.Unit;
 import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.mapping.IMapper;
-import com.irunninglog.api.profile.IProfileService;
 import com.irunninglog.api.security.IAuthenticationService;
 import com.irunninglog.spring.context.ContextConfiguration;
 import com.irunninglog.spring.profile.IProfileEntityRepository;
@@ -13,9 +12,9 @@ import com.irunninglog.spring.security.AuthorityEntity;
 import com.irunninglog.spring.security.IAuthorityEntityRepository;
 import com.irunninglog.spring.security.IUserEntityRepository;
 import com.irunninglog.spring.security.UserEntity;
-import com.irunninglog.vertx.endpoint.profile.GetProfileVerticle;
 import com.irunninglog.vertx.http.ServerVerticle;
 import com.irunninglog.vertx.security.AuthnVerticle;
+import io.vertx.core.Verticle;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpClient;
 import io.vertx.core.http.HttpClientRequest;
@@ -24,7 +23,6 @@ import io.vertx.ext.unit.TestContext;
 import io.vertx.ext.unit.junit.VertxUnitRunner;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -34,20 +32,18 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.io.IOException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.util.Base64;
+import java.util.Collection;
 
 @RunWith(VertxUnitRunner.class)
-public class GetProfileTest {
-
-    private final static String TOKEN = "Basic YWxsYW5AaXJ1bm5pbmdsb2cuY29tOnBhc3N3b3Jk";
-
-    private Vertx vertx;
+public abstract class AbstractTest {
 
     private IProfileEntityRepository profileEntityRepository;
     private IUserEntityRepository userEntityRepository;
     private IAuthorityEntityRepository authorityEntityRepository;
     private PasswordEncoder passwordEncoder;
 
-    private ProfileEntity myprofile;
+    private Vertx vertx;
 
     @Before
     public final void before(TestContext context) throws IOException {
@@ -60,8 +56,6 @@ public class GetProfileTest {
         authorityEntityRepository = applicationContext.getBean(IAuthorityEntityRepository.class);
         passwordEncoder = applicationContext.getBean(PasswordEncoder.class);
 
-        myprofile = save("allan@irunninglog.com", "password", "MYPROFILE");
-
         vertx = Vertx.vertx();
 
         Async async = context.async();
@@ -69,21 +63,28 @@ public class GetProfileTest {
         IFactory factory = applicationContext.getBean(IFactory.class);
         IMapper mapper = applicationContext.getBean(IMapper.class);
 
-        ServerVerticle verticle = new ServerVerticle(8889,
+        ServerVerticle serverVerticle = new ServerVerticle(8889,
                 context.asyncAssertSuccess(event -> async.complete()),
                 factory,
                 mapper);
 
-        vertx.deployVerticle(verticle, context.asyncAssertSuccess());
+        vertx.deployVerticle(serverVerticle, context.asyncAssertSuccess());
 
         AuthnVerticle authnVerticle = new AuthnVerticle(applicationContext.getBean(IAuthenticationService.class), factory, mapper);
         vertx.deployVerticle(authnVerticle, context.asyncAssertSuccess());
 
-        GetProfileVerticle profileVerticle = new GetProfileVerticle(factory, mapper, applicationContext.getBean(IProfileService.class));
-        vertx.deployVerticle(profileVerticle, context.asyncAssertSuccess());
+        for (Verticle verticle : verticles(applicationContext)) {
+            vertx.deployVerticle(verticle, context.asyncAssertSuccess());
+        }
 
         async.awaitSuccess(5000);
+
+        afterBefore(context);
     }
+
+    protected abstract Collection<Verticle> verticles(ApplicationContext applicationContext);
+
+    protected abstract void afterBefore(TestContext context);
 
     @After
     public void after(TestContext context) {
@@ -93,26 +94,7 @@ public class GetProfileTest {
         vertx.close(context.asyncAssertSuccess());
     }
 
-    @Test
-    public void ok(TestContext context) {
-        HttpClient client = vertx.createHttpClient();
-        Async async = context.async();
-        HttpClientRequest req = client.get(8889, "localhost", "/profiles/" + myprofile.getId());
-        req.putHeader("Authorization", TOKEN);
-
-        final int[] responseCode = new int[1];
-        req.handler(resp -> {
-            responseCode[0] = resp.statusCode();
-            async.complete();
-        });
-        req.end();
-
-        async.awaitSuccess(5000);
-
-        context.assertEquals(200, responseCode[0]);
-    }
-
-    private ProfileEntity save(String email, String password, String ... authorities) {
+    protected ProfileEntity save(String email, String password, String ... authorities) {
         ProfileEntity entity = new ProfileEntity();
         entity.setEmail(email);
         entity.setPassword(passwordEncoder.encode(password));
@@ -135,6 +117,30 @@ public class GetProfileTest {
         userEntityRepository.save(userEntity);
 
         return entity;
+    }
+
+    protected int request(TestContext context, String path, String token) {
+        HttpClient client = vertx.createHttpClient();
+        Async async = context.async();
+        HttpClientRequest req = client.get(8889, "localhost", path);
+        if (token != null && !token.trim().isEmpty()) {
+            req.putHeader("Authorization", token);
+        }
+
+        final int[] responseCode = new int[1];
+        req.handler(resp -> {
+            responseCode[0] = resp.statusCode();
+            async.complete();
+        });
+        req.end();
+
+        async.awaitSuccess(5000);
+
+        return responseCode[0];
+    }
+
+    protected String token(String username, String password) {
+        return "Basic " + Base64.getEncoder().encodeToString((username + ":" + password).getBytes());
     }
 
 }

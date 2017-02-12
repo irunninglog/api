@@ -58,13 +58,19 @@ public abstract class AbstractRequestResponseVerticle<Q extends IRequest, S exte
 
                         future.complete(mapper.encode(response));
                     } catch (Exception ex) {
-                        logger.error("handler:exception:{}", ex);
+                        try {
+                            logger.error("handler:exception:{}", ex);
 
-                        S response = fromException(ex);
+                            S response = fromException(ex);
 
-                        logger.error("handler:exception:{}", response);
+                            logger.error("handler:exception:{}", response);
 
-                        future.complete(mapper.encode(response));
+                            future.complete(mapper.encode(response));
+                        } catch (Exception ex1) {
+                            logger.error("handler:exception:" + ex1, ex1);
+
+                            future.fail(ex1);
+                        }
                     } finally {
                         logger.info("handler:{}:{}ms", address(), System.currentTimeMillis() - start);
                     }

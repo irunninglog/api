@@ -108,7 +108,7 @@ public final class AuthenticationService implements IAuthenticationService {
 
     private boolean isUserAllowed(IUser user, String path) {
         return hasRole(user, "MYPROFILE") &&
-                matcher.match(MessageFormat.format(PATTERN, user.getId()), path);
+                matcher.match(MessageFormat.format(PATTERN, String.valueOf(user.getId())), path);
     }
 
     private boolean hasRole(IUser user, String role) {

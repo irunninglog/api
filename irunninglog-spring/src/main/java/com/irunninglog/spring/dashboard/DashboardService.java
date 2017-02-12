@@ -11,7 +11,7 @@ import com.irunninglog.api.ResponseStatusException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @ApiService
-public final class DashboardService implements IDashboardService {
+final class DashboardService implements IDashboardService {
 
     private final IProfileEntityRepository profileEntityRepository;
     private final DashboardShoesService shoesService;

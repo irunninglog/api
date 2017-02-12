@@ -90,8 +90,10 @@ public abstract class AbstractRouteHandler<Q extends IRequest, S extends IRespon
             request(request, routingContext);
 
             handle(routingContext, request);
-        } catch (ResponseStatusException ex) {
-            fail(routingContext, ResponseStatus.NotFound);
+        } catch (Exception ex) {
+            logger.error("Caught and exception; treating as unauthenticated", ex);
+
+            fail(routingContext, ResponseStatus.Unauthenticated);
         }
     }
 
@@ -107,24 +109,29 @@ public abstract class AbstractRouteHandler<Q extends IRequest, S extends IRespon
         logger.info("handleAuthenticated:{}:{}", endpoint.getAddress(), requestString);
 
         vertx.eventBus().<String>send(endpoint.getAddress(), requestString, result -> {
-            if (result.succeeded()) {
-                String resultString = result.result().body();
+            try {
+                if (result.succeeded()) {
+                    String resultString = result.result().body();
 
-                logger.info("handleAuthenticated:{}:{}", endpoint.getAddress(), resultString);
+                    logger.info("handleAuthenticated:{}:{}", endpoint.getAddress(), resultString);
 
-                S response = mapper.decode(resultString, responseClass);
+                    S response = mapper.decode(resultString, responseClass);
 
-                logger.info("handle:{}:{}", endpoint.getAddress(), response);
+                    logger.info("handle:{}:{}", endpoint.getAddress(), response);
 
-                if (response.getStatus() == ResponseStatus.Ok) {
-                    succeed(routingContext, response);
+                    if (response.getStatus() == ResponseStatus.Ok) {
+                        succeed(routingContext, response);
+                    } else {
+                        fail(routingContext, response.getStatus());
+                    }
                 } else {
-                    fail(routingContext, response.getStatus());
-                }
-            } else {
-                logger.error("handleAuthenticated:failure", result.cause());
-                logger.error("handleAuthenticated:failure{}", routingContext.normalisedPath());
+                    logger.error("handleAuthenticated:failure", result.cause());
+                    logger.error("handleAuthenticated:failure{}", routingContext.normalisedPath());
 
+                    fail(routingContext, ResponseStatus.Error);
+                }
+            } catch (Exception ex) {
+                logger.error("handleAuthenticated:exception", ex);
                 fail(routingContext, ResponseStatus.Error);
             }
         });
