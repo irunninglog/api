@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.math.BigDecimal;
 
 @ApiService
-public final class ReportService implements IReportService {
+final class ReportService implements IReportService {
 
     private final IProfileEntityRepository profileEntityRepository;
     private final IRouteEntityRespository routeEntityRespository;
