@@ -41,7 +41,7 @@ public class GetWorkoutsHandlerTest extends AbstractHandlerTest{
     public void matchNotFound(TestContext context) throws AuthnException, AuthzException {
         authn();
 
-        context.assertEquals(404, request(context, "/profiles/1/workoutss", TOKEN));
+        context.assertEquals(401, request(context, "/profiles/1/workoutss", TOKEN));
     }
 
 }

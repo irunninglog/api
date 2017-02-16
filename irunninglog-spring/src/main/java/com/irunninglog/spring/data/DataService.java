@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 
 @ApiService
-public final class DataService implements IDataService {
+final class DataService implements IDataService {
 
     private final IRouteEntityRespository routeEntityRespository;
     private final IRunEntityRepository runEntityRepository;
