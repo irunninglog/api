@@ -5,14 +5,14 @@ import com.irunninglog.api.ResponseStatus;
 import com.irunninglog.api.workout.IGetWorkoutsResponse;
 import com.irunninglog.api.workout.IWorkouts;
 
-class MockGetWorkoutsResponse implements IGetWorkoutsResponse {
+class MockGetWorkoutsResponse implements IGetWorkoutsResponse<MockGetWorkoutsResponse> {
 
     private ResponseStatus status;
     @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, defaultImpl = MockWorkouts.class)
     private IWorkouts body;
 
     @Override
-    public IGetWorkoutsResponse setStatus(ResponseStatus status) {
+    public MockGetWorkoutsResponse setStatus(ResponseStatus status) {
         this.status = status;
         return this;
     }
@@ -23,7 +23,7 @@ class MockGetWorkoutsResponse implements IGetWorkoutsResponse {
     }
 
     @Override
-    public IGetWorkoutsResponse setBody(IWorkouts body) {
+    public MockGetWorkoutsResponse setBody(IWorkouts body) {
         this.body = body;
         return this;
     }

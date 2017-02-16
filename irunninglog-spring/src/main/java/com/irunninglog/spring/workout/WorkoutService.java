@@ -16,7 +16,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @ApiService
-public class WorkoutService implements IWorkoutService {
+final class WorkoutService implements IWorkoutService {
 
     private static final String TITLE_FULL = "I ran #distance in #duration (#pace pace)";
     private static final String TITLE_DISTANCE = "I ran for #distance";
