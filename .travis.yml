@@ -1,3 +1,5 @@
 language: java
+env:
+  - org.slf4j.simpleLogger.defaultLogLevel=warn
 jdk:
   - oraclejdk8
