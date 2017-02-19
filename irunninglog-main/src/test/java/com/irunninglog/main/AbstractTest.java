@@ -119,10 +119,30 @@ public abstract class AbstractTest {
         return entity;
     }
 
-    protected int request(TestContext context, String path, String token) {
+    protected int get(TestContext context, String path, String token) {
         HttpClient client = vertx.createHttpClient();
         Async async = context.async();
         HttpClientRequest req = client.get(8889, "localhost", path);
+        if (token != null && !token.trim().isEmpty()) {
+            req.putHeader("Authorization", token);
+        }
+
+        final int[] responseCode = new int[1];
+        req.handler(resp -> {
+            responseCode[0] = resp.statusCode();
+            async.complete();
+        });
+        req.end();
+
+        async.awaitSuccess(5000);
+
+        return responseCode[0];
+    }
+
+    protected int post(TestContext context, String path, String token) {
+        HttpClient client = vertx.createHttpClient();
+        Async async = context.async();
+        HttpClientRequest req = client.post(8889, "localhost", path);
         if (token != null && !token.trim().isEmpty()) {
             req.putHeader("Authorization", token);
         }

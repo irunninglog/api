@@ -36,7 +36,7 @@ public class GetProfileTest extends AbstractTest {
     @Test
     public void ok(TestContext context) {
         context.assertEquals(200,
-                request(context, "/profiles/" + profile.getId(),
+                get(context, "/profiles/" + profile.getId(),
                         token("allan@irunninglog.com", "password")));
     }
 

@@ -11,7 +11,7 @@ import io.vertx.core.Vertx;
 import io.vertx.ext.web.RoutingContext;
 
 @RouteHandler(endpoint = Endpoint.Login)
-public class LoginHandler extends AbstractRouteHandler<ILoginRequest, ILoginResponse> {
+public final class LoginHandler extends AbstractRouteHandler<ILoginRequest, ILoginResponse> {
 
     public LoginHandler(Vertx vertx, IFactory factory, IMapper mapper) {
         super(vertx, factory, mapper, ILoginRequest.class, ILoginResponse.class);
@@ -19,6 +19,7 @@ public class LoginHandler extends AbstractRouteHandler<ILoginRequest, ILoginResp
 
     @Override
     protected void request(ILoginRequest request, RoutingContext routingContext) {
+        //noinspection unchecked
         request.setUser(routingContext.get("user"));
     }
 

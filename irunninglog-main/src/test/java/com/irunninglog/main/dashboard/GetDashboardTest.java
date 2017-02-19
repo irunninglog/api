@@ -35,7 +35,7 @@ public class GetDashboardTest extends AbstractTest {
 
     @Test
     public void ok(TestContext context) {
-        context.assertEquals(200, request(context, "/profiles/" +profile.getId() + "/dashboard", token("dashboard@irunninglog.com", "password")));
+        context.assertEquals(200, get(context, "/profiles/" +profile.getId() + "/dashboard", token("dashboard@irunninglog.com", "password")));
     }
 
 }

@@ -34,7 +34,7 @@ public class GetWorkoutsTest extends AbstractTest {
 
     @Test
     public void ok(TestContext context) {
-        context.assertEquals(200, request(context, "/profiles/" + profileEntity.getId() + "/workouts", token));
+        context.assertEquals(200, get(context, "/profiles/" + profileEntity.getId() + "/workouts", token));
     }
 
 }

@@ -32,7 +32,7 @@ public class PingTest extends AbstractTest {
 
     @Test
     public void ping(TestContext context) {
-        context.assertEquals(200, request(context, "/ping", null));
+        context.assertEquals(200, get(context, "/ping", null));
     }
 
 }

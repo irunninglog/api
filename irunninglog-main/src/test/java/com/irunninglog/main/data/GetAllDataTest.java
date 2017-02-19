@@ -42,17 +42,17 @@ public class GetAllDataTest extends AbstractTest {
 
     @Test
     public void shoes(TestContext context) {
-        context.assertEquals(200, request(context, "/profiles/" + profileEntity.getId() + "/shoes", token("data@irunninglog.com", "password")));
+        context.assertEquals(200, get(context, "/profiles/" + profileEntity.getId() + "/shoes", token("data@irunninglog.com", "password")));
     }
 
     @Test
     public void routes(TestContext context) {
-        context.assertEquals(200, request(context, "/profiles/" + profileEntity.getId() + "/routes", token("data@irunninglog.com", "password")));
+        context.assertEquals(200, get(context, "/profiles/" + profileEntity.getId() + "/routes", token("data@irunninglog.com", "password")));
     }
 
     @Test
     public void runs(TestContext context) {
-        context.assertEquals(200, request(context, "/profiles/" + profileEntity.getId() + "/runs", token("data@irunninglog.com", "password")));
+        context.assertEquals(200, get(context, "/profiles/" + profileEntity.getId() + "/runs", token("data@irunninglog.com", "password")));
     }
 
 }

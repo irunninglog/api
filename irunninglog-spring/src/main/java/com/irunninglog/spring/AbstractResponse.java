@@ -28,9 +28,8 @@ public abstract class AbstractResponse<R, T extends AbstractResponse> implements
         return myself;
     }
 
-    @Override
-    public final R getBody() {
-        return body;
+    protected final R body() {
+        return this.body;
     }
 
 }

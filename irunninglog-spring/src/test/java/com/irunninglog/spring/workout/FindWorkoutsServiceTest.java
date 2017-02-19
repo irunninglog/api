@@ -47,7 +47,7 @@ public class FindWorkoutsServiceTest extends AbstractTest {
     private int lastYear;
 
     @Before
-    public void before() throws ParseException {
+    public void before() {
         dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
         DateFormat yearFormat = new SimpleDateFormat("yyyy");

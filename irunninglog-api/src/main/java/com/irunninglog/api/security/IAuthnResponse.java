@@ -2,6 +2,6 @@ package com.irunninglog.api.security;
 
 import com.irunninglog.api.IResponse;
 
-public interface IAuthnResponse<T extends IAuthnResponse> extends IResponse<IUser, T> {
+public interface IAuthnResponse<R extends IUser, T extends IAuthnResponse> extends IResponse<R, T> {
 
 }

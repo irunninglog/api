@@ -2,10 +2,10 @@ package com.irunninglog.api.security;
 
 import com.irunninglog.api.IRequest;
 
-public interface ILoginRequest extends IRequest<ILoginRequest> {
+public interface ILoginRequest<T extends ILoginRequest, U extends IUser> extends IRequest<T> {
 
-    ILoginRequest setUser(IUser user);
+    ILoginRequest setUser(U user);
 
-    IUser getUser();
+    U getUser();
 
 }

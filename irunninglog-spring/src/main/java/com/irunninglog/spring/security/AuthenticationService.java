@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @ApiService
-public final class AuthenticationService implements IAuthenticationService {
+final class AuthenticationService implements IAuthenticationService {
 
     private static final Logger LOG = LoggerFactory.getLogger(AuthenticationService.class);
     private static final String PATTERN = "/profiles/{0}/**";

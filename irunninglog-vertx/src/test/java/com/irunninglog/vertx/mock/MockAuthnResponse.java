@@ -1,15 +1,12 @@
 package com.irunninglog.vertx.mock;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.irunninglog.api.ResponseStatus;
 import com.irunninglog.api.security.IAuthnResponse;
-import com.irunninglog.api.security.IUser;
 
-class MockAuthnResponse implements IAuthnResponse<MockAuthnResponse> {
+class MockAuthnResponse implements IAuthnResponse<MockUser, MockAuthnResponse> {
 
     private ResponseStatus status;
-    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, defaultImpl = MockUser.class)
-    private IUser body;
+    private MockUser body;
 
     @Override
     public MockAuthnResponse setStatus(ResponseStatus status) {
@@ -23,13 +20,13 @@ class MockAuthnResponse implements IAuthnResponse<MockAuthnResponse> {
     }
 
     @Override
-    public MockAuthnResponse setBody(IUser body) {
+    public MockAuthnResponse setBody(MockUser body) {
         this.body = body;
         return this;
     }
 
     @Override
-    public IUser getBody() {
+    public MockUser getBody() {
         return body;
     }
 

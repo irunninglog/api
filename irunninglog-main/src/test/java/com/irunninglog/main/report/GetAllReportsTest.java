@@ -45,22 +45,22 @@ public class GetAllReportsTest extends AbstractTest {
 
     @Test
     public void byMonth(TestContext context) {
-        context.assertEquals(200, request(context, "/profiles/" + profileEntity.getId() + "/reports/mileagebymonth", token));
+        context.assertEquals(200, get(context, "/profiles/" + profileEntity.getId() + "/reports/mileagebymonth", token));
     }
 
     @Test
     public void byRoutes(TestContext context) {
-        context.assertEquals(200, request(context, "/profiles/" + profileEntity.getId() + "/reports/mileagebyroute", token));
+        context.assertEquals(200, get(context, "/profiles/" + profileEntity.getId() + "/reports/mileagebyroute", token));
     }
 
     @Test
     public void byRuns(TestContext context) {
-        context.assertEquals(200, request(context, "/profiles/" + profileEntity.getId() + "/reports/mileagebyrun", token));
+        context.assertEquals(200, get(context, "/profiles/" + profileEntity.getId() + "/reports/mileagebyrun", token));
     }
 
     @Test
     public void byShoes(TestContext context) {
-        context.assertEquals(200, request(context, "/profiles/" + profileEntity.getId() + "/reports/mileagebyshoe", token));
+        context.assertEquals(200, get(context, "/profiles/" + profileEntity.getId() + "/reports/mileagebyshoe", token));
     }
 
 }

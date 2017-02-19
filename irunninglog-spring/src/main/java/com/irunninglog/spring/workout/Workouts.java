@@ -1,5 +1,6 @@
 package com.irunninglog.spring.workout;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.irunninglog.api.workout.IWorkout;
 import com.irunninglog.api.workout.IWorkouts;
 import com.irunninglog.api.workout.IWorkoutsMonth;
@@ -15,8 +16,11 @@ import java.util.List;
 @SuppressWarnings("unused")
 final class Workouts implements IWorkouts {
 
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, defaultImpl = WorkoutsSummary.class)
     private IWorkoutsSummary summary;
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, defaultImpl = WorkoutsMonth.class)
     private IWorkoutsMonth previous;
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, defaultImpl = WorkoutsMonth.class)
     private IWorkoutsMonth next;
 
     private final List<IWorkout> workouts = new ArrayList<>();
