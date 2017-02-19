@@ -1,6 +1,5 @@
 language: java
 env:
-  - org.slf4j.simpleLogger.defaultLogLevel=warn
   - org.slf4j.simpleLogger.log.org.apache.maven.cl‌​i.transfer.Slf4jMave‌​nTransferListener=wa‌​rn
 jdk:
   - oraclejdk8
