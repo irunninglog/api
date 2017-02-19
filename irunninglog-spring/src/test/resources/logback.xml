@@ -1,0 +1,9 @@
+<configuration scan="true" scanPeriod="30 seconds">
+    <appender name="ASYNC" class="ch.qos.logback.core.ConsoleAppender">
+        <appender-ref ref="FILE" />
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="ASYNC" />
+    </root>
+</configuration>
