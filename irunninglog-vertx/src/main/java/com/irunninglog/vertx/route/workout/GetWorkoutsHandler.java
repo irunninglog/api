@@ -25,8 +25,8 @@ public final class GetWorkoutsHandler extends AbstractProfileIdRouteHandler<IGet
     }
 
     @Override
-    protected void request(IGetWorkoutsRequest request, RoutingContext routingContext) {
-        super.request(request, routingContext);
+    protected void populateRequest(IGetWorkoutsRequest request, RoutingContext routingContext) {
+        super.populateRequest(request, routingContext);
 
         String path = routingContext.normalisedPath().substring(routingContext.normalisedPath().indexOf("workouts"));
         if (!PATTERN1.matcher(path).matches() && !PATTERN2.matcher(path).matches()) {

@@ -97,7 +97,9 @@ public abstract class AbstractRouteHandler<Q extends IRequest, S extends IRespon
         }
     }
 
-    protected abstract void request(Q request, RoutingContext routingContext);
+    protected void request(Q request, RoutingContext routingContext) {
+        logger.info("request:{}", request);
+    }
 
     private void handle(RoutingContext routingContext, Q request) {
         String offsetString = routingContext.request().getHeader("iRunningLog-Utc-Offset");

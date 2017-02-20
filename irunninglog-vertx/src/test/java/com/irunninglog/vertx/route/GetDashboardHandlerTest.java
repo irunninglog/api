@@ -21,7 +21,7 @@ public class GetDashboardHandlerTest extends AbstractHandlerTest {
         Mockito.when(dashboardService.get(any(Long.class), any(Integer.class)))
                 .thenReturn(Mockito.mock(IDashboardInfo.class));
 
-        request(context, "/profiles/1/dashboard", TOKEN);
+        get(context, "/profiles/1/dashboard", TOKEN);
     }
 
 }

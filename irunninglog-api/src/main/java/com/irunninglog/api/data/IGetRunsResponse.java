@@ -2,6 +2,6 @@ package com.irunninglog.api.data;
 
 import com.irunninglog.api.IResponse;
 
-public interface IGetRunsResponse<T extends IGetRunsResponse> extends IResponse<IRuns, T> {
+public interface IGetRunsResponse<R extends IRuns, T extends IGetRunsResponse> extends IResponse<R, T> {
 
 }

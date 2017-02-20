@@ -14,7 +14,9 @@ public abstract class AbstractProfileIdRouteHandler<Q extends IProfileIdRequest<
     }
 
     @Override
-    protected void request(Q request, RoutingContext routingContext) {
+    protected final void request(Q request, RoutingContext routingContext) {
+        super.request(request, routingContext);
+
         String profileId = routingContext.pathParam("profileid");
 
         logger.info("profile:get:{}", profileId);

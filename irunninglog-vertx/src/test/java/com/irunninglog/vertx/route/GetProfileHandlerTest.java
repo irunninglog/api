@@ -39,7 +39,7 @@ public class GetProfileHandlerTest extends AbstractHandlerTest {
         Mockito.when(profileService.get(any(Long.class)))
                 .thenReturn(new MockProfile());
 
-        context.assertEquals(200, request(context, "/profiles/1", TOKEN));
+        context.assertEquals(200, get(context, "/profiles/1", TOKEN));
     }
 
     @Test
@@ -51,7 +51,7 @@ public class GetProfileHandlerTest extends AbstractHandlerTest {
         Mockito.when(profileService.get(any(Long.class)))
                 .thenThrow(new ResponseStatusException(ResponseStatus.NotFound));
 
-        context.assertEquals(404, request(context, "/profiles/1", TOKEN));
+        context.assertEquals(404, get(context, "/profiles/1", TOKEN));
     }
 
     @Test
@@ -60,7 +60,7 @@ public class GetProfileHandlerTest extends AbstractHandlerTest {
 
         Mockito.when(authenticationService.authenticate(any(Endpoint.class), any(String.class), any(String.class))).thenThrow(new AuthnException("Unauthenticated"));
 
-        context.assertEquals(401, request(context, "/profiles/1", ""));
+        context.assertEquals(401, get(context, "/profiles/1", ""));
     }
 
     @Test
@@ -69,7 +69,7 @@ public class GetProfileHandlerTest extends AbstractHandlerTest {
 
         Mockito.when(authenticationService.authenticate(any(Endpoint.class), any(String.class), any(String.class))).thenThrow(new AuthnException("Unauthenticated"));
 
-        context.assertEquals(401, request(context, "/profiles/1", TOKEN));
+        context.assertEquals(401, get(context, "/profiles/1", TOKEN));
     }
 
     @Test
@@ -78,7 +78,7 @@ public class GetProfileHandlerTest extends AbstractHandlerTest {
 
         Mockito.when(authenticationService.authenticate(any(Endpoint.class), any(String.class), any(String.class))).thenThrow(new AuthnException("Unauthenticated"));
 
-        context.assertEquals(401, request(context, "/profiles/1", "Basic @@@"));
+        context.assertEquals(401, get(context, "/profiles/1", "Basic @@@"));
     }
 
     @Test
@@ -88,7 +88,7 @@ public class GetProfileHandlerTest extends AbstractHandlerTest {
         authn();
 
         vertx.undeploy(profileVerticleId);
-        context.assertEquals(500, request(context, "/profiles/1", TOKEN));
+        context.assertEquals(500, get(context, "/profiles/1", TOKEN));
     }
 
     @Test
@@ -98,7 +98,7 @@ public class GetProfileHandlerTest extends AbstractHandlerTest {
         authn();
 
         vertx.undeploy(authVerticleId);
-        context.assertEquals(500, request(context, "/profiles/1", TOKEN));
+        context.assertEquals(500, get(context, "/profiles/1", TOKEN));
     }
 
 }

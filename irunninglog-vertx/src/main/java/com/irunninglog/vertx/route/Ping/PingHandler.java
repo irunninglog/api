@@ -17,9 +17,4 @@ public final class PingHandler extends AbstractRouteHandler<IPingRequest, IPingR
         super(vertx, factory, mapper, IPingRequest.class,  IPingResponse.class);
     }
 
-    @Override
-    protected void request(IPingRequest request, RoutingContext routingContext) {
-        // Nothing to do here
-    }
-
 }

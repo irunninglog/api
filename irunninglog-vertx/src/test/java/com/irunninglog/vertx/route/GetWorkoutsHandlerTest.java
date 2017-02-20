@@ -27,21 +27,21 @@ public class GetWorkoutsHandlerTest extends AbstractHandlerTest{
     public void matchNoParameters(TestContext context) throws AuthnException, AuthzException {
         authn();
 
-        context.assertEquals(200, request(context, "/profiles/1/workouts", TOKEN));
+        context.assertEquals(200, get(context, "/profiles/1/workouts", TOKEN));
     }
 
     @Test
     public void matchWithParameters(TestContext context) throws AuthnException, AuthzException {
         authn();
 
-        context.assertEquals(200, request(context, "/profiles/1/workouts/12-01-2016", TOKEN));
+        context.assertEquals(200, get(context, "/profiles/1/workouts/12-01-2016", TOKEN));
     }
 
     @Test
     public void matchNotFound(TestContext context) throws AuthnException, AuthzException {
         authn();
 
-        context.assertEquals(401, request(context, "/profiles/1/workoutss", TOKEN));
+        context.assertEquals(401, get(context, "/profiles/1/workoutss", TOKEN));
     }
 
 }

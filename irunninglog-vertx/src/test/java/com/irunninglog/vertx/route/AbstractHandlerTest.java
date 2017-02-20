@@ -76,12 +76,32 @@ public abstract class AbstractHandlerTest {
                 .thenReturn(new MockUser());
     }
 
-    final int request(TestContext context, String path, String token) {
+    final int get(TestContext context, String path, String token) {
         logger.info("Sending request {}", path);
 
         HttpClient client = vertx.createHttpClient();
         Async async = context.async();
         HttpClientRequest req = client.get(8889, "localhost", path);
+        req.putHeader("Authorization", token);
+
+        final int[] responseCode = new int[1];
+        req.handler(resp -> {
+            responseCode[0] = resp.statusCode();
+            async.complete();
+        });
+        req.end();
+
+        async.awaitSuccess(10000);
+
+        return responseCode[0];
+    }
+
+    final int post(TestContext context, String path, String token) {
+        logger.info("Sending request {}", path);
+
+        HttpClient client = vertx.createHttpClient();
+        Async async = context.async();
+        HttpClientRequest req = client.post(8889, "localhost", path);
         req.putHeader("Authorization", token);
 
         final int[] responseCode = new int[1];
