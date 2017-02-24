@@ -1,6 +1,8 @@
 package com.irunninglog.vertx.route;
 
 import com.irunninglog.api.Endpoint;
+import com.irunninglog.api.mapping.IMapper;
+import com.irunninglog.api.profile.IGetProfileResponse;
 import com.irunninglog.api.profile.IProfileService;
 import com.irunninglog.api.security.AuthnException;
 import com.irunninglog.api.security.AuthzException;
@@ -98,6 +100,21 @@ public class GetProfileHandlerTest extends AbstractHandlerTest {
         authn();
 
         vertx.undeploy(authVerticleId);
+        context.assertEquals(500, get(context, "/profiles/1", TOKEN));
+    }
+
+    @Test
+    public void error3(TestContext context) throws AuthnException, AuthzException {
+        logger.info("error2");
+
+        authn();
+
+        vertx.undeploy(profileVerticleId);
+        IMapper throwsMapper = Mockito.mock(IMapper.class);
+        //noinspection unchecked
+        Mockito.when(throwsMapper.decode(any(String.class), any(Class.class))).thenThrow(new IllegalArgumentException());
+        vertx.deployVerticle(new GetProfileVerticle(factory, throwsMapper, profileService), context.asyncAssertSuccess());
+
         context.assertEquals(500, get(context, "/profiles/1", TOKEN));
     }
 

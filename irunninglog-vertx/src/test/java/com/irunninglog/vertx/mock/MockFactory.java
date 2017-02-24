@@ -12,6 +12,8 @@ import com.irunninglog.api.ping.IPingRequest;
 import com.irunninglog.api.ping.IPingResponse;
 import com.irunninglog.api.profile.IGetProfileRequest;
 import com.irunninglog.api.profile.IGetProfileResponse;
+import com.irunninglog.api.report.IGetDataSetResponse;
+import com.irunninglog.api.report.IGetMultiSetResponse;
 import com.irunninglog.api.security.*;
 import com.irunninglog.api.workout.IGetWorkoutsRequest;
 import com.irunninglog.api.workout.IGetWorkoutsResponse;
@@ -74,6 +76,12 @@ public class MockFactory implements IFactory {
         } else if (clazz == IGetShoesResponse.class) {
             //noinspection unchecked
             return (T) new MockGetShoesResponse();
+        } else if (clazz == IGetDataSetResponse.class) {
+            //noinspection unchecked
+            return (T) new MockGetDataSetResponse();
+        } else if (clazz == IGetMultiSetResponse.class) {
+            //noinspection unchecked
+            return (T) new MockGetMultiSetResponse();
         } else {
             throw new IllegalArgumentException("Can't create class " + clazz);
         }

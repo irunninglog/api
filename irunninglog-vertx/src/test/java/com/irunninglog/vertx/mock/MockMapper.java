@@ -11,6 +11,9 @@ import com.irunninglog.api.ping.IPingRequest;
 import com.irunninglog.api.ping.IPingResponse;
 import com.irunninglog.api.profile.IGetProfileRequest;
 import com.irunninglog.api.profile.IGetProfileResponse;
+import com.irunninglog.api.report.IGetDataSetResponse;
+import com.irunninglog.api.report.IGetMultiSetResponse;
+import com.irunninglog.api.report.IGetReportRequest;
 import com.irunninglog.api.security.IAuthnRequest;
 import com.irunninglog.api.security.IAuthnResponse;
 import com.irunninglog.api.security.ILoginRequest;
@@ -93,6 +96,15 @@ public class MockMapper implements IMapper {
             } else if (clazz == IRoutes.class) {
                 //noinspection unchecked
                 return (T) objectMapper.readValue(string, MockRoutes.class);
+            } else if (clazz == IGetDataSetResponse.class) {
+                //noinspection unchecked
+                return (T) objectMapper.readValue(string, MockGetDataSetResponse.class);
+            } else if (clazz == IGetReportRequest.class) {
+                //noinspection unchecked
+                return (T) objectMapper.readValue(string, MockGetReportRequest.class);
+            } else if (clazz == IGetMultiSetResponse.class) {
+                //noinspection unchecked
+                return (T) objectMapper.readValue(string, MockGetMultiSetResponse.class);
             } else {
                 throw new IllegalArgumentException("Can't read class " + clazz);
             }

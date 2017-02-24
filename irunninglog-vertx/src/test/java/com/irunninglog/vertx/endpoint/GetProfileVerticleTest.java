@@ -1,6 +1,7 @@
 package com.irunninglog.vertx.endpoint;
 
 import com.irunninglog.api.*;
+import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.profile.IGetProfileResponse;
 import com.irunninglog.api.profile.IProfileService;
 import com.irunninglog.vertx.mock.MockGetProfileRequest;
@@ -17,13 +18,14 @@ import static org.mockito.Matchers.any;
 public class GetProfileVerticleTest extends AbstractVerticleTest {
 
     private IProfileService profileService;
+    private String profileVerticleId;
 
     @Before
     public void before(TestContext context) {
         profileService = Mockito.mock(IProfileService.class);
 
         GetProfileVerticle getProfileVerticle = new GetProfileVerticle(factory, mapper, profileService);
-        rule.vertx().deployVerticle(getProfileVerticle, context.asyncAssertSuccess());
+        rule.vertx().deployVerticle(getProfileVerticle, context.asyncAssertSuccess(event -> profileVerticleId = event));
     }
 
     @Test
@@ -55,7 +57,7 @@ public class GetProfileVerticleTest extends AbstractVerticleTest {
     }
 
     @Test
-    public void error(TestContext context) {
+    public void error1(TestContext context) {
         Mockito.when(profileService.get(any(Long.class))).thenThrow(new RuntimeException());
 
         rule.vertx().eventBus().<String>send(Endpoint.GetProfile.getAddress(),
@@ -66,6 +68,20 @@ public class GetProfileVerticleTest extends AbstractVerticleTest {
             context.assertEquals(ResponseStatus.Error, response.getStatus());
             context.assertNull(response.getBody());
         }));
+    }
+
+    @Test
+    public void error2(TestContext context) {
+        Mockito.when(profileService.get(any(Long.class))).thenThrow(new RuntimeException());
+
+        rule.vertx().undeploy(profileVerticleId, context.asyncAssertSuccess());
+        IFactory throwsFactory = Mockito.mock(IFactory.class);
+        //noinspection unchecked
+        Mockito.when(throwsFactory.get(any(Class.class))).thenThrow(new IllegalArgumentException());
+        rule.vertx().deployVerticle(new GetProfileVerticle(throwsFactory, mapper, profileService));
+
+        rule.vertx().eventBus().<String>send(Endpoint.GetProfile.getAddress(),
+                Json.encode(new MockGetProfileRequest()), context.asyncAssertSuccess(o -> context.assertNull(o.body())));
     }
 
 }
