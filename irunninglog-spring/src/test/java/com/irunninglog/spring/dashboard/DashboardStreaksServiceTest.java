@@ -82,6 +82,10 @@ public class DashboardStreaksServiceTest extends AbstractDashboardServicesTest {
         assertEquals("Current", current.getTitle());
         assertEquals("3 day(s)", current.getSubTitle());
         assertEquals("3 workout(s)", current.getTextOne());
+        assertEquals(0, current.getMax());
+        assertEquals(0, current.getPercentage());
+        assertEquals(0, current.getValue());
+        assertEquals(null, current.getProgress());
         assertEquals(dateService.formatMedium(date.minusDays(2)) + " through " + dateService.formatMedium(date), current.getTextTwo());
 
         IProgressInfo thisYear = iterator.next();

@@ -32,4 +32,8 @@ public interface IProgressInfo {
 
     String getTextTwo();
 
+    Progress getProgress();
+
+    int getValue();
+
 }

@@ -34,4 +34,22 @@ public class DashboardShoesServiceTest extends AbstractDashboardServicesTest {
         assertEquals(1, shoesService.shoes(profileEntity).size());
     }
 
+    @Test
+    public void twoShoes() {
+        ShoeEntity one = new ShoeEntity();
+        one.setName("One");
+        one.setProfile(profileEntity);
+        one.setDashboard(Boolean.TRUE);
+
+        ShoeEntity two = new ShoeEntity();
+        two.setName("Two");
+        two.setProfile(profileEntity);
+        two.setDashboard(Boolean.TRUE);
+
+        shoeEntityRepository.save(one);
+        shoeEntityRepository.save(two);
+
+        assertEquals(2, shoesService.shoes(profileEntity).size());
+    }
+
 }

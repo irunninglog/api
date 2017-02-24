@@ -9,4 +9,10 @@ import org.springframework.stereotype.Component;
 @Scope("prototype")
 final class GetDashboardRequest extends AbstractProfileIdRequest<IGetDashboardRequest> implements IGetDashboardRequest {
 
+    public GetDashboardRequest() {
+        super();
+
+        logger.debug("Created {}", hashCode());
+    }
+
 }

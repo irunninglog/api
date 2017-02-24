@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Scope("prototype")
-@SuppressWarnings({"FieldCanBeLocal", "unused"})
 final class ProgressInfo implements IProgressInfo {
 
     private String title;
@@ -95,6 +94,14 @@ final class ProgressInfo implements IProgressInfo {
     @Override
     public String getTextTwo() {
         return textTwo;
+    }
+
+    public int getValue() {
+        return value;
+    }
+
+    public Progress getProgress() {
+        return progress;
     }
 
 }
