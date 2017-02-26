@@ -38,4 +38,19 @@ public class MockRun implements IRun {
         return name;
     }
 
+    @Override
+    public long getId() {
+        return id;
+    }
+
+    @Override
+    public String getDescription() {
+        return description;
+    }
+
+    @Override
+    public boolean isDashboard() {
+        return dashboard;
+    }
+
 }

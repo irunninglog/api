@@ -5,16 +5,14 @@ import com.irunninglog.api.dashboard.IDashboardService;
 import com.irunninglog.api.ResponseStatus;
 import com.irunninglog.api.ResponseStatusException;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
-@SuppressWarnings("SpringJavaAutowiredMembersInspection")
 public class DashboardServiceTest extends AbstractDashboardServicesTest {
 
-    @Autowired
     private IDashboardService dashboardService;
 
     @Test
@@ -31,6 +29,11 @@ public class DashboardServiceTest extends AbstractDashboardServicesTest {
         } catch (ResponseStatusException ex) {
             assertEquals(ResponseStatus.NotFound, ex.getResponseStatus());
         }
+    }
+
+    @Override
+    protected void afterAfterBefore(ApplicationContext context) {
+        dashboardService = context.getBean(IDashboardService.class);
     }
 
 }

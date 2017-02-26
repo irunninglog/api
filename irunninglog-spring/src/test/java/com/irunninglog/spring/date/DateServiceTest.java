@@ -1,9 +1,8 @@
 package com.irunninglog.spring.date;
 
 import com.irunninglog.spring.AbstractTest;
-import org.junit.Before;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -17,17 +16,17 @@ import java.util.GregorianCalendar;
 
 import static org.junit.Assert.*;
 
-@SuppressWarnings("SpringJavaAutowiredMembersInspection")
 public class DateServiceTest extends AbstractTest {
 
-    @Autowired
     private DateService dateService;
 
     private int offset;
 
-    @Before
-    public void before() {
+    @Override
+    public void afterBefore(ApplicationContext context) {
         offset = ZonedDateTime.now().getOffset().getTotalSeconds() / 60 * -1;
+
+        dateService = context.getBean(DateService.class);
     }
 
     @Test
@@ -216,14 +215,26 @@ public class DateServiceTest extends AbstractTest {
     }
 
     @Test
-    public void testGetMonthStartDate() {
+    public void testGetMonthStartDate1() {
         LocalDate weekStart = dateService.getMonthStartDate(300);
         assertTrue(!weekStart.isAfter(LocalDate.now()));
     }
 
     @Test
-    public void testGetYearStartDate() {
+    public void testGetMonthStartDate2() {
+        LocalDate weekStart = dateService.getMonthStartDate(LocalDate.now());
+        assertTrue(!weekStart.isAfter(LocalDate.now()));
+    }
+
+    @Test
+    public void testGetYearStartDate1() {
         LocalDate weekStart = dateService.getYearStartDate(300);
+        assertTrue(!weekStart.isAfter(LocalDate.now()));
+    }
+
+    @Test
+    public void testGetYearStartDate2() {
+        LocalDate weekStart = dateService.getYearStartDate(LocalDate.now());
         assertTrue(!weekStart.isAfter(LocalDate.now()));
     }
 
@@ -257,6 +268,27 @@ public class DateServiceTest extends AbstractTest {
     @Test
     public void testGetLastYearEndFull() {
         assertNotNull(dateService.getLastYearEndFull(300));
+    }
+
+    @Test
+    public void formatMonthMedium() {
+        LocalDate now = LocalDate.now();
+
+        assertEquals(DateTimeFormatter.ofPattern("MMMM yyyy").format(now), dateService.formatMonthMedium(now));
+    }
+
+    @Test
+    public void formatMonthShort() {
+        LocalDate now = LocalDate.now();
+
+        assertEquals(DateTimeFormatter.ofPattern("MMM").format(now), dateService.formatMonthShort(now));
+    }
+
+    @Test
+    public void formatYear() {
+        LocalDate now = LocalDate.now();
+
+        assertEquals(DateTimeFormatter.ofPattern("yyyy").format(now), dateService.formatYear(now));
     }
 
 }

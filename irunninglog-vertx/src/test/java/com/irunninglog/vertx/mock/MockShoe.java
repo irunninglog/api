@@ -41,6 +41,21 @@ public class MockShoe implements IShoe {
     }
 
     @Override
+    public long getId() {
+        return id;
+    }
+
+    @Override
+    public String getDescription() {
+        return description;
+    }
+
+    @Override
+    public boolean isDashboard() {
+        return dashboard;
+    }
+
+    @Override
     public IShoe setStartDate(String startDate) {
         this.startDate = startDate;
         return this;
@@ -55,6 +70,11 @@ public class MockShoe implements IShoe {
     @Override
     public String getStartDate() {
         return startDate;
+    }
+
+    @Override
+    public String getMax() {
+        return max;
     }
 
 }

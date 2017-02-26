@@ -5,7 +5,13 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="run_entity")
-@SuppressWarnings("WeakerAccess")
-public final class RunEntity extends AbstractDataEntity {
+// Needs to be public
+final public class RunEntity extends AbstractDataEntity {
+
+    public RunEntity() {
+        super();
+
+        logger.debug("Created an instance {}", hashCode());
+    }
 
 }

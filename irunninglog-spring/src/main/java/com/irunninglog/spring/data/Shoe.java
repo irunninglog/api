@@ -11,6 +11,12 @@ final class Shoe extends AbstractData<IShoe> implements IShoe {
     private String startDate;
     private String max;
 
+    public Shoe() {
+        super();
+
+        logger.debug("Created an instance {}", hashCode());
+    }
+
     @Override
     public IShoe setStartDate(String startDate) {
         this.startDate = startDate;
@@ -28,6 +34,7 @@ final class Shoe extends AbstractData<IShoe> implements IShoe {
         return startDate;
     }
 
+    @Override
     public String getMax() {
         return max;
     }

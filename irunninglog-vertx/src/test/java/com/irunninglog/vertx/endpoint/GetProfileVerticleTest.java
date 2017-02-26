@@ -78,10 +78,8 @@ public class GetProfileVerticleTest extends AbstractVerticleTest {
         IFactory throwsFactory = Mockito.mock(IFactory.class);
         //noinspection unchecked
         Mockito.when(throwsFactory.get(any(Class.class))).thenThrow(new IllegalArgumentException());
-        rule.vertx().deployVerticle(new GetProfileVerticle(throwsFactory, mapper, profileService));
-
-        rule.vertx().eventBus().<String>send(Endpoint.GetProfile.getAddress(),
-                Json.encode(new MockGetProfileRequest()), context.asyncAssertSuccess(o -> context.assertNull(o.body())));
+        rule.vertx().deployVerticle(new GetProfileVerticle(throwsFactory, mapper, profileService), event -> rule.vertx().eventBus().<String>send(Endpoint.GetProfile.getAddress(),
+                Json.encode(new MockGetProfileRequest()), context.asyncAssertSuccess(o -> context.assertNull(o.body()))));
     }
 
 }

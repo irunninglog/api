@@ -9,4 +9,10 @@ import org.springframework.stereotype.Component;
 @Scope("prototype")
 final class GetDataRequest extends AbstractProfileIdRequest<IGetDataRequest> implements IGetDataRequest {
 
+    public GetDataRequest() {
+        super();
+
+        logger.debug("Created an instance {}", hashCode());
+    }
+
 }

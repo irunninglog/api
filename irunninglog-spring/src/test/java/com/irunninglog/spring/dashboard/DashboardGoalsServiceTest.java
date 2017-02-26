@@ -1,19 +1,21 @@
 package com.irunninglog.spring.dashboard;
 
-import com.irunninglog.spring.data.GoalEntity;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 
 import java.time.LocalDate;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-@SuppressWarnings("SpringJavaAutowiredMembersInspection")
 public class DashboardGoalsServiceTest extends AbstractDashboardServicesTest {
 
-    @Autowired
     private DashboardGoalsService goalsService;
+
+    @Override
+    protected void afterAfterBefore(ApplicationContext context) {
+        goalsService = context.getBean(DashboardGoalsService.class);
+    }
 
     @Test
     public void noGoals() {
@@ -22,17 +24,8 @@ public class DashboardGoalsServiceTest extends AbstractDashboardServicesTest {
 
     @Test
     public void oneGoal() {
-        GoalEntity one = new GoalEntity();
-        one.setName("One");
-        one.setProfile(profileEntity);
-
-        GoalEntity two = new GoalEntity();
-        two.setName("Two");
-        two.setProfile(profileEntity);
-        two.setDashboard(Boolean.TRUE);
-
-        goalEntityRepository.save(one);
-        goalEntityRepository.save(two);
+        saveGoal("One", null, null, Boolean.FALSE, profileEntity);
+        saveGoal("Two", null, null, Boolean.TRUE, profileEntity);
 
         assertEquals(1, goalsService.goals(profileEntity).size());
         assertTrue(goalsService.goals(profileEntity).iterator().next().getTextOne().contains("All dates"));
@@ -40,34 +33,23 @@ public class DashboardGoalsServiceTest extends AbstractDashboardServicesTest {
 
     @Test
     public void startDate() {
-        save(LocalDate.now(), null);
+        saveGoal(LocalDate.now(), null, Boolean.TRUE, profileEntity);
 
         assertTrue(goalsService.goals(profileEntity).iterator().next().getTextOne().contains("From"));
     }
 
     @Test
     public void endDate() {
-        save(null, LocalDate.now());
+        saveGoal(null, LocalDate.now(), Boolean.TRUE, profileEntity);
 
         assertTrue(goalsService.goals(profileEntity).iterator().next().getTextOne().contains("Through"));
     }
 
     @Test
     public void both() {
-        save(LocalDate.now(), LocalDate.now());
+        saveGoal(LocalDate.now(), LocalDate.now(), Boolean.TRUE, profileEntity);
 
         assertTrue(goalsService.goals(profileEntity).iterator().next().getTextOne().contains("through"));
-    }
-
-    private void save(LocalDate start, LocalDate end) {
-        GoalEntity goal = new GoalEntity();
-        goal.setStartDate(start);
-        goal.setEndDate(end);
-        goal.setName("Goal");
-        goal.setDashboard(Boolean.TRUE);
-        goal.setProfile(profileEntity);
-
-        goalEntityRepository.save(goal);
     }
 
 }

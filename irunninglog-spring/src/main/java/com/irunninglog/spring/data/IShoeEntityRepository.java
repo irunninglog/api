@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 @SuppressWarnings("JpaQlInspection")
+// Needs to be public
 public interface IShoeEntityRepository extends CrudRepository<ShoeEntity, Long> {
 
     @Query(value = "select s from ShoeEntity s where s.profile.id = :id and s.dashboard = true")

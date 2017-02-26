@@ -1,18 +1,10 @@
 package com.irunninglog.spring.workout;
 
-import com.irunninglog.api.Gender;
 import com.irunninglog.api.Privacy;
-import com.irunninglog.api.Unit;
 import com.irunninglog.spring.AbstractTest;
-import com.irunninglog.spring.profile.IProfileEntityRepository;
 import com.irunninglog.spring.profile.ProfileEntity;
-import com.irunninglog.spring.security.IUserEntityRepository;
-import com.irunninglog.spring.security.UserEntity;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.context.ApplicationContext;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -26,79 +18,36 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-@SuppressWarnings("SpringJavaAutowiredMembersInspection")
 public class FindWorkoutsServiceTest extends AbstractTest {
-
-    @Autowired
-    private IProfileEntityRepository profileEntityRepository;
-    @Autowired
-    private IWorkoutEntityRepository workoutEntityRepository;
-    @Autowired
-    private IUserEntityRepository userEntityRepository;
-    @Autowired
-    private FindWorkoutsService workoutsService;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     private DateFormat dateFormat;
     private ProfileEntity profileEntity;
-    private UserEntity userEntity;
     private int thisYear;
     private int lastYear;
 
-    @Before
-    public void before() {
+    private IWorkoutEntityRepository workoutEntityRepository;
+    private FindWorkoutsService workoutsService;
+
+    @Override
+    protected void afterBefore(ApplicationContext applicationContext) {
+        super.afterBefore(applicationContext);
+
+        workoutsService = applicationContext.getBean(FindWorkoutsService.class);
+        workoutEntityRepository = applicationContext.getBean(IWorkoutEntityRepository.class);
+
         dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
         DateFormat yearFormat = new SimpleDateFormat("yyyy");
         thisYear = Integer.parseInt(yearFormat.format(new Date(System.currentTimeMillis())));
         lastYear = thisYear - 1;
 
-        ProfileEntity profileEntity = new ProfileEntity();
-        profileEntity.setEmail("allan@irunninglog.com");
-        profileEntity.setPassword(passwordEncoder.encode("password"));
-        profileEntity.setFirstName("Allan");
-        profileEntity.setLastName("Lewis");
-        profileEntity.setBirthday(LocalDate.now());
-        profileEntity.setGender(Gender.Male);
-        profileEntity.setPreferredUnits(Unit.English);
-        profileEntity.setWeekStart(DayOfWeek.MONDAY);
-        profileEntityRepository.save(profileEntity);
-
-        this.profileEntity = profileEntityRepository.findByEmail("allan@irunninglog.com");
-
-        userEntity = userEntityRepository.findByUsername(profileEntity.getEmail());
+        profileEntity = saveProfile("allan@irunninglog.com", "password");
 
         WorkoutEntity today = new WorkoutEntity();
         today.setDate(LocalDate.now());
         today.setPrivacy(Privacy.Private);
         today.setProfile(profileEntity);
         workoutEntityRepository.save(today);
-
-        // Noise profile/workout
-
-        ProfileEntity noise = new ProfileEntity();
-        noise.setEmail("noise@irunninglog.com");
-        noise.setPassword(passwordEncoder.encode("password"));
-        noise.setFirstName("Allan");
-        noise.setLastName("Lewis");
-        noise.setBirthday(LocalDate.now());
-        noise.setGender(Gender.Male);
-        noise.setPreferredUnits(Unit.English);
-        noise.setWeekStart(DayOfWeek.MONDAY);
-        profileEntityRepository.save(noise);
-
-        WorkoutEntity noiseWorkout = new WorkoutEntity();
-        noiseWorkout.setPrivacy(Privacy.Private);
-        noiseWorkout.setDate(LocalDate.now());
-        noiseWorkout.setProfile(profileEntityRepository.findByEmail("noise@irunninglog.com"));
-        workoutEntityRepository.save(noiseWorkout);
-    }
-
-    @After
-    public void after() {
-        workoutEntityRepository.deleteAll();
-        profileEntityRepository.deleteAll();
     }
 
     @Test
@@ -185,7 +134,7 @@ public class FindWorkoutsServiceTest extends AbstractTest {
 
         ZoneOffset offset = ZonedDateTime.now().getOffset();
         int seconds = offset.getTotalSeconds() / (-60);
-        assertEquals(3, workoutsService.findWorkoutsThisMonth(userEntity.getId(), seconds).size());
+        assertEquals(3, workoutsService.findWorkoutsThisMonth(profileEntity.getId(), seconds).size());
     }
 
     private void createThisMonthsWorkouts() {
@@ -219,7 +168,7 @@ public class FindWorkoutsServiceTest extends AbstractTest {
 
         ZoneOffset offset = ZonedDateTime.now().getOffset();
         int seconds = offset.getTotalSeconds() / (-60);
-        assertEquals(4, workoutsService.findWorkoutsThisYear(userEntity.getId(), seconds).size());
+        assertEquals(4, workoutsService.findWorkoutsThisYear(profileEntity.getId(), seconds).size());
     }
 
     private void createThisYearsWorkouts() throws ParseException {
@@ -248,7 +197,7 @@ public class FindWorkoutsServiceTest extends AbstractTest {
 
         ZoneOffset offset = ZonedDateTime.now().getOffset();
         int seconds = offset.getTotalSeconds() / (-60);
-        assertEquals(2, workoutsService.findWorkoutsLastYear(userEntity.getId(), seconds).size());
+        assertEquals(2, workoutsService.findWorkoutsLastYear(profileEntity.getId(), seconds).size());
     }
 
     @Test

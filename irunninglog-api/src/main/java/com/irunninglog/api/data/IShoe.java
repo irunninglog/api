@@ -9,4 +9,6 @@ public interface IShoe extends IData<IShoe> {
 
     String getStartDate();
 
+    String getMax();
+
 }

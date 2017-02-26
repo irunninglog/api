@@ -12,4 +12,9 @@ public interface IData<T extends IData> {
 
     String getName();
 
+    long getId();
+
+    String getDescription();
+
+    boolean isDashboard();
 }

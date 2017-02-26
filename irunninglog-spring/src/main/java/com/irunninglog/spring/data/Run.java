@@ -8,4 +8,10 @@ import org.springframework.stereotype.Component;
 @Scope("prototype")
 final class Run extends AbstractData<IRun> implements IRun {
 
+    public Run() {
+        super();
+
+        logger.debug("Created an instance {}", hashCode());
+    }
+
 }

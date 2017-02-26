@@ -6,6 +6,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "shoe_entity")
 @SuppressWarnings("WeakerAccess")
+// Needs to be public
 public final class ShoeEntity extends AbstractDataEntity {
 
     @Column(name="start_date")
@@ -13,6 +14,12 @@ public final class ShoeEntity extends AbstractDataEntity {
 
     @Column(name="max_value", nullable = false)
     private double max;
+
+    public ShoeEntity() {
+        super();
+
+        logger.debug("Created an instance {}", hashCode());
+    }
 
     public LocalDate getStartDate() {
         return startDate;

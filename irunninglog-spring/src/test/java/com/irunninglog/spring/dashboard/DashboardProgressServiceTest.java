@@ -2,7 +2,7 @@ package com.irunninglog.spring.dashboard;
 
 import com.irunninglog.api.dashboard.IProgressInfo;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 
 import java.time.LocalDate;
 import java.util.Collection;
@@ -11,10 +11,8 @@ import java.util.Iterator;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-@SuppressWarnings("SpringJavaAutowiredMembersInspection")
 public class DashboardProgressServiceTest extends AbstractDashboardServicesTest {
 
-    @Autowired
     private DashboardProgressService progressService;
 
     @Test
@@ -25,7 +23,7 @@ public class DashboardProgressServiceTest extends AbstractDashboardServicesTest 
     @Test
     public void lastYear() {
         profileEntity.setYearlyTarget(1500);
-        saveWorkout(LocalDate.now().minusYears(1), 10);
+        saveWorkout(LocalDate.now().minusYears(1), 10, profileEntity);
 
         assertEquals(4, progressService.progress(profileEntity, 300).size());
     }
@@ -35,9 +33,9 @@ public class DashboardProgressServiceTest extends AbstractDashboardServicesTest 
         profileEntity.setWeeklyTarget(30);
         profileEntity.setMonthlyTarget(100);
 
-        saveWorkout(LocalDate.now(), 10);
-        saveWorkout(LocalDate.now(), 10);
-        saveWorkout(LocalDate.now(), 11);
+        saveWorkout(LocalDate.now(), 10, profileEntity);
+        saveWorkout(LocalDate.now(), 10, profileEntity);
+        saveWorkout(LocalDate.now(), 11, profileEntity);
 
         Collection<IProgressInfo> progress = progressService.progress(profileEntity, 300);
         Iterator<IProgressInfo> iterator = progress.iterator();
@@ -50,6 +48,11 @@ public class DashboardProgressServiceTest extends AbstractDashboardServicesTest 
 
         IProgressInfo thisYear = iterator.next();
         assertEquals("31 mi", thisYear.getTextTwo());
+    }
+
+    @Override
+    protected void afterAfterBefore(ApplicationContext context) {
+        progressService = context.getBean(DashboardProgressService.class);
     }
 
 }

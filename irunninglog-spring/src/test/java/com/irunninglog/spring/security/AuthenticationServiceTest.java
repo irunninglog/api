@@ -1,80 +1,31 @@
 package com.irunninglog.spring.security;
 
-import com.irunninglog.api.Gender;
-import com.irunninglog.api.Unit;
 import com.irunninglog.api.security.AuthnException;
 import com.irunninglog.api.security.AuthzException;
 import com.irunninglog.api.security.*;
 import com.irunninglog.api.Endpoint;
 import com.irunninglog.spring.AbstractTest;
-import com.irunninglog.spring.profile.IProfileEntityRepository;
 import com.irunninglog.spring.profile.ProfileEntity;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
-import java.time.DayOfWeek;
-import java.time.LocalDate;
+import org.springframework.context.ApplicationContext;
 
 import static org.junit.Assert.*;
 
-@SuppressWarnings("SpringJavaAutowiredMembersInspection")
 public class AuthenticationServiceTest extends AbstractTest {
 
-    @Autowired
     private IAuthenticationService authenticationService;
-    @Autowired
-    private IProfileEntityRepository profileEntityRepository;
-    @Autowired
-    private IUserEntityRepository userEntityRepository;
-    @Autowired
-    private IAuthorityEntityRepository authorityEntityRepository;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     private ProfileEntity myprofile;
     private ProfileEntity admin;
     private ProfileEntity none;
 
-    @Before
-    public void before() {
-        myprofile = save("allan@irunninglog.com", "password", "MYPROFILE");
-        admin = save("admin@irunninglog.com", "password", "ADMIN");
-        none = save("none@irunninglog.com", "password");
-    }
+    @Override
+    public void afterBefore(ApplicationContext context) {
+        authenticationService = context.getBean(IAuthenticationService.class);
 
-    private ProfileEntity save(String email, String password, String ... authorities) {
-        ProfileEntity entity = new ProfileEntity();
-        entity.setEmail(email);
-        entity.setPassword(passwordEncoder.encode(password));
-        entity.setFirstName("Allan");
-        entity.setLastName("Lewis");
-        entity.setBirthday(LocalDate.now());
-        entity.setGender(Gender.Male);
-        entity.setPreferredUnits(Unit.English);
-        entity.setWeekStart(DayOfWeek.MONDAY);
-
-        entity = profileEntityRepository.save(entity);
-
-        UserEntity userEntity = userEntityRepository.findOne(entity.getId());
-        for (String authority : authorities) {
-            AuthorityEntity authorityEntity = new AuthorityEntity();
-            authorityEntity.setName(authority);
-            authorityEntity = authorityEntityRepository.save(authorityEntity);
-
-            userEntity.getAuthorities().add(authorityEntity);
-        }
-        userEntityRepository.save(userEntity);
-
-        return entity;
-    }
-
-    @After
-    public void after() {
-        userEntityRepository.deleteAll();
-        authorityEntityRepository.deleteAll();
+        myprofile = saveProfile("allan@irunninglog.com", "password", "MYPROFILE");
+        admin = saveProfile("admin@irunninglog.com", "password", "ADMIN");
+        none = saveProfile("none@irunninglog.com", "password");
     }
 
     @Test

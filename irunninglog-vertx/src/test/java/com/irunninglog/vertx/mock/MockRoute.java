@@ -38,4 +38,19 @@ public class MockRoute implements IRoute {
         return name;
     }
 
+    @Override
+    public long getId() {
+        return id;
+    }
+
+    @Override
+    public String getDescription() {
+        return decscription;
+    }
+
+    @Override
+    public boolean isDashboard() {
+        return dashboard;
+    }
+
 }

@@ -1,13 +1,17 @@
 package com.irunninglog.spring.data;
 
 import com.irunninglog.spring.jpa.AbstractEntityWithProfile;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.*;
 
 @MappedSuperclass
-@SuppressWarnings({"unused", "WeakerAccess"})
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class AbstractDataEntity extends AbstractEntityWithProfile {
+
+    @Transient
+    final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Column(nullable = false, unique = true)
     private String name;

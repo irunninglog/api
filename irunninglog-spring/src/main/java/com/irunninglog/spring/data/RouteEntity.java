@@ -5,7 +5,13 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="route_entity")
-@SuppressWarnings("WeakerAccess")
+// Needs to be public
 public final class RouteEntity extends AbstractDataEntity {
+
+    public RouteEntity() {
+        super();
+
+        logger.debug("Created an instance {}", hashCode());
+    }
 
 }

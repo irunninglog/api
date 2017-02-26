@@ -1,8 +1,9 @@
 package com.irunninglog.spring.dashboard;
 
 import com.irunninglog.api.dashboard.IProgressInfo;
+import com.irunninglog.spring.date.DateService;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 
 import java.time.LocalDate;
 import java.util.Calendar;
@@ -12,12 +13,11 @@ import java.util.Iterator;
 
 import static org.junit.Assert.assertEquals;
 
-@SuppressWarnings("SpringJavaAutowiredMembersInspection")
 public class DashboardStreaksServiceTest extends AbstractDashboardServicesTest {
 
     private static final int OFFSET = 600;
 
-    @Autowired
+    private DateService dateService;
     private DashboardStreaksService streaksService;
 
     @Test
@@ -44,7 +44,7 @@ public class DashboardStreaksServiceTest extends AbstractDashboardServicesTest {
     @Test
     public void testCurrentStreakToday() {
         LocalDate date = LocalDate.now();
-        saveWorkout(date);
+        saveWorkout(date, profileEntity);
 
         Collection<IProgressInfo> infos = streaksService.streaks(profileEntity, OFFSET);
         Iterator<IProgressInfo> iterator = infos.iterator();
@@ -71,9 +71,9 @@ public class DashboardStreaksServiceTest extends AbstractDashboardServicesTest {
     @Test
     public void testCurrentStreakEndsToday() {
         LocalDate date = LocalDate.now();
-        saveWorkout(date);
-        saveWorkout(date.minusDays(1));
-        saveWorkout(date.minusDays(2));
+        saveWorkout(date, profileEntity);
+        saveWorkout(date.minusDays(1), profileEntity);
+        saveWorkout(date.minusDays(2), profileEntity);
 
         Collection<IProgressInfo> infos = streaksService.streaks(profileEntity, OFFSET);
         Iterator<IProgressInfo> iterator = infos.iterator();
@@ -104,7 +104,7 @@ public class DashboardStreaksServiceTest extends AbstractDashboardServicesTest {
     @Test
     public void testCurrentStreakYesterday() {
         LocalDate date = LocalDate.now().minusDays(1);
-        saveWorkout(date);
+        saveWorkout(date, profileEntity);
 
         Collection<IProgressInfo> infos = streaksService.streaks(profileEntity, OFFSET);
         Iterator<IProgressInfo> iterator = infos.iterator();
@@ -131,10 +131,10 @@ public class DashboardStreaksServiceTest extends AbstractDashboardServicesTest {
     @Test
     public void testCurrentStreakEndsYesterday() {
         LocalDate date = LocalDate.now().minusDays(1);
-        saveWorkout(date);
-        saveWorkout(date.minusDays(1));
-        saveWorkout(date.minusDays(2));
-        saveWorkout(date.minusDays(3));
+        saveWorkout(date, profileEntity);
+        saveWorkout(date.minusDays(1), profileEntity);
+        saveWorkout(date.minusDays(2), profileEntity);
+        saveWorkout(date.minusDays(3), profileEntity);
 
         Collection<IProgressInfo> infos = streaksService.streaks(profileEntity, OFFSET);
         Iterator<IProgressInfo> iterator = infos.iterator();
@@ -161,8 +161,8 @@ public class DashboardStreaksServiceTest extends AbstractDashboardServicesTest {
     @Test
     public void testNonCurrentStream() {
         LocalDate date = LocalDate.now().minusDays(3);
-        saveWorkout(date);
-        saveWorkout(date.minusDays(1));
+        saveWorkout(date, profileEntity);
+        saveWorkout(date.minusDays(1), profileEntity);
 
         Collection<IProgressInfo> infos = streaksService.streaks(profileEntity, OFFSET);
         Iterator<IProgressInfo> iterator = infos.iterator();
@@ -192,15 +192,15 @@ public class DashboardStreaksServiceTest extends AbstractDashboardServicesTest {
     @Test
     public void testEverStreak() {
         LocalDate date = LocalDate.now();
-        saveWorkout(date);
-        saveWorkout(date.minusDays(1));
+        saveWorkout(date, profileEntity);
+        saveWorkout(date.minusDays(1), profileEntity);
 
         LocalDate date1 = date.minusYears(2);
-        saveWorkout(date1);
-        saveWorkout(date1.minusDays(1));
-        saveWorkout(date1.minusDays(2));
-        saveWorkout(date1.minusDays(3));
-        saveWorkout(date1.minusDays(4));
+        saveWorkout(date1, profileEntity);
+        saveWorkout(date1.minusDays(1), profileEntity);
+        saveWorkout(date1.minusDays(2), profileEntity);
+        saveWorkout(date1.minusDays(3), profileEntity);
+        saveWorkout(date1.minusDays(4), profileEntity);
 
         Collection<IProgressInfo> infos = streaksService.streaks(profileEntity, OFFSET);
         Iterator<IProgressInfo> iterator = infos.iterator();
@@ -227,16 +227,16 @@ public class DashboardStreaksServiceTest extends AbstractDashboardServicesTest {
     @Test
     public void testThreeDistinctStreaks() {
         LocalDate date = LocalDate.now().minusDays(1);
-        saveWorkout(date);
+        saveWorkout(date, profileEntity);
 
         LocalDate date1 = date.minusDays(2);
-        saveWorkout(date1);
-        saveWorkout(date1.minusDays(1));
+        saveWorkout(date1, profileEntity);
+        saveWorkout(date1.minusDays(1), profileEntity);
 
         LocalDate date2 = date.minusYears(2);
-        saveWorkout(date2);
-        saveWorkout(date2.minusDays(1));
-        saveWorkout(date2.minusDays(2));
+        saveWorkout(date2, profileEntity);
+        saveWorkout(date2.minusDays(1), profileEntity);
+        saveWorkout(date2.minusDays(2), profileEntity);
 
         Collection<IProgressInfo> infos = streaksService.streaks(profileEntity, OFFSET);
         Iterator<IProgressInfo> iterator = infos.iterator();
@@ -265,9 +265,9 @@ public class DashboardStreaksServiceTest extends AbstractDashboardServicesTest {
     @Test
     public void testMultipleWorkoutsInOneDay() {
         LocalDate date = LocalDate.now().minusDays(1);
-        saveWorkout(date);
-        saveWorkout(date.minusDays(1));
-        saveWorkout(date.minusDays(1));
+        saveWorkout(date, profileEntity);
+        saveWorkout(date.minusDays(1), profileEntity);
+        saveWorkout(date.minusDays(1), profileEntity);
 
         Collection<IProgressInfo> infos = streaksService.streaks(profileEntity, OFFSET);
         Iterator<IProgressInfo> iterator = infos.iterator();
@@ -289,6 +289,12 @@ public class DashboardStreaksServiceTest extends AbstractDashboardServicesTest {
         assertEquals("2 day(s)", ever.getSubTitle());
         assertEquals("3 workout(s)", ever.getTextOne());
         assertEquals(dateService.formatMedium(date.minusDays(1)) + " through " + dateService.formatMedium(date), ever.getTextTwo());
+    }
+
+    @Override
+    protected void afterAfterBefore(ApplicationContext context) {
+        dateService = context.getBean(DateService.class);
+        streaksService = context.getBean(DashboardStreaksService.class);
     }
 
 }

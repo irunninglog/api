@@ -1,9 +1,12 @@
 package com.irunninglog.spring.data;
 
 import com.irunninglog.api.data.IData;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-@SuppressWarnings("unused")
 abstract class AbstractData<T extends IData> implements IData<T> {
+
+    final Logger logger = LoggerFactory.getLogger(getClass());
 
     @SuppressWarnings("unchecked")
     private final T myself = (T) this;
@@ -34,6 +37,7 @@ abstract class AbstractData<T extends IData> implements IData<T> {
         return myself;
     }
 
+    @Override
     public final String getDescription() {
         return description;
     }
@@ -44,6 +48,7 @@ abstract class AbstractData<T extends IData> implements IData<T> {
         return myself;
     }
 
+    @Override
     public final boolean isDashboard() {
         return dashboard;
     }

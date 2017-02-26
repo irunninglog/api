@@ -8,4 +8,9 @@ import org.springframework.stereotype.Component;
 @Scope("prototype")
 final class Route extends AbstractData<IRoute> implements IRoute {
 
+    public Route() {
+        super();
+
+        logger.debug("Created an instance {}", hashCode());
+    }
 }
