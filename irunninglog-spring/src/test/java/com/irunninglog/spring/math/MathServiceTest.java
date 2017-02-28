@@ -4,7 +4,7 @@ import com.irunninglog.api.Progress;
 import com.irunninglog.api.Unit;
 import com.irunninglog.spring.AbstractTest;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 
 import java.math.BigDecimal;
 
@@ -12,11 +12,16 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-@SuppressWarnings("SpringJavaAutowiredMembersInspection")
 public class MathServiceTest extends AbstractTest {
 
-    @Autowired
     private MathService mathService;
+
+    @Override
+    protected void afterBefore(ApplicationContext applicationContext) {
+        super.afterBefore(applicationContext);
+
+        mathService = applicationContext.getBean(MathService.class);
+    }
 
     @Test
     public void testFormatBigDecimal1() {
@@ -38,12 +43,12 @@ public class MathServiceTest extends AbstractTest {
 
     @Test
     public void testFormatDouble1() {
-        assertEquals("101.5 mi", mathService.format(new BigDecimal(101.49999), Unit.English));
+        assertEquals("101.5 mi", mathService.format(101.49999, Unit.English));
     }
 
     @Test
     public void testFormatDouble2() {
-        assertEquals("1,000 mi", mathService.format(new BigDecimal(1000), Unit.English));
+        assertEquals("1,000 mi", mathService.format(1000, Unit.English));
     }
 
     @Test
@@ -126,6 +131,12 @@ public class MathServiceTest extends AbstractTest {
     @Test
     public void getPercentage() {
         assertEquals(50, mathService.getPercentage(25, 50));
+    }
+
+    @Test
+    public void formatShort() {
+        assertEquals("100.00", mathService.formatShort(100, Unit.English));
+        assertEquals("160.93", mathService.formatShort(100, Unit.Metric));
     }
 
 }

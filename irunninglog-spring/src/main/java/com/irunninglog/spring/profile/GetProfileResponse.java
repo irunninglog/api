@@ -16,4 +16,5 @@ final class GetProfileResponse extends AbstractResponse<IProfile, GetProfileResp
     public IProfile getBody() {
         return body();
     }
+
 }

@@ -9,4 +9,10 @@ import org.springframework.stereotype.Component;
 @Scope("prototype")
 final class GetReportRequest extends AbstractProfileIdRequest<IGetReportRequest> implements IGetReportRequest {
 
+    public GetReportRequest() {
+        super();
+
+        logger.debug("Created an instance {}", hashCode());
+    }
+
 }

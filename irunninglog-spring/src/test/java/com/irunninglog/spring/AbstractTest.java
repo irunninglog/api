@@ -79,7 +79,7 @@ public abstract class AbstractTest implements ApplicationContextAware {
         this.applicationContext = applicationContext;
     }
 
-    protected ProfileEntity saveProfile(String email, String password, String ... authorities) {
+    protected final ProfileEntity saveProfile(String email, String password, String ... authorities) {
         ProfileEntity profileEntity = new ProfileEntity();
         profileEntity.setEmail(email);
         profileEntity.setPassword(passwordEncoder.encode(password));
@@ -105,25 +105,32 @@ public abstract class AbstractTest implements ApplicationContextAware {
     }
 
 
-    protected WorkoutEntity saveWorkout(LocalDate localDate, ProfileEntity entity) {
+    protected final WorkoutEntity saveWorkout(LocalDate localDate, ProfileEntity entity) {
         return saveWorkout(localDate, 0, entity);
     }
 
-    protected WorkoutEntity saveWorkout(LocalDate localDate, double distance, ProfileEntity profileEntity) {
+    protected final WorkoutEntity saveWorkout(LocalDate localDate, double distance, ProfileEntity profileEntity, RouteEntity routeEntity, RunEntity runEntity, ShoeEntity shoeEntity) {
         WorkoutEntity entity = new WorkoutEntity();
         entity.setPrivacy(Privacy.Private);
         entity.setDate(localDate);
         entity.setDistance(distance);
         entity.setProfile(profileEntity);
+        entity.setRoute(routeEntity);
+        entity.setRun(runEntity);
+        entity.setShoe(shoeEntity);
 
         return workoutEntityRepository.save(entity);
     }
 
-    protected GoalEntity saveGoal(LocalDate start, LocalDate end, boolean dashboard, ProfileEntity entity) {
+    protected final WorkoutEntity saveWorkout(LocalDate localDate, double distance, ProfileEntity profileEntity) {
+        return saveWorkout(localDate, distance, profileEntity, null, null, null);
+    }
+
+    protected final GoalEntity saveGoal(LocalDate start, LocalDate end, boolean dashboard, ProfileEntity entity) {
         return saveGoal("Goal", start, end, dashboard, entity);
     }
 
-    protected GoalEntity saveGoal(String name, LocalDate start, LocalDate end, boolean dashboard, ProfileEntity entity) {
+    protected final GoalEntity saveGoal(String name, LocalDate start, LocalDate end, boolean dashboard, ProfileEntity entity) {
         GoalEntity goal = new GoalEntity();
         goal.setStartDate(start);
         goal.setEndDate(end);
@@ -135,11 +142,11 @@ public abstract class AbstractTest implements ApplicationContextAware {
         return goalEntityRepository.save(goal);
     }
 
-    protected ShoeEntity saveShoe(String name, boolean dashboard, ProfileEntity entity) {
+    protected final ShoeEntity saveShoe(String name, boolean dashboard, ProfileEntity entity) {
         return saveShoe(name, null, dashboard, entity);
     }
 
-    protected ShoeEntity saveShoe(String name, LocalDate date, boolean dashboard, ProfileEntity entity) {
+    protected final ShoeEntity saveShoe(String name, LocalDate date, boolean dashboard, ProfileEntity entity) {
         ShoeEntity shoeEntity = new ShoeEntity();
         shoeEntity.setName(name);
         shoeEntity.setDashboard(dashboard);
@@ -149,7 +156,7 @@ public abstract class AbstractTest implements ApplicationContextAware {
         return shoeEntityRepository.save(shoeEntity);
     }
 
-    protected RunEntity saveRun(String name, boolean dashboard, ProfileEntity profileEntity) {
+    protected final RunEntity saveRun(String name, boolean dashboard, ProfileEntity profileEntity) {
         RunEntity entity = new RunEntity();
         entity.setName(name);
         entity.setDashboard(dashboard);
@@ -158,7 +165,7 @@ public abstract class AbstractTest implements ApplicationContextAware {
         return runEntityRepository.save(entity);
     }
 
-    protected RouteEntity saveRoute(String name, boolean dashboard, ProfileEntity profileEntity) {
+    protected final RouteEntity saveRoute(String name, boolean dashboard, ProfileEntity profileEntity) {
         RouteEntity entity = new RouteEntity();
         entity.setName(name);
         entity.setDashboard(dashboard);

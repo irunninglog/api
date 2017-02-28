@@ -10,6 +10,7 @@ import java.time.LocalDate;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 public class ProfileEntityTest extends AbstractTest {
 
@@ -28,6 +29,9 @@ public class ProfileEntityTest extends AbstractTest {
         entity.setWeeklyTarget(25);
         entity.setMonthlyTarget(125);
         entity.setYearlyTarget(1500);
+        entity.setDefaultRoute(null);
+        entity.setDefaultShoe(null);
+        entity.setDefaultRun(null);
 
         assertEquals(1, entity.getId());
         assertEquals("Allan", entity.getFirstName());
@@ -41,6 +45,9 @@ public class ProfileEntityTest extends AbstractTest {
         assertEquals(125, entity.getMonthlyTarget(), 1E-9);
         assertEquals(1500, entity.getYearlyTarget(), 1E-9);
         assertNotNull(entity.getBirthday());
+        assertNull(entity.getDefaultRoute());
+        assertNull(entity.getDefaultRun());
+        assertNull(entity.getDefaultShoe());
     }
 
 }

@@ -9,4 +9,10 @@ import org.springframework.stereotype.Component;
 @Scope("prototype")
 final class PingRequest extends AbstractRequest<PingRequest> implements IPingRequest<PingRequest> {
 
+    public PingRequest() {
+        super();
+
+        logger.debug("Created an instance {}", hashCode());
+    }
+
 }

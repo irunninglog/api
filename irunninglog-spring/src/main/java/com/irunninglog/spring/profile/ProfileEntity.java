@@ -10,7 +10,6 @@ import javax.persistence.*;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 
-@SuppressWarnings({"unused", "WeakerAccess"})
 @Entity
 @Table(name = "user_entity")
 public final class ProfileEntity {
@@ -75,7 +74,7 @@ public final class ProfileEntity {
         this.id = id;
     }
 
-    public String getEmail() {
+    String getEmail() {
         return email;
     }
 
@@ -163,27 +162,27 @@ public final class ProfileEntity {
         this.gender = gender;
     }
 
-    public ShoeEntity getDefaultShoe() {
+    ShoeEntity getDefaultShoe() {
         return defaultShoe;
     }
 
-    public void setDefaultShoe(ShoeEntity defaultShoe) {
+    void setDefaultShoe(ShoeEntity defaultShoe) {
         this.defaultShoe = defaultShoe;
     }
 
-    public RouteEntity getDefaultRoute() {
+    RouteEntity getDefaultRoute() {
         return defaultRoute;
     }
 
-    public void setDefaultRoute(RouteEntity defaultRoute) {
+    void setDefaultRoute(RouteEntity defaultRoute) {
         this.defaultRoute = defaultRoute;
     }
 
-    public RunEntity getDefaultRun() {
+    RunEntity getDefaultRun() {
         return defaultRun;
     }
 
-    public void setDefaultRun(RunEntity defaultRun) {
+    void setDefaultRun(RunEntity defaultRun) {
         this.defaultRun = defaultRun;
     }
 
