@@ -64,6 +64,19 @@ public class AuthenticationServiceTest extends AbstractTest {
     }
 
     @Test
+    public void decodeFailure() throws AuthzException {
+        try {
+            authenticationService.authenticate(Endpoint.GetDashboard,
+                    null,
+                    "Basic oops!");
+
+            fail("Should have thrown");
+        } catch (AuthnException ex) {
+            assertTrue(ex.getMessage().contains("decode"));
+        }
+    }
+
+    @Test
     public void denyAll() throws AuthnException {
         try {
             authenticationService.authenticate(Endpoint.Forbidden,
@@ -74,6 +87,18 @@ public class AuthenticationServiceTest extends AbstractTest {
         } catch (AuthzException ex) {
             assertTrue(ex.getMessage().contains("Not authorized for endpoint"));
         }
+    }
+
+    @Test
+    public void allowAnonymous() throws AuthnException, AuthzException {
+        assertNull(authenticationService.authenticate(Endpoint.Ping, "/ping", null));
+    }
+
+    @Test
+    public void allowAll() throws AuthnException, AuthzException {
+        assertNotNull(authenticationService.authenticate(Endpoint.Login,
+                "/authn",
+                "Basic YWxsYW5AaXJ1bm5pbmdsb2cuY29tOnBhc3N3b3Jk"));
     }
 
     @Test

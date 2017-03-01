@@ -10,4 +10,9 @@ public interface ILogin {
 
     ILogin setRoles(List<String> authorities);
 
+    long getId();
+
+    String getName();
+
+    List<String> getAuthorities();
 }

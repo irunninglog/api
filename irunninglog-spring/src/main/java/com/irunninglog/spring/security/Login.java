@@ -8,7 +8,6 @@ import java.util.List;
 
 @Component
 @Scope("prototype")
-@SuppressWarnings("unused")
 final class Login implements ILogin {
 
     private long id;
@@ -33,14 +32,17 @@ final class Login implements ILogin {
         return this;
     }
 
+    @Override
     public long getId() {
         return id;
     }
 
+    @Override
     public String getName() {
         return name;
     }
 
+    @Override
     public List<String> getAuthorities() {
         return authorities;
     }

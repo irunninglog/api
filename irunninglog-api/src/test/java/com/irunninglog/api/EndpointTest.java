@@ -1,8 +1,5 @@
 package com.irunninglog.api;
 
-import com.irunninglog.api.AccessControl;
-import com.irunninglog.api.Endpoint;
-import com.irunninglog.api.EndpointMethod;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
