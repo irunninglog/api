@@ -27,4 +27,20 @@ final class MockLogin implements ILogin {
         this.roles = authorities;
         return this;
     }
+
+    @Override
+    public long getId() {
+        return id;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public List<String> getAuthorities() {
+        return roles;
+    }
+
 }
