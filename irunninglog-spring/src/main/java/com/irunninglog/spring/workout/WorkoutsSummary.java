@@ -46,22 +46,27 @@ final class WorkoutsSummary implements IWorkoutsSummary {
         return this;
     }
 
+    @Override
     public String getTitle() {
         return title;
     }
 
+    @Override
     public int getCount() {
         return count;
     }
 
+    @Override
     public String getMileage() {
         return mileage;
     }
 
+    @Override
     public Progress getProgress() {
         return progress;
     }
 
+    @Override
     public int getPercentage() {
         return percentage;
     }

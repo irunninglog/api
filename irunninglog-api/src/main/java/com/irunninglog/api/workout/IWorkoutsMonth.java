@@ -6,4 +6,7 @@ public interface IWorkoutsMonth {
 
     IWorkoutsMonth setDate(String date);
 
+    String getTitle();
+
+    String getDate();
 }

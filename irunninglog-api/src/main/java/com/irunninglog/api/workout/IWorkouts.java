@@ -12,4 +12,9 @@ public interface IWorkouts {
 
     List<IWorkout> getWorkouts();
 
+    IWorkoutsSummary getSummary();
+
+    IWorkoutsMonth getPrevious();
+
+    IWorkoutsMonth getNext();
 }

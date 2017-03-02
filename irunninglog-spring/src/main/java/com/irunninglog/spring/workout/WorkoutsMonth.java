@@ -23,10 +23,12 @@ final class WorkoutsMonth implements IWorkoutsMonth {
         return this;
     }
 
+    @Override
     public String getTitle() {
         return title;
     }
 
+    @Override
     public String getDate() {
         return date;
     }

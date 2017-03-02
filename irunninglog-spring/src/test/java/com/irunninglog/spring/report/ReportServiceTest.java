@@ -53,7 +53,7 @@ public class ReportServiceTest extends AbstractTest {
     @Test
     public void  mileageByRoute() {
         RouteEntity route = saveRoute("One", Boolean.TRUE, profileEntity);
-        saveWorkout(LocalDate.now(), 10, profileEntity, route, null, null);
+        saveWorkout(LocalDate.now(), 10, 0, profileEntity, route, null, null);
 
         assertNotNull(reportService.mileageByRoute(profileEntity.getId()));
     }
@@ -61,7 +61,7 @@ public class ReportServiceTest extends AbstractTest {
     @Test
     public void  mileageByRun() {
         RunEntity run = saveRun("One", Boolean.TRUE, profileEntity);
-        saveWorkout(LocalDate.now(), 10, profileEntity, null, run, null);
+        saveWorkout(LocalDate.now(), 10, 0, profileEntity, null, run, null);
 
         IDataSet dataSet = reportService.mileageByRun(profileEntity.getId());
         assertEquals(String.valueOf(profileEntity.getId()), dataSet.getKey());
@@ -75,7 +75,7 @@ public class ReportServiceTest extends AbstractTest {
     @Test
     public void  mileageByShoe() {
         ShoeEntity shoe = saveShoe("One", Boolean.TRUE, profileEntity);
-        saveWorkout(LocalDate.now(), 10, profileEntity, null, null, shoe);
+        saveWorkout(LocalDate.now(), 10, 0, profileEntity, null, null, shoe);
 
         assertNotNull(reportService.mileageByShoe(profileEntity.getId()));
     }

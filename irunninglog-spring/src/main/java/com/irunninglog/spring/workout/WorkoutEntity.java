@@ -44,11 +44,11 @@ public final class WorkoutEntity extends AbstractEntityWithProfile {
         this.distance = distance;
     }
 
-    long getDuration() {
+    public long getDuration() {
         return duration;
     }
 
-    void setDuration(long duration) {
+    public void setDuration(long duration) {
         this.duration = duration;
     }
 

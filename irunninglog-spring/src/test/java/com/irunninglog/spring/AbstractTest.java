@@ -109,11 +109,12 @@ public abstract class AbstractTest implements ApplicationContextAware {
         return saveWorkout(localDate, 0, entity);
     }
 
-    protected final WorkoutEntity saveWorkout(LocalDate localDate, double distance, ProfileEntity profileEntity, RouteEntity routeEntity, RunEntity runEntity, ShoeEntity shoeEntity) {
+    protected final WorkoutEntity saveWorkout(LocalDate localDate, double distance, long duration, ProfileEntity profileEntity, RouteEntity routeEntity, RunEntity runEntity, ShoeEntity shoeEntity) {
         WorkoutEntity entity = new WorkoutEntity();
         entity.setPrivacy(Privacy.Private);
         entity.setDate(localDate);
         entity.setDistance(distance);
+        entity.setDuration(duration);
         entity.setProfile(profileEntity);
         entity.setRoute(routeEntity);
         entity.setRun(runEntity);
@@ -123,7 +124,11 @@ public abstract class AbstractTest implements ApplicationContextAware {
     }
 
     protected final WorkoutEntity saveWorkout(LocalDate localDate, double distance, ProfileEntity profileEntity) {
-        return saveWorkout(localDate, distance, profileEntity, null, null, null);
+        return saveWorkout(localDate, distance, 0, profileEntity, null, null, null);
+    }
+
+    protected final WorkoutEntity saveWorkout(LocalDate localDate, double distance, long duration, ProfileEntity profileEntity) {
+        return saveWorkout(localDate, distance, duration, profileEntity, null, null, null);
     }
 
     protected final GoalEntity saveGoal(LocalDate start, LocalDate end, boolean dashboard, ProfileEntity entity) {

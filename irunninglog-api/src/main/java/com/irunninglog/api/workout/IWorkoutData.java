@@ -8,4 +8,9 @@ public interface IWorkoutData {
 
     IWorkoutData setDescription(String description);
 
+    long getId();
+
+    String getName();
+
+    String getDescription();
 }

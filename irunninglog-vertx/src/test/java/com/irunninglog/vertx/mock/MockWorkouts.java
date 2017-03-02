@@ -40,4 +40,19 @@ public class MockWorkouts implements IWorkouts {
         return workouts;
     }
 
+    @Override
+    public IWorkoutsSummary getSummary() {
+        return summary;
+    }
+
+    @Override
+    public IWorkoutsMonth getPrevious() {
+        return previous;
+    }
+
+    @Override
+    public IWorkoutsMonth getNext() {
+        return next;
+    }
+
 }

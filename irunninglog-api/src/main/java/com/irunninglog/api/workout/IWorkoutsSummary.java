@@ -14,4 +14,13 @@ public interface IWorkoutsSummary {
 
     IWorkoutsSummary setPercentage(int percentage);
 
+    String getTitle();
+
+    int getCount();
+
+    String getMileage();
+
+    Progress getProgress();
+
+    int getPercentage();
 }

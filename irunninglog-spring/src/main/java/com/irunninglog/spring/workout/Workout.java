@@ -88,38 +88,47 @@ final class Workout implements IWorkout {
         return date;
     }
 
+    @Override
     public long getId() {
         return id;
     }
 
+    @Override
     public String getDistance() {
         return distance;
     }
 
+    @Override
     public String getDuration() {
         return duration;
     }
 
+    @Override
     public String getPace() {
         return pace;
     }
 
+    @Override
     public String getTitle() {
         return title;
     }
 
+    @Override
     public Privacy getPrivacy() {
         return privacy;
     }
 
+    @Override
     public IWorkoutData getRoute() {
         return route;
     }
 
+    @Override
     public IWorkoutData getRun() {
         return run;
     }
 
+    @Override
     public IWorkoutData getShoe() {
         return shoe;
     }

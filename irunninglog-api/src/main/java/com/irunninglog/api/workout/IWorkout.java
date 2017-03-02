@@ -26,4 +26,21 @@ public interface IWorkout {
 
     String getDate();
 
+    long getId();
+
+    String getDistance();
+
+    String getDuration();
+
+    String getPace();
+
+    String getTitle();
+
+    Privacy getPrivacy();
+
+    IWorkoutData getRoute();
+
+    IWorkoutData getRun();
+
+    IWorkoutData getShoe();
 }
