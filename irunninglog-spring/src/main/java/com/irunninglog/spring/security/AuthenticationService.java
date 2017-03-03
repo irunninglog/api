@@ -53,9 +53,9 @@ final class AuthenticationService implements IAuthenticationService {
 
         Credential credential = credential(token);
 
-        LOG.info("authenticate:{}:{}", endpoint, credential.username);
+        LOG.info("authenticate:{}:{}", endpoint, credential.getUsername());
 
-        IUser user = authenticate(credential, userEntityRepository.findByUsername(credential.username));
+        IUser user = authenticate(credential, userEntityRepository.findByUsername(credential.getUsername()));
 
         authorize(user, endpoint, path);
 
@@ -66,11 +66,7 @@ final class AuthenticationService implements IAuthenticationService {
         try {
             String decoded = new String(Base64.getDecoder().decode(token.split(" ")[1]));
             String [] tokens = decoded.split(":");
-            Credential credential = new Credential();
-            credential.username = tokens[0];
-            credential.password = tokens[1];
-
-            return credential;
+            return new Credential(tokens[0], tokens[1]);
         } catch (Exception ex) {
             LOG.error("credential", ex);
             throw new AuthnException("Unable to decode credential");
@@ -79,10 +75,10 @@ final class AuthenticationService implements IAuthenticationService {
 
     private IUser authenticate(Credential credential, UserEntity userEntity) throws AuthnException {
         if (userEntity == null) {
-            LOG.error("authenticate:notFound:{}", credential.username);
-            throw new AuthnException("User not found: " + credential.username);
-        } else if (!passwordEncoder.matches(credential.password, userEntity.getPassword())) {
-            LOG.error("authenticate:wrongPassword", credential.username);
+            LOG.error("authenticate:notFound:{}", credential.getUsername());
+            throw new AuthnException("User not found: " + credential.getUsername());
+        } else if (!passwordEncoder.matches(credential.getPassword(), userEntity.getPassword())) {
+            LOG.error("authenticate:wrongPassword", credential.getUsername());
             throw new AuthnException("Passwords don't match!");
         } else {
             List<String> authorities = userEntity.getAuthorities().stream().map(AuthorityEntity::getName).collect(Collectors.toList());
@@ -119,11 +115,6 @@ final class AuthenticationService implements IAuthenticationService {
         }
 
         return false;
-    }
-
-    private class Credential {
-        private String username;
-        private String password;
     }
 
 }
