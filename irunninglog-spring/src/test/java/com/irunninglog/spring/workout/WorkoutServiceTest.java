@@ -60,7 +60,7 @@ public class WorkoutServiceTest extends AbstractTest {
 
         IWorkoutsMonth month = workouts.getNext();
         assertNotNull(month);
-        assertEquals(dateService.format(zonedDateTime.toLocalDate()), month.getDate());
+        assertEquals(dateService.format(dateService.getMonthStartDate(zonedDateTime.toLocalDate())), month.getDate());
         assertEquals(dateService.formatMonthMedium(zonedDateTime.toLocalDate()), month.getTitle());
 
         IWorkoutsSummary summary = workouts.getSummary();
