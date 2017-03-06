@@ -4,6 +4,7 @@ import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.mapping.IMapper;
 import com.irunninglog.api.report.IReportService;
 import com.irunninglog.main.AbstractTest;
+import com.irunninglog.spring.data.ShoeEntity;
 import com.irunninglog.spring.profile.ProfileEntity;
 import com.irunninglog.vertx.endpoint.report.GetMileageByMonthVerticle;
 import com.irunninglog.vertx.endpoint.report.GetMileageByRouteVerticle;
@@ -14,6 +15,7 @@ import io.vertx.ext.unit.TestContext;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -45,21 +47,27 @@ public class GetAllReportsTest extends AbstractTest {
 
     @Test
     public void byMonth(TestContext context) {
+        saveWorkout(profileEntity, LocalDate.now(), 10, 60 * 60 * 1000, null, null, null);
+        saveWorkout(profileEntity, LocalDate.now().minusMonths(1), 10, 60 * 60 * 1000, null, null, null);
         context.assertEquals(200, get(context, "/profiles/" + profileEntity.getId() + "/reports/mileagebymonth", token));
     }
 
     @Test
     public void byRoutes(TestContext context) {
+        saveRoute(profileEntity, "name", Boolean.TRUE);
         context.assertEquals(200, get(context, "/profiles/" + profileEntity.getId() + "/reports/mileagebyroute", token));
     }
 
     @Test
     public void byRuns(TestContext context) {
+        saveRun(profileEntity, "name", Boolean.TRUE);
         context.assertEquals(200, get(context, "/profiles/" + profileEntity.getId() + "/reports/mileagebyrun", token));
     }
 
     @Test
     public void byShoes(TestContext context) {
+        ShoeEntity shoeEntity = saveShoe(profileEntity, "name", Boolean.TRUE);
+        saveWorkout(profileEntity, LocalDate.now(), 10, 60 * 60 * 1000, null, null, shoeEntity);
         context.assertEquals(200, get(context, "/profiles/" + profileEntity.getId() + "/reports/mileagebyshoe", token));
     }
 

@@ -8,7 +8,7 @@ import java.util.List;
 
 @Component
 @Scope("prototype")
-public class User implements IUser {
+final class User implements IUser {
 
     private long id;
     private String username;

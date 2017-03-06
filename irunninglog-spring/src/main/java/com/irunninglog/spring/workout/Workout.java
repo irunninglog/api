@@ -1,5 +1,6 @@
 package com.irunninglog.spring.workout;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.irunninglog.api.Privacy;
 import com.irunninglog.api.workout.IWorkout;
 import com.irunninglog.api.workout.IWorkoutData;
@@ -19,8 +20,11 @@ final class Workout implements IWorkout {
     private String title;
     private Privacy privacy;
 
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, defaultImpl = WorkoutData.class)
     private IWorkoutData route;
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, defaultImpl = WorkoutData.class)
     private IWorkoutData run;
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, defaultImpl = WorkoutData.class)
     private IWorkoutData shoe;
 
     @Override

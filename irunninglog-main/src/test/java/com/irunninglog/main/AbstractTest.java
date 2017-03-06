@@ -1,17 +1,21 @@
 package com.irunninglog.main;
 
 import com.irunninglog.api.Gender;
+import com.irunninglog.api.Privacy;
 import com.irunninglog.api.Unit;
 import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.mapping.IMapper;
 import com.irunninglog.api.security.IAuthenticationService;
 import com.irunninglog.spring.context.ContextConfiguration;
+import com.irunninglog.spring.data.*;
 import com.irunninglog.spring.profile.IProfileEntityRepository;
 import com.irunninglog.spring.profile.ProfileEntity;
 import com.irunninglog.spring.security.AuthorityEntity;
 import com.irunninglog.spring.security.IAuthorityEntityRepository;
 import com.irunninglog.spring.security.IUserEntityRepository;
 import com.irunninglog.spring.security.UserEntity;
+import com.irunninglog.spring.workout.IWorkoutEntityRepository;
+import com.irunninglog.spring.workout.WorkoutEntity;
 import com.irunninglog.vertx.http.ServerVerticle;
 import com.irunninglog.vertx.security.AuthnVerticle;
 import io.vertx.core.Verticle;
@@ -32,16 +36,25 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.io.IOException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.util.Base64;
 import java.util.Collection;
 
 @RunWith(VertxUnitRunner.class)
 public abstract class AbstractTest {
 
+    private final Integer offset = -1 * ZonedDateTime.now().getOffset().getTotalSeconds() / 60;
+
     private IProfileEntityRepository profileEntityRepository;
     private IUserEntityRepository userEntityRepository;
     private IAuthorityEntityRepository authorityEntityRepository;
+    private IWorkoutEntityRepository workoutEntityRepository;
+    private IRouteEntityRespository routeEntityRespository;
+    private IRunEntityRepository runEntityRepository;
+    private IShoeEntityRepository shoeEntityRepository;
     private PasswordEncoder passwordEncoder;
+
+    protected ApplicationContext applicationContext;
 
     private Vertx vertx;
 
@@ -49,12 +62,17 @@ public abstract class AbstractTest {
     public final void before(TestContext context) throws IOException {
         System.setProperty("env", "file:///" + new ClassPathResource("application.properties").getFile().getAbsolutePath());
 
-        ApplicationContext applicationContext = new AnnotationConfigApplicationContext(ContextConfiguration.class);
+        applicationContext = new AnnotationConfigApplicationContext(ContextConfiguration.class);
 
         profileEntityRepository = applicationContext.getBean(IProfileEntityRepository.class);
         userEntityRepository = applicationContext.getBean(IUserEntityRepository.class);
         authorityEntityRepository = applicationContext.getBean(IAuthorityEntityRepository.class);
         passwordEncoder = applicationContext.getBean(PasswordEncoder.class);
+
+        workoutEntityRepository = applicationContext.getBean(IWorkoutEntityRepository.class);
+        routeEntityRespository = applicationContext.getBean(IRouteEntityRespository.class);
+        runEntityRepository = applicationContext.getBean(IRunEntityRepository.class);
+        shoeEntityRepository = applicationContext.getBean(IShoeEntityRepository.class);
 
         vertx = Vertx.vertx();
 
@@ -88,6 +106,12 @@ public abstract class AbstractTest {
 
     @After
     public void after(TestContext context) {
+        workoutEntityRepository.deleteAll();
+
+        routeEntityRespository.deleteAll();
+        runEntityRepository.deleteAll();
+        shoeEntityRepository.deleteAll();
+
         userEntityRepository.deleteAll();
         authorityEntityRepository.deleteAll();
 
@@ -96,6 +120,7 @@ public abstract class AbstractTest {
 
     protected ProfileEntity save(String email, String password, String ... authorities) {
         ProfileEntity entity = new ProfileEntity();
+        entity.setId(-1);
         entity.setEmail(email);
         entity.setPassword(passwordEncoder.encode(password));
         entity.setFirstName("First");
@@ -104,12 +129,24 @@ public abstract class AbstractTest {
         entity.setGender(Gender.Male);
         entity.setPreferredUnits(Unit.English);
         entity.setWeekStart(DayOfWeek.MONDAY);
+        entity.setWeeklyTarget(0);
+        entity.setMonthlyTarget(0);
+        entity.setYearlyTarget(0);
+        entity.setDefaultRun(null);
+        entity.setDefaultRoute(null);
+        entity.setDefaultShoe(null);
 
         entity = profileEntityRepository.save(entity);
 
         UserEntity userEntity = userEntityRepository.findOne(entity.getId());
+        userEntity.setId(entity.getId());
+        userEntity.setPassword(entity.getPassword());
+        userEntity.setUsername(entity.getEmail());
+        userEntity.setAuthorities(userEntity.getAuthorities());
+
         for (String authority : authorities) {
             AuthorityEntity authorityEntity = new AuthorityEntity();
+            authorityEntity.setId(-1);
             authorityEntity.setName(authority);
 
             userEntity.getAuthorities().add(authorityEntityRepository.save(authorityEntity));
@@ -119,12 +156,54 @@ public abstract class AbstractTest {
         return entity;
     }
 
+    protected void saveWorkout(ProfileEntity profile, LocalDate date, double distance, long duration, RouteEntity route, RunEntity run, ShoeEntity shoe) {
+        WorkoutEntity entity = new WorkoutEntity();
+        entity.setProfile(profile);
+        entity.setDate(date);
+        entity.setDistance(distance);
+        entity.setDuration(duration);
+        entity.setRoute(route);
+        entity.setRun(run);
+        entity.setShoe(shoe);
+        entity.setPrivacy(Privacy.Private);
+
+        workoutEntityRepository.save(entity);
+    }
+
+    protected RouteEntity saveRoute(ProfileEntity profileEntity, String name, boolean dashboard) {
+        RouteEntity entity = new RouteEntity();
+        entity.setProfile(profileEntity);
+        entity.setName(name);
+        entity.setDashboard(dashboard);
+
+        return routeEntityRespository.save(entity);
+    }
+
+    protected RunEntity saveRun(ProfileEntity profileEntity, String name, boolean dashboard) {
+        RunEntity entity = new RunEntity();
+        entity.setProfile(profileEntity);
+        entity.setName(name);
+        entity.setDashboard(dashboard);
+
+        return runEntityRepository.save(entity);
+    }
+
+    protected ShoeEntity saveShoe(ProfileEntity profileEntity, String name, boolean dashboard) {
+        ShoeEntity entity = new ShoeEntity();
+        entity.setProfile(profileEntity);
+        entity.setName(name);
+        entity.setDashboard(dashboard);
+
+        return shoeEntityRepository.save(entity);
+    }
+
     protected int get(TestContext context, String path, String token) {
         HttpClient client = vertx.createHttpClient();
         Async async = context.async();
         HttpClientRequest req = client.get(8889, "localhost", path);
         if (token != null && !token.trim().isEmpty()) {
             req.putHeader("Authorization", token);
+            req.putHeader("iRunningLog-Utc-Offset", offset.toString());
         }
 
         final int[] responseCode = new int[1];

@@ -1,5 +1,6 @@
 package com.irunninglog.spring.report;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.irunninglog.api.report.IDataSet;
 import com.irunninglog.api.report.IMultiSet;
 import org.springframework.context.annotation.Scope;
@@ -12,6 +13,7 @@ import java.util.List;
 @Scope("prototype")
 final class MultiSet implements IMultiSet {
 
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, defaultImpl = DataSet.class)
     private final List<IDataSet> data = new ArrayList<>();
 
     @Override

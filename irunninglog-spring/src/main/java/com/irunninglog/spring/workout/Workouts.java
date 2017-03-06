@@ -13,7 +13,6 @@ import java.util.List;
 
 @Component
 @Scope("prototype")
-@SuppressWarnings("unused")
 final class Workouts implements IWorkouts {
 
     @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, defaultImpl = WorkoutsSummary.class)
@@ -22,7 +21,7 @@ final class Workouts implements IWorkouts {
     private IWorkoutsMonth previous;
     @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, defaultImpl = WorkoutsMonth.class)
     private IWorkoutsMonth next;
-
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, defaultImpl = Workout.class)
     private final List<IWorkout> workouts = new ArrayList<>();
 
     @Override

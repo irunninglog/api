@@ -1,5 +1,6 @@
 package com.irunninglog.spring.report;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.irunninglog.api.Unit;
 import com.irunninglog.api.report.IDataPoint;
 import com.irunninglog.api.report.IDataSet;
@@ -16,6 +17,7 @@ final class DataSet implements IDataSet {
     private String key;
     private Unit units;
 
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, defaultImpl = DataPoint.class)
     private final List<IDataPoint> data = new ArrayList<>();
 
     @Override

@@ -74,7 +74,7 @@ public final class ProfileEntity {
         this.id = id;
     }
 
-    String getEmail() {
+    public String getEmail() {
         return email;
     }
 
@@ -166,7 +166,7 @@ public final class ProfileEntity {
         return defaultShoe;
     }
 
-    void setDefaultShoe(ShoeEntity defaultShoe) {
+    public void setDefaultShoe(ShoeEntity defaultShoe) {
         this.defaultShoe = defaultShoe;
     }
 
@@ -174,7 +174,7 @@ public final class ProfileEntity {
         return defaultRoute;
     }
 
-    void setDefaultRoute(RouteEntity defaultRoute) {
+    public void setDefaultRoute(RouteEntity defaultRoute) {
         this.defaultRoute = defaultRoute;
     }
 
@@ -182,7 +182,7 @@ public final class ProfileEntity {
         return defaultRun;
     }
 
-    void setDefaultRun(RunEntity defaultRun) {
+    public void setDefaultRun(RunEntity defaultRun) {
         this.defaultRun = defaultRun;
     }
 

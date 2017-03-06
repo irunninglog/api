@@ -17,10 +17,12 @@ import java.util.Collections;
 public class GetProfileTest extends AbstractTest {
 
     private ProfileEntity profile;
+    private ProfileEntity admin;
 
     @Override
     protected void afterBefore(TestContext context) {
         profile = save("allan@irunninglog.com", "password", "MYPROFILE");
+        admin = save("admin@irunninglog.com", "password", "ADMIN");
     }
 
     @Override
@@ -34,10 +36,52 @@ public class GetProfileTest extends AbstractTest {
     }
 
     @Test
-    public void ok(TestContext context) {
+    public void profile(TestContext context) {
         context.assertEquals(200,
                 get(context, "/profiles/" + profile.getId(),
                         token("allan@irunninglog.com", "password")));
+    }
+
+    @Test
+    public void admin(TestContext context) {
+        context.assertEquals(200,
+                get(context, "/profiles/" + profile.getId(),
+                        token(admin.getEmail(), "password")));
+    }
+
+    @Test
+    public void unauthorized(TestContext context) {
+        context.assertEquals(403,
+                get(context, "/profiles/" + profile.getId() + 1,
+                        token("allan@irunninglog.com", "password")));
+    }
+
+    @Test
+    public void badToken(TestContext context) {
+        context.assertEquals(401,
+                get(context, "/profiles/" + profile.getId(),
+                        "foo"));
+    }
+
+    @Test
+    public void wrongPassword(TestContext context) {
+        context.assertEquals(401,
+                get(context, "/profiles/" + profile.getId(),
+                        token("allan@irunninglog.com", "passwordd")));
+    }
+
+    @Test
+    public void wrongUser(TestContext context) {
+        context.assertEquals(401,
+                get(context, "/profiles/" + profile.getId(),
+                        token("allann@irunninglog.com", "password")));
+    }
+
+    @Test
+    public void notFound(TestContext context) {
+        context.assertEquals(404,
+                get(context, "/profiles/" + profile.getId() + admin.getId(),
+                        token(admin.getEmail(), "password")));
     }
 
 }
