@@ -1,5 +1,6 @@
 package com.irunninglog.spring.data;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.irunninglog.api.data.IRun;
 import com.irunninglog.api.data.IRuns;
 import org.springframework.context.annotation.Scope;
@@ -15,6 +16,7 @@ final class Runs implements IRuns {
     private final List<IRun> runs = new ArrayList<>();
 
     @Override
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, defaultImpl = Run.class)
     public List<IRun> getRuns() {
         return runs;
     }

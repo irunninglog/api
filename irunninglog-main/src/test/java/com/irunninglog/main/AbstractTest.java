@@ -181,6 +181,7 @@ public abstract class AbstractTest {
 
     protected RunEntity saveRun(ProfileEntity profileEntity, String name, boolean dashboard) {
         RunEntity entity = new RunEntity();
+        entity.setId(-1);
         entity.setProfile(profileEntity);
         entity.setName(name);
         entity.setDashboard(dashboard);
@@ -189,10 +190,17 @@ public abstract class AbstractTest {
     }
 
     protected ShoeEntity saveShoe(ProfileEntity profileEntity, String name, boolean dashboard) {
+        return saveShoe(profileEntity, name, dashboard, null);
+    }
+
+    protected ShoeEntity saveShoe(ProfileEntity profileEntity, String name, boolean dashboard, LocalDate start) {
         ShoeEntity entity = new ShoeEntity();
         entity.setProfile(profileEntity);
         entity.setName(name);
+        entity.setDescription(null);
+        entity.setMax(0);
         entity.setDashboard(dashboard);
+        entity.setStartDate(start);
 
         return shoeEntityRepository.save(entity);
     }

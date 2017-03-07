@@ -18,7 +18,7 @@ import java.util.Collection;
 import java.util.List;
 
 @InternalService
-final class DashboardShoesService {
+final class     DashboardShoesService {
 
     private final IShoeEntityRepository shoeEntityRepository;
     private final IWorkoutEntityRepository workoutEntityRepository;

@@ -5,7 +5,6 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "shoe_entity")
-@SuppressWarnings("WeakerAccess")
 // Needs to be public
 public final class ShoeEntity extends AbstractDataEntity {
 
