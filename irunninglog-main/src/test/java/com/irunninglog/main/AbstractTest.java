@@ -246,6 +246,26 @@ public abstract class AbstractTest {
         return responseCode[0];
     }
 
+    protected int put(TestContext context, String path, String token, String body) {
+        HttpClient client = vertx.createHttpClient();
+        Async async = context.async();
+        HttpClientRequest req = client.put(8889, "localhost", path);
+        if (token != null && !token.trim().isEmpty()) {
+            req.putHeader("Authorization", token);
+        }
+
+        final int[] responseCode = new int[1];
+        req.handler(resp -> {
+            responseCode[0] = resp.statusCode();
+            async.complete();
+        });
+        req.end(body);
+
+        async.awaitSuccess(5000);
+
+        return responseCode[0];
+    }
+
     protected String token(String username, String password) {
         return "Basic " + Base64.getEncoder().encodeToString((username + ":" + password).getBytes());
     }

@@ -3,13 +3,13 @@ package com.irunninglog.vertx.mock;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.irunninglog.api.ResponseStatus;
 import com.irunninglog.api.workout.IPutWorkoutResponse;
-import com.irunninglog.api.workout.IWorkoutEntry;
+import com.irunninglog.api.workout.IWorkout;
 
 final class MockPutWorkoutResponse implements IPutWorkoutResponse<MockPutWorkoutResponse> {
 
     private ResponseStatus status;
     @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, defaultImpl = MockWorkoutEntry.class)
-    private IWorkoutEntry body;
+    private IWorkout body;
 
     @Override
     public MockPutWorkoutResponse setStatus(ResponseStatus status) {
@@ -23,13 +23,13 @@ final class MockPutWorkoutResponse implements IPutWorkoutResponse<MockPutWorkout
     }
 
     @Override
-    public MockPutWorkoutResponse setBody(IWorkoutEntry body) {
+    public MockPutWorkoutResponse setBody(IWorkout body) {
         this.body = body;
         return this;
     }
 
     @Override
-    public IWorkoutEntry getBody() {
+    public IWorkout getBody() {
         return body;
     }
 
