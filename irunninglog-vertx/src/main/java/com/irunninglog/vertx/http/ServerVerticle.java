@@ -10,6 +10,7 @@ import io.vertx.core.Handler;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.HttpServer;
 import io.vertx.ext.web.Router;
+import io.vertx.ext.web.handler.BodyHandler;
 import io.vertx.ext.web.handler.StaticHandler;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
@@ -64,6 +65,7 @@ public final class ServerVerticle extends AbstractVerticle {
 
         Set<Class<?>> set = reflections.getTypesAnnotatedWith(RouteHandler.class);
 
+        router.route().handler(BodyHandler.create());
         for (Class<?> clazz : set) {
             AbstractRouteHandler<?, ?> handler = (AbstractRouteHandler) clazz.getConstructors()[0].newInstance(vertx, factory, mapper);
 

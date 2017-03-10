@@ -4,4 +4,6 @@ public interface IWorkoutService {
 
     IWorkouts get(long profileId, String date, int offset);
 
+    IWorkout put(long profileId, IWorkoutEntry workout, int offset);
+
 }

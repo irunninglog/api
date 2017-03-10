@@ -55,7 +55,11 @@ public enum Endpoint {
     Forbidden("a797bebb-80e7-4739-ac38-9154f4de740c",
             "/forbidden",
             AccessControl.DenyAll,
-            EndpointMethod.GET);
+            EndpointMethod.GET),
+    PutWorkout("1d80fac7-d440-4ea1-ac7a-73e4e361603d",
+            "/profiles/:profileid/workouts",
+            AccessControl.AllowProfile,
+            EndpointMethod.PUT);
 
     private final String address;
     private final String path;

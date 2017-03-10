@@ -18,8 +18,7 @@ import com.irunninglog.api.security.IAuthnRequest;
 import com.irunninglog.api.security.IAuthnResponse;
 import com.irunninglog.api.security.ILoginRequest;
 import com.irunninglog.api.security.ILoginResponse;
-import com.irunninglog.api.workout.IGetWorkoutsRequest;
-import com.irunninglog.api.workout.IGetWorkoutsResponse;
+import com.irunninglog.api.workout.*;
 
 import java.io.IOException;
 
@@ -105,6 +104,15 @@ public class MockMapper implements IMapper {
             } else if (clazz == IGetMultiSetResponse.class) {
                 //noinspection unchecked
                 return (T) objectMapper.readValue(string, MockGetMultiSetResponse.class);
+            } else if (clazz == IWorkoutEntry.class) {
+                //noinspection unchecked
+                return (T) objectMapper.readValue(string, MockWorkoutEntry.class);
+            } else if (clazz == IPutWorkoutRequest.class) {
+                //noinspection unchecked
+                return (T) objectMapper.readValue(string, MockPutWorkoutRequest.class);
+            } else if (clazz == IPutWorkoutResponse.class) {
+                //noinspection unchecked
+                return (T) objectMapper.readValue(string, MockPutWorkoutResponse.class);
             } else {
                 throw new IllegalArgumentException("Can't read class " + clazz);
             }

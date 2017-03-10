@@ -11,7 +11,7 @@ import org.mockito.Mockito;
 
 import static org.mockito.Matchers.any;
 
-public class GetWorkoutsHandlerTest extends AbstractHandlerTest{
+public class GetWorkoutsHandlerTest extends AbstractHandlerTest {
 
     private final IWorkoutService workoutService = Mockito.mock(IWorkoutService.class);
 

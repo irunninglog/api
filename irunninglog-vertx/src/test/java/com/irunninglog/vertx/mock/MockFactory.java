@@ -17,6 +17,8 @@ import com.irunninglog.api.report.IGetMultiSetResponse;
 import com.irunninglog.api.security.*;
 import com.irunninglog.api.workout.IGetWorkoutsRequest;
 import com.irunninglog.api.workout.IGetWorkoutsResponse;
+import com.irunninglog.api.workout.IPutWorkoutRequest;
+import com.irunninglog.api.workout.IPutWorkoutResponse;
 
 public class MockFactory implements IFactory {
 
@@ -82,6 +84,12 @@ public class MockFactory implements IFactory {
         } else if (clazz == IGetMultiSetResponse.class) {
             //noinspection unchecked
             return (T) new MockGetMultiSetResponse();
+        } else if (clazz == IPutWorkoutRequest.class) {
+            //noinspection unchecked
+            return (T) new MockPutWorkoutRequest();
+        } else if (clazz == IPutWorkoutResponse.class) {
+            //noinspection unchecked
+            return (T) new MockPutWorkoutResponse();
         } else {
             throw new IllegalArgumentException("Can't create class " + clazz);
         }

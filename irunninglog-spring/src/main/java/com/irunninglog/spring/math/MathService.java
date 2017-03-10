@@ -8,6 +8,8 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.MessageFormat;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 @InternalService
 public final class MathService {
@@ -99,6 +101,14 @@ public final class MathService {
         }
 
         return number.setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString();
+    }
+
+    public double parse(String value) {
+        try {
+            return NumberFormat.getInstance(Locale.getDefault()).parse(value).doubleValue();
+        } catch (Exception ex) {
+            throw new IllegalArgumentException("Unable to parse " + value);
+        }
     }
 
 }

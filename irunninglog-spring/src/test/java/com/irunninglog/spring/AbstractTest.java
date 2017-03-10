@@ -179,4 +179,8 @@ public abstract class AbstractTest implements ApplicationContextAware {
         return routeEntityRespository.save(entity);
     }
 
+    protected long workoutCount() {
+        return workoutEntityRepository.count();
+    }
+
 }

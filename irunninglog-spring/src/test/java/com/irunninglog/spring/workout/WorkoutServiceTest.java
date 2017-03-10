@@ -2,25 +2,28 @@ package com.irunninglog.spring.workout;
 
 import com.irunninglog.api.Privacy;
 import com.irunninglog.api.Progress;
+import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.workout.*;
 import com.irunninglog.spring.AbstractTest;
+import com.irunninglog.spring.data.RouteEntity;
+import com.irunninglog.spring.data.RunEntity;
 import com.irunninglog.spring.data.ShoeEntity;
 import com.irunninglog.spring.date.DateService;
 import com.irunninglog.spring.profile.ProfileEntity;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 public class WorkoutServiceTest extends AbstractTest {
 
     private IWorkoutService workoutService;
     private ProfileEntity profileEntity;
     private DateService dateService;
+    private IFactory factory;
 
     @Override
     protected void afterBefore(ApplicationContext applicationContext) {
@@ -30,6 +33,8 @@ public class WorkoutServiceTest extends AbstractTest {
         dateService = applicationContext.getBean(DateService.class);
 
         profileEntity = saveProfile("workouts@irunninglog.com", "password");
+
+        factory = applicationContext.getBean(IFactory.class);
     }
 
     @Test
@@ -123,6 +128,39 @@ public class WorkoutServiceTest extends AbstractTest {
 
         IWorkouts workouts = workoutService.get(profileEntity.getId(), null, -1 * zonedDateTime.getOffset().getTotalSeconds() / 60);
         assertEquals("I went for a run", workouts.getWorkouts().iterator().next().getTitle());
+    }
+
+    @Test
+    public void put() {
+        assertEquals(0, workoutCount());
+
+        RouteEntity routeEntity = saveRoute("route", Boolean.FALSE, profileEntity);
+        RunEntity runEntity = saveRun("run", Boolean.FALSE, profileEntity);
+        ShoeEntity shoeEntity = saveShoe("shoe", Boolean.FALSE, profileEntity);
+
+        LocalDate now = LocalDate.now();
+        IWorkoutEntry workoutEntry = factory.get(IWorkoutEntry.class)
+                .setId(-1)
+                .setDate(dateService.format(now))
+                .setDistance("10")
+                .setDuration(3600000)
+                .setRouteId(routeEntity.getId())
+                .setRunId(runEntity.getId())
+                .setShoeId(shoeEntity.getId());
+
+        IWorkout workout = workoutService.put(profileEntity.getId(), workoutEntry, 300);
+        assertTrue(workout.getId() > 0);
+        assertEquals("10 mi", workout.getDistance());
+        assertEquals("01:00:00", workout.getDuration());
+        assertEquals("06:00", workout.getPace());
+        assertEquals(routeEntity.getName(), workout.getRoute().getName());
+        assertEquals(routeEntity.getId(), workout.getRoute().getId());
+        assertEquals(runEntity.getName(), workout.getRun().getName());
+        assertEquals(runEntity.getId(), workout.getRun().getId());
+        assertEquals(shoeEntity.getName(), workout.getShoe().getName());
+        assertEquals(shoeEntity.getId(), workout.getShoe().getId());
+
+        assertEquals(1, workoutCount());
     }
 
 }

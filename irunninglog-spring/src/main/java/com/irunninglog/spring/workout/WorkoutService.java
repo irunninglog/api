@@ -1,9 +1,13 @@
 package com.irunninglog.spring.workout;
 
+import com.irunninglog.api.Privacy;
 import com.irunninglog.api.Progress;
 import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.workout.*;
 import com.irunninglog.spring.data.AbstractDataEntity;
+import com.irunninglog.spring.data.IRouteEntityRespository;
+import com.irunninglog.spring.data.IRunEntityRepository;
+import com.irunninglog.spring.data.IShoeEntityRepository;
 import com.irunninglog.spring.date.DateService;
 import com.irunninglog.spring.math.MathService;
 import com.irunninglog.spring.profile.IProfileEntityRepository;
@@ -24,6 +28,10 @@ final class WorkoutService implements IWorkoutService {
     private static final String TITLE_MIN = "I went for a run";
 
     private final IProfileEntityRepository profileEntityRepository;
+    private final IWorkoutEntityRepository workoutEntityRepository;
+    private final IRouteEntityRespository routeEntityRespository;
+    private final IRunEntityRepository runEntityRepository;
+    private final IShoeEntityRepository shoeEntityRepository;
     private final FindWorkoutsService findWorkoutsService;
     private final DateService dateService;
     private final MathService mathService;
@@ -31,12 +39,20 @@ final class WorkoutService implements IWorkoutService {
 
     @Autowired
     public WorkoutService(IProfileEntityRepository profileEntityRepository,
+                          IWorkoutEntityRepository workoutEntityRepository,
+                          IRouteEntityRespository routeEntityRespository,
+                          IRunEntityRepository runEntityRepository,
+                          IShoeEntityRepository shoeEntityRepository,
                           FindWorkoutsService findWorkoutsService,
                           DateService dateService,
                           MathService mathService,
                           IFactory factory) {
 
         this.profileEntityRepository = profileEntityRepository;
+        this.workoutEntityRepository = workoutEntityRepository;
+        this.routeEntityRespository = routeEntityRespository;
+        this.runEntityRepository = runEntityRepository;
+        this.shoeEntityRepository = shoeEntityRepository;
         this.findWorkoutsService = findWorkoutsService;
         this.dateService = dateService;
         this.mathService = mathService;
@@ -133,6 +149,39 @@ final class WorkoutService implements IWorkoutService {
                 .setId(data.getId())
                 .setName(data.getName())
                 .setDescription(data.getDescription());
+    }
+
+    @Override
+    public IWorkout put(long profileId, IWorkoutEntry workout, int offset) {
+        WorkoutEntity workoutEntity = new WorkoutEntity();
+        workoutEntity.setId(workout.getId());
+        workoutEntity.setProfile(profileEntityRepository.findOne(profileId));
+        workoutEntity.setPrivacy(Privacy.Private);
+        workoutEntity.setDuration(workout.getDuration());
+        workoutEntity.setDistance(workout.getDistance() == null ? 0.0 : mathService.parse(workout.getDistance()));
+        workoutEntity.setDate(dateService.parse(workout.getDate()));
+        workoutEntity.setRoute(workout.getRouteId() > 0 ? routeEntityRespository.findOne(workout.getRouteId()) : null);
+        workoutEntity.setRun(workout.getRouteId() > 0 ? runEntityRepository.findOne(workout.getRunId()) : null);
+        workoutEntity.setShoe(workout.getRouteId() > 0 ? shoeEntityRepository.findOne(workout.getShoeId()) : null);
+
+        WorkoutEntity saved = workoutEntityRepository.save(workoutEntity);
+
+        return factory.get(IWorkout.class)
+                .setId(saved.getId())
+                .setPrivacy(saved.getPrivacy())
+                .setDate(dateService.formatFull(saved.getDate()))
+                .setDistance(saved.getDistance() > 1E-9 ? mathService.format(saved.getDistance(), saved.getProfile().getPreferredUnits()) : "--")
+                .setDuration(saved.getDuration() > 0 ? dateService.formatTime(saved.getDuration()) : "--")
+                .setPace(saved.getDistance() > 1E-9 && saved.getDuration() > 0 ? dateService.formatTime((long) (saved.getDuration() / saved.getDistance())) : "--")
+                .setRoute(saved.getRoute() == null
+                        ? null
+                        : factory.get(IWorkoutData.class).setName(saved.getRoute().getName()).setId(saved.getRoute().getId()))
+                .setRun(saved.getRun() == null
+                        ? null
+                        : factory.get(IWorkoutData.class).setName(saved.getRun().getName()).setId(saved.getRun().getId()))
+                .setShoe(saved.getShoe() == null
+                        ? null
+                        : factory.get(IWorkoutData.class).setName(saved.getShoe().getName()).setId(saved.getShoe().getId()));
     }
 
 }

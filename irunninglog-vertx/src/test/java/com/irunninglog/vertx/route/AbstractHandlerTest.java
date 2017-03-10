@@ -12,6 +12,7 @@ import com.irunninglog.vertx.mock.MockUser;
 import com.irunninglog.vertx.security.AuthnVerticle;
 import com.irunninglog.vertx.http.ServerVerticle;
 import io.vertx.core.Vertx;
+import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpClient;
 import io.vertx.core.http.HttpClientRequest;
 import io.vertx.ext.unit.Async;
@@ -110,6 +111,24 @@ public abstract class AbstractHandlerTest {
             async.complete();
         });
         req.end();
+
+        async.awaitSuccess(10000);
+
+        return responseCode[0];
+    }
+
+    int put(TestContext context, String path, String token, String body) {
+        HttpClient client = vertx.createHttpClient();
+        Async async = context.async();
+        HttpClientRequest req = client.put(8889, "localhost", path);
+        req.putHeader("Authorization", token);
+
+        final int[] responseCode = new int[1];
+        req.handler(resp -> {
+            responseCode[0] = resp.statusCode();
+            async.complete();
+        });
+        req.end(Buffer.buffer(body));
 
         async.awaitSuccess(10000);
 
