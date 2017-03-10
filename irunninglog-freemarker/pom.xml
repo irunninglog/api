@@ -8,7 +8,7 @@
     <parent>
         <artifactId>irunninlog</artifactId>
         <groupId>com.irunninglog</groupId>
-        <version>3.0.0</version>
+        <version>3.0.0-m1</version>
     </parent>
 
     <artifactId>irunninglog-freemarker</artifactId>
