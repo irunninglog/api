@@ -164,24 +164,35 @@ final class WorkoutService implements IWorkoutService {
         workoutEntity.setRun(workout.getRouteId() > 0 ? runEntityRepository.findOne(workout.getRunId()) : null);
         workoutEntity.setShoe(workout.getRouteId() > 0 ? shoeEntityRepository.findOne(workout.getShoeId()) : null);
 
-        WorkoutEntity saved = workoutEntityRepository.save(workoutEntity);
+        return workout(workoutEntityRepository.save(workoutEntity));
+    }
 
+    private IWorkout workout(WorkoutEntity entity) {
         return factory.get(IWorkout.class)
-                .setId(saved.getId())
-                .setPrivacy(saved.getPrivacy())
-                .setDate(dateService.formatFull(saved.getDate()))
-                .setDistance(saved.getDistance() > 1E-9 ? mathService.format(saved.getDistance(), saved.getProfile().getPreferredUnits()) : "--")
-                .setDuration(saved.getDuration() > 0 ? dateService.formatTime(saved.getDuration()) : "--")
-                .setPace(saved.getDistance() > 1E-9 && saved.getDuration() > 0 ? dateService.formatTime((long) (saved.getDuration() / saved.getDistance())) : "--")
-                .setRoute(saved.getRoute() == null
+                .setId(entity.getId())
+                .setPrivacy(entity.getPrivacy())
+                .setDate(dateService.formatFull(entity.getDate()))
+                .setDistance(entity.getDistance() > 1E-9 ? mathService.format(entity.getDistance(), entity.getProfile().getPreferredUnits()) : "--")
+                .setDuration(entity.getDuration() > 0 ? dateService.formatTime(entity.getDuration()) : "--")
+                .setPace(entity.getDistance() > 1E-9 && entity.getDuration() > 0 ? dateService.formatTime((long) (entity.getDuration() / entity.getDistance())) : "--")
+                .setRoute(entity.getRoute() == null
                         ? null
-                        : factory.get(IWorkoutData.class).setName(saved.getRoute().getName()).setId(saved.getRoute().getId()))
-                .setRun(saved.getRun() == null
+                        : factory.get(IWorkoutData.class).setName(entity.getRoute().getName()).setId(entity.getRoute().getId()))
+                .setRun(entity.getRun() == null
                         ? null
-                        : factory.get(IWorkoutData.class).setName(saved.getRun().getName()).setId(saved.getRun().getId()))
-                .setShoe(saved.getShoe() == null
+                        : factory.get(IWorkoutData.class).setName(entity.getRun().getName()).setId(entity.getRun().getId()))
+                .setShoe(entity.getShoe() == null
                         ? null
-                        : factory.get(IWorkoutData.class).setName(saved.getShoe().getName()).setId(saved.getShoe().getId()));
+                        : factory.get(IWorkoutData.class).setName(entity.getShoe().getName()).setId(entity.getShoe().getId()));
+    }
+
+    @Override
+    public IWorkout delete(long profileId, long workoutId) {
+        WorkoutEntity entity = workoutEntityRepository.findOne(workoutId);
+
+        workoutEntityRepository.delete(workoutId);
+
+        return workout(entity);
     }
 
 }

@@ -156,7 +156,7 @@ public abstract class AbstractTest {
         return entity;
     }
 
-    protected void saveWorkout(ProfileEntity profile, LocalDate date, double distance, long duration, RouteEntity route, RunEntity run, ShoeEntity shoe) {
+    protected WorkoutEntity saveWorkout(ProfileEntity profile, LocalDate date, double distance, long duration, RouteEntity route, RunEntity run, ShoeEntity shoe) {
         WorkoutEntity entity = new WorkoutEntity();
         entity.setProfile(profile);
         entity.setDate(date);
@@ -167,7 +167,7 @@ public abstract class AbstractTest {
         entity.setShoe(shoe);
         entity.setPrivacy(Privacy.Private);
 
-        workoutEntityRepository.save(entity);
+        return workoutEntityRepository.save(entity);
     }
 
     protected RouteEntity saveRoute(ProfileEntity profileEntity, String name, boolean dashboard) {
@@ -260,6 +260,27 @@ public abstract class AbstractTest {
             async.complete();
         });
         req.end(body);
+
+        async.awaitSuccess(5000);
+
+        return responseCode[0];
+    }
+
+    protected int delete(TestContext context, String path, String token) {
+        HttpClient client = vertx.createHttpClient();
+        Async async = context.async();
+        HttpClientRequest req = client.delete(8889, "localhost", path);
+        if (token != null && !token.trim().isEmpty()) {
+            req.putHeader("Authorization", token);
+            req.putHeader("iRunningLog-Utc-Offset", offset.toString());
+        }
+
+        final int[] responseCode = new int[1];
+        req.handler(resp -> {
+            responseCode[0] = resp.statusCode();
+            async.complete();
+        });
+        req.end();
 
         async.awaitSuccess(5000);
 

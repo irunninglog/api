@@ -6,4 +6,6 @@ public interface IWorkoutService {
 
     IWorkout put(long profileId, IWorkoutEntry workout, int offset);
 
+    IWorkout delete(long profileId, long workoutId);
+
 }

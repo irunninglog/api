@@ -113,6 +113,12 @@ public class MockMapper implements IMapper {
             } else if (clazz == IPutWorkoutResponse.class) {
                 //noinspection unchecked
                 return (T) objectMapper.readValue(string, MockPutWorkoutResponse.class);
+            } else if (clazz == IDeleteWorkoutRequest.class) {
+                //noinspection unchecked
+                return (T) objectMapper.readValue(string, MockDeleteWorkoutRequest.class);
+            } else if (clazz == IDeleteWorkoutResponse.class) {
+                //noinspection unchecked
+                return (T) objectMapper.readValue(string, MockDeleteWorkoutResponse.class);
             } else {
                 throw new IllegalArgumentException("Can't read class " + clazz);
             }

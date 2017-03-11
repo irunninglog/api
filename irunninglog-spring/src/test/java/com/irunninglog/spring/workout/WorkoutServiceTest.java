@@ -163,4 +163,21 @@ public class WorkoutServiceTest extends AbstractTest {
         assertEquals(1, workoutCount());
     }
 
+    @Test
+    public void delete() {
+        assertEquals(0, workoutCount());
+
+        IWorkoutEntry workoutEntry = factory.get(IWorkoutEntry.class)
+                .setId(-1)
+                .setDate(dateService.format(LocalDate.now()));
+
+        IWorkout workout = workoutService.put(profileEntity.getId(), workoutEntry, 300);
+
+        assertEquals(1, workoutCount());
+
+        workoutService.delete(profileEntity.getId(), workout.getId());
+
+        assertEquals(0, workoutCount());
+    }
+
 }

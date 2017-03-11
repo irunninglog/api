@@ -59,7 +59,11 @@ public enum Endpoint {
     PutWorkout("1d80fac7-d440-4ea1-ac7a-73e4e361603d",
             "/profiles/:profileid/workouts",
             AccessControl.AllowProfile,
-            EndpointMethod.PUT);
+            EndpointMethod.PUT),
+    DeleteWorkout("9dbc6789-ed5b-47d9-8302-c7dd4e96238e",
+            "/profiles/:profileid/workouts/:workoutid",
+            AccessControl.AllowProfile,
+            EndpointMethod.DELETE);
 
     private final String address;
     private final String path;

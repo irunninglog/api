@@ -135,4 +135,24 @@ public abstract class AbstractHandlerTest {
         return responseCode[0];
     }
 
+    int delete(TestContext context, String path, String token) {
+        logger.info("Sending request {}", path);
+
+        HttpClient client = vertx.createHttpClient();
+        Async async = context.async();
+        HttpClientRequest req = client.delete(8889, "localhost", path);
+        req.putHeader("Authorization", token);
+
+        final int[] responseCode = new int[1];
+        req.handler(resp -> {
+            responseCode[0] = resp.statusCode();
+            async.complete();
+        });
+        req.end();
+
+        async.awaitSuccess(10000);
+
+        return responseCode[0];
+    }
+
 }

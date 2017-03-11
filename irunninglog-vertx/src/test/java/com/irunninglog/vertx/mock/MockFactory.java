@@ -15,10 +15,7 @@ import com.irunninglog.api.profile.IGetProfileResponse;
 import com.irunninglog.api.report.IGetDataSetResponse;
 import com.irunninglog.api.report.IGetMultiSetResponse;
 import com.irunninglog.api.security.*;
-import com.irunninglog.api.workout.IGetWorkoutsRequest;
-import com.irunninglog.api.workout.IGetWorkoutsResponse;
-import com.irunninglog.api.workout.IPutWorkoutRequest;
-import com.irunninglog.api.workout.IPutWorkoutResponse;
+import com.irunninglog.api.workout.*;
 
 public class MockFactory implements IFactory {
 
@@ -90,7 +87,13 @@ public class MockFactory implements IFactory {
         } else if (clazz == IPutWorkoutResponse.class) {
             //noinspection unchecked
             return (T) new MockPutWorkoutResponse();
-        } else {
+        } else if (clazz == IDeleteWorkoutRequest.class) {
+            //noinspection unchecked
+            return (T) new MockDeleteWorkoutRequest();
+        } else if (clazz == IDeleteWorkoutResponse.class) {
+            //noinspection unchecked
+            return (T) new MockDeleteWorkoutResponse();
+        }   else {
             throw new IllegalArgumentException("Can't create class " + clazz);
         }
     }
