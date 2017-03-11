@@ -8,6 +8,7 @@ import com.irunninglog.api.Endpoint;
 import com.irunninglog.vertx.route.AbstractProfileIdRouteHandler;
 import com.irunninglog.vertx.route.RouteHandler;
 import io.vertx.core.Vertx;
+import io.vertx.ext.web.RoutingContext;
 
 @RouteHandler(endpoint = Endpoint.GetProfile)
 public final class GetProfileHandler extends AbstractProfileIdRouteHandler<IGetProfileRequest, IGetProfileResponse> {

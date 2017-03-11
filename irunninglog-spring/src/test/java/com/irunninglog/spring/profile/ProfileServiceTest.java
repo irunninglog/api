@@ -1,14 +1,13 @@
 package com.irunninglog.spring.profile;
 
 import com.irunninglog.api.ResponseStatusException;
+import com.irunninglog.api.profile.IProfile;
 import com.irunninglog.api.profile.IProfileService;
 import com.irunninglog.spring.AbstractTest;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 public class ProfileServiceTest extends AbstractTest {
 
@@ -31,7 +30,22 @@ public class ProfileServiceTest extends AbstractTest {
 
     @Test
     public void good() {
-        assertNotNull(profileService.get(goodId));
+        IProfile profile = profileService.get(goodId);
+        assertNotNull(profile);
+        assertEquals(goodId, profile.getId());
+        assertEquals("allan@irunninglog.com", profile.getEmail());
+        assertNotNull(profile.getFirstName());
+        assertNotNull(profile.getLastName());
+        assertNotNull(profile.getBirthday());
+        assertNotNull(profile.getGender());
+        assertNotNull(profile.getPreferredUnits());
+        assertNotNull(profile.getWeekStart());
+        assertEquals(0, profile.getWeeklyTarget(), 1E-9);
+        assertEquals(0, profile.getMonthlyTarget(), 1E-9);
+        assertEquals(0, profile.getYearlyTarget(), 1E-9);
+        assertEquals(-1, profile.getDefaultRouteId());
+        assertEquals(-1, profile.getDefaultRunId());
+        assertEquals(-1, profile.getDefaultShoeId());
     }
 
     @Test

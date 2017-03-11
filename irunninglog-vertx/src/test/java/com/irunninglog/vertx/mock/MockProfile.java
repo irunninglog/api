@@ -86,4 +86,69 @@ public class MockProfile implements IProfile {
         return this;
     }
 
+    @Override
+    public String getEmail() {
+        return null;
+    }
+
+    @Override
+    public String getFirstName() {
+        return null;
+    }
+
+    @Override
+    public String getLastName() {
+        return null;
+    }
+
+    @Override
+    public String getBirthday() {
+        return null;
+    }
+
+    @Override
+    public Gender getGender() {
+        return null;
+    }
+
+    @Override
+    public DayOfWeek getWeekStart() {
+        return null;
+    }
+
+    @Override
+    public Unit getPreferredUnits() {
+        return null;
+    }
+
+    @Override
+    public double getWeeklyTarget() {
+        return 0;
+    }
+
+    @Override
+    public double getMonthlyTarget() {
+        return 0;
+    }
+
+    @Override
+    public double getYearlyTarget() {
+        return 0;
+    }
+
+    @Override
+    public long getDefaultRouteId() {
+        return 0;
+    }
+
+    @Override
+    public long getDefaultRunId() {
+        return 0;
+    }
+
+    @Override
+    public long getDefaultShoeId() {
+        return 0;
+    }
+
 }

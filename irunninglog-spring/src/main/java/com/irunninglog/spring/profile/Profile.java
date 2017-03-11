@@ -71,6 +71,7 @@ final class Profile implements IProfile {
 
     @Override
     public IProfile setPreferredUnits(Unit preferredUnits) {
+        this.preferredUnits = preferredUnits;
         return this;
     }
 
@@ -108,6 +109,76 @@ final class Profile implements IProfile {
     public IProfile setDefaultShoeId(long defaultShoeId) {
         this.defaultShoeId = defaultShoeId;
         return this;
+    }
+
+    @Override
+    public long getId() {
+        return id;
+    }
+
+    @Override
+    public String getEmail() {
+        return email;
+    }
+
+    @Override
+    public String getFirstName() {
+        return firstName;
+    }
+
+    @Override
+    public String getLastName() {
+        return lastName;
+    }
+
+    @Override
+    public String getBirthday() {
+        return birthday;
+    }
+
+    @Override
+    public Gender getGender() {
+        return gender;
+    }
+
+    @Override
+    public DayOfWeek getWeekStart() {
+        return weekStart;
+    }
+
+    @Override
+    public Unit getPreferredUnits() {
+        return preferredUnits;
+    }
+
+    @Override
+    public double getWeeklyTarget() {
+        return weeklyTarget;
+    }
+
+    @Override
+    public double getMonthlyTarget() {
+        return monthlyTarget;
+    }
+
+    @Override
+    public double getYearlyTarget() {
+        return yearlyTarget;
+    }
+
+    @Override
+    public long getDefaultRouteId() {
+        return defaultRouteId;
+    }
+
+    @Override
+    public long getDefaultRunId() {
+        return defaultRunId;
+    }
+
+    @Override
+    public long getDefaultShoeId() {
+        return defaultShoeId;
     }
 
 }

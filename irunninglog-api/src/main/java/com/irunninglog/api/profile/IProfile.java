@@ -35,4 +35,31 @@ public interface IProfile {
 
     IProfile setDefaultShoeId(long defaultShoeId);
 
+    long getId();
+
+    String getEmail();
+
+    String getFirstName();
+
+    String getLastName();
+
+    String getBirthday();
+
+    Gender getGender();
+
+    DayOfWeek getWeekStart();
+
+    Unit getPreferredUnits();
+
+    double getWeeklyTarget();
+
+    double getMonthlyTarget();
+
+    double getYearlyTarget();
+
+    long getDefaultRouteId();
+
+    long getDefaultRunId();
+
+    long getDefaultShoeId();
 }
