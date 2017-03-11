@@ -1,0 +1,1 @@
+web: java -jar irunninglog-main/target/irunninglog.jar
