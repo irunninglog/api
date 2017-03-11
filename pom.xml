@@ -29,7 +29,7 @@
         <version.spring-security-web>4.1.3.RELEASE</version.spring-security-web>
         <version.spring-test>4.1.3.RELEASE</version.spring-test>
         <version.sysout-over-slf4j>1.0.2</version.sysout-over-slf4j>
-        <version.vertx>3.3.2</version.vertx>
+        <version.vertx>3.4.0</version.vertx>
     </properties>
 
     <dependencies>

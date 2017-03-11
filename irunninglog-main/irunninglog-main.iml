@@ -46,25 +46,25 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-expression:4.3.2.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-web:4.3.2.RELEASE" level="project" />
     <orderEntry type="module" module-name="irunninglog-vertx" />
-    <orderEntry type="library" name="Maven: io.vertx:vertx-web:3.3.2" level="project" />
-    <orderEntry type="library" name="Maven: io.vertx:vertx-auth-common:3.3.2" level="project" />
+    <orderEntry type="library" name="Maven: io.vertx:vertx-web:3.4.0" level="project" />
+    <orderEntry type="library" name="Maven: io.vertx:vertx-auth-common:3.4.0" level="project" />
     <orderEntry type="library" name="Maven: org.reflections:reflections:0.9.10" level="project" />
     <orderEntry type="library" name="Maven: com.google.code.findbugs:annotations:2.0.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: com.h2database:h2:1.4.192" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: io.vertx:vertx-unit:3.3.2" level="project" />
-    <orderEntry type="library" name="Maven: io.vertx:vertx-core:3.3.2" level="project" />
-    <orderEntry type="library" name="Maven: io.netty:netty-common:4.1.1.Final" level="project" />
-    <orderEntry type="library" name="Maven: io.netty:netty-buffer:4.1.1.Final" level="project" />
-    <orderEntry type="library" name="Maven: io.netty:netty-transport:4.1.1.Final" level="project" />
-    <orderEntry type="library" name="Maven: io.netty:netty-handler:4.1.1.Final" level="project" />
-    <orderEntry type="library" name="Maven: io.netty:netty-codec:4.1.1.Final" level="project" />
-    <orderEntry type="library" name="Maven: io.netty:netty-handler-proxy:4.1.1.Final" level="project" />
-    <orderEntry type="library" name="Maven: io.netty:netty-codec-socks:4.1.1.Final" level="project" />
-    <orderEntry type="library" name="Maven: io.netty:netty-codec-http:4.1.1.Final" level="project" />
-    <orderEntry type="library" name="Maven: io.netty:netty-codec-http2:4.1.1.Final" level="project" />
-    <orderEntry type="library" name="Maven: io.netty:netty-resolver:4.1.1.Final" level="project" />
-    <orderEntry type="library" name="Maven: io.netty:netty-resolver-dns:4.1.1.Final" level="project" />
-    <orderEntry type="library" name="Maven: io.netty:netty-codec-dns:4.1.1.Final" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: io.vertx:vertx-unit:3.4.0" level="project" />
+    <orderEntry type="library" name="Maven: io.vertx:vertx-core:3.4.0" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-common:4.1.8.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-buffer:4.1.8.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-transport:4.1.8.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-handler:4.1.8.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-codec:4.1.8.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-handler-proxy:4.1.8.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-codec-socks:4.1.8.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-codec-http:4.1.8.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-codec-http2:4.1.8.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-resolver:4.1.8.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-resolver-dns:4.1.8.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-codec-dns:4.1.8.Final" level="project" />
     <orderEntry type="library" name="Maven: com.google.guava:guava:19.0" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.21" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:jcl-over-slf4j:1.7.21" level="project" />
