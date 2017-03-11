@@ -1,1 +1,1 @@
-web: java -jar irunninglog-main/target/irunninglog.jar
+web: java -Denv=application.properties -jar irunninglog-main/target/irunninglog.jar
