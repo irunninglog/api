@@ -10,10 +10,23 @@ import org.springframework.stereotype.Component;
 @Scope("prototype")
 final class AuthnResponse extends AbstractResponse<User, AuthnResponse> implements IAuthnResponse<User, AuthnResponse> {
 
+    private String token;
+
     @Override
     @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, defaultImpl = User.class)
     public User getBody() {
         return body();
+    }
+
+    @Override
+    public String getToken() {
+        return token;
+    }
+
+    @Override
+    public AuthnResponse setToken(String token) {
+        this.token = token;
+        return this;
     }
 
 }

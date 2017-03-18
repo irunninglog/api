@@ -8,6 +8,8 @@ import com.irunninglog.api.security.IAuthnResponse;
 import com.irunninglog.vertx.security.AuthnVerticle;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
+import io.vertx.core.http.HttpServerRequest;
+import io.vertx.core.http.HttpServerResponse;
 import io.vertx.ext.web.RoutingContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,7 +67,7 @@ public abstract class AbstractRouteHandler<Q extends IRequest, S extends IRespon
 
                             if (authnResponse.getStatus() == ResponseStatus.Ok) {
                                 routingContext.put("user", authnResponse.getBody());
-                                handleAuthenticated(routingContext);
+                                handleAuthenticated(routingContext, authnResponse);
                             } else {
                                 fail(routingContext, authnResponse.getStatus());
                             }
@@ -81,7 +83,7 @@ public abstract class AbstractRouteHandler<Q extends IRequest, S extends IRespon
         }
     }
 
-    private void handleAuthenticated(RoutingContext routingContext) {
+    private void handleAuthenticated(RoutingContext routingContext, IAuthnResponse authnResponse) {
         logger.info("handleAuthenticated:start:{}", routingContext.normalisedPath());
 
         try {
@@ -89,7 +91,7 @@ public abstract class AbstractRouteHandler<Q extends IRequest, S extends IRespon
 
             request(request, routingContext);
 
-            handle(routingContext, request);
+            handle(routingContext, request, authnResponse.getToken());
         } catch (Exception ex) {
             logger.error("Caught and exception; treating as unauthenticated", ex);
 
@@ -101,7 +103,7 @@ public abstract class AbstractRouteHandler<Q extends IRequest, S extends IRespon
         logger.info("request:{}", request);
     }
 
-    private void handle(RoutingContext routingContext, Q request) {
+    private void handle(RoutingContext routingContext, Q request, String token) {
         String offsetString = routingContext.request().getHeader("iRunningLog-Utc-Offset");
         int offset = offsetString == null ? 0 : Integer.parseInt(offsetString);
         request.setOffset(offset);
@@ -122,7 +124,7 @@ public abstract class AbstractRouteHandler<Q extends IRequest, S extends IRespon
                     logger.info("handle:{}:{}", endpoint.getAddress(), response);
 
                     if (response.getStatus() == ResponseStatus.Ok) {
-                        succeed(routingContext, response);
+                        succeed(routingContext, response, token);
                     } else {
                         fail(routingContext, response.getStatus());
                     }
@@ -139,13 +141,17 @@ public abstract class AbstractRouteHandler<Q extends IRequest, S extends IRespon
         });
     }
 
-    private void succeed(RoutingContext routingContext, IResponse response) {
-        routingContext.request().response()
+    private void succeed(RoutingContext routingContext, IResponse response, String token) {
+        HttpServerResponse serverResponse = routingContext.request().response()
                 .setChunked(true)
-                .putHeader("Content-Type", "application/json")
-                .setStatusCode(response.getStatus().getCode())
-                .write(mapper.encode(response.getBody()))
-                .end();
+                .putHeader("Content-Type", "application/json");
+
+        if (token != null) {
+            serverResponse.putHeader("iRunningLog-Token", token);
+        }
+
+        serverResponse.setStatusCode(response.getStatus().getCode())
+                .write(mapper.encode(response.getBody())).end();
     }
 
     private void fail(RoutingContext routingContext, ResponseStatus error) {

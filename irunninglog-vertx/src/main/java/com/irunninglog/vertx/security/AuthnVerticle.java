@@ -25,9 +25,14 @@ public final class AuthnVerticle extends AbstractRequestResponseVerticle<IAuthnR
     protected void handle(IAuthnRequest request, IAuthnResponse response) {
         ResponseStatus status = ResponseStatus.Ok;
         IUser user = null;
+        String token = null;
 
         try {
             user = authenticationService.authenticate(request.getEndpoint(), request.getPath(), request.getToken());
+
+            if (user != null) {
+                token = authenticationService.token(user);
+            }
 
             logger.info("handle:user:{}", user);
         } catch (AuthzException ex) {
@@ -38,7 +43,8 @@ public final class AuthnVerticle extends AbstractRequestResponseVerticle<IAuthnR
             status = ResponseStatus.Unauthenticated;
         }
 
-        response.setStatus(status).setBody(user);
+        //noinspection unchecked
+        response.setToken(token).setStatus(status).setBody(user);
     }
 
     @Override

@@ -7,6 +7,7 @@ class MockAuthnResponse implements IAuthnResponse<MockUser, MockAuthnResponse> {
 
     private ResponseStatus status;
     private MockUser body;
+    private String token;
 
     @Override
     public MockAuthnResponse setStatus(ResponseStatus status) {
@@ -28,6 +29,16 @@ class MockAuthnResponse implements IAuthnResponse<MockUser, MockAuthnResponse> {
     @Override
     public MockUser getBody() {
         return body;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    @Override
+    public MockAuthnResponse setToken(String token) {
+        this.token = token;
+        return this;
     }
 
 }
