@@ -59,11 +59,11 @@ final class DashboardGoalsService {
                     .setTitle(goalEntity.getName())
                     .setSubTitle(goalEntity.getDescription())
                     .setTextOne(formatDates(goalEntity))
-                    .setTextTwo(mathService.formatProgressText(bigDecimal.min(new BigDecimal(goalEntity.getGoal())), new BigDecimal(goalEntity.getGoal()), profile.getPreferredUnits()))
+                    .setTextTwo(mathService.formatProgressText(bigDecimal.min(BigDecimal.valueOf(goalEntity.getGoal())), new BigDecimal(goalEntity.getGoal()), profile.getPreferredUnits()))
                     .setMax(max)
                     .setValue(value)
                     .setPercentage(mathService.getPercentage(value, max))
-                    .setProgress(mathService.progress(bigDecimal, new BigDecimal(goalEntity.getGoal())));
+                    .setProgress(mathService.progress(bigDecimal, BigDecimal.valueOf((goalEntity.getGoal()))));
 
             progressList.add(progressInfo);
         }
@@ -104,7 +104,7 @@ final class DashboardGoalsService {
             bigDecimal = workoutEntityRepository.sumAll(id);
         }
 
-        return bigDecimal == null ? new BigDecimal(0) : bigDecimal;
+        return bigDecimal == null ? BigDecimal.valueOf(0) : bigDecimal;
     }
 
 }
