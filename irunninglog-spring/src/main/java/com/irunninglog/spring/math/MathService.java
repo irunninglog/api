@@ -3,6 +3,8 @@ package com.irunninglog.spring.math;
 import com.irunninglog.api.Progress;
 import com.irunninglog.api.Unit;
 import com.irunninglog.spring.service.InternalService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -13,6 +15,8 @@ import java.util.Locale;
 
 @InternalService
 public final class MathService {
+
+    private static final Logger LOG = LoggerFactory.getLogger(MathService.class);
 
     private static final String NO_PROGRESS = "No progress to track";
     private static final String FORMAT_PROGRESS = "{0} of {1} ({2}%)";
@@ -107,7 +111,9 @@ public final class MathService {
         try {
             return NumberFormat.getInstance(Locale.getDefault()).parse(value).doubleValue();
         } catch (Exception ex) {
-            throw new IllegalArgumentException("Unable to parse " + value);
+            String errMsg = "Unable to parse " + value;
+            LOG.error(errMsg, ex);
+            throw new IllegalArgumentException(errMsg, ex);
         }
     }
 

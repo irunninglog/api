@@ -63,8 +63,10 @@ final class AuthenticationService implements IAuthenticationService {
         IUser user;
         if (token != null && token.startsWith("Token ")) {
             user = tokenAuth(token);
-        } else {
+        } else if (token != null) {
             user = basicAuth(token);
+        } else {
+            throw new AuthnException("No token provided");
         }
 
         LOG.info("authenticate:{}:{}", endpoint, user);
@@ -143,7 +145,7 @@ final class AuthenticationService implements IAuthenticationService {
             throw new AuthnException("User not found");
         }
 
-        String generatedSignature = signature(userEntity.getUsername(), userEntity.getPassword(), "" + expiry);
+        String generatedSignature = signature(userEntity.getUsername(), userEntity.getPassword(), Long.toString(expiry));
         if (!generatedSignature.equals(signature)) {
             LOG.error("checkToken:signature mismatch");
             throw new AuthnException("Signatures don't match");
@@ -200,7 +202,8 @@ final class AuthenticationService implements IAuthenticationService {
         MessageDigest digest;
         try {
             digest = MessageDigest.getInstance("MD5");
-        } catch (NoSuchAlgorithmException e) {
+        } catch (NoSuchAlgorithmException ex) {
+            LOG.error("No such algorithm", ex);
             throw new AuthnException("No MD5 algorithm available!");
         }
 
