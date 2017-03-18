@@ -16,6 +16,7 @@ abstract class AbstractData<T extends IData> implements IData<T> {
     private String description;
     private boolean dashboard;
 
+    @Override
     public final long getId() {
         return id;
     }

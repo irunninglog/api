@@ -108,7 +108,7 @@ public abstract class AbstractRouteHandler<Q extends IRequest, S extends IRespon
     }
 
     protected void request(Q request, RoutingContext routingContext) {
-        logger.info("request:{}", request);
+        // Empty for subclasses
     }
 
     private void handle(RoutingContext routingContext, Q request, String token) {

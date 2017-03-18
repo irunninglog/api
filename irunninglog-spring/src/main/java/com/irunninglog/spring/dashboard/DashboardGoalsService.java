@@ -63,7 +63,7 @@ final class DashboardGoalsService {
                     .setMax(max)
                     .setValue(value)
                     .setPercentage(mathService.getPercentage(value, max))
-                    .setProgress(mathService.progress(bigDecimal, BigDecimal.valueOf((goalEntity.getGoal()))));
+                    .setProgress(mathService.progress(bigDecimal, BigDecimal.valueOf(goalEntity.getGoal())));
 
             progressList.add(progressInfo);
         }

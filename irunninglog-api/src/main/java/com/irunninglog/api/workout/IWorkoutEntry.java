@@ -1,9 +1,5 @@
 package com.irunninglog.api.workout;
 
-import com.irunninglog.api.Privacy;
-
-import java.time.LocalDate;
-
 public interface IWorkoutEntry {
 
     long getId();

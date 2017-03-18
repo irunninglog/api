@@ -96,10 +96,12 @@ final class ProgressInfo implements IProgressInfo {
         return textTwo;
     }
 
+    @Override
     public int getValue() {
         return value;
     }
 
+    @Override
     public Progress getProgress() {
         return progress;
     }
