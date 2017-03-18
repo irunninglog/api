@@ -85,14 +85,14 @@ final class WorkoutService implements IWorkoutService {
     }
 
     private IWorkoutsSummary summary(LocalDate localDate, List<WorkoutEntity> workoutEntities, ProfileEntity profileEntity) {
-        BigDecimal mileage = new BigDecimal(workoutEntities.stream().mapToDouble(WorkoutEntity::getDistance).sum());
+        BigDecimal mileage = BigDecimal.valueOf(workoutEntities.stream().mapToDouble(WorkoutEntity::getDistance).sum());
 
         String mileageString = mathService.format(mileage, profileEntity.getPreferredUnits());
 
-        Progress progress = mathService.progress(mileage, new BigDecimal(profileEntity.getMonthlyTarget()));
+        Progress progress = mathService.progress(mileage, BigDecimal.valueOf(profileEntity.getMonthlyTarget()));
 
         int percentage = mathService.getPercentage(mathService.intValue(mileage),
-                mathService.intValue(new BigDecimal(profileEntity.getMonthlyTarget())));
+                mathService.intValue(BigDecimal.valueOf(profileEntity.getMonthlyTarget())));
 
         percentage = Math.min(100, percentage);
 

@@ -20,7 +20,7 @@ public final class MathService {
 
     private static final String NO_PROGRESS = "No progress to track";
     private static final String FORMAT_PROGRESS = "{0} of {1} ({2}%)";
-    private static final BigDecimal CONVERTER = new BigDecimal(1.609344);
+    private static final BigDecimal CONVERTER = BigDecimal.valueOf(1.609344);
 
     private BigDecimal round(BigDecimal bigDecimal) {
         return bigDecimal.setScale(2, RoundingMode.HALF_UP);
@@ -30,12 +30,12 @@ public final class MathService {
         return progress(number, target, Boolean.FALSE);
     }
 
-    public Progress progress(BigDecimal number, BigDecimal target, boolean inverted) {
+    public Progress progress(final BigDecimal input, final BigDecimal target, final boolean inverted) {
         Progress progress;
 
-        number = round(number);
-        BigDecimal target1 = round(target.multiply(new BigDecimal(.2)));
-        BigDecimal target2 = round(target.multiply(new BigDecimal(.8)));
+        BigDecimal number = round(input);
+        BigDecimal target1 = round(target.multiply(BigDecimal.valueOf(.2)));
+        BigDecimal target2 = round(target.multiply(BigDecimal.valueOf(.8)));
 
         if (target.doubleValue() < 1E-9) {
             progress = Progress.None;
@@ -61,7 +61,7 @@ public final class MathService {
                     format(target, units),
                     100);
         } else {
-            BigDecimal percent = divide(mileage.multiply(new BigDecimal(100)), target);
+            BigDecimal percent = divide(mileage.multiply(BigDecimal.valueOf(100)), target);
 
             return MessageFormat.format(FORMAT_PROGRESS,
                     format(mileage, units),
@@ -71,13 +71,12 @@ public final class MathService {
     }
 
     public String format(double number, Unit units) {
-        return format(new BigDecimal(number), units);
+        return format(BigDecimal.valueOf(number), units);
     }
 
-    public String format(BigDecimal number, Unit units) {
-        if (units == Unit.Metric) {
-            number = number.multiply(CONVERTER);
-        }
+    public String format(final BigDecimal input, final Unit units) {
+        BigDecimal number = units == Unit.Metric ? input.multiply(CONVERTER) : input;
+
         return DecimalFormat.getInstance().format(number.setScale(2, RoundingMode.HALF_UP)) + (units == Unit.English ? " mi" : " km");
     }
 
@@ -90,15 +89,15 @@ public final class MathService {
     }
 
     public int getPercentage(int value, int max) {
-        return getPercentage(new BigDecimal(value), new BigDecimal(max));
+        return getPercentage(BigDecimal.valueOf(value), BigDecimal.valueOf(max));
     }
 
     private int getPercentage(BigDecimal value, BigDecimal max) {
-        return max.doubleValue() < 1E-9 ? 0 : intValue(divide(value.multiply(new BigDecimal(100)), max));
+        return max.doubleValue() < 1E-9 ? 0 : intValue(divide(value.multiply(BigDecimal.valueOf(100)), max));
     }
 
     public String formatShort(double total, Unit units) {
-        BigDecimal number = new BigDecimal(total);
+        BigDecimal number = BigDecimal.valueOf(total);
 
         if (units == Unit.Metric) {
             number = number.multiply(CONVERTER);

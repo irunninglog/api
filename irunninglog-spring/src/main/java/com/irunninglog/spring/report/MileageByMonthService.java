@@ -97,7 +97,7 @@ class MileageByMonthService {
                 IDataPoint monthDataPoint = factory.get(IDataPoint.class)
                         .setLabel(dateService.formatMonthShort(monthStart))
                         .setValue(mathService.formatShort(total, profileEntity.getPreferredUnits()))
-                        .setProgress(mathService.progress(new BigDecimal(total), new BigDecimal(profileEntity.getMonthlyTarget())));
+                        .setProgress(mathService.progress(BigDecimal.valueOf(total), BigDecimal.valueOf(profileEntity.getMonthlyTarget())));
 
                 yearDataSet.add(monthDataPoint);
             } else{
