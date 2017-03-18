@@ -24,7 +24,7 @@ public class DeleteWorkoutVerticle extends AbstractEndpointVerticle<IDeleteWorko
     @Override
     protected void handle(IDeleteWorkoutRequest request, IDeleteWorkoutResponse response) {
         //noinspection unchecked
-        response.setStatus(ResponseStatus.Ok)
+        response.setStatus(ResponseStatus.OK)
                 .setBody(workoutService.delete(request.getProfileId(), request.getWorkoutId()));
     }
 

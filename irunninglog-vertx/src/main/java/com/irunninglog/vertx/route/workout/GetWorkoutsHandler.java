@@ -32,7 +32,7 @@ public final class GetWorkoutsHandler extends AbstractProfileIdRouteHandler<IGet
         if (!PATTERN1.matcher(path).matches() && !PATTERN2.matcher(path).matches()) {
             logger.error("Not a match {}", path);
 
-            throw new ResponseStatusException(ResponseStatus.NotFound);
+            throw new ResponseStatusException(ResponseStatus.NOT_FOUND);
         }
 
         String [] tokens = path.split("/");

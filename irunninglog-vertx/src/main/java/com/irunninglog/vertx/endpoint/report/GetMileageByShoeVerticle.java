@@ -18,7 +18,7 @@ public final class GetMileageByShoeVerticle extends AbstractGetReportVerticle<IG
 
     @Override
     protected void handle(IGetReportRequest request, IGetDataSetResponse response) {
-        response.setStatus(ResponseStatus.Ok).setBody(reportService.mileageByShoe(request.getProfileId()));
+        response.setStatus(ResponseStatus.OK).setBody(reportService.mileageByShoe(request.getProfileId()));
     }
 
 }

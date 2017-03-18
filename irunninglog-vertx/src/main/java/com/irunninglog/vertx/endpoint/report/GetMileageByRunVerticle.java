@@ -18,7 +18,7 @@ public final class GetMileageByRunVerticle extends AbstractGetReportVerticle<IGe
 
     @Override
     protected void handle(IGetReportRequest request, IGetDataSetResponse response) {
-        response.setStatus(ResponseStatus.Ok).setBody(reportService.mileageByRun(request.getProfileId()));
+        response.setStatus(ResponseStatus.OK).setBody(reportService.mileageByRun(request.getProfileId()));
     }
 
 }

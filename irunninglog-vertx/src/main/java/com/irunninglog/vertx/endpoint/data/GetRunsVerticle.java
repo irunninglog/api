@@ -18,7 +18,7 @@ public class GetRunsVerticle extends AbstractGetDataVerticle<IGetRunsResponse> {
 
     @Override
     protected void handle(IGetDataRequest request, IGetRunsResponse response) {
-        response.setStatus(ResponseStatus.Ok).setBody(dataService.runs(request.getProfileId()));
+        response.setStatus(ResponseStatus.OK).setBody(dataService.runs(request.getProfileId()));
     }
 
 }

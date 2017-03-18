@@ -1,9 +1,9 @@
 package com.irunninglog.spring.profile;
 
-import com.irunninglog.api.factory.IFactory;
-import com.irunninglog.api.profile.IProfile;
 import com.irunninglog.api.ResponseStatus;
 import com.irunninglog.api.ResponseStatusException;
+import com.irunninglog.api.factory.IFactory;
+import com.irunninglog.api.profile.IProfile;
 import com.irunninglog.api.profile.IProfileService;
 import com.irunninglog.spring.service.ApiService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ final class ProfileService implements IProfileService {
         ProfileEntity entity = repository.findOne(profileId);
 
         if (entity == null) {
-            throw new ResponseStatusException(ResponseStatus.NotFound);
+            throw new ResponseStatusException(ResponseStatus.NOT_FOUND);
         }
 
         return factory.get(IProfile.class)

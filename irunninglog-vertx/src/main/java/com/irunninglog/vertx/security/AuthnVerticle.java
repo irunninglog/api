@@ -1,12 +1,9 @@
 package com.irunninglog.vertx.security;
 
+import com.irunninglog.api.ResponseStatus;
 import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.mapping.IMapper;
-import com.irunninglog.api.security.IAuthnRequest;
-import com.irunninglog.api.security.IAuthnResponse;
-import com.irunninglog.api.security.AuthzException;
 import com.irunninglog.api.security.*;
-import com.irunninglog.api.ResponseStatus;
 import com.irunninglog.vertx.endpoint.AbstractRequestResponseVerticle;
 
 public final class AuthnVerticle extends AbstractRequestResponseVerticle<IAuthnRequest, IAuthnResponse> {
@@ -23,7 +20,7 @@ public final class AuthnVerticle extends AbstractRequestResponseVerticle<IAuthnR
 
     @Override
     protected void handle(IAuthnRequest request, IAuthnResponse response) {
-        ResponseStatus status = ResponseStatus.Ok;
+        ResponseStatus status = ResponseStatus.OK;
         IUser user = null;
         String token = null;
 
@@ -37,10 +34,10 @@ public final class AuthnVerticle extends AbstractRequestResponseVerticle<IAuthnR
             logger.info("handle:user:{}", user);
         } catch (AuthzException ex) {
             logger.error("Unable to authorize", ex);
-            status = ResponseStatus.Unauthorized;
+            status = ResponseStatus.UNAUTHORIZED;
         } catch (Exception ex) {
             logger.error("Unable to authenticate", ex);
-            status = ResponseStatus.Unauthenticated;
+            status = ResponseStatus.UNAUTHENTICATED;
         }
 
         //noinspection unchecked

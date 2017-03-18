@@ -18,7 +18,7 @@ public class GetShoesVerticle extends AbstractGetDataVerticle<IGetShoesResponse>
 
     @Override
     protected void handle(IGetDataRequest request, IGetShoesResponse response) {
-        response.setStatus(ResponseStatus.Ok).setBody(dataService.shoes(request.getProfileId()));
+        response.setStatus(ResponseStatus.OK).setBody(dataService.shoes(request.getProfileId()));
     }
 
 }

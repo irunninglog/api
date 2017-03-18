@@ -1,6 +1,9 @@
 package com.irunninglog.vertx.endpoint;
 
-import com.irunninglog.api.*;
+import com.irunninglog.api.IRequest;
+import com.irunninglog.api.IResponse;
+import com.irunninglog.api.ResponseStatus;
+import com.irunninglog.api.ResponseStatusException;
 import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.mapping.IMapper;
 import io.vertx.core.AbstractVerticle;
@@ -93,7 +96,7 @@ public abstract class AbstractRequestResponseVerticle<Q extends IRequest, S exte
         if (statusException) {
             status = ((ResponseStatusException) ex).getResponseStatus();
         } else {
-            status = ResponseStatus.Error;
+            status = ResponseStatus.ERROR;
         }
 
         logger.info("fromException:{}", status);

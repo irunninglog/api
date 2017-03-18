@@ -18,9 +18,9 @@ public class RequestResponseTest extends AbstractTest {
 
     @Test
     public void response() {
-        IGetDashboardResponse response = new GetDashboardResponse().setStatus(ResponseStatus.Ok).setBody(null);
+        IGetDashboardResponse response = new GetDashboardResponse().setStatus(ResponseStatus.OK).setBody(null);
         assertEquals(null, response.getBody());
-        assertEquals(ResponseStatus.Ok, response.getStatus());
+        assertEquals(ResponseStatus.OK, response.getStatus());
     }
 
 }

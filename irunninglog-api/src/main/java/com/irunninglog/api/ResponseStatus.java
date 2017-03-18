@@ -4,12 +4,12 @@ import com.google.common.base.MoreObjects;
 
 public enum ResponseStatus {
 
-    Ok(200, "Ok"),
-    Bad(400, "Bad Request"),
-    Unauthenticated(401, "Not Authenticated"),
-    Unauthorized(403, "Not Authorized"),
-    NotFound(404, "Not Found"),
-    Error(500, "Unknown Error");
+    OK(200, "OK"),
+    BAD(400, "BAD Request"),
+    UNAUTHENTICATED(401, "Not Authenticated"),
+    UNAUTHORIZED(403, "Not Authorized"),
+    NOT_FOUND(404, "Not Found"),
+    ERROR(500, "Unknown ERROR");
 
     private final int code;
     private final String message;

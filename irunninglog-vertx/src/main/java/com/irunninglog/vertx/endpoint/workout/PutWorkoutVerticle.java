@@ -24,7 +24,7 @@ public class PutWorkoutVerticle extends AbstractEndpointVerticle<IPutWorkoutRequ
     @Override
     protected void handle(IPutWorkoutRequest request, IPutWorkoutResponse response) {
         //noinspection unchecked
-        response.setStatus(ResponseStatus.Ok).setBody(workoutService.put(request.getProfileId(),
+        response.setStatus(ResponseStatus.OK).setBody(workoutService.put(request.getProfileId(),
                 request.getWorkout(),
                 request.getOffset()));
     }

@@ -1,13 +1,13 @@
 package com.irunninglog.spring.dashboard;
 
+import com.irunninglog.api.ResponseStatus;
+import com.irunninglog.api.ResponseStatusException;
 import com.irunninglog.api.dashboard.IDashboardInfo;
 import com.irunninglog.api.dashboard.IDashboardService;
 import com.irunninglog.api.factory.IFactory;
-import com.irunninglog.spring.service.ApiService;
 import com.irunninglog.spring.profile.IProfileEntityRepository;
 import com.irunninglog.spring.profile.ProfileEntity;
-import com.irunninglog.api.ResponseStatus;
-import com.irunninglog.api.ResponseStatusException;
+import com.irunninglog.spring.service.ApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @ApiService
@@ -41,7 +41,7 @@ final class DashboardService implements IDashboardService {
     public IDashboardInfo get(long profileId, int offset) {
         ProfileEntity profile = profileEntityRepository.findOne(profileId);
         if (profile == null) {
-            throw new ResponseStatusException(ResponseStatus.NotFound);
+            throw new ResponseStatusException(ResponseStatus.NOT_FOUND);
         }
 
         IDashboardInfo info = factory.get(IDashboardInfo.class);

@@ -24,7 +24,7 @@ public final class GetProfileVerticle extends AbstractEndpointVerticle<IGetProfi
     @Override
     protected void handle(IGetProfileRequest request, IGetProfileResponse response) {
         //noinspection unchecked
-        response.setStatus(ResponseStatus.Ok).setBody(profileService.get(request.getProfileId()));
+        response.setStatus(ResponseStatus.OK).setBody(profileService.get(request.getProfileId()));
     }
 
 }

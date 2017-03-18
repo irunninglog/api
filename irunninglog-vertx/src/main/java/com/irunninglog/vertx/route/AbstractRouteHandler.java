@@ -69,7 +69,7 @@ public abstract class AbstractRouteHandler<Q extends IRequest, S extends IRespon
 
                             logger.info("handle:{}:{}", AuthnVerticle.ADDRESS, authnResponse.getStatus());
 
-                            if (authnResponse.getStatus() == ResponseStatus.Ok) {
+                            if (authnResponse.getStatus() == ResponseStatus.OK) {
                                 routingContext.put("user", authnResponse.getBody());
                                 handleAuthenticated(routingContext, authnResponse);
                             } else {
@@ -79,7 +79,7 @@ public abstract class AbstractRouteHandler<Q extends IRequest, S extends IRespon
                             logger.error("handle:authn:failure", result.cause());
                             logger.error("handle:authn:failure{}", routingContext.normalisedPath());
 
-                            fail(routingContext, ResponseStatus.Error);
+                            fail(routingContext, ResponseStatus.ERROR);
                         }
                     });
         } finally {
@@ -103,7 +103,7 @@ public abstract class AbstractRouteHandler<Q extends IRequest, S extends IRespon
         } catch (Exception ex) {
             logger.error("Caught and exception; treating as unauthenticated", ex);
 
-            fail(routingContext, ResponseStatus.Unauthenticated);
+            fail(routingContext, ResponseStatus.UNAUTHENTICATED);
         }
     }
 
@@ -131,7 +131,7 @@ public abstract class AbstractRouteHandler<Q extends IRequest, S extends IRespon
 
                     logger.info("handle:{}:{}", endpoint.getAddress(), response);
 
-                    if (response.getStatus() == ResponseStatus.Ok) {
+                    if (response.getStatus() == ResponseStatus.OK) {
                         succeed(routingContext, response, token);
                     } else {
                         fail(routingContext, response.getStatus());
@@ -140,11 +140,11 @@ public abstract class AbstractRouteHandler<Q extends IRequest, S extends IRespon
                     logger.error("handleAuthenticated:failure", result.cause());
                     logger.error("handleAuthenticated:failure{}", routingContext.normalisedPath());
 
-                    fail(routingContext, ResponseStatus.Error);
+                    fail(routingContext, ResponseStatus.ERROR);
                 }
             } catch (Exception ex) {
                 logger.error("handleAuthenticated:exception", ex);
-                fail(routingContext, ResponseStatus.Error);
+                fail(routingContext, ResponseStatus.ERROR);
             }
         });
     }

@@ -1,7 +1,5 @@
 package com.irunninglog.api;
 
-import com.irunninglog.api.ResponseStatus;
-import com.irunninglog.api.ResponseStatusException;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -12,11 +10,11 @@ public class ResponseStatusExceptionTest {
     @Test
     public void sanity() {
         try {
-            throw new ResponseStatusException(ResponseStatus.Error);
+            throw new ResponseStatusException(ResponseStatus.ERROR);
         } catch (ResponseStatusException ex) {
-            assertEquals(ResponseStatus.Error, ex.getResponseStatus());
+            assertEquals(ResponseStatus.ERROR, ex.getResponseStatus());
             assertTrue(ex.toString().contains("500"));
-            assertTrue(ex.toString().contains("Unknown Error"));
+            assertTrue(ex.toString().contains("Unknown ERROR"));
         }
     }
 

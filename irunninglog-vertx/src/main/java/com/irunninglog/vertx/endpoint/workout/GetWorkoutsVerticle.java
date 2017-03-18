@@ -25,7 +25,7 @@ public final class GetWorkoutsVerticle extends AbstractEndpointVerticle<IGetWork
     @Override
     protected void handle(IGetWorkoutsRequest request, IGetWorkoutsResponse response) {
         //noinspection unchecked
-        response.setStatus(ResponseStatus.Ok)
+        response.setStatus(ResponseStatus.OK)
                 .setBody(workoutService.get(request.getProfileId(), request.getDate(), request.getOffset()));
     }
 

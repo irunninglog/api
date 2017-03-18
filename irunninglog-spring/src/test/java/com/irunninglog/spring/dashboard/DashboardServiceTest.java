@@ -1,15 +1,13 @@
 package com.irunninglog.spring.dashboard;
 
-import com.irunninglog.api.dashboard.IDashboardInfo;
-import com.irunninglog.api.dashboard.IDashboardService;
 import com.irunninglog.api.ResponseStatus;
 import com.irunninglog.api.ResponseStatusException;
+import com.irunninglog.api.dashboard.IDashboardInfo;
+import com.irunninglog.api.dashboard.IDashboardService;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 public class DashboardServiceTest extends AbstractDashboardServicesTest {
 
@@ -27,7 +25,7 @@ public class DashboardServiceTest extends AbstractDashboardServicesTest {
             dashboardService.get(profileEntity.getId() + 1, 0);
             fail("Should have thrown");
         } catch (ResponseStatusException ex) {
-            assertEquals(ResponseStatus.NotFound, ex.getResponseStatus());
+            assertEquals(ResponseStatus.NOT_FOUND, ex.getResponseStatus());
         }
     }
 

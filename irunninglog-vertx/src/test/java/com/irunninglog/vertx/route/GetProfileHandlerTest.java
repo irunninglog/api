@@ -1,15 +1,14 @@
 package com.irunninglog.vertx.route;
 
 import com.irunninglog.api.Endpoint;
+import com.irunninglog.api.ResponseStatus;
+import com.irunninglog.api.ResponseStatusException;
 import com.irunninglog.api.mapping.IMapper;
-import com.irunninglog.api.profile.IGetProfileResponse;
 import com.irunninglog.api.profile.IProfileService;
 import com.irunninglog.api.security.AuthnException;
 import com.irunninglog.api.security.AuthzException;
-import com.irunninglog.api.ResponseStatus;
-import com.irunninglog.api.ResponseStatusException;
-import com.irunninglog.vertx.mock.MockProfile;
 import com.irunninglog.vertx.endpoint.profile.GetProfileVerticle;
+import com.irunninglog.vertx.mock.MockProfile;
 import io.vertx.ext.unit.TestContext;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -51,7 +50,7 @@ public class GetProfileHandlerTest extends AbstractHandlerTest {
         authn();
 
         Mockito.when(profileService.get(any(Long.class)))
-                .thenThrow(new ResponseStatusException(ResponseStatus.NotFound));
+                .thenThrow(new ResponseStatusException(ResponseStatus.NOT_FOUND));
 
         context.assertEquals(404, get(context, "/profiles/1", TOKEN));
     }
@@ -60,7 +59,7 @@ public class GetProfileHandlerTest extends AbstractHandlerTest {
     public void unauthenticated1(TestContext context) throws AuthnException, AuthzException {
         logger.info("unauthenticated1");
 
-        Mockito.when(authenticationService.authenticate(any(Endpoint.class), any(String.class), any(String.class))).thenThrow(new AuthnException("Unauthenticated"));
+        Mockito.when(authenticationService.authenticate(any(Endpoint.class), any(String.class), any(String.class))).thenThrow(new AuthnException("UNAUTHENTICATED"));
 
         context.assertEquals(401, get(context, "/profiles/1", ""));
     }
@@ -69,7 +68,7 @@ public class GetProfileHandlerTest extends AbstractHandlerTest {
     public void unauthenticated2(TestContext context) throws AuthnException, AuthzException {
         logger.info("unauthenticated2");
 
-        Mockito.when(authenticationService.authenticate(any(Endpoint.class), any(String.class), any(String.class))).thenThrow(new AuthnException("Unauthenticated"));
+        Mockito.when(authenticationService.authenticate(any(Endpoint.class), any(String.class), any(String.class))).thenThrow(new AuthnException("UNAUTHENTICATED"));
 
         context.assertEquals(401, get(context, "/profiles/1", TOKEN));
     }
@@ -78,7 +77,7 @@ public class GetProfileHandlerTest extends AbstractHandlerTest {
     public void unauthenticated3(TestContext context) throws AuthnException, AuthzException {
         logger.info("unauthenticated3");
 
-        Mockito.when(authenticationService.authenticate(any(Endpoint.class), any(String.class), any(String.class))).thenThrow(new AuthnException("Unauthenticated"));
+        Mockito.when(authenticationService.authenticate(any(Endpoint.class), any(String.class), any(String.class))).thenThrow(new AuthnException("UNAUTHENTICATED"));
 
         context.assertEquals(401, get(context, "/profiles/1", "Basic @@@"));
     }

@@ -26,7 +26,7 @@ public class LoginVerticle extends AbstractEndpointVerticle<ILoginRequest, ILogi
     protected void handle(ILoginRequest request, ILoginResponse response) {
         IUser user = request.getUser();
 
-        response.setStatus(ResponseStatus.Ok)
+        response.setStatus(ResponseStatus.OK)
                 .setBody(loginService.login(user));
     }
 

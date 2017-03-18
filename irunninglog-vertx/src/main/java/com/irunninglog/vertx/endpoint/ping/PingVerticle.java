@@ -23,7 +23,7 @@ public class PingVerticle extends AbstractEndpointVerticle<IPingRequest, IPingRe
 
     @Override
     protected void handle(IPingRequest request, IPingResponse response) {
-        response.setStatus(ResponseStatus.Ok).setBody(pingService.ping());
+        response.setStatus(ResponseStatus.OK).setBody(pingService.ping());
     }
 
 }

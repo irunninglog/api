@@ -18,7 +18,7 @@ public class GetRoutesVerticle extends AbstractGetDataVerticle<IGetRoutesRespons
 
     @Override
     protected void handle(IGetDataRequest request, IGetRoutesResponse response) {
-        response.setStatus(ResponseStatus.Ok).setBody(dataService.routes(request.getProfileId()));
+        response.setStatus(ResponseStatus.OK).setBody(dataService.routes(request.getProfileId()));
     }
 
 }

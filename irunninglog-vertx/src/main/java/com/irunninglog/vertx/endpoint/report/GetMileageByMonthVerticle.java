@@ -18,7 +18,7 @@ public final class GetMileageByMonthVerticle extends AbstractGetReportVerticle<I
 
     @Override
     protected void handle(IGetReportRequest request, IGetMultiSetResponse response) {
-        response.setStatus(ResponseStatus.Ok).setBody(reportService.mileageByMonth(request.getProfileId()));
+        response.setStatus(ResponseStatus.OK).setBody(reportService.mileageByMonth(request.getProfileId()));
     }
 
 }

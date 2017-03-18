@@ -6,7 +6,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name="run_entity")
 // Needs to be public
-final public class RunEntity extends AbstractDataEntity {
+public final class RunEntity extends AbstractDataEntity {
 
     public RunEntity() {
         super();

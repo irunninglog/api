@@ -39,21 +39,21 @@ public class GetProfileVerticleTest extends AbstractVerticleTest {
             String s = o.body();
             IGetProfileResponse response = mapper.decode(s, IGetProfileResponse.class);
 
-            context.assertEquals(ResponseStatus.Ok, response.getStatus());
+            context.assertEquals(ResponseStatus.OK, response.getStatus());
             context.assertNotNull(response.getBody());
         }));
     }
 
     @Test
     public void statusException(TestContext context) {
-        Mockito.when(profileService.get(any(Long.class))).thenThrow(new ResponseStatusException(ResponseStatus.NotFound));
+        Mockito.when(profileService.get(any(Long.class))).thenThrow(new ResponseStatusException(ResponseStatus.NOT_FOUND));
 
         rule.vertx().eventBus().<String>send(Endpoint.PROFILE_GET.getAddress(),
                 Json.encode(new MockGetProfileRequest()), context.asyncAssertSuccess(o -> {
             String s = o.body();
             IGetProfileResponse response = mapper.decode(s, IGetProfileResponse.class);
 
-            context.assertEquals(ResponseStatus.NotFound, response.getStatus());
+            context.assertEquals(ResponseStatus.NOT_FOUND, response.getStatus());
             context.assertNull(response.getBody());
         }));
     }
@@ -67,7 +67,7 @@ public class GetProfileVerticleTest extends AbstractVerticleTest {
             String s = o.body();
             IGetProfileResponse response = mapper.decode(s, IGetProfileResponse.class);
 
-            context.assertEquals(ResponseStatus.Error, response.getStatus());
+            context.assertEquals(ResponseStatus.ERROR, response.getStatus());
             context.assertNull(response.getBody());
         }));
     }

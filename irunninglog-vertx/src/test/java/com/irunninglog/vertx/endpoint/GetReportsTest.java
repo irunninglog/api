@@ -41,7 +41,7 @@ public class GetReportsTest extends AbstractVerticleTest {
             String s = o.body();
             IGetMultiSetResponse response = mapper.decode(s, IGetMultiSetResponse.class);
 
-            context.assertEquals(ResponseStatus.Ok, response.getStatus());
+            context.assertEquals(ResponseStatus.OK, response.getStatus());
             context.assertNotNull(response.getBody());
         }));
     }
@@ -52,7 +52,7 @@ public class GetReportsTest extends AbstractVerticleTest {
             String s = o.body();
             IGetDataSetResponse response = mapper.decode(s, IGetDataSetResponse.class);
 
-            context.assertEquals(ResponseStatus.Ok, response.getStatus());
+            context.assertEquals(ResponseStatus.OK, response.getStatus());
             context.assertNotNull(response.getBody());
         }));
     }
@@ -63,7 +63,7 @@ public class GetReportsTest extends AbstractVerticleTest {
             String s = o.body();
             IGetDataSetResponse response = mapper.decode(s, IGetDataSetResponse.class);
 
-            context.assertEquals(ResponseStatus.Ok, response.getStatus());
+            context.assertEquals(ResponseStatus.OK, response.getStatus());
             context.assertNotNull(response.getBody());
         }));
     }
@@ -74,7 +74,7 @@ public class GetReportsTest extends AbstractVerticleTest {
             String s = o.body();
             IGetDataSetResponse response = mapper.decode(s, IGetDataSetResponse.class);
 
-            context.assertEquals(ResponseStatus.Ok, response.getStatus());
+            context.assertEquals(ResponseStatus.OK, response.getStatus());
             context.assertNotNull(response.getBody());
         }));
     }

@@ -36,7 +36,7 @@ public class AuthnVerticleTest extends AbstractVerticleTest {
             String s = o.body();
             IAuthnResponse response = mapper.decode(s, IAuthnResponse.class);
 
-            context.assertEquals(ResponseStatus.Ok, response.getStatus());
+            context.assertEquals(ResponseStatus.OK, response.getStatus());
             context.assertNotNull(response.getBody());
         }));
     }
@@ -49,7 +49,7 @@ public class AuthnVerticleTest extends AbstractVerticleTest {
             String s = o.body();
             IAuthnResponse response = mapper.decode(s, IAuthnResponse.class);
 
-            context.assertEquals(ResponseStatus.Unauthenticated, response.getStatus());
+            context.assertEquals(ResponseStatus.UNAUTHENTICATED, response.getStatus());
             context.assertNull(response.getBody());
         }));
     }
@@ -62,7 +62,7 @@ public class AuthnVerticleTest extends AbstractVerticleTest {
             String s = o.body();
             IAuthnResponse response = mapper.decode(s, IAuthnResponse.class);
 
-            context.assertEquals(ResponseStatus.Unauthorized, response.getStatus());
+            context.assertEquals(ResponseStatus.UNAUTHORIZED, response.getStatus());
             context.assertNull(response.getBody());
         }));
     }

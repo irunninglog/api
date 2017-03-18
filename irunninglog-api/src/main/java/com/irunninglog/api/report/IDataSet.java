@@ -14,7 +14,7 @@ public interface IDataSet {
 
     IDataSet setUnits(Unit units);
 
-    void add(IDataPoint _dataPoint);
+    void add(IDataPoint dataPoint);
 
     List<IDataPoint> getData();
 

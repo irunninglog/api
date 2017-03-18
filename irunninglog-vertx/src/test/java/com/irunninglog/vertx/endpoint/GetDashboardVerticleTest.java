@@ -31,7 +31,7 @@ public class GetDashboardVerticleTest extends AbstractVerticleTest {
             String s = o.body();
             IGetDashboardResponse response = mapper.decode(s, IGetDashboardResponse.class);
 
-            context.assertEquals(ResponseStatus.Ok, response.getStatus());
+            context.assertEquals(ResponseStatus.OK, response.getStatus());
             context.assertNotNull(response.getBody());
         }));
     }

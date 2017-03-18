@@ -23,7 +23,7 @@ public class AuthnResponseTest extends AbstractTest {
 
     @Test
     public void decode() {
-        String string = "{\"body\":{\"id\":1,\"username\":\"login@irunninglog.com\",\"authorities\":[\"MYPROFILE\"]},\"status\":\"Ok\"}";
+        String string = "{\"body\":{\"id\":1,\"username\":\"login@irunninglog.com\",\"authorities\":[\"MYPROFILE\"]},\"status\":\"OK\"}";
         IAuthnResponse authnResponse = mapper.decode(string, IAuthnResponse.class);
         assertNotNull(authnResponse.getBody());
         assertTrue(authnResponse.getBody() instanceof IUser);

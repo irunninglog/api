@@ -23,7 +23,7 @@ public class GetDashboardVerticle extends AbstractEndpointVerticle<IGetDashboard
 
     @Override
     protected void handle(IGetDashboardRequest request, IGetDashboardResponse response) {
-        response.setStatus(ResponseStatus.Ok)
+        response.setStatus(ResponseStatus.OK)
                 .setBody(service.get(request.getProfileId(), request.getOffset()));
     }
 
