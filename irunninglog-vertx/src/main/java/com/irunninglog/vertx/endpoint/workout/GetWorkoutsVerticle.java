@@ -1,17 +1,17 @@
 package com.irunninglog.vertx.endpoint.workout;
 
+import com.irunninglog.api.Endpoint;
+import com.irunninglog.api.ResponseStatus;
 import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.mapping.IMapper;
 import com.irunninglog.api.workout.IGetWorkoutsRequest;
 import com.irunninglog.api.workout.IGetWorkoutsResponse;
-import com.irunninglog.api.Endpoint;
-import com.irunninglog.api.ResponseStatus;
+import com.irunninglog.api.workout.IWorkoutService;
 import com.irunninglog.vertx.endpoint.AbstractEndpointVerticle;
 import com.irunninglog.vertx.endpoint.EndpointVerticle;
-import com.irunninglog.api.workout.IWorkoutService;
 
 
-@EndpointVerticle(endpoint = Endpoint.GetWorkouts)
+@EndpointVerticle(endpoint = Endpoint.WORKOUTS_GET)
 public final class GetWorkoutsVerticle extends AbstractEndpointVerticle<IGetWorkoutsRequest, IGetWorkoutsResponse> {
 
     private final IWorkoutService workoutService;

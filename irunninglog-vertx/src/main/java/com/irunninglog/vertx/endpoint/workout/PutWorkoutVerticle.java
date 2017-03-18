@@ -10,7 +10,7 @@ import com.irunninglog.api.workout.IWorkoutService;
 import com.irunninglog.vertx.endpoint.AbstractEndpointVerticle;
 import com.irunninglog.vertx.endpoint.EndpointVerticle;
 
-@EndpointVerticle(endpoint = Endpoint.PutWorkout)
+@EndpointVerticle(endpoint = Endpoint.WORKOUT_PUT)
 public class PutWorkoutVerticle extends AbstractEndpointVerticle<IPutWorkoutRequest, IPutWorkoutResponse> {
 
     private final IWorkoutService workoutService;

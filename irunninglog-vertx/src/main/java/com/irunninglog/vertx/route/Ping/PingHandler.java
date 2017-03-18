@@ -9,7 +9,7 @@ import com.irunninglog.vertx.route.AbstractRouteHandler;
 import com.irunninglog.vertx.route.RouteHandler;
 import io.vertx.core.Vertx;
 
-@RouteHandler(endpoint = Endpoint.Ping)
+@RouteHandler(endpoint = Endpoint.PING)
 public final class PingHandler extends AbstractRouteHandler<IPingRequest, IPingResponse> {
 
     public PingHandler(Vertx vertx, IFactory factory, IMapper mapper) {

@@ -10,7 +10,7 @@ import com.irunninglog.vertx.route.RouteHandler;
 import io.vertx.core.Vertx;
 import io.vertx.ext.web.RoutingContext;
 
-@RouteHandler(endpoint = Endpoint.DeleteWorkout)
+@RouteHandler(endpoint = Endpoint.WORKOUT_DELETE)
 public class DeleteWorkoutHandler extends AbstractProfileIdRouteHandler<IDeleteWorkoutRequest, IDeleteWorkoutResponse> {
 
     public DeleteWorkoutHandler(Vertx vertx, IFactory factory, IMapper mapper) {

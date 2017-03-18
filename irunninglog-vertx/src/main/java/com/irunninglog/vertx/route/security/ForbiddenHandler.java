@@ -9,7 +9,7 @@ import com.irunninglog.vertx.route.AbstractRouteHandler;
 import com.irunninglog.vertx.route.RouteHandler;
 import io.vertx.core.Vertx;
 
-@RouteHandler(endpoint = Endpoint.Forbidden)
+@RouteHandler(endpoint = Endpoint.FORBIDDEN)
 public final class ForbiddenHandler extends AbstractRouteHandler<IForbiddenRequest, IForbiddenResponse> {
 
     public ForbiddenHandler(Vertx vertx, IFactory factory, IMapper mapper) {

@@ -37,7 +37,7 @@ public class GetReportsTest extends AbstractVerticleTest {
 
     @Test
     public void mileageByMonth(TestContext context) {
-        rule.vertx().eventBus().<String>send(Endpoint.GetMileageByMonth.getAddress(), mapper.encode(factory.get(IGetDataRequest.class)), context.asyncAssertSuccess(o ->  {
+        rule.vertx().eventBus().<String>send(Endpoint.REPORT_MILEAGE_MONTH_GET.getAddress(), mapper.encode(factory.get(IGetDataRequest.class)), context.asyncAssertSuccess(o ->  {
             String s = o.body();
             IGetMultiSetResponse response = mapper.decode(s, IGetMultiSetResponse.class);
 
@@ -48,7 +48,7 @@ public class GetReportsTest extends AbstractVerticleTest {
 
     @Test
     public void mileageByShoe(TestContext context) {
-        rule.vertx().eventBus().<String>send(Endpoint.GetMileageByShoe.getAddress(), mapper.encode(factory.get(IGetDataRequest.class)), context.asyncAssertSuccess(o ->  {
+        rule.vertx().eventBus().<String>send(Endpoint.REPORT_MILEAGE_SHOE_GET.getAddress(), mapper.encode(factory.get(IGetDataRequest.class)), context.asyncAssertSuccess(o ->  {
             String s = o.body();
             IGetDataSetResponse response = mapper.decode(s, IGetDataSetResponse.class);
 
@@ -59,7 +59,7 @@ public class GetReportsTest extends AbstractVerticleTest {
 
     @Test
     public void mileageByRun(TestContext context) {
-        rule.vertx().eventBus().<String>send(Endpoint.GetMileageByRun.getAddress(), mapper.encode(factory.get(IGetDataRequest.class)), context.asyncAssertSuccess(o ->  {
+        rule.vertx().eventBus().<String>send(Endpoint.REPORT_MILEAGE_RUN_GET.getAddress(), mapper.encode(factory.get(IGetDataRequest.class)), context.asyncAssertSuccess(o ->  {
             String s = o.body();
             IGetDataSetResponse response = mapper.decode(s, IGetDataSetResponse.class);
 
@@ -70,7 +70,7 @@ public class GetReportsTest extends AbstractVerticleTest {
 
     @Test
     public void mileageByRoute(TestContext context) {
-        rule.vertx().eventBus().<String>send(Endpoint.GetMileageByRoute.getAddress(), mapper.encode(factory.get(IGetDataRequest.class)), context.asyncAssertSuccess(o ->  {
+        rule.vertx().eventBus().<String>send(Endpoint.REPORT_MILEAGE_ROUTE_GET.getAddress(), mapper.encode(factory.get(IGetDataRequest.class)), context.asyncAssertSuccess(o ->  {
             String s = o.body();
             IGetDataSetResponse response = mapper.decode(s, IGetDataSetResponse.class);
 

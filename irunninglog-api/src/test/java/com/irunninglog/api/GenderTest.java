@@ -1,6 +1,5 @@
 package com.irunninglog.api;
 
-import com.irunninglog.api.Gender;
 import org.junit.Test;
 
 import static org.junit.Assert.assertNotNull;

@@ -25,7 +25,7 @@ public class PingVerticleTest extends AbstractVerticleTest {
 
     @Test
     public void ok(TestContext context) {
-        rule.vertx().eventBus().<String>send(Endpoint.Ping.getAddress(), mapper.encode(factory.get(IPingRequest.class)), context.asyncAssertSuccess(o ->  {
+        rule.vertx().eventBus().<String>send(Endpoint.PING.getAddress(), mapper.encode(factory.get(IPingRequest.class)), context.asyncAssertSuccess(o ->  {
             String s = o.body();
             IPingResponse response = mapper.decode(s, IPingResponse.class);
 

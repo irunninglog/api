@@ -1,11 +1,12 @@
 package com.irunninglog.spring.security;
 
 import com.irunninglog.api.AccessControl;
+import com.irunninglog.api.Endpoint;
 import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.security.AuthnException;
 import com.irunninglog.api.security.AuthzException;
-import com.irunninglog.api.security.*;
-import com.irunninglog.api.Endpoint;
+import com.irunninglog.api.security.IAuthenticationService;
+import com.irunninglog.api.security.IUser;
 import com.irunninglog.spring.service.ApiService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,10 +53,10 @@ final class AuthenticationService implements IAuthenticationService {
     public IUser authenticate(Endpoint endpoint, String path, String token) throws AuthnException, AuthzException {
         LOG.info("authenticate:{}:{}", endpoint, path);
 
-        if (endpoint.getControl() == AccessControl.DenyAll) {
+        if (endpoint.getControl() == AccessControl.DENY) {
             LOG.info("authenticate:denyAll:{}", endpoint);
             throw new AuthzException("Not authorized for endpoint " + endpoint);
-        } else if (endpoint.getControl() == AccessControl.AllowAnonymous) {
+        } else if (endpoint.getControl() == AccessControl.ANONYMOUS) {
             LOG.info("authenticate:allowAll:{}", endpoint);
             return null;
         }
@@ -158,10 +159,10 @@ final class AuthenticationService implements IAuthenticationService {
     }
 
     private void authorize(IUser user, Endpoint endpoint, String path) throws AuthzException {
-        if (endpoint.getControl() == AccessControl.AllowAll) {
-            LOG.info("authorize:AllowAll:{}:{}:{}", user.getUsername(), endpoint, path);
-        } else if (endpoint.getControl() == AccessControl.AllowProfile && isUserAllowed(user, path)) {
-            LOG.info("authorize:AllowProfile:{}:{}:{}", user.getUsername(), endpoint, path);
+        if (endpoint.getControl() == AccessControl.ALLOW) {
+            LOG.info("authorize:ALLOW:{}:{}:{}", user.getUsername(), endpoint, path);
+        } else if (endpoint.getControl() == AccessControl.PROFILE && isUserAllowed(user, path)) {
+            LOG.info("authorize:PROFILE:{}:{}:{}", user.getUsername(), endpoint, path);
         } else if (hasRole(user, "ADMIN")) {
             LOG.info("authorize:admin:{}:{}:{}", user.getUsername(), endpoint, path);
         } else {

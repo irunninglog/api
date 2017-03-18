@@ -1,12 +1,12 @@
 package com.irunninglog.vertx.route.workout;
 
+import com.irunninglog.api.Endpoint;
+import com.irunninglog.api.ResponseStatus;
+import com.irunninglog.api.ResponseStatusException;
 import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.mapping.IMapper;
 import com.irunninglog.api.workout.IGetWorkoutsRequest;
 import com.irunninglog.api.workout.IGetWorkoutsResponse;
-import com.irunninglog.api.Endpoint;
-import com.irunninglog.api.ResponseStatus;
-import com.irunninglog.api.ResponseStatusException;
 import com.irunninglog.vertx.route.AbstractProfileIdRouteHandler;
 import com.irunninglog.vertx.route.RouteHandler;
 import io.vertx.core.Vertx;
@@ -14,7 +14,7 @@ import io.vertx.ext.web.RoutingContext;
 
 import java.util.regex.Pattern;
 
-@RouteHandler(endpoint = Endpoint.GetWorkouts)
+@RouteHandler(endpoint = Endpoint.WORKOUTS_GET)
 public final class GetWorkoutsHandler extends AbstractProfileIdRouteHandler<IGetWorkoutsRequest, IGetWorkoutsResponse> {
 
     private static final Pattern PATTERN1 = Pattern.compile("^\\bworkouts\\b$");

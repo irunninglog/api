@@ -11,7 +11,7 @@ import com.irunninglog.vertx.route.RouteHandler;
 import io.vertx.core.Vertx;
 import io.vertx.ext.web.RoutingContext;
 
-@RouteHandler(endpoint = Endpoint.PutWorkout)
+@RouteHandler(endpoint = Endpoint.WORKOUT_PUT)
 public class PutWorkoutHandler extends AbstractProfileIdRouteHandler<IPutWorkoutRequest, IPutWorkoutResponse> {
 
     private final IMapper mapper;

@@ -1,12 +1,14 @@
 package com.irunninglog.vertx.endpoint;
 
-import com.irunninglog.api.*;
+import com.irunninglog.api.Endpoint;
+import com.irunninglog.api.ResponseStatus;
+import com.irunninglog.api.ResponseStatusException;
 import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.profile.IGetProfileResponse;
 import com.irunninglog.api.profile.IProfileService;
+import com.irunninglog.vertx.endpoint.profile.GetProfileVerticle;
 import com.irunninglog.vertx.mock.MockGetProfileRequest;
 import com.irunninglog.vertx.mock.MockProfile;
-import com.irunninglog.vertx.endpoint.profile.GetProfileVerticle;
 import io.vertx.core.json.Json;
 import io.vertx.ext.unit.TestContext;
 import org.junit.Before;
@@ -32,7 +34,7 @@ public class GetProfileVerticleTest extends AbstractVerticleTest {
     public void ok(TestContext context) {
         Mockito.when(profileService.get(any(Long.class))).thenReturn(new MockProfile());
 
-        rule.vertx().eventBus().<String>send(Endpoint.GetProfile.getAddress(),
+        rule.vertx().eventBus().<String>send(Endpoint.PROFILE_GET.getAddress(),
                 Json.encode(new MockGetProfileRequest()), context.asyncAssertSuccess(o -> {
             String s = o.body();
             IGetProfileResponse response = mapper.decode(s, IGetProfileResponse.class);
@@ -46,7 +48,7 @@ public class GetProfileVerticleTest extends AbstractVerticleTest {
     public void statusException(TestContext context) {
         Mockito.when(profileService.get(any(Long.class))).thenThrow(new ResponseStatusException(ResponseStatus.NotFound));
 
-        rule.vertx().eventBus().<String>send(Endpoint.GetProfile.getAddress(),
+        rule.vertx().eventBus().<String>send(Endpoint.PROFILE_GET.getAddress(),
                 Json.encode(new MockGetProfileRequest()), context.asyncAssertSuccess(o -> {
             String s = o.body();
             IGetProfileResponse response = mapper.decode(s, IGetProfileResponse.class);
@@ -60,7 +62,7 @@ public class GetProfileVerticleTest extends AbstractVerticleTest {
     public void error1(TestContext context) {
         Mockito.when(profileService.get(any(Long.class))).thenThrow(new RuntimeException());
 
-        rule.vertx().eventBus().<String>send(Endpoint.GetProfile.getAddress(),
+        rule.vertx().eventBus().<String>send(Endpoint.PROFILE_GET.getAddress(),
                 Json.encode(new MockGetProfileRequest()), context.asyncAssertSuccess(o -> {
             String s = o.body();
             IGetProfileResponse response = mapper.decode(s, IGetProfileResponse.class);
@@ -78,7 +80,7 @@ public class GetProfileVerticleTest extends AbstractVerticleTest {
         IFactory throwsFactory = Mockito.mock(IFactory.class);
         //noinspection unchecked
         Mockito.when(throwsFactory.get(any(Class.class))).thenThrow(new IllegalArgumentException());
-        rule.vertx().deployVerticle(new GetProfileVerticle(throwsFactory, mapper, profileService), event -> rule.vertx().eventBus().<String>send(Endpoint.GetProfile.getAddress(),
+        rule.vertx().deployVerticle(new GetProfileVerticle(throwsFactory, mapper, profileService), event -> rule.vertx().eventBus().<String>send(Endpoint.PROFILE_GET.getAddress(),
                 Json.encode(new MockGetProfileRequest()), context.asyncAssertSuccess(o -> context.assertNull(o.body()))));
     }
 

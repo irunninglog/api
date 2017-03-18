@@ -1,16 +1,16 @@
 package com.irunninglog.vertx.endpoint.dashboard;
 
-import com.irunninglog.api.factory.IFactory;
-import com.irunninglog.api.dashboard.IGetDashboardRequest;
-import com.irunninglog.api.dashboard.IGetDashboardResponse;
-import com.irunninglog.api.dashboard.IDashboardService;
 import com.irunninglog.api.Endpoint;
 import com.irunninglog.api.ResponseStatus;
+import com.irunninglog.api.dashboard.IDashboardService;
+import com.irunninglog.api.dashboard.IGetDashboardRequest;
+import com.irunninglog.api.dashboard.IGetDashboardResponse;
+import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.mapping.IMapper;
 import com.irunninglog.vertx.endpoint.AbstractEndpointVerticle;
 import com.irunninglog.vertx.endpoint.EndpointVerticle;
 
-@EndpointVerticle(endpoint = Endpoint.GetDashboard)
+@EndpointVerticle(endpoint = Endpoint.DASHBOARD_GET)
 public class GetDashboardVerticle extends AbstractEndpointVerticle<IGetDashboardRequest, IGetDashboardResponse> {
 
     private final IDashboardService service;

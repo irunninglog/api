@@ -23,11 +23,11 @@ public class RequestResponseTest extends AbstractTest {
     @Test
     public void authnRequest() {
         IAuthnRequest request = applicationContext.getBean(IAuthnRequest.class)
-                .setEndpoint(Endpoint.Ping)
+                .setEndpoint(Endpoint.PING)
                 .setPath("/ping")
                 .setToken(null);
 
-        assertEquals(Endpoint.Ping, request.getEndpoint());
+        assertEquals(Endpoint.PING, request.getEndpoint());
         assertEquals("/ping", request.getPath());
         assertEquals(null, request.getToken());
     }

@@ -1,12 +1,8 @@
 package com.irunninglog.vertx.endpoint;
 
-import com.irunninglog.api.security.AuthnException;
-import com.irunninglog.api.security.IAuthnRequest;
-import com.irunninglog.api.security.IAuthnResponse;
-import com.irunninglog.api.security.AuthzException;
-import com.irunninglog.api.security.*;
 import com.irunninglog.api.Endpoint;
 import com.irunninglog.api.ResponseStatus;
+import com.irunninglog.api.security.*;
 import com.irunninglog.vertx.mock.MockAuthnRequest;
 import com.irunninglog.vertx.mock.MockUser;
 import com.irunninglog.vertx.security.AuthnVerticle;
@@ -21,10 +17,10 @@ public class AuthnVerticleTest extends AbstractVerticleTest {
 
     private final IAuthenticationService authenticationService = Mockito.mock(IAuthenticationService.class);
 
-    private final IAuthnRequest goodRequest = new MockAuthnRequest().setToken("foo").setEndpoint(Endpoint.GetProfile);
+    private final IAuthnRequest goodRequest = new MockAuthnRequest().setToken("foo").setEndpoint(Endpoint.PROFILE_GET);
     private final IUser goodUser = new MockUser();
-    private final IAuthnRequest authn = new MockAuthnRequest().setToken("foo").setEndpoint(Endpoint.GetProfile);
-    private final IAuthnRequest authz = new MockAuthnRequest().setToken("foo").setEndpoint(Endpoint.GetProfile);
+    private final IAuthnRequest authn = new MockAuthnRequest().setToken("foo").setEndpoint(Endpoint.PROFILE_GET);
+    private final IAuthnRequest authz = new MockAuthnRequest().setToken("foo").setEndpoint(Endpoint.PROFILE_GET);
 
     @Before
     public void before(TestContext context) throws AuthnException, AuthzException {

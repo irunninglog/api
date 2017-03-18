@@ -1,12 +1,12 @@
 package com.irunninglog.vertx.endpoint;
 
-import com.irunninglog.api.dashboard.IDashboardService;
 import com.irunninglog.api.Endpoint;
 import com.irunninglog.api.ResponseStatus;
+import com.irunninglog.api.dashboard.IDashboardService;
 import com.irunninglog.api.dashboard.IGetDashboardRequest;
 import com.irunninglog.api.dashboard.IGetDashboardResponse;
-import com.irunninglog.vertx.mock.MockDashboardInfo;
 import com.irunninglog.vertx.endpoint.dashboard.GetDashboardVerticle;
+import com.irunninglog.vertx.mock.MockDashboardInfo;
 import io.vertx.ext.unit.TestContext;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,7 +27,7 @@ public class GetDashboardVerticleTest extends AbstractVerticleTest {
 
     @Test
     public void ok(TestContext context) {
-        rule.vertx().eventBus().<String>send(Endpoint.GetDashboard.getAddress(), mapper.encode(factory.get(IGetDashboardRequest.class)), context.asyncAssertSuccess(o ->  {
+        rule.vertx().eventBus().<String>send(Endpoint.DASHBOARD_GET.getAddress(), mapper.encode(factory.get(IGetDashboardRequest.class)), context.asyncAssertSuccess(o ->  {
             String s = o.body();
             IGetDashboardResponse response = mapper.decode(s, IGetDashboardResponse.class);
 

@@ -8,9 +8,7 @@ import org.junit.Test;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 public class ProfileEntityTest extends AbstractTest {
 

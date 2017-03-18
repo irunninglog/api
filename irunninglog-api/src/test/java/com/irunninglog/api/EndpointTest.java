@@ -9,15 +9,15 @@ public class EndpointTest {
 
     @Test
     public void ping() {
-        assertEquals("6678d445-030f-4aad-b360-6304588c07b6", Endpoint.Ping.getAddress());
-        assertEquals("/ping", Endpoint.Ping.getPath());
-        assertEquals(AccessControl.AllowAnonymous, Endpoint.Ping.getControl());
-        assertEquals(EndpointMethod.GET, Endpoint.Ping.getMethod());
+        assertEquals("6678d445-030f-4aad-b360-6304588c07b6", Endpoint.PING.getAddress());
+        assertEquals("/ping", Endpoint.PING.getPath());
+        assertEquals(AccessControl.ANONYMOUS, Endpoint.PING.getControl());
+        assertEquals(EndpointMethod.GET, Endpoint.PING.getMethod());
     }
 
     @Test
     public void tostring() {
-        assertNotNull(Endpoint.Ping.toString());
+        assertNotNull(Endpoint.PING.toString());
     }
 
 }

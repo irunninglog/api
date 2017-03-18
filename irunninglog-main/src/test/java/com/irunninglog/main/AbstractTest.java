@@ -33,7 +33,6 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.io.IOException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;

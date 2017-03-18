@@ -1,17 +1,17 @@
 package com.irunninglog.vertx.endpoint.security;
 
+import com.irunninglog.api.Endpoint;
+import com.irunninglog.api.ResponseStatus;
 import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.mapping.IMapper;
 import com.irunninglog.api.security.ILoginRequest;
 import com.irunninglog.api.security.ILoginResponse;
 import com.irunninglog.api.security.ILoginService;
 import com.irunninglog.api.security.IUser;
-import com.irunninglog.api.Endpoint;
-import com.irunninglog.api.ResponseStatus;
 import com.irunninglog.vertx.endpoint.AbstractEndpointVerticle;
 import com.irunninglog.vertx.endpoint.EndpointVerticle;
 
-@EndpointVerticle(endpoint = Endpoint.Login)
+@EndpointVerticle(endpoint = Endpoint.LOGIN)
 public class LoginVerticle extends AbstractEndpointVerticle<ILoginRequest, ILoginResponse> {
 
     private final ILoginService loginService;

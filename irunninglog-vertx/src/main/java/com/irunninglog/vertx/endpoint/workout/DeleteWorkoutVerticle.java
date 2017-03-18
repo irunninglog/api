@@ -10,7 +10,7 @@ import com.irunninglog.api.workout.IWorkoutService;
 import com.irunninglog.vertx.endpoint.AbstractEndpointVerticle;
 import com.irunninglog.vertx.endpoint.EndpointVerticle;
 
-@EndpointVerticle(endpoint = Endpoint.DeleteWorkout)
+@EndpointVerticle(endpoint = Endpoint.WORKOUT_DELETE)
 public class DeleteWorkoutVerticle extends AbstractEndpointVerticle<IDeleteWorkoutRequest, IDeleteWorkoutResponse> {
 
     private final IWorkoutService workoutService;
