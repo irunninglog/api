@@ -71,14 +71,11 @@ final class DashboardStreaksService {
         Streak streak = null;
         List<Streak> streaks = new ArrayList<>();
         for (WorkoutEntity entity : workouts) {
-            if (streak == null) {
+            if (streak == null || !entity.getDate().isAfter(streak.getStartDate().minusDays(2))) {
                 streak = getNewStreak(entity);
                 streaks.add(streak);
-            } else if (entity.getDate().isAfter(streak.getStartDate().minusDays(2))) {
-                streak.count().setStartDate(entity.getDate());
             } else {
-                streak = getNewStreak(entity);
-                streaks.add(streak);
+                streak.count().setStartDate(entity.getDate());
             }
         }
 

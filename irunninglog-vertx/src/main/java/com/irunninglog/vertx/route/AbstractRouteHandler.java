@@ -1,6 +1,9 @@
 package com.irunninglog.vertx.route;
 
-import com.irunninglog.api.*;
+import com.irunninglog.api.Endpoint;
+import com.irunninglog.api.IRequest;
+import com.irunninglog.api.IResponse;
+import com.irunninglog.api.ResponseStatus;
 import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.mapping.IMapper;
 import com.irunninglog.api.security.IAuthnRequest;
@@ -8,7 +11,6 @@ import com.irunninglog.api.security.IAuthnResponse;
 import com.irunninglog.vertx.security.AuthnVerticle;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
-import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.ext.web.RoutingContext;
 import org.slf4j.Logger;
@@ -46,7 +48,9 @@ public abstract class AbstractRouteHandler<Q extends IRequest, S extends IRespon
         long start = System.currentTimeMillis();
 
         try {
-            logger.info("handle:start:{}", routingContext.normalisedPath());
+            if (logger.isInfoEnabled()) {
+                logger.info("handle:start:{}", routingContext.normalisedPath());
+            }
 
             IAuthnRequest authnRequest = factory.get(IAuthnRequest.class)
                     .setToken(routingContext.request().getHeader("Authorization"))
@@ -79,12 +83,16 @@ public abstract class AbstractRouteHandler<Q extends IRequest, S extends IRespon
                         }
                     });
         } finally {
-            logger.info("handle:end:{}:{}ms", routingContext.normalisedPath(), System.currentTimeMillis() - start);
+            if (logger.isInfoEnabled()) {
+                logger.info("handle:end:{}:{}ms", routingContext.normalisedPath(), System.currentTimeMillis() - start);
+            }
         }
     }
 
     private void handleAuthenticated(RoutingContext routingContext, IAuthnResponse authnResponse) {
-        logger.info("handleAuthenticated:start:{}", routingContext.normalisedPath());
+        if (logger.isInfoEnabled()) {
+            logger.info("handleAuthenticated:start:{}", routingContext.normalisedPath());
+        }
 
         try {
             Q request = factory.get(requestClass);
@@ -155,7 +163,9 @@ public abstract class AbstractRouteHandler<Q extends IRequest, S extends IRespon
     }
 
     private void fail(RoutingContext routingContext, ResponseStatus error) {
-        logger.error("fail:{}:{}", routingContext.normalisedPath(), error);
+        if (logger.isErrorEnabled()) {
+            logger.error("fail:{}:{}", routingContext.normalisedPath(), error);
+        }
 
         routingContext.request().response().setChunked(true)
                 .setStatusCode(error.getCode())
