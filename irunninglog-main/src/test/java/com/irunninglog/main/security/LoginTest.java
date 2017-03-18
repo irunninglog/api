@@ -2,8 +2,11 @@ package com.irunninglog.main.security;
 
 import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.mapping.IMapper;
+import com.irunninglog.api.security.IAuthenticationService;
 import com.irunninglog.api.security.ILoginService;
+import com.irunninglog.api.security.IUser;
 import com.irunninglog.main.AbstractTest;
+import com.irunninglog.spring.profile.ProfileEntity;
 import com.irunninglog.vertx.endpoint.security.LoginVerticle;
 import io.vertx.core.Verticle;
 import io.vertx.ext.unit.TestContext;
@@ -15,6 +18,7 @@ import java.util.Collections;
 
 public class LoginTest extends AbstractTest {
 
+    private String basic;
     private String token;
 
     @Override
@@ -25,13 +29,21 @@ public class LoginTest extends AbstractTest {
     }
 
     @Override
-    protected void afterBefore(TestContext context) {
-        save("login@irunninglog.com", "password", "MYPROFILE");
-        token = token("login@irunninglog.com", "password");
+    protected void afterBefore(TestContext context) throws Exception {
+        ProfileEntity profileEntity = save("login@irunninglog.com", "password", "MYPROFILE");
+        basic = token("login@irunninglog.com", "password");
+
+        IAuthenticationService service = applicationContext.getBean(IAuthenticationService.class);
+        token = "Token " + service.token(applicationContext.getBean(IUser.class).setUsername("login@irunninglog.com").setId(profileEntity.getId()));
     }
 
     @Test
-    public void login(TestContext context) {
+    public void basic(TestContext context) {
+        context.assertEquals(200, post(context, "/authn", basic));
+    }
+
+    @Test
+    public void token(TestContext context) {
         context.assertEquals(200, post(context, "/authn", token));
     }
 

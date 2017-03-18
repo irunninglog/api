@@ -59,7 +59,7 @@ public abstract class AbstractTest {
     private Vertx vertx;
 
     @Before
-    public final void before(TestContext context) throws IOException {
+    public final void before(TestContext context) throws Exception {
         System.setProperty("env", "file:///" + new ClassPathResource("application.properties").getFile().getAbsolutePath());
 
         applicationContext = new AnnotationConfigApplicationContext(ContextConfiguration.class);
@@ -102,7 +102,7 @@ public abstract class AbstractTest {
 
     protected abstract Collection<Verticle> verticles(ApplicationContext applicationContext);
 
-    protected abstract void afterBefore(TestContext context);
+    protected abstract void afterBefore(TestContext context) throws Exception;
 
     @After
     public void after(TestContext context) {

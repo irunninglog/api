@@ -9,6 +9,8 @@ import com.irunninglog.spring.profile.ProfileEntity;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 
+import java.util.Base64;
+
 import static org.junit.Assert.*;
 
 public class AuthenticationServiceTest extends AbstractTest {
@@ -129,6 +131,107 @@ public class AuthenticationServiceTest extends AbstractTest {
             fail("Should have thrown");
         } catch (AuthzException ex) {
             ex.printStackTrace();
+        }
+    }
+
+    @Test
+    public void token() throws AuthnException, AuthzException {
+        IUser user = authenticationService.authenticate(Endpoint.GetDashboard,
+                "/profiles/" + myprofile.getId(),
+                "Basic YWxsYW5AaXJ1bm5pbmdsb2cuY29tOnBhc3N3b3Jk");
+
+        assertNotNull(authenticationService.token(user));
+    }
+
+    @Test
+    public void tokenSuccess() throws AuthnException, AuthzException {
+        IUser basic = authenticationService.authenticate(Endpoint.GetDashboard,
+                "/profiles/" + myprofile.getId(),
+                "Basic YWxsYW5AaXJ1bm5pbmdsb2cuY29tOnBhc3N3b3Jk");
+
+        IUser token = authenticationService.authenticate(Endpoint.GetDashboard,
+                "/profiles/" + myprofile.getId(),
+                "Token " + authenticationService.token(basic));
+        assertEquals("allan@irunninglog.com", token.getUsername());
+        assertEquals(1, token.getAuthorities().size());
+    }
+
+    @Test
+    public void tokenExpired() throws AuthnException, AuthzException {
+        IUser basic = authenticationService.authenticate(Endpoint.GetDashboard,
+                "/profiles/" + myprofile.getId(),
+                "Basic YWxsYW5AaXJ1bm5pbmdsb2cuY29tOnBhc3N3b3Jk");
+
+        String original = authenticationService.token(basic);
+        String [] tokens = new String(Base64.getDecoder().decode(original)).split(":");
+        String invalid = Long.MIN_VALUE + ":" + tokens[1] + ":" + tokens[2];
+        String newToken = Base64.getEncoder().encodeToString(invalid.getBytes());
+
+        try {
+            authenticationService.authenticate(Endpoint.GetDashboard,
+                    "/profiles/" + myprofile.getId(),
+                    "Token " + newToken);
+
+            fail("Should have thrown");
+        } catch (AuthnException ex) {
+            assertTrue(ex.getMessage().contains("expired"));
+        }
+    }
+
+    @Test
+    public void tokenInvalidUser() throws AuthnException, AuthzException {
+        IUser basic = authenticationService.authenticate(Endpoint.GetDashboard,
+                "/profiles/" + myprofile.getId(),
+                "Basic YWxsYW5AaXJ1bm5pbmdsb2cuY29tOnBhc3N3b3Jk");
+
+        String original = authenticationService.token(basic);
+        String [] tokens = new String(Base64.getDecoder().decode(original)).split(":");
+        String invalid = tokens[0] + ":" + "invalid" + ":" + tokens[2];
+        String newToken = Base64.getEncoder().encodeToString(invalid.getBytes());
+
+        try {
+            authenticationService.authenticate(Endpoint.GetDashboard,
+                    "/profiles/" + myprofile.getId(),
+                    "Token " + newToken);
+
+            fail("Should have thrown");
+        } catch (AuthnException ex) {
+            assertTrue(ex.getMessage().contains("not found"));
+        }
+    }
+
+    @Test
+    public void tokenBadSignature() throws AuthnException, AuthzException {
+        IUser basic = authenticationService.authenticate(Endpoint.GetDashboard,
+                "/profiles/" + myprofile.getId(),
+                "Basic YWxsYW5AaXJ1bm5pbmdsb2cuY29tOnBhc3N3b3Jk");
+
+        String original = authenticationService.token(basic);
+        String [] tokens = new String(Base64.getDecoder().decode(original)).split(":");
+        String invalid = tokens[0] + ":" + tokens[1] + ":" + "foo";
+        String newToken = Base64.getEncoder().encodeToString(invalid.getBytes());
+
+        try {
+            authenticationService.authenticate(Endpoint.GetDashboard,
+                    "/profiles/" + myprofile.getId(),
+                    "Token " + newToken);
+
+            fail("Should have thrown");
+        } catch (AuthnException ex) {
+            assertTrue(ex.getMessage().contains("don't match"));
+        }
+    }
+
+    @Test
+    public void tokenInvalid() throws AuthzException {
+        try {
+            authenticationService.authenticate(Endpoint.GetDashboard,
+                    null,
+                    "Token oops!");
+
+            fail("Should have thrown");
+        } catch (AuthnException ex) {
+            assertTrue(ex.getMessage().contains("decode"));
         }
     }
 
