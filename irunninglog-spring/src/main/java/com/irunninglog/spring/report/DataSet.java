@@ -43,8 +43,8 @@ final class DataSet implements IDataSet {
     }
 
     @Override
-    public void add(IDataPoint _dataPoint) {
-        data.add(_dataPoint);
+    public void add(IDataPoint dataPoint) {
+        data.add(dataPoint);
     }
 
     @Override

@@ -112,7 +112,7 @@ final class WorkoutService implements IWorkoutService {
 
     private IWorkout workout(WorkoutEntity workoutEntity, ProfileEntity profileEntity) {
         String distance = workoutEntity.getDistance() > 1E-9 ? mathService.format(workoutEntity.getDistance(), profileEntity.getPreferredUnits()) : "--";
-        String duration = workoutEntity.getDuration() > 0 ? dateService.formatTime((workoutEntity.getDuration())) : "--";
+        String duration = workoutEntity.getDuration() > 0 ? dateService.formatTime(workoutEntity.getDuration()) : "--";
         String pace = workoutEntity.getDuration() > 0 && workoutEntity.getDistance() > 0 ? dateService.formatTime((long) (workoutEntity.getDuration() / workoutEntity.getDistance())) : "--";
 
         return factory.get(IWorkout.class)

@@ -16,7 +16,7 @@ final class Mapper implements IMapper {
 
     private static final Logger LOG = LoggerFactory.getLogger(Mapper.class);
 
-    private final ObjectMapper mapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new ObjectMapper();
     private final IFactory factory;
 
     @Autowired
@@ -27,7 +27,7 @@ final class Mapper implements IMapper {
     @Override
     public String encode(Object object) {
         try {
-            return mapper.writeValueAsString(object);
+            return objectMapper.writeValueAsString(object);
         } catch (JsonProcessingException ex) {
             LOG.error("encode:illegal:" + object, ex);
             throw new IllegalArgumentException("Can't encode " + object, ex);
@@ -39,7 +39,7 @@ final class Mapper implements IMapper {
         try {
             @SuppressWarnings("unchecked")
             Class<T> classToRead = clazz.isInterface() ? (Class<T>) factory.get(clazz).getClass() : clazz;
-            return mapper.readValue(string, classToRead);
+            return objectMapper.readValue(string, classToRead);
         } catch (IOException ex) {
             LOG.error("decode:illegal:" + string + ":" + clazz, ex);
             throw new IllegalArgumentException("Can't decode " + string + " " + clazz, ex);

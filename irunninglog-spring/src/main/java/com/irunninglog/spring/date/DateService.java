@@ -69,29 +69,29 @@ public final class DateService {
         return utc.withZoneSameInstant(ZoneOffset.ofTotalSeconds(minutes * 60 * -1));
     }
 
-    public String getThisWeekEndFull(DayOfWeek weekStart, final int _offset) {
-        ZonedDateTime clientTime = clientTimeFromServerTime(ZonedDateTime.now(), _offset);
+    public String getThisWeekEndFull(DayOfWeek weekStart, final int offset) {
+        ZonedDateTime clientTime = clientTimeFromServerTime(ZonedDateTime.now(), offset);
         ZonedDateTime nextWeekStartDay = clientTime.with(TemporalAdjusters.next(weekStart)).minusDays(1);
 
         return DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL).format(nextWeekStartDay);
     }
 
-    public String getThisMonthEndFull(final int _offset) {
-        ZonedDateTime clientTime = clientTimeFromServerTime(ZonedDateTime.now(), _offset);
+    public String getThisMonthEndFull(final int offset) {
+        ZonedDateTime clientTime = clientTimeFromServerTime(ZonedDateTime.now(), offset);
         ZonedDateTime endDay = clientTime.with(TemporalAdjusters.lastDayOfMonth());
 
         return DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL).format(endDay);
     }
 
-    public String getLastYearEndFull(final int _offset) {
-        ZonedDateTime clientTime = clientTimeFromServerTime(ZonedDateTime.now(), _offset);
+    public String getLastYearEndFull(final int offset) {
+        ZonedDateTime clientTime = clientTimeFromServerTime(ZonedDateTime.now(), offset);
         ZonedDateTime endDay = clientTime.with(TemporalAdjusters.lastDayOfYear()).minusYears(1);
 
         return DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL).format(endDay);
     }
 
-    public String getThisYearEndFull(final int _offset) {
-        ZonedDateTime clientTime = clientTimeFromServerTime(ZonedDateTime.now(), _offset);
+    public String getThisYearEndFull(final int offset) {
+        ZonedDateTime clientTime = clientTimeFromServerTime(ZonedDateTime.now(), offset);
         ZonedDateTime endDay = clientTime.with(TemporalAdjusters.lastDayOfYear());
 
         return DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL).format(endDay);
@@ -121,17 +121,17 @@ public final class DateService {
         return formatter.format(local);
     }
 
-    public String getThisYear(final int _offset) {
-        ZonedDateTime clientTime = clientTimeFromServerTime(ZonedDateTime.now(), _offset);
+    public String getThisYear(final int offset) {
+        ZonedDateTime clientTime = clientTimeFromServerTime(ZonedDateTime.now(), offset);
         return DateTimeFormatter.ofPattern("yyyy").format(clientTime);
     }
 
-    public String getLastYear(final int _offset) {
-        return String.valueOf(Integer.parseInt(getThisYear(_offset)) - 1);
+    public String getLastYear(final int offset) {
+        return String.valueOf(Integer.parseInt(getThisYear(offset)) - 1);
     }
 
-    public String getThisWeekEndLong(DayOfWeek weekStart, final int _offset) {
-        ZonedDateTime clientTime = clientTimeFromServerTime(ZonedDateTime.now(), _offset);
+    public String getThisWeekEndLong(DayOfWeek weekStart, final int offset) {
+        ZonedDateTime clientTime = clientTimeFromServerTime(ZonedDateTime.now(), offset);
         ZonedDateTime nextWeekStartDay = clientTime.with(TemporalAdjusters.next(weekStart)).minusDays(1);
 
         return DateTimeFormatter.ofPattern("MMMM dd, yyyy").format(nextWeekStartDay);
@@ -141,8 +141,8 @@ public final class DateService {
         return DateTimeFormatter.ofLocalizedDateTime(FormatStyle.FULL).format(ZonedDateTime.now());
     }
 
-    public String getThisMonth(final int _offset) {
-        ZonedDateTime clientTime = clientTimeFromServerTime(ZonedDateTime.now(), _offset);
+    public String getThisMonth(final int offset) {
+        ZonedDateTime clientTime = clientTimeFromServerTime(ZonedDateTime.now(), offset);
         return DateTimeFormatter.ofPattern("MMMM yyyy").format(clientTime);
     }
 
