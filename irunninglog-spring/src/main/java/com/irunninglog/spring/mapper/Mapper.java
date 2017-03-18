@@ -35,14 +35,11 @@ final class Mapper implements IMapper {
     }
 
     @Override
-    public <T> T decode(String string, Class<T> clazz) {
+    public <T> T decode(final String string, final Class<T> clazz) {
         try {
-            if (clazz.isInterface()) {
-                //noinspection unchecked
-                clazz = (Class<T>) factory.get(clazz).getClass();
-            }
-
-            return mapper.readValue(string, clazz);
+            @SuppressWarnings("unchecked")
+            Class<T> classToRead = clazz.isInterface() ? (Class<T>) factory.get(clazz).getClass() : clazz;
+            return mapper.readValue(string, classToRead);
         } catch (IOException ex) {
             LOG.error("decode:illegal:" + string + ":" + clazz, ex);
             throw new IllegalArgumentException("Can't decode " + string + " " + clazz, ex);

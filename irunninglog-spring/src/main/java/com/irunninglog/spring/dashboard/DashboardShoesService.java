@@ -50,7 +50,7 @@ final class     DashboardShoesService {
                 distance = BigDecimal.ZERO;
             }
 
-            BigDecimal target = new BigDecimal(shoeEntity.getMax());
+            BigDecimal target = BigDecimal.valueOf(shoeEntity.getMax());
 
             Progress progress = mathService.progress(distance, target, Boolean.TRUE);
 

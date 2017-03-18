@@ -59,7 +59,7 @@ final class DashboardGoalsService {
                     .setTitle(goalEntity.getName())
                     .setSubTitle(goalEntity.getDescription())
                     .setTextOne(formatDates(goalEntity))
-                    .setTextTwo(mathService.formatProgressText(bigDecimal.min(BigDecimal.valueOf(goalEntity.getGoal())), new BigDecimal(goalEntity.getGoal()), profile.getPreferredUnits()))
+                    .setTextTwo(mathService.formatProgressText(bigDecimal.min(BigDecimal.valueOf(goalEntity.getGoal())), BigDecimal.valueOf(goalEntity.getGoal()), profile.getPreferredUnits()))
                     .setMax(max)
                     .setValue(value)
                     .setPercentage(mathService.getPercentage(value, max))

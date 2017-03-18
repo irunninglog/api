@@ -54,7 +54,7 @@ final class DashboardProgressService {
 
     private IProgressInfo thisWeek(ProfileEntity profile, int offset) {
         List<WorkoutEntity> weekly = workoutsService.findWorkoutsThisWeek(profile.getId(), profile.getWeekStart(), offset);
-        BigDecimal thisWeek = new BigDecimal(profile.getWeeklyTarget());
+        BigDecimal thisWeek = BigDecimal.valueOf(profile.getWeeklyTarget());
 
         return getProgressInfo(weekly,
                 thisWeek,
@@ -65,7 +65,7 @@ final class DashboardProgressService {
 
     private IProgressInfo thisMonth(ProfileEntity profile, int offset) {
         List<WorkoutEntity> monthly = workoutsService.findWorkoutsThisMonth(profile.getId(), offset);
-        BigDecimal thisMonth = new BigDecimal(profile.getMonthlyTarget());
+        BigDecimal thisMonth = BigDecimal.valueOf(profile.getMonthlyTarget());
 
         return getProgressInfo(monthly,
                 thisMonth,
@@ -76,7 +76,7 @@ final class DashboardProgressService {
 
     private IProgressInfo currentYear(ProfileEntity profile, int offset) {
         List<WorkoutEntity> yearly = workoutsService.findWorkoutsThisYear(profile.getId(), offset);
-        BigDecimal thisYear = new BigDecimal(profile.getYearlyTarget());
+        BigDecimal thisYear = BigDecimal.valueOf(profile.getYearlyTarget());
 
         return getProgressInfo(yearly,
                 thisYear,
@@ -88,7 +88,7 @@ final class DashboardProgressService {
     private IProgressInfo previousYear(ProfileEntity profile, int offset) {
         List<WorkoutEntity> lastYears = workoutsService.findWorkoutsLastYear(profile.getId(), offset);
         if (!lastYears.isEmpty()) {
-            BigDecimal lastYear = new BigDecimal(profile.getYearlyTarget());
+            BigDecimal lastYear = BigDecimal.valueOf(profile.getYearlyTarget());
 
             return getProgressInfo(lastYears,
                     lastYear,
@@ -101,10 +101,10 @@ final class DashboardProgressService {
     }
 
     private IProgressInfo getProgressInfo(List<WorkoutEntity> entities, BigDecimal target, Unit units, String title, String subTitle) {
-        BigDecimal mileage = new BigDecimal("0.0");
+        BigDecimal mileage = BigDecimal.valueOf(0.0);
 
         for (WorkoutEntity workout : entities) {
-            mileage = mileage.add(new BigDecimal(workout.getDistance()));
+            mileage = mileage.add(BigDecimal.valueOf(workout.getDistance()));
         }
 
         int max = mathService.intValue(target);
@@ -131,7 +131,7 @@ final class DashboardProgressService {
         if (mileage.compareTo(target) > 0) {
             return mathService.format(mileage, units) + " of " + mathService.format(target, units) + " (100%)";
         } else {
-            BigDecimal percent = mathService.divide(mileage.multiply(new BigDecimal(100)), target);
+            BigDecimal percent = mathService.divide(mileage.multiply(BigDecimal.valueOf(100)), target);
             return mathService.format(mileage, units) + " of " + mathService.format(target, units) + " (" + mathService.intValue(percent) + "%)";
         }
     }
