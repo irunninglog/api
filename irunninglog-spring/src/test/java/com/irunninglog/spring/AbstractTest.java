@@ -111,7 +111,7 @@ public abstract class AbstractTest implements ApplicationContextAware {
 
     protected final WorkoutEntity saveWorkout(LocalDate localDate, double distance, long duration, ProfileEntity profileEntity, RouteEntity routeEntity, RunEntity runEntity, ShoeEntity shoeEntity) {
         WorkoutEntity entity = new WorkoutEntity();
-        entity.setPrivacy(Privacy.Private);
+        entity.setPrivacy(Privacy.PRIVATE);
         entity.setDate(localDate);
         entity.setDistance(distance);
         entity.setDuration(duration);

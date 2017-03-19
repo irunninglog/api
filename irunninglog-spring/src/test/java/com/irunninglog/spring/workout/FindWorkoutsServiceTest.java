@@ -45,7 +45,7 @@ public class FindWorkoutsServiceTest extends AbstractTest {
 
         WorkoutEntity today = new WorkoutEntity();
         today.setDate(LocalDate.now());
-        today.setPrivacy(Privacy.Private);
+        today.setPrivacy(Privacy.PRIVATE);
         today.setProfile(profileEntity);
         workoutEntityRepository.save(today);
     }
@@ -109,7 +109,7 @@ public class FindWorkoutsServiceTest extends AbstractTest {
 
         WorkoutEntity one = new WorkoutEntity();
         one.setProfile(profileEntity);
-        one.setPrivacy(Privacy.Private);
+        one.setPrivacy(Privacy.PRIVATE);
         one.setDate(create(calendar1.getTime()));
         workoutEntityRepository.save(one);
 
@@ -122,7 +122,7 @@ public class FindWorkoutsServiceTest extends AbstractTest {
 
         WorkoutEntity two = new WorkoutEntity();
         two.setProfile(profileEntity);
-        two.setPrivacy(Privacy.Private);
+        two.setPrivacy(Privacy.PRIVATE);
         two.setDate(create(calendar.getTime()));
         workoutEntityRepository.save(two);
     }
@@ -147,7 +147,7 @@ public class FindWorkoutsServiceTest extends AbstractTest {
 
         WorkoutEntity one = new WorkoutEntity();
         one.setProfile(profileEntity);
-        one.setPrivacy(Privacy.Private);
+        one.setPrivacy(Privacy.PRIVATE);
         one.setDate(create(calendar.getTime()));
         workoutEntityRepository.save(one);
 
@@ -156,7 +156,7 @@ public class FindWorkoutsServiceTest extends AbstractTest {
 
         WorkoutEntity two = new WorkoutEntity();
         two.setProfile(profileEntity);
-        two.setPrivacy(Privacy.Private);
+        two.setPrivacy(Privacy.PRIVATE);
         two.setDate(create(calendar.getTime()));
         workoutEntityRepository.save(two);
     }
@@ -174,19 +174,19 @@ public class FindWorkoutsServiceTest extends AbstractTest {
     private void createThisYearsWorkouts() throws ParseException {
         WorkoutEntity one = new WorkoutEntity();
         one.setDate(create(new Date(dateFormat.parse(thisYear + "-01-01").getTime())));
-        one.setPrivacy(Privacy.Private);
+        one.setPrivacy(Privacy.PRIVATE);
         one.setProfile(profileEntity);
         workoutEntityRepository.save(one);
 
         WorkoutEntity two = new WorkoutEntity();
         two.setDate(create(new Date(dateFormat.parse(thisYear + "-12-31").getTime())));
-        two.setPrivacy(Privacy.Private);
+        two.setPrivacy(Privacy.PRIVATE);
         two.setProfile(profileEntity);
         workoutEntityRepository.save(two);
 
         WorkoutEntity three = new WorkoutEntity();
         three.setDate(create(new Date(dateFormat.parse(thisYear + "-07-04").getTime())));
-        three.setPrivacy(Privacy.Private);
+        three.setPrivacy(Privacy.PRIVATE);
         three.setProfile(profileEntity);
         workoutEntityRepository.save(three);
     }
@@ -218,7 +218,7 @@ public class FindWorkoutsServiceTest extends AbstractTest {
     private void createLastYearsWorkouts() throws ParseException {
         WorkoutEntity one = new WorkoutEntity();
         one.setDate(create(new Date(dateFormat.parse(lastYear + "-01-01").getTime())));
-        one.setPrivacy(Privacy.Private);
+        one.setPrivacy(Privacy.PRIVATE);
         one.setProfile(profileEntity);
         workoutEntityRepository.save(one);
 
@@ -227,7 +227,7 @@ public class FindWorkoutsServiceTest extends AbstractTest {
 
         WorkoutEntity two = new WorkoutEntity();
         two.setDate(create(new Date(calendar.getTime().getTime())));
-        two.setPrivacy(Privacy.Private);
+        two.setPrivacy(Privacy.PRIVATE);
         two.setProfile(profileEntity);
         workoutEntityRepository.save(two);
     }

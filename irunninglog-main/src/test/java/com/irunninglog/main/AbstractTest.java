@@ -164,7 +164,7 @@ public abstract class AbstractTest {
         entity.setRoute(route);
         entity.setRun(run);
         entity.setShoe(shoe);
-        entity.setPrivacy(Privacy.Private);
+        entity.setPrivacy(Privacy.PRIVATE);
 
         return workoutEntityRepository.save(entity);
     }

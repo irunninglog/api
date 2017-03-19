@@ -151,7 +151,7 @@ final class WorkoutService implements IWorkoutService {
         WorkoutEntity workoutEntity = new WorkoutEntity();
         workoutEntity.setId(workout.getId());
         workoutEntity.setProfile(profileEntityRepository.findOne(profileId));
-        workoutEntity.setPrivacy(Privacy.Private);
+        workoutEntity.setPrivacy(Privacy.PRIVATE);
         workoutEntity.setDuration(workout.getDuration());
         workoutEntity.setDistance(workout.getDistance() == null ? 0.0 : mathService.parse(workout.getDistance()));
         workoutEntity.setDate(dateService.parse(workout.getDate()));

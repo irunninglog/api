@@ -81,7 +81,7 @@ public class WorkoutServiceTest extends AbstractTest {
         assertEquals("10 mi", workout.getDistance());
         assertEquals("--", workout.getDuration());
         assertEquals("--", workout.getPace());
-        assertEquals(Privacy.Private, workout.getPrivacy());
+        assertEquals(Privacy.PRIVATE, workout.getPrivacy());
         assertNotNull(workout.getId());
         assertNull(workout.getRoute());
         assertNull(workout.getRun());
