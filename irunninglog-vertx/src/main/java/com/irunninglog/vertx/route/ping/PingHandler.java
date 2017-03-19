@@ -1,4 +1,4 @@
-package com.irunninglog.vertx.route.Ping;
+package com.irunninglog.vertx.route.ping;
 
 import com.irunninglog.api.Endpoint;
 import com.irunninglog.api.factory.IFactory;

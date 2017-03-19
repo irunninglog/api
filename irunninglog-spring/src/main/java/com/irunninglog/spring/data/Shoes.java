@@ -13,12 +13,12 @@ import java.util.List;
 @Scope("prototype")
 final class Shoes implements IShoes {
 
-    private final List<IShoe> shoes = new ArrayList<>();
+    private final List<IShoe> shoeList = new ArrayList<>();
 
     @Override
     @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, defaultImpl = Shoe.class)
     public List<IShoe> getShoes() {
-        return shoes;
+        return shoeList;
     }
 
 }

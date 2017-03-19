@@ -8,6 +8,10 @@ public final class Main {
 
     private static final Logger LOG = LoggerFactory.getLogger(Main.class);
 
+    private Main() {
+        // Hide public constructor
+    }
+
     public static void main(String[] args) {
         new RunningLogApplication().start(Vertx.vertx(), stringAsyncResult -> LOG.info("RunningLogApplication successfully started"));
     }

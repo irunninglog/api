@@ -22,7 +22,7 @@ final class Workouts implements IWorkouts {
     @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, defaultImpl = WorkoutsMonth.class)
     private IWorkoutsMonth next;
     @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, defaultImpl = Workout.class)
-    private final List<IWorkout> workouts = new ArrayList<>();
+    private final List<IWorkout> workoutList = new ArrayList<>();
 
     @Override
     public IWorkouts setSummary(IWorkoutsSummary summary) {
@@ -44,7 +44,7 @@ final class Workouts implements IWorkouts {
 
     @Override
     public List<IWorkout> getWorkouts() {
-        return workouts;
+        return workoutList;
     }
 
     @Override

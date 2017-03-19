@@ -13,12 +13,12 @@ import java.util.List;
 @Scope("prototype")
 final class Routes implements IRoutes{
 
-    private final List<IRoute> routes = new ArrayList<>();
+    private final List<IRoute> routeList = new ArrayList<>();
 
     @Override
     @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, defaultImpl = Route.class)
     public List<IRoute> getRoutes() {
-        return routes;
+        return routeList;
     }
 
 }
