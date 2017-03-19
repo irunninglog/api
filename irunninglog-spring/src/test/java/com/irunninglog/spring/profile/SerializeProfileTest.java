@@ -22,7 +22,7 @@ public class SerializeProfileTest extends AbstractTest {
     }
 
     @Test
-    public void serialize() throws JsonProcessingException {
+    public void gender() throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
 
         String nullGender = mapper.writeValueAsString(profile);

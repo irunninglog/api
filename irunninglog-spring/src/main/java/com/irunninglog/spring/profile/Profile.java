@@ -1,9 +1,11 @@
 package com.irunninglog.spring.profile;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.irunninglog.api.Gender;
 import com.irunninglog.api.Unit;
 import com.irunninglog.api.profile.IProfile;
+import com.irunninglog.spring.GenderDeserializer;
 import com.irunninglog.spring.GenderSerializer;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -20,6 +22,7 @@ final class Profile implements IProfile {
     private String lastName;
     private String birthday;
     @JsonSerialize(using = GenderSerializer.class)
+    @JsonDeserialize(using = GenderDeserializer.class)
     private Gender gender;
     private DayOfWeek weekStart;
     private Unit preferredUnits;
