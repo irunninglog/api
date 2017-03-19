@@ -4,10 +4,7 @@ import com.irunninglog.api.Privacy;
 import com.irunninglog.api.Progress;
 import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.workout.*;
-import com.irunninglog.spring.data.AbstractDataEntity;
-import com.irunninglog.spring.data.IRouteEntityRespository;
-import com.irunninglog.spring.data.IRunEntityRepository;
-import com.irunninglog.spring.data.IShoeEntityRepository;
+import com.irunninglog.spring.data.*;
 import com.irunninglog.spring.date.DateService;
 import com.irunninglog.spring.math.MathService;
 import com.irunninglog.spring.profile.IProfileEntityRepository;
@@ -40,9 +37,7 @@ final class WorkoutService implements IWorkoutService {
     @Autowired
     public WorkoutService(IProfileEntityRepository profileEntityRepository,
                           IWorkoutEntityRepository workoutEntityRepository,
-                          IRouteEntityRespository routeEntityRespository,
-                          IRunEntityRepository runEntityRepository,
-                          IShoeEntityRepository shoeEntityRepository,
+                          DataRepositories repositories,
                           FindWorkoutsService findWorkoutsService,
                           DateService dateService,
                           MathService mathService,
@@ -50,9 +45,9 @@ final class WorkoutService implements IWorkoutService {
 
         this.profileEntityRepository = profileEntityRepository;
         this.workoutEntityRepository = workoutEntityRepository;
-        this.routeEntityRespository = routeEntityRespository;
-        this.runEntityRepository = runEntityRepository;
-        this.shoeEntityRepository = shoeEntityRepository;
+        this.routeEntityRespository = repositories.getRouteEntityRespository();
+        this.runEntityRepository = repositories.getRunEntityRepository();
+        this.shoeEntityRepository = repositories.getShoeEntityRepository();
         this.findWorkoutsService = findWorkoutsService;
         this.dateService = dateService;
         this.mathService = mathService;
@@ -168,22 +163,29 @@ final class WorkoutService implements IWorkoutService {
     }
 
     private IWorkout workout(WorkoutEntity entity) {
+        String distance = entity.getDistance() > 1E-9 ? mathService.format(entity.getDistance(), entity.getProfile().getPreferredUnits()) : "--";
+        String duration = entity.getDuration() > 0 ? dateService.formatTime(entity.getDuration()) : "--";
+        String pace = entity.getDistance() > 1E-9 && entity.getDuration() > 0 ? dateService.formatTime((long) (entity.getDuration() / entity.getDistance())) : "--";
+        IWorkoutData route = entity.getRoute() == null
+                ? null
+                : factory.get(IWorkoutData.class).setName(entity.getRoute().getName()).setId(entity.getRoute().getId());
+        IWorkoutData run = entity.getRun() == null
+                ? null
+                : factory.get(IWorkoutData.class).setName(entity.getRun().getName()).setId(entity.getRun().getId());
+        IWorkoutData shoe = entity.getShoe() == null
+                ? null
+                : factory.get(IWorkoutData.class).setName(entity.getShoe().getName()).setId(entity.getShoe().getId());
+
         return factory.get(IWorkout.class)
                 .setId(entity.getId())
                 .setPrivacy(entity.getPrivacy())
                 .setDate(dateService.formatFull(entity.getDate()))
-                .setDistance(entity.getDistance() > 1E-9 ? mathService.format(entity.getDistance(), entity.getProfile().getPreferredUnits()) : "--")
-                .setDuration(entity.getDuration() > 0 ? dateService.formatTime(entity.getDuration()) : "--")
-                .setPace(entity.getDistance() > 1E-9 && entity.getDuration() > 0 ? dateService.formatTime((long) (entity.getDuration() / entity.getDistance())) : "--")
-                .setRoute(entity.getRoute() == null
-                        ? null
-                        : factory.get(IWorkoutData.class).setName(entity.getRoute().getName()).setId(entity.getRoute().getId()))
-                .setRun(entity.getRun() == null
-                        ? null
-                        : factory.get(IWorkoutData.class).setName(entity.getRun().getName()).setId(entity.getRun().getId()))
-                .setShoe(entity.getShoe() == null
-                        ? null
-                        : factory.get(IWorkoutData.class).setName(entity.getShoe().getName()).setId(entity.getShoe().getId()));
+                .setDistance(distance)
+                .setDuration(duration)
+                .setPace(pace)
+                .setRoute(route)
+                .setRun(run)
+                .setShoe(shoe);
     }
 
     @Override

@@ -50,20 +50,7 @@ final class DataService implements IDataService {
                     .setMax(shoeEntity.getMax() < 1E-9 ? "--" : mathService.format(shoeEntity.getMax(), shoeEntity.getProfile().getPreferredUnits())));
         }
 
-        shoes.getShoes().sort((o1, o2) -> {
-            if ((o1.getStartDate() == null || o1.getStartDate().isEmpty())
-                    && (o2.getStartDate() == null || o2.getStartDate().isEmpty())) {
-                return o1.getName().compareTo(o2.getName());
-            } else if ((o1.getStartDate() == null || o1.getStartDate().isEmpty())
-                    && (o2.getStartDate() != null && !o2.getStartDate().isEmpty())) {
-                return 1;
-            } else if ((o1.getStartDate() != null && !o1.getStartDate().isEmpty())
-                    && (o2.getStartDate() == null || o2.getStartDate().isEmpty())) {
-                return -1;
-            } else {
-                return o2.getStartDate().compareTo(o1.getStartDate());
-            }
-        });
+        shoes.getShoes().sort(new ShoesComparator());
 
         return shoes;
     }
