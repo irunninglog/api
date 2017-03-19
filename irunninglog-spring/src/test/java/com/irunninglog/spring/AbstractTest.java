@@ -86,7 +86,7 @@ public abstract class AbstractTest implements ApplicationContextAware {
         profileEntity.setFirstName("Allan");
         profileEntity.setLastName("Lewis");
         profileEntity.setBirthday(LocalDate.now());
-        profileEntity.setGender(Gender.Male);
+        profileEntity.setGender(Gender.MALE);
         profileEntity.setWeekStart(DayOfWeek.MONDAY);
         profileEntity.setPreferredUnits(Unit.English);
         profileEntity = profileEntityRepository.save(profileEntity);

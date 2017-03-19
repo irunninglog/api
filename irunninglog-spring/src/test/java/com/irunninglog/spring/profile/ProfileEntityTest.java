@@ -19,7 +19,7 @@ public class ProfileEntityTest extends AbstractTest {
         entity.setFirstName("Allan");
         entity.setLastName("Lewis");
         entity.setBirthday(LocalDate.now());
-        entity.setGender(Gender.Male);
+        entity.setGender(Gender.MALE);
         entity.setEmail("allan@irunninglog.com");
         entity.setPassword("foo");
         entity.setWeekStart(DayOfWeek.MONDAY);
@@ -36,7 +36,7 @@ public class ProfileEntityTest extends AbstractTest {
         assertEquals("Lewis", entity.getLastName());
         assertEquals("allan@irunninglog.com", entity.getEmail());
         assertEquals("foo", entity.getPassword());
-        assertEquals(Gender.Male, entity.getGender());
+        assertEquals(Gender.MALE, entity.getGender());
         assertEquals(DayOfWeek.MONDAY, entity.getWeekStart());
         assertEquals(Unit.English, entity.getPreferredUnits());
         assertEquals(25, entity.getWeeklyTarget(), 1E-9);

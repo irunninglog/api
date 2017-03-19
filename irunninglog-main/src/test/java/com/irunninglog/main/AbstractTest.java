@@ -125,7 +125,7 @@ public abstract class AbstractTest {
         entity.setFirstName("First");
         entity.setLastName("Last");
         entity.setBirthday(LocalDate.now());
-        entity.setGender(Gender.Male);
+        entity.setGender(Gender.MALE);
         entity.setPreferredUnits(Unit.English);
         entity.setWeekStart(DayOfWeek.MONDAY);
         entity.setWeeklyTarget(0);

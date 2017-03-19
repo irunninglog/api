@@ -8,8 +8,8 @@ public class GenderTest {
 
     @Test
     public void sanity() {
-        assertNotNull(Gender.Male);
-        assertNotNull(Gender.Female);
+        assertNotNull(Gender.MALE);
+        assertNotNull(Gender.FEMALE);
     }
 
 }
