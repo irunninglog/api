@@ -23,7 +23,7 @@ public class ProfileEntityTest extends AbstractTest {
         entity.setEmail("allan@irunninglog.com");
         entity.setPassword("foo");
         entity.setWeekStart(DayOfWeek.MONDAY);
-        entity.setPreferredUnits(Unit.English);
+        entity.setPreferredUnits(Unit.ENGLISH);
         entity.setWeeklyTarget(25);
         entity.setMonthlyTarget(125);
         entity.setYearlyTarget(1500);
@@ -38,7 +38,7 @@ public class ProfileEntityTest extends AbstractTest {
         assertEquals("foo", entity.getPassword());
         assertEquals(Gender.MALE, entity.getGender());
         assertEquals(DayOfWeek.MONDAY, entity.getWeekStart());
-        assertEquals(Unit.English, entity.getPreferredUnits());
+        assertEquals(Unit.ENGLISH, entity.getPreferredUnits());
         assertEquals(25, entity.getWeeklyTarget(), 1E-9);
         assertEquals(125, entity.getMonthlyTarget(), 1E-9);
         assertEquals(1500, entity.getYearlyTarget(), 1E-9);

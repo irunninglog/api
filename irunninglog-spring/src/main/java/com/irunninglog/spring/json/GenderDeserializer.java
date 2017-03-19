@@ -1,4 +1,4 @@
-package com.irunninglog.spring;
+package com.irunninglog.spring.json;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;

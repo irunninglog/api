@@ -75,9 +75,9 @@ public final class MathService {
     }
 
     public String format(final BigDecimal input, final Unit units) {
-        BigDecimal number = units == Unit.Metric ? input.multiply(CONVERTER) : input;
+        BigDecimal number = units == Unit.METRIC ? input.multiply(CONVERTER) : input;
 
-        return DecimalFormat.getInstance().format(number.setScale(2, RoundingMode.HALF_UP)) + (units == Unit.English ? " mi" : " km");
+        return DecimalFormat.getInstance().format(number.setScale(2, RoundingMode.HALF_UP)) + (units == Unit.ENGLISH ? " mi" : " km");
     }
 
     public int intValue(BigDecimal number) {
@@ -99,7 +99,7 @@ public final class MathService {
     public String formatShort(double total, Unit units) {
         BigDecimal number = BigDecimal.valueOf(total);
 
-        if (units == Unit.Metric) {
+        if (units == Unit.METRIC) {
             number = number.multiply(CONVERTER);
         }
 

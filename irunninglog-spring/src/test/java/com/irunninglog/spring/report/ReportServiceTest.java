@@ -65,7 +65,7 @@ public class ReportServiceTest extends AbstractTest {
 
         IDataSet dataSet = reportService.mileageByRun(profileEntity.getId());
         assertEquals(String.valueOf(profileEntity.getId()), dataSet.getKey());
-        assertEquals(Unit.English, dataSet.getUnits());
+        assertEquals(Unit.ENGLISH, dataSet.getUnits());
 
         IDataPoint dataPoint = dataSet.getData().iterator().next();
         assertEquals("10.00", dataPoint.getValue());

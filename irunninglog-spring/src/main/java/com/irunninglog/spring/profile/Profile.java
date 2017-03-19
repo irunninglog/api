@@ -5,8 +5,10 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.irunninglog.api.Gender;
 import com.irunninglog.api.Unit;
 import com.irunninglog.api.profile.IProfile;
-import com.irunninglog.spring.GenderDeserializer;
-import com.irunninglog.spring.GenderSerializer;
+import com.irunninglog.spring.json.GenderDeserializer;
+import com.irunninglog.spring.json.GenderSerializer;
+import com.irunninglog.spring.json.UnitDeserializer;
+import com.irunninglog.spring.json.UnitSerializer;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -25,6 +27,8 @@ final class Profile implements IProfile {
     @JsonDeserialize(using = GenderDeserializer.class)
     private Gender gender;
     private DayOfWeek weekStart;
+    @JsonSerialize(using = UnitSerializer.class)
+    @JsonDeserialize(using = UnitDeserializer.class)
     private Unit preferredUnits;
     private double weeklyTarget;
     private double monthlyTarget;
