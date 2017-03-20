@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 
 import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -14,10 +15,11 @@ import static org.junit.Assert.assertTrue;
 public class DashboardProgressServiceTest extends AbstractDashboardServicesTest {
 
     private DashboardProgressService progressService;
+    private final Integer offset = -1 * ZonedDateTime.now().getOffset().getTotalSeconds() / 60;
 
     @Test
     public void noProgress() {
-        assertEquals(3, progressService.progress(profileEntity, 300).size());
+        assertEquals(3, progressService.progress(profileEntity, offset).size());
     }
 
     @Test
@@ -25,7 +27,7 @@ public class DashboardProgressServiceTest extends AbstractDashboardServicesTest 
         profileEntity.setYearlyTarget(1500);
         saveWorkout(LocalDate.now().minusYears(1), 10, profileEntity);
 
-        assertEquals(4, progressService.progress(profileEntity, 300).size());
+        assertEquals(4, progressService.progress(profileEntity, offset).size());
     }
 
     @Test
@@ -37,7 +39,7 @@ public class DashboardProgressServiceTest extends AbstractDashboardServicesTest 
         saveWorkout(LocalDate.now(), 10, profileEntity);
         saveWorkout(LocalDate.now(), 11, profileEntity);
 
-        Collection<IProgressInfo> progress = progressService.progress(profileEntity, 300);
+        Collection<IProgressInfo> progress = progressService.progress(profileEntity, offset);
         Iterator<IProgressInfo> iterator = progress.iterator();
 
         IProgressInfo thisWeek = iterator.next();
