@@ -19,6 +19,8 @@ import java.util.List;
 @InternalService
 final class DashboardStreaksService {
 
+    private static final String SUFFIX_DAYS = " day(s)";
+    private static final String SUFFIX_WORKOUTS = " workout(s)";
     private static final Logger LOG = LoggerFactory.getLogger(DashboardStreaksService.class);
 
     private final IWorkoutEntityRepository workoutEntityRepository;
@@ -43,20 +45,20 @@ final class DashboardStreaksService {
         Streaks streaks = getStreaks(workouts, offset);
         IProgressInfo current = factory.get(IProgressInfo.class)
                 .setTitle("Current")
-                .setSubTitle(streaks.getCurrent().getSpan() + " day(s)")
-                .setTextOne(streaks.getCurrent().getCount() + " workout(s)")
+                .setSubTitle(streaks.getCurrent().getSpan() + SUFFIX_DAYS)
+                .setTextOne(streaks.getCurrent().getCount() + SUFFIX_WORKOUTS)
                 .setTextTwo(streaks.getCurrent().getCount() == 0 ? "No current streak!" : formatStreak(streaks.getCurrent()));
 
         IProgressInfo thisYear = factory.get(IProgressInfo.class)
                 .setTitle("This Year")
-                .setSubTitle(streaks.getThisYear().getSpan() + " day(s)")
-                .setTextOne(streaks.getThisYear().getCount() + " workout(s)")
+                .setSubTitle(streaks.getThisYear().getSpan() + SUFFIX_DAYS)
+                .setTextOne(streaks.getThisYear().getCount() + SUFFIX_WORKOUTS)
                 .setTextTwo(streaks.getThisYear().getCount() == 0 ? "No streaks this year!" : formatStreak(streaks.getThisYear()));
 
         IProgressInfo ever = factory.get(IProgressInfo.class)
                 .setTitle("Ever")
-                .setSubTitle(streaks.getEver().getSpan() + " day(s)")
-                .setTextOne(streaks.getEver().getCount() + " workout(s)")
+                .setSubTitle(streaks.getEver().getSpan() + SUFFIX_DAYS)
+                .setTextOne(streaks.getEver().getCount() + SUFFIX_WORKOUTS)
                 .setTextTwo(streaks.getEver().getCount() == 0 ? "No streaks this year!" : formatStreak(streaks.getEver()));
 
         List<IProgressInfo> progressInfo = new ArrayList<>(3);
