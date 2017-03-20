@@ -1,6 +1,5 @@
 package com.irunninglog.api;
 
-import com.irunninglog.api.Progress;
 import org.junit.Test;
 
 import static org.junit.Assert.assertNotNull;
@@ -9,10 +8,10 @@ public class ProgressTest {
 
     @Test
     public void sanity() {
-        assertNotNull(Progress.Bad);
-        assertNotNull(Progress.Good);
-        assertNotNull(Progress.Ok);
-        assertNotNull(Progress.None);
+        assertNotNull(Progress.BAD);
+        assertNotNull(Progress.GOOD);
+        assertNotNull(Progress.OK);
+        assertNotNull(Progress.NONE);
     }
 
 }

@@ -1,7 +1,11 @@
 package com.irunninglog.spring.dashboard;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.irunninglog.api.Progress;
 import com.irunninglog.api.dashboard.IProgressInfo;
+import com.irunninglog.spring.json.ProgressDeserializer;
+import com.irunninglog.spring.json.ProgressSerializer;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -16,6 +20,8 @@ final class ProgressInfo implements IProgressInfo {
     private int max;
     private int value;
     private int percentage;
+    @JsonSerialize(using = ProgressSerializer.class)
+    @JsonDeserialize(using = ProgressDeserializer.class)
     private Progress progress;
 
     @Override

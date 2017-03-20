@@ -3,6 +3,7 @@ package com.irunninglog.vertx.endpoint;
 import com.irunninglog.api.Endpoint;
 import com.irunninglog.api.ResponseStatus;
 import com.irunninglog.api.security.*;
+import com.irunninglog.api.security.SecurityException;
 import com.irunninglog.vertx.mock.MockAuthnRequest;
 import com.irunninglog.vertx.mock.MockUser;
 import com.irunninglog.vertx.security.AuthnVerticle;
@@ -29,7 +30,7 @@ public class AuthnVerticleTest extends AbstractVerticleTest {
     }
 
     @Test
-    public void good(TestContext context) throws AuthnException, AuthzException {
+    public void good(TestContext context) throws SecurityException {
         Mockito.when(authenticationService.authenticate(any(Endpoint.class), any(String.class), any(String.class))).thenReturn(goodUser);
 
         rule.vertx().eventBus().<String>send(AuthnVerticle.ADDRESS, mapper.encode(goodRequest), context.asyncAssertSuccess(o -> {
@@ -42,7 +43,7 @@ public class AuthnVerticleTest extends AbstractVerticleTest {
     }
 
     @Test
-    public void authn(TestContext context) throws AuthnException, AuthzException {
+    public void authn(TestContext context) throws SecurityException {
         Mockito.when(authenticationService.authenticate(any(Endpoint.class), any(String.class), any(String.class))).thenThrow(new AuthnException(""));
 
         rule.vertx().eventBus().<String>send(AuthnVerticle.ADDRESS, mapper.encode(authn), context.asyncAssertSuccess(o -> {
@@ -55,7 +56,7 @@ public class AuthnVerticleTest extends AbstractVerticleTest {
     }
 
     @Test
-    public void authz(TestContext context) throws AuthnException, AuthzException {
+    public void authz(TestContext context) throws SecurityException {
         Mockito.when(authenticationService.authenticate(any(Endpoint.class), any(String.class), any(String.class))).thenThrow(new AuthzException(""));
 
         rule.vertx().eventBus().<String>send(AuthnVerticle.ADDRESS, mapper.encode(authz), context.asyncAssertSuccess(o -> {

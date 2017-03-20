@@ -74,7 +74,7 @@ public class WorkoutServiceTest extends AbstractTest {
         assertEquals("10 mi", summary.getMileage());
         assertEquals(1, summary.getCount());
         assertEquals(0, summary.getPercentage());
-        assertEquals(Progress.None, summary.getProgress());
+        assertEquals(Progress.NONE, summary.getProgress());
 
         IWorkout workout = workouts.getWorkouts().get(0);
         assertEquals(dateService.format(zonedDateTime.toLocalDate().minusMonths(1)), workout.getDate());

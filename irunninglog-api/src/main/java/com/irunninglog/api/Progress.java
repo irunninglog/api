@@ -2,9 +2,9 @@ package com.irunninglog.api;
 
 public enum Progress {
 
-    None,
-    Bad,
-    Ok,
-    Good
+    NONE,
+    BAD,
+    OK,
+    GOOD
 
 }

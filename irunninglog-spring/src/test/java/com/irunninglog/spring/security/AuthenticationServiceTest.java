@@ -1,10 +1,8 @@
 package com.irunninglog.spring.security;
 
 import com.irunninglog.api.Endpoint;
-import com.irunninglog.api.security.AuthnException;
-import com.irunninglog.api.security.AuthzException;
-import com.irunninglog.api.security.IAuthenticationService;
-import com.irunninglog.api.security.IUser;
+import com.irunninglog.api.security.*;
+import com.irunninglog.api.security.SecurityException;
 import com.irunninglog.spring.AbstractTest;
 import com.irunninglog.spring.profile.ProfileEntity;
 import org.junit.Test;
@@ -32,7 +30,7 @@ public class AuthenticationServiceTest extends AbstractTest {
     }
 
     @Test
-    public void success() throws AuthnException, AuthzException {
+    public void success() throws com.irunninglog.api.security.SecurityException {
         IUser user = authenticationService.authenticate(Endpoint.DASHBOARD_GET,
                 "/profiles/" + myprofile.getId(),
                 "Basic YWxsYW5AaXJ1bm5pbmdsb2cuY29tOnBhc3N3b3Jk");
@@ -41,7 +39,7 @@ public class AuthenticationServiceTest extends AbstractTest {
     }
 
     @Test
-    public void notFound() throws AuthzException {
+    public void notFound() throws SecurityException {
         try {
             authenticationService.authenticate(Endpoint.DASHBOARD_GET,
                     null,
@@ -54,7 +52,7 @@ public class AuthenticationServiceTest extends AbstractTest {
     }
 
     @Test
-    public void wrongPassword() throws AuthzException {
+    public void wrongPassword() throws SecurityException {
         try {
             authenticationService.authenticate(Endpoint.DASHBOARD_GET,
                     null,
@@ -67,7 +65,7 @@ public class AuthenticationServiceTest extends AbstractTest {
     }
 
     @Test
-    public void decodeFailure() throws AuthzException {
+    public void decodeFailure() throws SecurityException {
         try {
             authenticationService.authenticate(Endpoint.DASHBOARD_GET,
                     null,
@@ -80,7 +78,7 @@ public class AuthenticationServiceTest extends AbstractTest {
     }
 
     @Test
-    public void denyAll() throws AuthnException {
+    public void denyAll() throws SecurityException {
         try {
             authenticationService.authenticate(Endpoint.FORBIDDEN,
                     null,
@@ -93,19 +91,19 @@ public class AuthenticationServiceTest extends AbstractTest {
     }
 
     @Test
-    public void allowAnonymous() throws AuthnException, AuthzException {
+    public void allowAnonymous() throws SecurityException {
         assertNull(authenticationService.authenticate(Endpoint.PING, "/ping", null));
     }
 
     @Test
-    public void allowAll() throws AuthnException, AuthzException {
+    public void allowAll() throws SecurityException {
         assertNotNull(authenticationService.authenticate(Endpoint.LOGIN,
                 "/authn",
                 "Basic YWxsYW5AaXJ1bm5pbmdsb2cuY29tOnBhc3N3b3Jk"));
     }
 
     @Test
-    public void canViewMyProfile() throws AuthnException, AuthzException {
+    public void canViewMyProfile() throws SecurityException {
         IUser user = authenticationService.authenticate(Endpoint.PROFILE_GET,
                 "/profiles/" + myprofile.getId(),
                 "Basic YWxsYW5AaXJ1bm5pbmdsb2cuY29tOnBhc3N3b3Jk");
@@ -114,7 +112,7 @@ public class AuthenticationServiceTest extends AbstractTest {
     }
 
     @Test
-    public void admin() throws AuthnException, AuthzException {
+    public void admin() throws SecurityException {
         IUser user = authenticationService.authenticate(Endpoint.PROFILE_GET,
                 "/profiles/" + myprofile.getId() + "" + admin.getId(),
                 "Basic YWRtaW5AaXJ1bm5pbmdsb2cuY29tOnBhc3N3b3Jk");
@@ -123,7 +121,7 @@ public class AuthenticationServiceTest extends AbstractTest {
     }
 
     @Test
-    public void none() throws AuthnException {
+    public void none() throws SecurityException {
         try {
             authenticationService.authenticate(Endpoint.PROFILE_GET,
                     "/profiles/" + none.getId(),
@@ -136,7 +134,7 @@ public class AuthenticationServiceTest extends AbstractTest {
     }
 
     @Test
-    public void token() throws AuthnException, AuthzException {
+    public void token() throws SecurityException {
         IUser user = authenticationService.authenticate(Endpoint.DASHBOARD_GET,
                 "/profiles/" + myprofile.getId(),
                 "Basic YWxsYW5AaXJ1bm5pbmdsb2cuY29tOnBhc3N3b3Jk");
@@ -145,7 +143,7 @@ public class AuthenticationServiceTest extends AbstractTest {
     }
 
     @Test
-    public void tokenSuccess() throws AuthnException, AuthzException {
+    public void tokenSuccess() throws SecurityException {
         IUser basic = authenticationService.authenticate(Endpoint.DASHBOARD_GET,
                 "/profiles/" + myprofile.getId(),
                 "Basic YWxsYW5AaXJ1bm5pbmdsb2cuY29tOnBhc3N3b3Jk");
@@ -158,7 +156,7 @@ public class AuthenticationServiceTest extends AbstractTest {
     }
 
     @Test
-    public void tokenExpired() throws AuthnException, AuthzException {
+    public void tokenExpired() throws SecurityException {
         IUser basic = authenticationService.authenticate(Endpoint.DASHBOARD_GET,
                 "/profiles/" + myprofile.getId(),
                 "Basic YWxsYW5AaXJ1bm5pbmdsb2cuY29tOnBhc3N3b3Jk");
@@ -180,7 +178,7 @@ public class AuthenticationServiceTest extends AbstractTest {
     }
 
     @Test
-    public void tokenInvalidUser() throws AuthnException, AuthzException {
+    public void tokenInvalidUser() throws SecurityException {
         IUser basic = authenticationService.authenticate(Endpoint.DASHBOARD_GET,
                 "/profiles/" + myprofile.getId(),
                 "Basic YWxsYW5AaXJ1bm5pbmdsb2cuY29tOnBhc3N3b3Jk");
@@ -202,7 +200,7 @@ public class AuthenticationServiceTest extends AbstractTest {
     }
 
     @Test
-    public void tokenBadSignature() throws AuthnException, AuthzException {
+    public void tokenBadSignature() throws SecurityException {
         IUser basic = authenticationService.authenticate(Endpoint.DASHBOARD_GET,
                 "/profiles/" + myprofile.getId(),
                 "Basic YWxsYW5AaXJ1bm5pbmdsb2cuY29tOnBhc3N3b3Jk");
@@ -224,7 +222,7 @@ public class AuthenticationServiceTest extends AbstractTest {
     }
 
     @Test
-    public void tokenInvalid() throws AuthzException {
+    public void tokenInvalid() throws SecurityException {
         try {
             authenticationService.authenticate(Endpoint.DASHBOARD_GET,
                     null,

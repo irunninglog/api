@@ -1,7 +1,6 @@
 package com.irunninglog.vertx.route;
 
-import com.irunninglog.api.security.AuthnException;
-import com.irunninglog.api.security.AuthzException;
+import com.irunninglog.api.security.SecurityException;
 import com.irunninglog.api.workout.IWorkoutService;
 import com.irunninglog.vertx.endpoint.workout.DeleteWorkoutVerticle;
 import io.vertx.ext.unit.TestContext;
@@ -18,7 +17,7 @@ public class DeleteWorkoutHandlerTest extends AbstractHandlerTest {
     }
 
     @Test
-    public void delete(TestContext context) throws AuthnException, AuthzException {
+    public void delete(TestContext context) throws SecurityException {
         authn();
 
         context.assertEquals(200, delete(context, "/profiles/1/workouts/1", TOKEN));

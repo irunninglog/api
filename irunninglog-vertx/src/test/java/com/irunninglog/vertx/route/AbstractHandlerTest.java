@@ -3,14 +3,13 @@ package com.irunninglog.vertx.route;
 import com.irunninglog.api.Endpoint;
 import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.mapping.IMapper;
-import com.irunninglog.api.security.AuthnException;
-import com.irunninglog.api.security.AuthzException;
-import com.irunninglog.api.security.*;
+import com.irunninglog.api.security.IAuthenticationService;
+import com.irunninglog.api.security.SecurityException;
+import com.irunninglog.vertx.http.ServerVerticle;
 import com.irunninglog.vertx.mock.MockFactory;
 import com.irunninglog.vertx.mock.MockMapper;
 import com.irunninglog.vertx.mock.MockUser;
 import com.irunninglog.vertx.security.AuthnVerticle;
-import com.irunninglog.vertx.http.ServerVerticle;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpClient;
@@ -72,7 +71,7 @@ public abstract class AbstractHandlerTest {
 
     protected abstract void afterBefore(TestContext context);
 
-    final void authn() throws AuthnException, AuthzException {
+    final void authn() throws SecurityException {
         Mockito.when(authenticationService.authenticate(any(Endpoint.class), any(String.class), any(String.class)))
                 .thenReturn(new MockUser());
     }

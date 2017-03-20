@@ -35,7 +35,7 @@ class MileageByDataService {
                 IDataPoint dataPoint = factory.get(IDataPoint.class)
                         .setLabel(entity.getName())
                         .setValue(mathService.formatShort(distance.doubleValue(), unit))
-                        .setProgress(Progress.None);
+                        .setProgress(Progress.NONE);
 
                 points.add(dataPoint);
             }

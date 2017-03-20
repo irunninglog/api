@@ -69,7 +69,7 @@ public class ReportServiceTest extends AbstractTest {
 
         IDataPoint dataPoint = dataSet.getData().iterator().next();
         assertEquals("10.00", dataPoint.getValue());
-        assertEquals(Progress.None, dataPoint.getProgress());
+        assertEquals(Progress.NONE, dataPoint.getProgress());
     }
 
     @Test

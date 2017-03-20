@@ -38,13 +38,13 @@ public final class MathService {
         BigDecimal target2 = round(target.multiply(BigDecimal.valueOf(.8)));
 
         if (target.doubleValue() < 1E-9) {
-            progress = Progress.None;
+            progress = Progress.NONE;
         } else if (number.compareTo(target1) < 0) {
-            progress = inverted ? Progress.Good : Progress.Bad;
+            progress = inverted ? Progress.GOOD : Progress.BAD;
         } else if (number.compareTo(target2) < 0) {
-            progress = Progress.Ok;
+            progress = Progress.OK;
         } else {
-            progress = inverted ? Progress.Bad : Progress.Good;
+            progress = inverted ? Progress.BAD : Progress.GOOD;
         }
 
         return progress;

@@ -1,7 +1,6 @@
 package com.irunninglog.vertx.route;
 
-import com.irunninglog.api.security.AuthnException;
-import com.irunninglog.api.security.AuthzException;
+import com.irunninglog.api.security.SecurityException;
 import com.irunninglog.api.workout.IWorkoutService;
 import com.irunninglog.vertx.endpoint.workout.PutWorkoutVerticle;
 import io.vertx.ext.unit.TestContext;
@@ -19,7 +18,7 @@ public class PutWorkoutHandlerTest extends AbstractHandlerTest {
     }
 
     @Test
-    public void put(TestContext context) throws AuthnException, AuthzException {
+    public void put(TestContext context) throws SecurityException {
         authn();
 
         context.assertEquals(200, put(context, "/profiles/1/workouts", TOKEN, "{}"));

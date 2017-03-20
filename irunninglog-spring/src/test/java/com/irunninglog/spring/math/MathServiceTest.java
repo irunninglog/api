@@ -113,10 +113,10 @@ public class MathServiceTest extends AbstractTest {
 
     @Test
     public void progress() {
-        assertEquals(Progress.None, mathService.progress(new BigDecimal(0), new BigDecimal(0)));
-        assertEquals(Progress.Bad, mathService.progress(new BigDecimal(10), new BigDecimal(100)));
-        assertEquals(Progress.Ok, mathService.progress(new BigDecimal(30), new BigDecimal(100)));
-        assertEquals(Progress.Good, mathService.progress(new BigDecimal(90), new BigDecimal(100)));
+        assertEquals(Progress.NONE, mathService.progress(new BigDecimal(0), new BigDecimal(0)));
+        assertEquals(Progress.BAD, mathService.progress(new BigDecimal(10), new BigDecimal(100)));
+        assertEquals(Progress.OK, mathService.progress(new BigDecimal(30), new BigDecimal(100)));
+        assertEquals(Progress.GOOD, mathService.progress(new BigDecimal(90), new BigDecimal(100)));
     }
 
     @Test
