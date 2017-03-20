@@ -144,8 +144,10 @@ public abstract class AbstractRouteHandler<Q extends IRequest, S extends IRespon
                     fail(routingContext, response.getStatus());
                 }
             } else {
-                logger.error("handleAuthenticated:failure", result.cause());
-                logger.error("handleAuthenticated:failure{}", routingContext.normalisedPath());
+                if (logger.isErrorEnabled()) {
+                    logger.error("handleAuthenticated:failure", result.cause());
+                    logger.error("handleAuthenticated:failure{}", routingContext.normalisedPath());
+                }
 
                 fail(routingContext, ResponseStatus.ERROR);
             }

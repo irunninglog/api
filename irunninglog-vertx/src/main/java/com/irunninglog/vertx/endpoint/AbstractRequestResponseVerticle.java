@@ -50,7 +50,9 @@ public abstract class AbstractRequestResponseVerticle<Q extends IRequest, S exte
     private void handleResponse(Future<String> future, Message<String> msg) {
         long start = System.currentTimeMillis();
 
-        logger.info("handler:{}:{}", address(), msg.body());
+        if (logger.isInfoEnabled()) {
+            logger.info("handler:{}:{}", address(), msg.body());
+        }
 
         try {
             logger.info("handler:start");
@@ -80,7 +82,9 @@ public abstract class AbstractRequestResponseVerticle<Q extends IRequest, S exte
                 future.fail(ex1);
             }
         } finally {
-            logger.info("handler:{}:{}ms", address(), System.currentTimeMillis() - start);
+            if (logger.isInfoEnabled()) {
+                logger.info("handler:{}:{}ms", address(), System.currentTimeMillis() - start);
+            }
         }
     }
 
