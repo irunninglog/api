@@ -81,18 +81,9 @@ class MileageByMonthService {
         while (!workouts.isEmpty()) {
             WorkoutEntity workoutEntity = workouts.get(0);
             if (!workoutEntity.getDate().isBefore(yearStart)) {
-                double total = 0.0;
-
                 LocalDate monthStart = dateService.getMonthStartDate(workoutEntity.getDate());
-                for (Iterator<WorkoutEntity> iterator = workouts.iterator(); iterator.hasNext();) {
-                    WorkoutEntity inner = iterator.next();
-                    if (!inner.getDate().isBefore(monthStart)) {
-                        total += inner.getDistance();
-                        iterator.remove();
-                    } else {
-                        break;
-                    }
-                }
+
+                double total = monthTotal(workouts, monthStart);
 
                 IDataPoint monthDataPoint = factory.get(IDataPoint.class)
                         .setLabel(dateService.formatMonthShort(monthStart))
@@ -104,6 +95,22 @@ class MileageByMonthService {
                 break;
             }
         }
+    }
+
+    private double monthTotal(List<WorkoutEntity> workouts, LocalDate monthStart) {
+        double total = 0.0;
+
+        for (Iterator<WorkoutEntity> iterator = workouts.iterator(); iterator.hasNext();) {
+            WorkoutEntity inner = iterator.next();
+            if (!inner.getDate().isBefore(monthStart)) {
+                total += inner.getDistance();
+                iterator.remove();
+            } else {
+                break;
+            }
+        }
+
+        return total;
     }
 
 }
