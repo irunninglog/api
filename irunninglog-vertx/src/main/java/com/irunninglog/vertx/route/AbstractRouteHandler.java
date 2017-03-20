@@ -9,14 +9,18 @@ import com.irunninglog.api.mapping.IMapper;
 import com.irunninglog.api.security.IAuthnRequest;
 import com.irunninglog.api.security.IAuthnResponse;
 import com.irunninglog.vertx.security.AuthnVerticle;
+import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
+import io.vertx.core.eventbus.Message;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.ext.web.RoutingContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public abstract class AbstractRouteHandler<Q extends IRequest, S extends IResponse> implements Handler<RoutingContext> {
+
+    private static final String LOG_STMT = "handle:{}:{}";
 
     private final Vertx vertx;
     private final IFactory factory;
@@ -63,11 +67,11 @@ public abstract class AbstractRouteHandler<Q extends IRequest, S extends IRespon
                         if (result.succeeded()) {
                             String resultString = result.result().body();
 
-                            logger.info("handle:{}:{}", AuthnVerticle.ADDRESS, resultString);
+                            logger.info(LOG_STMT, AuthnVerticle.ADDRESS, resultString);
 
                             IAuthnResponse authnResponse = mapper.decode(resultString, IAuthnResponse.class);
 
-                            logger.info("handle:{}:{}", AuthnVerticle.ADDRESS, authnResponse.getStatus());
+                            logger.info(LOG_STMT, AuthnVerticle.ADDRESS, authnResponse.getStatus());
 
                             if (authnResponse.getStatus() == ResponseStatus.OK) {
                                 routingContext.put("user", authnResponse.getBody());
@@ -120,33 +124,35 @@ public abstract class AbstractRouteHandler<Q extends IRequest, S extends IRespon
 
         logger.info("handleAuthenticated:{}:{}", endpoint.getAddress(), requestString);
 
-        vertx.eventBus().<String>send(endpoint.getAddress(), requestString, result -> {
-            try {
-                if (result.succeeded()) {
-                    String resultString = result.result().body();
+        vertx.eventBus().<String>send(endpoint.getAddress(), requestString, result -> handle(result, routingContext, token));
+    }
 
-                    logger.info("handleAuthenticated:{}:{}", endpoint.getAddress(), resultString);
+    private void handle(AsyncResult<Message<String>> result, RoutingContext routingContext, String token) {
+        try {
+            if (result.succeeded()) {
+                String resultString = result.result().body();
 
-                    S response = mapper.decode(resultString, responseClass);
+                logger.info("handleAuthenticated:{}:{}", endpoint.getAddress(), resultString);
 
-                    logger.info("handle:{}:{}", endpoint.getAddress(), response);
+                S response = mapper.decode(resultString, responseClass);
 
-                    if (response.getStatus() == ResponseStatus.OK) {
-                        succeed(routingContext, response, token);
-                    } else {
-                        fail(routingContext, response.getStatus());
-                    }
+                logger.info(LOG_STMT, endpoint.getAddress(), response);
+
+                if (response.getStatus() == ResponseStatus.OK) {
+                    succeed(routingContext, response, token);
                 } else {
-                    logger.error("handleAuthenticated:failure", result.cause());
-                    logger.error("handleAuthenticated:failure{}", routingContext.normalisedPath());
-
-                    fail(routingContext, ResponseStatus.ERROR);
+                    fail(routingContext, response.getStatus());
                 }
-            } catch (Exception ex) {
-                logger.error("handleAuthenticated:exception", ex);
+            } else {
+                logger.error("handleAuthenticated:failure", result.cause());
+                logger.error("handleAuthenticated:failure{}", routingContext.normalisedPath());
+
                 fail(routingContext, ResponseStatus.ERROR);
             }
-        });
+        } catch (Exception ex) {
+            logger.error("handleAuthenticated:exception", ex);
+            fail(routingContext, ResponseStatus.ERROR);
+        }
     }
 
     private void succeed(RoutingContext routingContext, IResponse response, String token) {
