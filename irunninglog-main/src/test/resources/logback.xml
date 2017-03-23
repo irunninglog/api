@@ -1,7 +1,0 @@
-<configuration scan="true" scanPeriod="30 seconds">
-    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender"/>
-
-    <root level="INFO">
-        <appender-ref ref="CONSOLE" />
-    </root>
-</configuration>
