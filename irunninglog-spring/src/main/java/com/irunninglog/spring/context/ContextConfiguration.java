@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -28,7 +27,6 @@ import java.util.Properties;
 @EnableTransactionManagement
 @ComponentScan("com.irunninglog")
 @EnableJpaRepositories(basePackages = {"com.irunninglog"})
-@PropertySource(value = { "${env}" })
 public class ContextConfiguration {
 
     private static final Logger LOG = LoggerFactory.getLogger(ContextConfiguration.class);
@@ -50,36 +48,29 @@ public class ContextConfiguration {
     }
 
     private Properties jpaProperties() {
-        String autoDdl = environment.getRequiredProperty("jpaProperties.hibernate.hbm2ddl.auto");
-        String dialect = environment.getRequiredProperty("jpaProperties.hibernate.dialect");
-        String showSql = environment.getProperty("jpaProperties.hibernate.show_sql", Boolean.FALSE.toString());
+        JpaConfig config = new JpaConfig(environment.getRequiredProperty("jpa"));
 
-        LOG.info("jpaProperties:hibernate.hbm2ddl.auto:{}", autoDdl);
-        LOG.info("jpaProperties:hibernate.dialect:{}", dialect);
-        LOG.info("jpaProperties:hibernate.show_sql:{}", showSql);
+        LOG.info("dataSource:{}", config);
 
         Properties properties = new Properties();
-        properties.setProperty("hibernate.hbm2ddl.auto", autoDdl);
-        properties.setProperty("hibernate.dialect", dialect);
-        properties.setProperty("hibernate.show_sql", showSql);
+        properties.setProperty("hibernate.hbm2ddl.auto", config.getAutoDdl());
+        properties.setProperty("hibernate.dialect", config.getDialect());
+        properties.setProperty("hibernate.show_sql", config.getShowSql());
 
         return properties;
     }
 
     @Bean
     public DataSource dataSource(){
-        String driver = environment.getRequiredProperty("dataSource.driverClassName");
-        String url = environment.getRequiredProperty("dataSource.url");
-        String username = environment.getRequiredProperty("dataSource.username");
-        String password = environment.getRequiredProperty("dataSource.password");
+        DataSourceConfig config = new DataSourceConfig(environment.getRequiredProperty("dataSource"));
 
-        LOG.info("dataSource:{}:{}:{}:{}", driver, url, username, "***");
+        LOG.info("dataSource:{}", config);
 
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(driver);
-        dataSource.setUrl(url);
-        dataSource.setUsername(username);
-        dataSource.setPassword(password);
+        dataSource.setDriverClassName(config.getDriverClassName());
+        dataSource.setUrl(config.getUrl());
+        dataSource.setUsername(config.getUsername());
+        dataSource.setPassword(config.getPassword());
 
         return dataSource;
     }

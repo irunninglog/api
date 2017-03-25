@@ -10,7 +10,7 @@
 
     <version>3.0.0-m1</version>
 
-    <name>irunninglog root pom</name>
+    <name>irunninglog java api</name>
 
     <packaging>pom</packaging>
 

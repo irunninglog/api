@@ -7,11 +7,12 @@ import com.irunninglog.api.security.AuthnException;
 import com.irunninglog.api.security.AuthzException;
 import com.irunninglog.api.security.IAuthenticationService;
 import com.irunninglog.api.security.IUser;
+import com.irunninglog.spring.context.AuthenticationServiceConfig;
 import com.irunninglog.spring.service.ApiService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.codec.Hex;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.AntPathMatcher;
@@ -34,19 +35,22 @@ final class AuthenticationService implements IAuthenticationService {
     private final IFactory factory;
     private final AntPathMatcher matcher = new AntPathMatcher();
 
-    @Value("#{environment.authenticationServiceKey}")
-    private String key;
-    @Value("#{environment.authenticationServiceDuration}")
-    private long duration;
+    private final long duration;
+    private final String key;
 
     @Autowired
     public AuthenticationService(IUserEntityRepository userEntityRepository,
                                  PasswordEncoder passwordEncoder,
-                                 IFactory factory) {
+                                 IFactory factory,
+                                 Environment environment) {
 
         this.userEntityRepository = userEntityRepository;
         this.passwordEncoder = passwordEncoder;
         this.factory = factory;
+
+        AuthenticationServiceConfig config = new AuthenticationServiceConfig(environment.getRequiredProperty("authenticationService"));
+        duration = config.getDuration();
+        key = config.getKey();
     }
 
     @Override
@@ -209,14 +213,6 @@ final class AuthenticationService implements IAuthenticationService {
         }
 
         return new String(Hex.encode(digest.digest(data.getBytes())));
-    }
-
-    public long getDuration() {
-        return duration;
-    }
-
-    public void setDuration(long duration) {
-        this.duration = duration;
     }
 
 }

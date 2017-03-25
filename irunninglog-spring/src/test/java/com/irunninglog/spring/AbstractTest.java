@@ -40,10 +40,6 @@ public abstract class AbstractTest implements ApplicationContextAware {
     private IUserEntityRepository userEntityRepository;
     private IAuthorityEntityRepository authorityEntityRepository;
 
-    static {
-        System.setProperty("env", "application.properties");
-    }
-
     @Before
     public final void before() {
         passwordEncoder = applicationContext.getBean(PasswordEncoder.class);

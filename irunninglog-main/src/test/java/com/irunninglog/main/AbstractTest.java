@@ -30,7 +30,6 @@ import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.DayOfWeek;
@@ -59,7 +58,9 @@ public abstract class AbstractTest {
 
     @Before
     public final void before(TestContext context) throws Exception {
-        System.setProperty("env", "file:///" + new ClassPathResource("application.properties").getFile().getAbsolutePath());
+        System.setProperty("dataSource", "org.h2.Driver|jdbc:h2:mem:test;DB_CLOSE_DELAY=-1|sa");
+        System.setProperty("jpa", "update|org.hibernate.dialect.H2Dialect");
+        System.setProperty("authenticationService", "3600000|foo");
 
         applicationContext = new AnnotationConfigApplicationContext(ContextConfiguration.class);
 
