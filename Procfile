@@ -1,1 +1,1 @@
-web: java -Denv=application.properties -DhttpServer.listenPort=$PORT -jar irunninglog-main/target/irunninglog.jar
+web: java -DhttpServer.listenPort=$PORT -jar irunninglog-main/target/irunninglog.jar
