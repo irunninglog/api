@@ -72,6 +72,7 @@
             <version>${version.sysout-over-slf4j}</version>
         </dependency>
 
+        <!-- test dependencies -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
