@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Scope("prototype")
-@SuppressWarnings("unused")
 final class WorkoutsSummary implements IWorkoutsSummary {
 
     private String title;

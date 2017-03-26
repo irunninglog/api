@@ -8,7 +8,6 @@ import java.util.Collection;
 
 @Entity
 @Table(name = "user_entity")
-@SuppressWarnings("WeakerAccess")
 public final class UserEntity {
 
     @javax.persistence.Id

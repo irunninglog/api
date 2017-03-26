@@ -8,7 +8,6 @@ abstract class AbstractData<T extends IData> implements IData<T> {
 
     final Logger logger = LoggerFactory.getLogger(getClass());
 
-    @SuppressWarnings("unchecked")
     private final T myself = (T) this;
 
     private long id;

@@ -8,7 +8,6 @@ public abstract class AbstractRequest<T extends IRequest> implements IRequest<T>
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
-    @SuppressWarnings("unchecked")
     private final T myself = (T) this;
 
     private int offset;

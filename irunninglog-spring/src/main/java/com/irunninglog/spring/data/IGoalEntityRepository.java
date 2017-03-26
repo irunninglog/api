@@ -6,7 +6,6 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-@SuppressWarnings("JpaQlInspection")
 // Needs to be public
 public interface IGoalEntityRepository extends CrudRepository<GoalEntity, Long> {
 

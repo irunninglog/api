@@ -8,7 +8,6 @@ import com.irunninglog.api.workout.IWorkoutsSummary;
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class MockWorkouts implements IWorkouts {
 
     private final List<IWorkout> workouts = new ArrayList<>();

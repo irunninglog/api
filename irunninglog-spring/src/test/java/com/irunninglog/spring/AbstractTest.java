@@ -135,6 +135,7 @@ public abstract class AbstractTest implements ApplicationContextAware {
         GoalEntity goal = new GoalEntity();
         goal.setStartDate(start);
         goal.setEndDate(end);
+        goal.setGoal(0);
         goal.setName(name);
         goal.setDescription(null);
         goal.setDashboard(dashboard);

@@ -7,7 +7,6 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name="goal_entity")
-@SuppressWarnings("WeakerAccess")
 // Needs to be public
 public final class GoalEntity extends AbstractDataEntity {
 

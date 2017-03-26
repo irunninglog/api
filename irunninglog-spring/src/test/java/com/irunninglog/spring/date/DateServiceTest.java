@@ -8,7 +8,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.time.format.FormatStyle;
 import java.util.Calendar;
 import java.util.Date;
@@ -167,7 +166,7 @@ public class DateServiceTest extends AbstractTest {
         try {
             dateService.parse("abc");
             fail("Should not have been able to parse an invalid date");
-        } catch (DateTimeParseException ex) {
+        } catch (IllegalArgumentException ex) {
             assertTrue(true);
         }
     }

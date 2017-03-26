@@ -7,12 +7,12 @@ import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.time.temporal.TemporalAdjusters;
+import java.util.regex.Pattern;
 
 @InternalService
-@SuppressWarnings({"WeakerAccess", "unused"})
 public final class DateService {
 
-    public static final String DATE_INCOMING = "^(0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])[-](19|20)\\d\\d$";
+    private static final String DATE_INCOMING = "^(0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])[-](19|20)\\d\\d$";
     private static final String WIRE_FORMAT = "MM-dd-yyyy";
 
     public String formatFull(LocalDate date) {
@@ -98,7 +98,9 @@ public final class DateService {
     }
 
     public LocalDate parse(String date) {
-        Assert.notNull(date, "Date cannot be null");
+        if (date == null || !Pattern.compile(DATE_INCOMING).matcher(date).matches()) {
+            throw new IllegalArgumentException("Improperly formatted date string: " + date);
+        }
 
         return LocalDate.parse(date, DateTimeFormatter.ofPattern(WIRE_FORMAT));
     }
@@ -121,27 +123,27 @@ public final class DateService {
         return formatter.format(local);
     }
 
-    public String getThisYear(final int offset) {
+    String getThisYear(final int offset) {
         ZonedDateTime clientTime = clientTimeFromServerTime(ZonedDateTime.now(), offset);
         return DateTimeFormatter.ofPattern("yyyy").format(clientTime);
     }
 
-    public String getLastYear(final int offset) {
+    String getLastYear(final int offset) {
         return String.valueOf(Integer.parseInt(getThisYear(offset)) - 1);
     }
 
-    public String getThisWeekEndLong(DayOfWeek weekStart, final int offset) {
+    String getThisWeekEndLong(DayOfWeek weekStart, final int offset) {
         ZonedDateTime clientTime = clientTimeFromServerTime(ZonedDateTime.now(), offset);
         ZonedDateTime nextWeekStartDay = clientTime.with(TemporalAdjusters.next(weekStart)).minusDays(1);
 
         return DateTimeFormatter.ofPattern("MMMM dd, yyyy").format(nextWeekStartDay);
     }
 
-    public String getCurrentDateTime() {
+    String getCurrentDateTime() {
         return DateTimeFormatter.ofLocalizedDateTime(FormatStyle.FULL).format(ZonedDateTime.now());
     }
 
-    public String getThisMonth(final int offset) {
+    String getThisMonth(final int offset) {
         ZonedDateTime clientTime = clientTimeFromServerTime(ZonedDateTime.now(), offset);
         return DateTimeFormatter.ofPattern("MMMM yyyy").format(clientTime);
     }

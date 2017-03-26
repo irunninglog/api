@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Scope("prototype")
-@SuppressWarnings("unused")
 final class Ping implements IPing {
 
     private String timestamp;

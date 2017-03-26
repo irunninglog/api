@@ -8,7 +8,6 @@ public abstract class AbstractResponse<R, T extends AbstractResponse> implements
     private R body;
     private ResponseStatus status;
 
-    @SuppressWarnings("unchecked")
     private final T myself = (T) this;
 
     @Override

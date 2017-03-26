@@ -8,7 +8,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
-@SuppressWarnings("JpaQlInspection")
 public interface IWorkoutEntityRepository extends CrudRepository<WorkoutEntity, Long> {
 
     List<WorkoutEntity> findByProfileId(long profileId);

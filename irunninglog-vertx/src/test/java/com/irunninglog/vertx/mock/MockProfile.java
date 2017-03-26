@@ -6,7 +6,6 @@ import com.irunninglog.api.profile.IProfile;
 
 import java.time.DayOfWeek;
 
-@SuppressWarnings("unused")
 public class MockProfile implements IProfile {
 
     private long id;

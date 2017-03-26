@@ -11,7 +11,6 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "workout_entity")
-@SuppressWarnings("ALL")
 public final class WorkoutEntity extends AbstractEntityWithProfile {
 
     @Column(nullable = false)

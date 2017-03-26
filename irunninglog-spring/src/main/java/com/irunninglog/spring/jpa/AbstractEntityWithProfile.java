@@ -7,7 +7,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
-@SuppressWarnings("unused")
 public abstract class AbstractEntityWithProfile extends AbstractEntity {
 
     @ManyToOne(optional=false)

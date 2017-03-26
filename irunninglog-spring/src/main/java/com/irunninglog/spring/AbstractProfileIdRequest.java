@@ -4,7 +4,6 @@ import com.irunninglog.api.IProfileIdRequest;
 
 public abstract class AbstractProfileIdRequest<T extends IProfileIdRequest> extends AbstractRequest<T> implements IProfileIdRequest<T> {
 
-    @SuppressWarnings("unchecked")
     private final T myself = (T) this;
 
     private long profileId;

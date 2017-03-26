@@ -2,9 +2,7 @@ package com.irunninglog.spring.jpa;
 
 import javax.persistence.*;
 
-
 @MappedSuperclass
-@SuppressWarnings("unused")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 abstract class AbstractEntity {
 

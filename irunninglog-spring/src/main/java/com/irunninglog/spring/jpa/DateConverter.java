@@ -2,11 +2,12 @@ package com.irunninglog.spring.jpa;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
-import java.time.LocalDate;
 import java.sql.Date;
+import java.time.LocalDate;
 
 @Converter(autoApply = true)
-@SuppressWarnings("unused")
+// Needs to be public for Spring
+@SuppressWarnings("WeakerAccess")
 public final class DateConverter implements AttributeConverter<LocalDate, Date> {
 
     @Override

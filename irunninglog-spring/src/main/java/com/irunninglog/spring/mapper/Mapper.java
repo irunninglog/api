@@ -37,7 +37,6 @@ final class Mapper implements IMapper {
     @Override
     public <T> T decode(final String string, final Class<T> clazz) {
         try {
-            @SuppressWarnings("unchecked")
             Class<T> classToRead = clazz.isInterface() ? (Class<T>) factory.get(clazz).getClass() : clazz;
             return objectMapper.readValue(string, classToRead);
         } catch (IOException ex) {
