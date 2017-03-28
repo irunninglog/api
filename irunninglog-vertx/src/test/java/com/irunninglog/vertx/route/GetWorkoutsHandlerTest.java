@@ -1,6 +1,6 @@
 package com.irunninglog.vertx.route;
 
-import com.irunninglog.api.security.SecurityException;
+import com.irunninglog.api.security.AuthnException;
 import com.irunninglog.api.workout.IWorkoutService;
 import com.irunninglog.vertx.endpoint.workout.GetWorkoutsVerticle;
 import com.irunninglog.vertx.mock.MockWorkouts;
@@ -23,24 +23,24 @@ public class GetWorkoutsHandlerTest extends AbstractHandlerTest {
     }
 
     @Test
-    public void matchNoParameters(TestContext context) throws SecurityException {
+    public void matchNoParameters(TestContext context) throws AuthnException {
         authn();
 
         context.assertEquals(200, get(context, "/profiles/1/workouts", TOKEN));
     }
 
     @Test
-    public void matchWithParameters(TestContext context) throws SecurityException {
+    public void matchWithParameters(TestContext context) throws AuthnException {
         authn();
 
         context.assertEquals(200, get(context, "/profiles/1/workouts/12-01-2016", TOKEN));
     }
 
     @Test
-    public void matchNotFound(TestContext context) throws SecurityException {
+    public void matchNotFound(TestContext context) throws AuthnException {
         authn();
 
-        context.assertEquals(401, get(context, "/profiles/1/workoutss", TOKEN));
+        context.assertEquals(404, get(context, "/profiles/1/workout", TOKEN));
     }
 
 }

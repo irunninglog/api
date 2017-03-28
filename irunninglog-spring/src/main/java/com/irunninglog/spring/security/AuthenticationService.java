@@ -1,10 +1,7 @@
 package com.irunninglog.spring.security;
 
-import com.irunninglog.api.AccessControl;
-import com.irunninglog.api.Endpoint;
 import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.security.AuthnException;
-import com.irunninglog.api.security.AuthzException;
 import com.irunninglog.api.security.IAuthenticationService;
 import com.irunninglog.api.security.IUser;
 import com.irunninglog.spring.context.AuthenticationServiceConfig;
@@ -15,11 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.codec.Hex;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.util.AntPathMatcher;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.text.MessageFormat;
 import java.util.Base64;
 import java.util.Date;
 import java.util.stream.Collectors;
@@ -28,12 +23,10 @@ import java.util.stream.Collectors;
 final class AuthenticationService implements IAuthenticationService {
 
     private static final Logger LOG = LoggerFactory.getLogger(AuthenticationService.class);
-    private static final String PATTERN = "/profiles/{0}/**";
 
     private final IUserEntityRepository userEntityRepository;
     private final PasswordEncoder passwordEncoder;
     private final IFactory factory;
-    private final AntPathMatcher matcher = new AntPathMatcher();
 
     private final long duration;
     private final String key;
@@ -54,17 +47,7 @@ final class AuthenticationService implements IAuthenticationService {
     }
 
     @Override
-    public IUser authenticate(Endpoint endpoint, String path, String token) throws AuthnException, AuthzException {
-        LOG.info("authenticate:{}:{}", endpoint, path);
-
-        if (endpoint.getControl() == AccessControl.DENY) {
-            LOG.info("authenticate:denyAll:{}", endpoint);
-            throw new AuthzException("Not authorized for endpoint " + endpoint);
-        } else if (endpoint.getControl() == AccessControl.ANONYMOUS) {
-            LOG.info("authenticate:allowAll:{}", endpoint);
-            return null;
-        }
-
+    public IUser authenticate(String token) throws AuthnException {
         IUser user;
         if (token != null && token.startsWith("Token ")) {
             user = tokenAuth(token);
@@ -73,10 +56,6 @@ final class AuthenticationService implements IAuthenticationService {
         } else {
             throw new AuthnException("No token provided");
         }
-
-        LOG.info("authenticate:{}:{}", endpoint, user);
-
-        authorize(user, endpoint, path);
 
         return user;
     }
@@ -160,33 +139,6 @@ final class AuthenticationService implements IAuthenticationService {
                 .setId(userEntity.getId())
                 .setUsername(userEntity.getUsername())
                 .setAuthorities(userEntity.getAuthorities().stream().map(AuthorityEntity::getName).collect(Collectors.toList()));
-    }
-
-    private void authorize(IUser user, Endpoint endpoint, String path) throws AuthzException {
-        if (endpoint.getControl() == AccessControl.ALLOW) {
-            LOG.info("authorize:ALLOW:{}:{}:{}", user.getUsername(), endpoint, path);
-        } else if (endpoint.getControl() == AccessControl.PROFILE && isUserAllowed(user, path)) {
-            LOG.info("authorize:PROFILE:{}:{}:{}", user.getUsername(), endpoint, path);
-        } else if (hasRole(user, "ADMIN")) {
-            LOG.info("authorize:admin:{}:{}:{}", user.getUsername(), endpoint, path);
-        } else {
-            throw new AuthzException("User " + user.getUsername() + " cannot access " + path);
-        }
-    }
-
-    private boolean isUserAllowed(IUser user, String path) {
-        return hasRole(user, "MYPROFILE") &&
-                matcher.match(MessageFormat.format(PATTERN, String.valueOf(user.getId())), path);
-    }
-
-    private boolean hasRole(IUser user, String role) {
-        for (String string : user.getAuthorities()) {
-            if (string.equals(role)) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     @Override

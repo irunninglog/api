@@ -1,7 +1,8 @@
 package com.irunninglog.spring.security;
 
-import com.irunninglog.api.Endpoint;
-import com.irunninglog.api.security.*;
+import com.irunninglog.api.security.ILoginRequest;
+import com.irunninglog.api.security.ILoginResponse;
+import com.irunninglog.api.security.IUser;
 import com.irunninglog.spring.AbstractTest;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
@@ -21,18 +22,6 @@ public class RequestResponseTest extends AbstractTest {
     }
 
     @Test
-    public void authnRequest() {
-        IAuthnRequest request = applicationContext.getBean(IAuthnRequest.class)
-                .setEndpoint(Endpoint.PING)
-                .setPath("/ping")
-                .setToken(null);
-
-        assertEquals(Endpoint.PING, request.getEndpoint());
-        assertEquals("/ping", request.getPath());
-        assertEquals(null, request.getToken());
-    }
-
-    @Test
     public void loginRequest() {
         IUser user = applicationContext.getBean(IUser.class);
         ILoginRequest request = applicationContext.getBean(ILoginRequest.class);
@@ -40,12 +29,6 @@ public class RequestResponseTest extends AbstractTest {
         request.setUser(user);
 
         assertEquals(user, request.getUser());
-    }
-
-    @Test
-    public void authnResponse() {
-        IAuthnResponse response = applicationContext.getBean(IAuthnResponse.class);
-        assertNull(response.getBody());
     }
 
     @Test

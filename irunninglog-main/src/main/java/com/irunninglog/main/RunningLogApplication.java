@@ -6,7 +6,6 @@ import com.irunninglog.api.security.IAuthenticationService;
 import com.irunninglog.spring.context.ContextConfiguration;
 import com.irunninglog.vertx.endpoint.EndpointVerticle;
 import com.irunninglog.vertx.http.ServerVerticle;
-import com.irunninglog.vertx.security.AuthnVerticle;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
@@ -50,8 +49,14 @@ final class RunningLogApplication {
         int port = environment.getProperty("httpServer.listenPort", Integer.class, 8080);
         LOG.info("start:server:listenPort:{}", port);
 
-        vertx.deployVerticle(new ServerVerticle(port, event -> LOG.info("start:server:listening"), applicationContext.getBean(IFactory.class), applicationContext.getBean(IMapper.class)), stringAsyncResult -> {
+        vertx.deployVerticle(new ServerVerticle(port,
+                event -> LOG.info("start:server:listening"),
+                applicationContext.getBean(IFactory.class),
+                applicationContext.getBean(IMapper.class),
+                applicationContext.getBean(IAuthenticationService.class)), stringAsyncResult -> {
+
             LOG.info("start:server:after");
+
             try {
                 verticles(applicationContext, vertx, asyncResultHandler);
             } catch (Exception ex) {
@@ -94,10 +99,7 @@ final class RunningLogApplication {
 
         LOG.info("verticles:will deploy {} verticles", list.size());
 
-        vertx.deployVerticle(new AuthnVerticle(applicationContext.getBean(IAuthenticationService.class),
-                        applicationContext.getBean(IFactory.class),
-                        applicationContext.getBean(IMapper.class)),
-                stringAsyncResult -> deployVerticles(list.iterator(), asyncResultHandler, vertx));
+        deployVerticles(list.iterator(), asyncResultHandler, vertx);
     }
 
     private void deployVerticles(Iterator<AbstractVerticle> iterator, Handler<AsyncResult<String>> asyncResultHandler, Vertx vertx) {

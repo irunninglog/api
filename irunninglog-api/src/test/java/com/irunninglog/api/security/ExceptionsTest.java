@@ -12,10 +12,4 @@ public class ExceptionsTest {
         assertEquals("foo", exception.getMessage());
     }
 
-    @Test
-    public void authz() {
-        AuthzException exception = new AuthzException("foo");
-        assertEquals("foo", exception.getMessage());
-    }
-
 }

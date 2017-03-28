@@ -1,15 +1,13 @@
 package com.irunninglog.vertx.route;
 
-import com.irunninglog.api.Endpoint;
 import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.mapping.IMapper;
+import com.irunninglog.api.security.AuthnException;
 import com.irunninglog.api.security.IAuthenticationService;
-import com.irunninglog.api.security.SecurityException;
 import com.irunninglog.vertx.http.ServerVerticle;
 import com.irunninglog.vertx.mock.MockFactory;
 import com.irunninglog.vertx.mock.MockMapper;
 import com.irunninglog.vertx.mock.MockUser;
-import com.irunninglog.vertx.security.AuthnVerticle;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpClient;
@@ -24,6 +22,8 @@ import org.mockito.Mockito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Collections;
+
 import static org.mockito.Matchers.any;
 
 @RunWith(VertxUnitRunner.class)
@@ -37,7 +37,6 @@ public abstract class AbstractHandlerTest {
     final IFactory factory = new MockFactory();
 
     Vertx vertx;
-    String authVerticleId;
 
     @Before
     public final void before(TestContext context) {
@@ -47,15 +46,8 @@ public abstract class AbstractHandlerTest {
 
         Async async = context.async();
 
-        ServerVerticle verticle = new ServerVerticle(8889, context.asyncAssertSuccess(event -> async.complete()), factory, mapper);
+        ServerVerticle verticle = new ServerVerticle(8889, context.asyncAssertSuccess(event -> async.complete()), factory, mapper, authenticationService);
         vertx.deployVerticle(verticle, context.asyncAssertSuccess(s -> logger.info("Server verticle deployed {}", s)));
-
-        AuthnVerticle authnVerticle = new AuthnVerticle(authenticationService, factory, mapper);
-        vertx.deployVerticle(authnVerticle, context.asyncAssertSuccess(s -> {
-            logger.info("Auth verticle deployed {}", s);
-
-            authVerticleId = s;
-        }));
 
         logger.info("Before afterBefore {}", context);
         afterBefore(context);
@@ -71,9 +63,9 @@ public abstract class AbstractHandlerTest {
 
     protected abstract void afterBefore(TestContext context);
 
-    final void authn() throws SecurityException {
-        Mockito.when(authenticationService.authenticate(any(Endpoint.class), any(String.class), any(String.class)))
-                .thenReturn(new MockUser());
+    final void authn() throws AuthnException {
+        Mockito.when(authenticationService.authenticate(any(String.class)))
+                .thenReturn(new MockUser().setId(1).setAuthorities(Collections.singletonList("MYPROFILE")));
     }
 
     final int get(TestContext context, String path, String token) {

@@ -17,7 +17,6 @@ import com.irunninglog.spring.security.UserEntity;
 import com.irunninglog.spring.workout.IWorkoutEntityRepository;
 import com.irunninglog.spring.workout.WorkoutEntity;
 import com.irunninglog.vertx.http.ServerVerticle;
-import com.irunninglog.vertx.security.AuthnVerticle;
 import io.vertx.core.Verticle;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpClient;
@@ -84,12 +83,10 @@ public abstract class AbstractTest {
         ServerVerticle serverVerticle = new ServerVerticle(8889,
                 context.asyncAssertSuccess(event -> async.complete()),
                 factory,
-                mapper);
+                mapper,
+                applicationContext.getBean(IAuthenticationService.class));
 
         vertx.deployVerticle(serverVerticle, context.asyncAssertSuccess());
-
-        AuthnVerticle authnVerticle = new AuthnVerticle(applicationContext.getBean(IAuthenticationService.class), factory, mapper);
-        vertx.deployVerticle(authnVerticle, context.asyncAssertSuccess());
 
         for (Verticle verticle : verticles(applicationContext)) {
             vertx.deployVerticle(verticle, context.asyncAssertSuccess());

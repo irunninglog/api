@@ -14,7 +14,7 @@ public class ResponseStatusExceptionTest {
         } catch (ResponseStatusException ex) {
             assertEquals(ResponseStatus.ERROR, ex.getResponseStatus());
             assertTrue(ex.toString().contains("500"));
-            assertTrue(ex.toString().contains("Unknown ERROR"));
+            assertTrue(ex.toString().contains("Unknown Error"));
         }
     }
 

@@ -14,20 +14,16 @@ import com.irunninglog.api.profile.IGetProfileRequest;
 import com.irunninglog.api.profile.IGetProfileResponse;
 import com.irunninglog.api.report.IGetDataSetResponse;
 import com.irunninglog.api.report.IGetMultiSetResponse;
-import com.irunninglog.api.security.*;
+import com.irunninglog.api.security.IForbiddenRequest;
+import com.irunninglog.api.security.ILoginRequest;
+import com.irunninglog.api.security.ILoginResponse;
 import com.irunninglog.api.workout.*;
 
 public class MockFactory implements IFactory {
 
     @Override
     public <T> T get(Class<T> clazz) {
-        if (clazz == IAuthnRequest.class) {
-            //noinspection unchecked
-            return (T) new MockAuthnRequest();
-        } else if (clazz == IAuthnResponse.class) {
-            //noinspection unchecked
-            return (T) new MockAuthnResponse();
-        } else if (clazz == IGetProfileRequest.class) {
+        if (clazz == IGetProfileRequest.class) {
             //noinspection unchecked
             return (T) new MockGetProfileRequest();
         } else if (clazz == IGetProfileResponse.class) {

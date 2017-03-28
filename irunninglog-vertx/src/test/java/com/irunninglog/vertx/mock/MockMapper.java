@@ -14,8 +14,6 @@ import com.irunninglog.api.profile.IGetProfileResponse;
 import com.irunninglog.api.report.IGetDataSetResponse;
 import com.irunninglog.api.report.IGetMultiSetResponse;
 import com.irunninglog.api.report.IGetReportRequest;
-import com.irunninglog.api.security.IAuthnRequest;
-import com.irunninglog.api.security.IAuthnResponse;
 import com.irunninglog.api.security.ILoginRequest;
 import com.irunninglog.api.security.ILoginResponse;
 import com.irunninglog.api.workout.*;
@@ -38,13 +36,7 @@ public class MockMapper implements IMapper {
     @Override
     public <T> T decode(String string, Class<T> clazz) {
         try {
-            if (clazz == IAuthnRequest.class) {
-                //noinspection unchecked
-                return (T) objectMapper.readValue(string, MockAuthnRequest.class);
-            } else if (clazz == IAuthnResponse.class) {
-                //noinspection unchecked
-                return (T) objectMapper.readValue(string, MockAuthnResponse.class);
-            } else if (clazz == IGetProfileRequest.class) {
+            if (clazz == IGetProfileRequest.class) {
                 //noinspection unchecked
                 return (T) objectMapper.readValue(string, MockGetProfileRequest.class);
             } else if (clazz == IGetProfileResponse.class) {

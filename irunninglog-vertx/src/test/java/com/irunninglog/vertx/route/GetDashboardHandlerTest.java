@@ -2,6 +2,7 @@ package com.irunninglog.vertx.route;
 
 import com.irunninglog.api.dashboard.IDashboardInfo;
 import com.irunninglog.api.dashboard.IDashboardService;
+import com.irunninglog.api.security.AuthnException;
 import io.vertx.ext.unit.TestContext;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -16,7 +17,9 @@ public class GetDashboardHandlerTest extends AbstractHandlerTest {
     }
 
     @Test
-    public void get(TestContext context) {
+    public void get(TestContext context) throws AuthnException {
+        authn();
+
         IDashboardService dashboardService = Mockito.mock(IDashboardService.class);
         Mockito.when(dashboardService.get(any(Long.class), any(Integer.class)))
                 .thenReturn(Mockito.mock(IDashboardInfo.class));
