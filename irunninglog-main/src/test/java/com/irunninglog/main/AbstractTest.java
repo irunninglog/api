@@ -284,6 +284,24 @@ public abstract class AbstractTest {
         return responseCode[0];
     }
 
+    protected final String postAndGetToken(TestContext context, String path, String token) {
+        HttpClient client = vertx.createHttpClient();
+        Async async = context.async();
+        HttpClientRequest req = client.post(8889, "localhost", path);
+        req.putHeader("Authorization", token);
+
+        final String[] headers = new String[1];
+        req.handler(resp -> {
+            headers[0] = resp.getHeader("iRunningLog-Token");
+            async.complete();
+        });
+        req.end();
+
+        async.awaitSuccess(10000);
+
+        return headers[0];
+    }
+
     protected String token(String username, String password) {
         return "Basic " + Base64.getEncoder().encodeToString((username + ":" + password).getBytes());
     }

@@ -61,7 +61,7 @@ public abstract class AbstractRouteHandler<Q extends IRequest, S extends IRespon
 
             vertx.eventBus().<String>send(endpoint.getAddress(),
                     requestString,
-                    result -> handle(result, routingContext, ""));
+                    result -> handle(result, routingContext));
         } finally {
             if (logger.isInfoEnabled()) {
                 logger.info("handle:end:{}:{}ms", routingContext.normalisedPath(), System.currentTimeMillis() - start);
@@ -73,7 +73,7 @@ public abstract class AbstractRouteHandler<Q extends IRequest, S extends IRespon
         // Empty for subclasses
     }
 
-    private void handle(AsyncResult<Message<String>> result, RoutingContext routingContext, String token) {
+    private void handle(AsyncResult<Message<String>> result, RoutingContext routingContext) {
         try {
             if (result.succeeded()) {
                 String resultString = result.result().body();
@@ -85,7 +85,7 @@ public abstract class AbstractRouteHandler<Q extends IRequest, S extends IRespon
                 logger.info(LOG_STMT, endpoint.getAddress(), response);
 
                 if (response.getStatus() == ResponseStatus.OK) {
-                    succeed(routingContext, response, token);
+                    succeed(routingContext, response);
                 } else {
                     fail(routingContext, response.getStatus());
                 }
@@ -103,14 +103,10 @@ public abstract class AbstractRouteHandler<Q extends IRequest, S extends IRespon
         }
     }
 
-    private void succeed(RoutingContext routingContext, IResponse response, String token) {
+    private void succeed(RoutingContext routingContext, IResponse response) {
         HttpServerResponse serverResponse = routingContext.request().response()
                 .setChunked(true)
                 .putHeader("Content-Type", "application/json");
-
-        if (token != null) {
-            serverResponse.putHeader("iRunningLog-Token", token);
-        }
 
         serverResponse.setStatusCode(response.getStatus().getCode())
                 .write(mapper.encode(response.getBody())).end();

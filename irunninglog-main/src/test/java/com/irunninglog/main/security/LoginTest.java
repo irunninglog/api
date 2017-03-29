@@ -13,6 +13,7 @@ import io.vertx.ext.unit.TestContext;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 
+import java.util.Base64;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -45,6 +46,13 @@ public class LoginTest extends AbstractTest {
     @Test
     public void token(TestContext context) {
         context.assertEquals(200, post(context, "/authn", token));
+    }
+
+    @Test
+    public void serverToken(TestContext context) {
+        String serverToken = postAndGetToken(context, "/authn", token);
+        context.assertNotNull(serverToken);
+        context.assertTrue(new String(Base64.getDecoder().decode(serverToken)).contains("login@irunninglog.com"));
     }
 
 }
