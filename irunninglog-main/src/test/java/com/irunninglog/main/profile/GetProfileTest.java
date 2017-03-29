@@ -36,6 +36,11 @@ public class GetProfileTest extends AbstractTest {
     }
 
     @Test
+    public void notAuthenticated(TestContext context) {
+        context.assertEquals(401, get(context, "/profiles/" + profile.getId(), null));
+    }
+
+    @Test
     public void profile(TestContext context) {
         context.assertEquals(200,
                 get(context, "/profiles/" + profile.getId(),

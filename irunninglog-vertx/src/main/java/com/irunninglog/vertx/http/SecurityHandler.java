@@ -28,6 +28,19 @@ final class SecurityHandler implements Handler<RoutingContext> {
 
     @Override
     public void handle(RoutingContext routingContext) {
+        if (routingContext.currentRoute().getPath().equals("/")) {
+            handleStatic(routingContext);
+        } else {
+            handleEndpoint(routingContext);
+        }
+    }
+
+    private void handleStatic(RoutingContext routingContext) {
+        routingContext.vertx().<IUser>executeBlocking(future -> authenticate(routingContext, future),
+                asyncResult -> authenticated(null, routingContext, asyncResult));
+    }
+
+    private void handleEndpoint(RoutingContext routingContext) {
         Endpoint endpoint = endpoint(routingContext);
 
         if (LOG.isInfoEnabled()) {
@@ -58,7 +71,10 @@ final class SecurityHandler implements Handler<RoutingContext> {
 
     private void authenticated(Endpoint endpoint, RoutingContext routingContext, AsyncResult<IUser> asyncResult) {
         if (asyncResult.succeeded()) {
-            if (authorized(endpoint, routingContext, asyncResult.result())) {
+            if (endpoint == null) {
+                // Static content
+                routingContext.next();
+            } else if (authorized(endpoint, routingContext, asyncResult.result())) {
                 IUser user = asyncResult.result();
 
                 routingContext.vertx().<IUser>executeBlocking(future -> token(routingContext, user, future), asyncResult1 -> token(routingContext, asyncResult));
