@@ -28,16 +28,11 @@ final class SecurityHandler implements Handler<RoutingContext> {
 
     @Override
     public void handle(RoutingContext routingContext) {
-        if (routingContext.currentRoute().getPath().equals("/")) {
-            handleStatic(routingContext);
+        if ("/".equals(routingContext.currentRoute().getPath())) {
+            routingContext.next();
         } else {
             handleEndpoint(routingContext);
         }
-    }
-
-    private void handleStatic(RoutingContext routingContext) {
-        routingContext.vertx().<IUser>executeBlocking(future -> authenticate(routingContext, future),
-                asyncResult -> authenticated(null, routingContext, asyncResult));
     }
 
     private void handleEndpoint(RoutingContext routingContext) {

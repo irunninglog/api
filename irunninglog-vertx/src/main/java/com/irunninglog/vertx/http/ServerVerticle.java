@@ -86,7 +86,7 @@ public final class ServerVerticle extends AbstractVerticle {
         }
 
         router.route("/*").handler(securityHandler);
-        router.route("/*").handler(StaticHandler.create().setCachingEnabled(Boolean.FALSE));
+        router.route(HttpMethod.GET, "/*").handler(StaticHandler.create().setCachingEnabled(Boolean.FALSE));
     }
 
 }

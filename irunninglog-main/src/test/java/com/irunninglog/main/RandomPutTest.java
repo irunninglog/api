@@ -8,7 +8,7 @@ import org.springframework.context.ApplicationContext;
 import java.util.Collection;
 import java.util.Collections;
 
-public class StaticContentTest extends AbstractTest {
+public class RandomPutTest extends AbstractTest {
 
     @Override
     protected Collection<Verticle> verticles(ApplicationContext applicationContext) {
@@ -21,14 +21,8 @@ public class StaticContentTest extends AbstractTest {
     }
 
     @Test
-    public void ok(TestContext context) {
-        context.assertEquals(200, get(context, "/index.html", null));
-        context.assertEquals(200, get(context, "/", null));
-    }
-
-    @Test
-    public void notFound(TestContext context) {
-        context.assertEquals(404, get(context, "/indexxx.html", null));
+    public void testRandom(TestContext context) {
+        context.assertEquals(404, put(context, "/random", null, ""));
     }
 
 }
