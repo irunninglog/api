@@ -137,4 +137,15 @@ public class MathServiceTest extends AbstractTest {
         assertEquals("160.93", mathService.formatShort(100, Unit.METRIC));
     }
 
+    @Test
+    public void parseFail() {
+        try {
+            mathService.parse("foo");
+
+            fail("Should have thrown");
+        } catch (IllegalArgumentException ex) {
+            assertTrue(ex.getMessage().contains("Unable to"));
+        }
+    }
+
 }
