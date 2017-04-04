@@ -8,11 +8,11 @@ import com.irunninglog.api.ping.IPingRequest;
 import com.irunninglog.api.ping.IPingResponse;
 import com.irunninglog.api.ping.IPingService;
 import com.irunninglog.api.security.IUser;
-import com.irunninglog.vertx.endpoint.AbstractEndpointVerticle;
+import com.irunninglog.vertx.endpoint.AbstractRequestResponseVerticle;
 import com.irunninglog.vertx.endpoint.EndpointVerticle;
 
 @EndpointVerticle(endpoint = Endpoint.PING)
-public class PingVerticle extends AbstractEndpointVerticle<IPingRequest, IPingResponse> {
+public class PingVerticle extends AbstractRequestResponseVerticle<IPingRequest, IPingResponse> {
 
     private final IPingService pingService;
 

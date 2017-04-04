@@ -8,11 +8,11 @@ import com.irunninglog.api.security.ILoginRequest;
 import com.irunninglog.api.security.ILoginResponse;
 import com.irunninglog.api.security.ILoginService;
 import com.irunninglog.api.security.IUser;
-import com.irunninglog.vertx.endpoint.AbstractEndpointVerticle;
+import com.irunninglog.vertx.endpoint.AbstractRequestResponseVerticle;
 import com.irunninglog.vertx.endpoint.EndpointVerticle;
 
 @EndpointVerticle(endpoint = Endpoint.LOGIN)
-public class LoginVerticle extends AbstractEndpointVerticle<ILoginRequest, ILoginResponse> {
+public class LoginVerticle extends AbstractRequestResponseVerticle<ILoginRequest, ILoginResponse> {
 
     private final ILoginService loginService;
 

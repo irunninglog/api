@@ -15,7 +15,7 @@ import io.vertx.core.eventbus.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-abstract class AbstractRequestResponseVerticle<Q extends IRequest, S extends IResponse> extends AbstractVerticle {
+public abstract class AbstractRequestResponseVerticle<Q extends IRequest, S extends IResponse> extends AbstractVerticle {
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -24,7 +24,9 @@ abstract class AbstractRequestResponseVerticle<Q extends IRequest, S extends IRe
     private final Class<S> responseClass;
     private final Class<Q> requestClass;
 
-    AbstractRequestResponseVerticle(IFactory factory,
+    private final String address;
+
+    public AbstractRequestResponseVerticle(IFactory factory,
                                     IMapper mapper,
                                     Class<Q> requestClass,
                                     Class<S> responseClass) {
@@ -34,6 +36,9 @@ abstract class AbstractRequestResponseVerticle<Q extends IRequest, S extends IRe
         this.mapper = mapper;
         this.responseClass = responseClass;
         this.requestClass = requestClass;
+
+        EndpointVerticle endpointVerticle = getClass().getAnnotation(EndpointVerticle.class);
+        address = endpointVerticle.endpoint().getAddress();
     }
 
     @Override
@@ -42,7 +47,7 @@ abstract class AbstractRequestResponseVerticle<Q extends IRequest, S extends IRe
 
         super.start();
 
-        vertx.eventBus().<String>consumer(address()).handler(handler());
+        vertx.eventBus().<String>consumer(address).handler(handler());
 
         logger.info("start:end");
     }
@@ -56,7 +61,7 @@ abstract class AbstractRequestResponseVerticle<Q extends IRequest, S extends IRe
         long start = System.currentTimeMillis();
 
         if (logger.isInfoEnabled()) {
-            logger.info("handler:{}:{}", address(), msg.body());
+            logger.info("handler:{}:{}", address, msg.body());
         }
 
         try {
@@ -95,14 +100,12 @@ abstract class AbstractRequestResponseVerticle<Q extends IRequest, S extends IRe
             }
         } finally {
             if (logger.isInfoEnabled()) {
-                logger.info("handler:{}:{}ms", address(), System.currentTimeMillis() - start);
+                logger.info("handler:{}:{}ms", address, System.currentTimeMillis() - start);
             }
         }
     }
 
     protected abstract boolean authorized(IUser user, Q request);
-
-    protected abstract String address();
 
     protected abstract void handle(Q request, S response);
 

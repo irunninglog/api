@@ -6,7 +6,7 @@ import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.mapping.IMapper;
 import com.irunninglog.api.security.IUser;
 
-public abstract class AbstractProfileIdEndpointVerticle<Q extends IProfileIdRequest, S extends IResponse> extends AbstractEndpointVerticle<Q, S> {
+public abstract class AbstractProfileIdEndpointVerticle<Q extends IProfileIdRequest, S extends IResponse> extends AbstractRequestResponseVerticle<Q, S> {
 
     protected AbstractProfileIdEndpointVerticle(IFactory factory, IMapper mapper, Class<Q> requestClass, Class<S> responseClass) {
         super(factory, mapper, requestClass, responseClass);
