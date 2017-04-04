@@ -7,11 +7,12 @@ import com.irunninglog.api.dashboard.IGetDashboardRequest;
 import com.irunninglog.api.dashboard.IGetDashboardResponse;
 import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.mapping.IMapper;
-import com.irunninglog.vertx.endpoint.AbstractEndpointVerticle;
+import com.irunninglog.api.security.IUser;
+import com.irunninglog.vertx.endpoint.AbstractProfileIdEndpointVerticle;
 import com.irunninglog.vertx.endpoint.EndpointVerticle;
 
 @EndpointVerticle(endpoint = Endpoint.DASHBOARD_GET)
-public class GetDashboardVerticle extends AbstractEndpointVerticle<IGetDashboardRequest, IGetDashboardResponse> {
+public class GetDashboardVerticle extends AbstractProfileIdEndpointVerticle<IGetDashboardRequest, IGetDashboardResponse> {
 
     private final IDashboardService service;
 
@@ -25,6 +26,11 @@ public class GetDashboardVerticle extends AbstractEndpointVerticle<IGetDashboard
     protected void handle(IGetDashboardRequest request, IGetDashboardResponse response) {
         response.setStatus(ResponseStatus.OK)
                 .setBody(service.get(request.getProfileId(), request.getOffset()));
+    }
+
+    @Override
+    protected boolean authorized(IUser user, IGetDashboardRequest request) {
+        return matches(user, request);
     }
 
 }

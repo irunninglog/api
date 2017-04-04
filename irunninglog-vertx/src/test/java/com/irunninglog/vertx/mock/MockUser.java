@@ -1,9 +1,11 @@
 package com.irunninglog.vertx.mock;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.irunninglog.api.security.IUser;
 
 import java.util.List;
 
+@JsonTypeInfo(use= JsonTypeInfo.Id.CLASS, include= JsonTypeInfo.As.PROPERTY, property="class")
 public class MockUser implements IUser {
 
     private long id;
@@ -41,6 +43,11 @@ public class MockUser implements IUser {
     @Override
     public List<String> getAuthorities() {
         return authorities;
+    }
+
+    @Override
+    public boolean hasAuthority(String authority) {
+        return authorities != null && authorities.contains(authority);
     }
 
 }

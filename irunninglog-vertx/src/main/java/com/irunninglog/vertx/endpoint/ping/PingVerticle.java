@@ -7,6 +7,7 @@ import com.irunninglog.api.mapping.IMapper;
 import com.irunninglog.api.ping.IPingRequest;
 import com.irunninglog.api.ping.IPingResponse;
 import com.irunninglog.api.ping.IPingService;
+import com.irunninglog.api.security.IUser;
 import com.irunninglog.vertx.endpoint.AbstractEndpointVerticle;
 import com.irunninglog.vertx.endpoint.EndpointVerticle;
 
@@ -24,6 +25,11 @@ public class PingVerticle extends AbstractEndpointVerticle<IPingRequest, IPingRe
     @Override
     protected void handle(IPingRequest request, IPingResponse response) {
         response.setStatus(ResponseStatus.OK).setBody(pingService.ping());
+    }
+
+    @Override
+    protected boolean authorized(IUser user, IPingRequest request) {
+        return Boolean.TRUE;
     }
 
 }

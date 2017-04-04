@@ -3,12 +3,14 @@ package com.irunninglog.vertx.endpoint;
 import com.irunninglog.api.Endpoint;
 import com.irunninglog.api.ResponseStatus;
 import com.irunninglog.api.data.*;
+import com.irunninglog.vertx.Envelope;
 import com.irunninglog.vertx.endpoint.data.GetRoutesVerticle;
 import com.irunninglog.vertx.endpoint.data.GetRunsVerticle;
 import com.irunninglog.vertx.endpoint.data.GetShoesVerticle;
 import com.irunninglog.vertx.mock.MockRoutes;
 import com.irunninglog.vertx.mock.MockRuns;
 import com.irunninglog.vertx.mock.MockShoes;
+import com.irunninglog.vertx.mock.MockUser;
 import io.vertx.ext.unit.TestContext;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,7 +34,8 @@ public class GetDataTest extends AbstractVerticleTest {
 
     @Test
     public void shoes(TestContext context) {
-        rule.vertx().eventBus().<String>send(Endpoint.SHOES_GET.getAddress(), mapper.encode(factory.get(IGetDataRequest.class)), context.asyncAssertSuccess(o ->  {
+        Envelope envelope = new Envelope().setUser(new MockUser().setId(1)).setRequest(mapper.encode(factory.get(IGetDataRequest.class).setProfileId(1)));
+        rule.vertx().eventBus().<String>send(Endpoint.SHOES_GET.getAddress(), mapper.encode(envelope), context.asyncAssertSuccess(o ->  {
             String s = o.body();
             IGetShoesResponse response = mapper.decode(s, IGetShoesResponse.class);
 
@@ -43,7 +46,8 @@ public class GetDataTest extends AbstractVerticleTest {
 
     @Test
     public void routes(TestContext context) {
-        rule.vertx().eventBus().<String>send(Endpoint.ROUTES_GET.getAddress(), mapper.encode(factory.get(IGetDataRequest.class)), context.asyncAssertSuccess(o ->  {
+        Envelope envelope = new Envelope().setUser(new MockUser().setId(1)).setRequest(mapper.encode(factory.get(IGetDataRequest.class).setProfileId(1)));
+        rule.vertx().eventBus().<String>send(Endpoint.ROUTES_GET.getAddress(), mapper.encode(envelope), context.asyncAssertSuccess(o ->  {
             String s = o.body();
             IGetRoutesResponse response = mapper.decode(s, IGetRoutesResponse.class);
 
@@ -54,7 +58,8 @@ public class GetDataTest extends AbstractVerticleTest {
 
     @Test
     public void runs(TestContext context) {
-        rule.vertx().eventBus().<String>send(Endpoint.RUNS_GET.getAddress(), mapper.encode(factory.get(IGetDataRequest.class)), context.asyncAssertSuccess(o ->  {
+        Envelope envelope = new Envelope().setUser(new MockUser().setId(1)).setRequest(mapper.encode(factory.get(IGetDataRequest.class).setProfileId(1)));
+        rule.vertx().eventBus().<String>send(Endpoint.RUNS_GET.getAddress(), mapper.encode(envelope), context.asyncAssertSuccess(o ->  {
             String s = o.body();
             IGetRunsResponse response = mapper.decode(s, IGetRunsResponse.class);
 

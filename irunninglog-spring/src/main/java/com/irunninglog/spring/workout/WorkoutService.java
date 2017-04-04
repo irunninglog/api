@@ -197,4 +197,9 @@ final class WorkoutService implements IWorkoutService {
         return workout(entity);
     }
 
+    @Override
+    public boolean ownedBy(long profileId, long workoutId) {
+        return workoutId < 0 || workoutEntityRepository.findByProfileAndWorkoutIds(profileId, workoutId) != null;
+    }
+
 }

@@ -3,23 +3,29 @@ package com.irunninglog.vertx.mock;
 import com.irunninglog.api.report.IGetReportRequest;
 
 final class MockGetReportRequest implements IGetReportRequest {
+
+    private int offset;
+    private long profileId;
+
     @Override
     public IGetReportRequest setOffset(int offset) {
-        return null;
+        this.offset = offset;
+        return this;
     }
 
     @Override
     public int getOffset() {
-        return 0;
+        return offset;
     }
 
     @Override
     public IGetReportRequest setProfileId(long profileId) {
-        return null;
+        this.profileId = profileId;
+        return this;
     }
 
     @Override
     public long getProfileId() {
-        return 0;
+        return profileId;
     }
 }

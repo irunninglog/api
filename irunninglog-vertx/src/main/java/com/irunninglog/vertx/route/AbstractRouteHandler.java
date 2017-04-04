@@ -6,6 +6,7 @@ import com.irunninglog.api.IResponse;
 import com.irunninglog.api.ResponseStatus;
 import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.mapping.IMapper;
+import com.irunninglog.vertx.Envelope;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
@@ -59,8 +60,10 @@ public abstract class AbstractRouteHandler<Q extends IRequest, S extends IRespon
 
             String requestString = mapper.encode(request);
 
+            Envelope envelope = new Envelope().setRequest(requestString).setUser(routingContext.get("user"));
+
             vertx.eventBus().<String>send(endpoint.getAddress(),
-                    requestString,
+                    mapper.encode(envelope),
                     result -> handle(result, routingContext));
         } finally {
             if (logger.isInfoEnabled()) {

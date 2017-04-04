@@ -6,12 +6,14 @@ import com.irunninglog.api.data.IGetDataRequest;
 import com.irunninglog.api.report.IGetDataSetResponse;
 import com.irunninglog.api.report.IGetMultiSetResponse;
 import com.irunninglog.api.report.IReportService;
+import com.irunninglog.vertx.Envelope;
 import com.irunninglog.vertx.endpoint.report.GetMileageByMonthVerticle;
 import com.irunninglog.vertx.endpoint.report.GetMileageByRouteVerticle;
 import com.irunninglog.vertx.endpoint.report.GetMileageByRunVerticle;
 import com.irunninglog.vertx.endpoint.report.GetMileageByShoeVerticle;
 import com.irunninglog.vertx.mock.MockDataSet;
 import com.irunninglog.vertx.mock.MockMultiSet;
+import com.irunninglog.vertx.mock.MockUser;
 import io.vertx.ext.unit.TestContext;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,7 +39,8 @@ public class GetReportsTest extends AbstractVerticleTest {
 
     @Test
     public void mileageByMonth(TestContext context) {
-        rule.vertx().eventBus().<String>send(Endpoint.REPORT_MILEAGE_MONTH_GET.getAddress(), mapper.encode(factory.get(IGetDataRequest.class)), context.asyncAssertSuccess(o ->  {
+        Envelope envelope = new Envelope().setUser(new MockUser().setId(1)).setRequest(mapper.encode(factory.get(IGetDataRequest.class).setProfileId(1)));
+        rule.vertx().eventBus().<String>send(Endpoint.REPORT_MILEAGE_MONTH_GET.getAddress(), mapper.encode(envelope), context.asyncAssertSuccess(o ->  {
             String s = o.body();
             IGetMultiSetResponse response = mapper.decode(s, IGetMultiSetResponse.class);
 
@@ -48,7 +51,8 @@ public class GetReportsTest extends AbstractVerticleTest {
 
     @Test
     public void mileageByShoe(TestContext context) {
-        rule.vertx().eventBus().<String>send(Endpoint.REPORT_MILEAGE_SHOE_GET.getAddress(), mapper.encode(factory.get(IGetDataRequest.class)), context.asyncAssertSuccess(o ->  {
+        Envelope envelope = new Envelope().setUser(new MockUser().setId(1)).setRequest(mapper.encode(factory.get(IGetDataRequest.class).setProfileId(1)));
+        rule.vertx().eventBus().<String>send(Endpoint.REPORT_MILEAGE_SHOE_GET.getAddress(), mapper.encode(envelope), context.asyncAssertSuccess(o ->  {
             String s = o.body();
             IGetDataSetResponse response = mapper.decode(s, IGetDataSetResponse.class);
 
@@ -59,7 +63,8 @@ public class GetReportsTest extends AbstractVerticleTest {
 
     @Test
     public void mileageByRun(TestContext context) {
-        rule.vertx().eventBus().<String>send(Endpoint.REPORT_MILEAGE_RUN_GET.getAddress(), mapper.encode(factory.get(IGetDataRequest.class)), context.asyncAssertSuccess(o ->  {
+        Envelope envelope = new Envelope().setUser(new MockUser().setId(1)).setRequest(mapper.encode(factory.get(IGetDataRequest.class).setProfileId(1)));
+        rule.vertx().eventBus().<String>send(Endpoint.REPORT_MILEAGE_RUN_GET.getAddress(), mapper.encode(envelope), context.asyncAssertSuccess(o ->  {
             String s = o.body();
             IGetDataSetResponse response = mapper.decode(s, IGetDataSetResponse.class);
 
@@ -70,7 +75,8 @@ public class GetReportsTest extends AbstractVerticleTest {
 
     @Test
     public void mileageByRoute(TestContext context) {
-        rule.vertx().eventBus().<String>send(Endpoint.REPORT_MILEAGE_ROUTE_GET.getAddress(), mapper.encode(factory.get(IGetDataRequest.class)), context.asyncAssertSuccess(o ->  {
+        Envelope envelope = new Envelope().setUser(new MockUser().setId(1)).setRequest(mapper.encode(factory.get(IGetDataRequest.class).setProfileId(1)));
+        rule.vertx().eventBus().<String>send(Endpoint.REPORT_MILEAGE_ROUTE_GET.getAddress(), mapper.encode(envelope), context.asyncAssertSuccess(o ->  {
             String s = o.body();
             IGetDataSetResponse response = mapper.decode(s, IGetDataSetResponse.class);
 

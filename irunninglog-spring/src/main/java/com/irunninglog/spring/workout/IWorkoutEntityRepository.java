@@ -42,4 +42,7 @@ public interface IWorkoutEntityRepository extends CrudRepository<WorkoutEntity, 
     @Query(value = "select min(w.date) as ddate from WorkoutEntity w where w.profile.id = :id and w.date > :date")
     LocalDate getFirstWorkoutDateAfter(@Param("id") long id, @Param("date") LocalDate date);
 
+    @Query(value = "select w from WorkoutEntity w where w.id = :workoutId and w.profile.id = :profileId")
+    WorkoutEntity findByProfileAndWorkoutIds(@Param("profileId") long profileId, @Param("workoutId") long workoutId);
+
 }

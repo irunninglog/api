@@ -30,4 +30,9 @@ public class LoginVerticle extends AbstractEndpointVerticle<ILoginRequest, ILogi
                 .setBody(loginService.login(user));
     }
 
+    @Override
+    protected boolean authorized(IUser user, ILoginRequest request) {
+        return user != null;
+    }
+
 }

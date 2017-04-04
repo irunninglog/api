@@ -8,4 +8,6 @@ public interface IWorkoutService {
 
     IWorkout delete(long profileId, long workoutId);
 
+    boolean ownedBy(long profileId, long workoutId);
+
 }

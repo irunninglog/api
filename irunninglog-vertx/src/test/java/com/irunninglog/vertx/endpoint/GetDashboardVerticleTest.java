@@ -5,8 +5,10 @@ import com.irunninglog.api.ResponseStatus;
 import com.irunninglog.api.dashboard.IDashboardService;
 import com.irunninglog.api.dashboard.IGetDashboardRequest;
 import com.irunninglog.api.dashboard.IGetDashboardResponse;
+import com.irunninglog.vertx.Envelope;
 import com.irunninglog.vertx.endpoint.dashboard.GetDashboardVerticle;
 import com.irunninglog.vertx.mock.MockDashboardInfo;
+import com.irunninglog.vertx.mock.MockUser;
 import io.vertx.ext.unit.TestContext;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,7 +29,8 @@ public class GetDashboardVerticleTest extends AbstractVerticleTest {
 
     @Test
     public void ok(TestContext context) {
-        rule.vertx().eventBus().<String>send(Endpoint.DASHBOARD_GET.getAddress(), mapper.encode(factory.get(IGetDashboardRequest.class)), context.asyncAssertSuccess(o ->  {
+        Envelope envelope = new Envelope().setUser(new MockUser().setId(1)).setRequest(mapper.encode(factory.get(IGetDashboardRequest.class).setProfileId(1)));
+        rule.vertx().eventBus().<String>send(Endpoint.DASHBOARD_GET.getAddress(), mapper.encode(envelope), context.asyncAssertSuccess(o ->  {
             String s = o.body();
             IGetDashboardResponse response = mapper.decode(s, IGetDashboardResponse.class);
 

@@ -7,6 +7,8 @@ import io.vertx.ext.unit.TestContext;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import static org.mockito.Matchers.any;
+
 public class PutWorkoutHandlerTest extends AbstractHandlerTest {
 
     private final IWorkoutService workoutService = Mockito.mock(IWorkoutService.class);
@@ -15,6 +17,8 @@ public class PutWorkoutHandlerTest extends AbstractHandlerTest {
     protected void afterBefore(TestContext context) {
         vertx.deployVerticle(new PutWorkoutVerticle(factory, mapper, workoutService),
                 context.asyncAssertSuccess());
+
+        Mockito.when(workoutService.ownedBy(any(Long.class), any(Long.class))).thenReturn(Boolean.TRUE);
     }
 
     @Test

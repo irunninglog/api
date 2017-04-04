@@ -7,11 +7,12 @@ import com.irunninglog.api.mapping.IMapper;
 import com.irunninglog.api.profile.IGetProfileRequest;
 import com.irunninglog.api.profile.IGetProfileResponse;
 import com.irunninglog.api.profile.IProfileService;
-import com.irunninglog.vertx.endpoint.AbstractEndpointVerticle;
+import com.irunninglog.api.security.IUser;
+import com.irunninglog.vertx.endpoint.AbstractProfileIdEndpointVerticle;
 import com.irunninglog.vertx.endpoint.EndpointVerticle;
 
 @EndpointVerticle(endpoint = Endpoint.PROFILE_GET)
-public final class GetProfileVerticle extends AbstractEndpointVerticle<IGetProfileRequest, IGetProfileResponse> {
+public final class GetProfileVerticle extends AbstractProfileIdEndpointVerticle<IGetProfileRequest, IGetProfileResponse> {
 
     private final IProfileService profileService;
 
@@ -25,6 +26,11 @@ public final class GetProfileVerticle extends AbstractEndpointVerticle<IGetProfi
     protected void handle(IGetProfileRequest request, IGetProfileResponse response) {
         //noinspection unchecked
         response.setStatus(ResponseStatus.OK).setBody(profileService.get(request.getProfileId()));
+    }
+
+    @Override
+    protected boolean authorized(IUser user, IGetProfileRequest request) {
+        return matches(user, request);
     }
 
 }

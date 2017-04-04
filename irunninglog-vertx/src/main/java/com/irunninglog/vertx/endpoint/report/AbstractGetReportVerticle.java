@@ -1,13 +1,14 @@
 package com.irunninglog.vertx.endpoint.report;
 
-import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.IResponse;
+import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.mapping.IMapper;
 import com.irunninglog.api.report.IGetReportRequest;
 import com.irunninglog.api.report.IReportService;
-import com.irunninglog.vertx.endpoint.AbstractEndpointVerticle;
+import com.irunninglog.api.security.IUser;
+import com.irunninglog.vertx.endpoint.AbstractProfileIdEndpointVerticle;
 
-abstract class AbstractGetReportVerticle<T extends IResponse> extends AbstractEndpointVerticle<IGetReportRequest, T> {
+abstract class AbstractGetReportVerticle<T extends IResponse> extends AbstractProfileIdEndpointVerticle<IGetReportRequest, T> {
 
     final IReportService reportService;
 
@@ -15,6 +16,11 @@ abstract class AbstractGetReportVerticle<T extends IResponse> extends AbstractEn
         super(factory, mapper, IGetReportRequest.class, responseClass);
 
         this.reportService = reportService;
+    }
+
+    @Override
+    protected final boolean authorized(IUser user, IGetReportRequest request) {
+        return matches(user, request);
     }
 
 }

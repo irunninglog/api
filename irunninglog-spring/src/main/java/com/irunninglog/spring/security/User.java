@@ -1,5 +1,6 @@
 package com.irunninglog.spring.security;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.irunninglog.api.security.IUser;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -8,6 +9,7 @@ import java.util.List;
 
 @Component
 @Scope("prototype")
+@JsonTypeInfo(use= JsonTypeInfo.Id.CLASS, include= JsonTypeInfo.As.PROPERTY, property="class")
 final class User implements IUser {
 
     private long id;
@@ -45,6 +47,11 @@ final class User implements IUser {
     @Override
     public List<String> getAuthorities() {
         return authorities;
+    }
+
+    @Override
+    public boolean hasAuthority(String authority) {
+        return authorities != null && authorities.contains(authority);
     }
 
 }

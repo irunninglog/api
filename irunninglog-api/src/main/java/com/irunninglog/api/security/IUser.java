@@ -16,4 +16,6 @@ public interface IUser {
 
     List<String> getAuthorities();
 
+    boolean hasAuthority(String authority);
+
 }

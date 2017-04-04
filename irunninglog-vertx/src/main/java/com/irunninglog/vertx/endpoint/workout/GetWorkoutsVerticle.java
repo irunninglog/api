@@ -4,15 +4,16 @@ import com.irunninglog.api.Endpoint;
 import com.irunninglog.api.ResponseStatus;
 import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.mapping.IMapper;
+import com.irunninglog.api.security.IUser;
 import com.irunninglog.api.workout.IGetWorkoutsRequest;
 import com.irunninglog.api.workout.IGetWorkoutsResponse;
 import com.irunninglog.api.workout.IWorkoutService;
-import com.irunninglog.vertx.endpoint.AbstractEndpointVerticle;
+import com.irunninglog.vertx.endpoint.AbstractProfileIdEndpointVerticle;
 import com.irunninglog.vertx.endpoint.EndpointVerticle;
 
 
 @EndpointVerticle(endpoint = Endpoint.WORKOUTS_GET)
-public final class GetWorkoutsVerticle extends AbstractEndpointVerticle<IGetWorkoutsRequest, IGetWorkoutsResponse> {
+public final class GetWorkoutsVerticle extends AbstractProfileIdEndpointVerticle<IGetWorkoutsRequest, IGetWorkoutsResponse> {
 
     private final IWorkoutService workoutService;
 
@@ -27,6 +28,11 @@ public final class GetWorkoutsVerticle extends AbstractEndpointVerticle<IGetWork
         //noinspection unchecked
         response.setStatus(ResponseStatus.OK)
                 .setBody(workoutService.get(request.getProfileId(), request.getDate(), request.getOffset()));
+    }
+
+    @Override
+    protected boolean authorized(IUser user, IGetWorkoutsRequest request) {
+        return matches(user, request);
     }
 
 }

@@ -5,8 +5,10 @@ import com.irunninglog.api.ResponseStatus;
 import com.irunninglog.api.ping.IPingRequest;
 import com.irunninglog.api.ping.IPingResponse;
 import com.irunninglog.api.ping.IPingService;
+import com.irunninglog.vertx.Envelope;
 import com.irunninglog.vertx.endpoint.ping.PingVerticle;
 import com.irunninglog.vertx.mock.MockPing;
+import com.irunninglog.vertx.mock.MockUser;
 import io.vertx.ext.unit.TestContext;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,7 +27,11 @@ public class PingVerticleTest extends AbstractVerticleTest {
 
     @Test
     public void ok(TestContext context) {
-        rule.vertx().eventBus().<String>send(Endpoint.PING.getAddress(), mapper.encode(factory.get(IPingRequest.class)), context.asyncAssertSuccess(o ->  {
+        String request = mapper.encode(new Envelope()
+                .setRequest(mapper.encode(factory.get(IPingRequest.class)))
+                .setUser(new MockUser()));
+
+        rule.vertx().eventBus().<String>send(Endpoint.PING.getAddress(), request, context.asyncAssertSuccess(o ->  {
             String s = o.body();
             IPingResponse response = mapper.decode(s, IPingResponse.class);
 

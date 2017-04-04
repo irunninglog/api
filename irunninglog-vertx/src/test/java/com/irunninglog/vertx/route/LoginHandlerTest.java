@@ -1,10 +1,14 @@
 package com.irunninglog.vertx.route;
 
+import com.irunninglog.api.security.AuthnException;
 import com.irunninglog.api.security.ILoginService;
 import com.irunninglog.vertx.endpoint.security.LoginVerticle;
+import com.irunninglog.vertx.mock.MockUser;
 import io.vertx.ext.unit.TestContext;
 import org.junit.Test;
 import org.mockito.Mockito;
+
+import static org.mockito.Matchers.any;
 
 public class LoginHandlerTest extends AbstractHandlerTest {
 
@@ -17,7 +21,9 @@ public class LoginHandlerTest extends AbstractHandlerTest {
     }
 
     @Test
-    public void login(TestContext context) {
+    public void login(TestContext context) throws AuthnException {
+        Mockito.when(authenticationService.authenticate(any(String.class))).thenReturn(new MockUser());
+
         context.assertEquals(200, post(context, "/authn", TOKEN));
     }
 

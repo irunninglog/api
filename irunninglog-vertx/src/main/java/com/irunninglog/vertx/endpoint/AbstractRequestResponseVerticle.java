@@ -6,6 +6,8 @@ import com.irunninglog.api.ResponseStatus;
 import com.irunninglog.api.ResponseStatusException;
 import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.mapping.IMapper;
+import com.irunninglog.api.security.IUser;
+import com.irunninglog.vertx.Envelope;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
@@ -13,7 +15,7 @@ import io.vertx.core.eventbus.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class AbstractRequestResponseVerticle<Q extends IRequest, S extends IResponse> extends AbstractVerticle {
+abstract class AbstractRequestResponseVerticle<Q extends IRequest, S extends IResponse> extends AbstractVerticle {
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -22,7 +24,10 @@ public abstract class AbstractRequestResponseVerticle<Q extends IRequest, S exte
     private final Class<S> responseClass;
     private final Class<Q> requestClass;
 
-    protected AbstractRequestResponseVerticle(IFactory factory, IMapper mapper, Class<Q> requestClass, Class<S> responseClass) {
+    AbstractRequestResponseVerticle(IFactory factory,
+                                    IMapper mapper,
+                                    Class<Q> requestClass,
+                                    Class<S> responseClass) {
         super();
 
         this.factory = factory;
@@ -57,7 +62,14 @@ public abstract class AbstractRequestResponseVerticle<Q extends IRequest, S exte
         try {
             logger.info("handler:start");
 
-            Q request = mapper.decode(msg.body(), requestClass);
+            Envelope envelope = mapper.decode(msg.body(), Envelope.class);
+
+            Q request = mapper.decode(envelope.getRequest(), requestClass);
+
+            if (!authorized(envelope.getUser(), request)) {
+                logger.error("handler:not allowed");
+                throw new ResponseStatusException(ResponseStatus.UNAUTHORIZED);
+            }
 
             logger.info("handler:request:{}", request);
 
@@ -87,6 +99,8 @@ public abstract class AbstractRequestResponseVerticle<Q extends IRequest, S exte
             }
         }
     }
+
+    protected abstract boolean authorized(IUser user, Q request);
 
     protected abstract String address();
 

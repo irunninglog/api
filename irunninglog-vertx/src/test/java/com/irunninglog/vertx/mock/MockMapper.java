@@ -17,6 +17,7 @@ import com.irunninglog.api.report.IGetReportRequest;
 import com.irunninglog.api.security.ILoginRequest;
 import com.irunninglog.api.security.ILoginResponse;
 import com.irunninglog.api.workout.*;
+import com.irunninglog.vertx.Envelope;
 
 import java.io.IOException;
 
@@ -111,6 +112,9 @@ public class MockMapper implements IMapper {
             } else if (clazz == IDeleteWorkoutResponse.class) {
                 //noinspection unchecked
                 return (T) objectMapper.readValue(string, MockDeleteWorkoutResponse.class);
+            } else if (clazz == Envelope.class) {
+                //noinspection unchecked
+                return (T) objectMapper.readValue(string, Envelope.class);
             } else {
                 throw new IllegalArgumentException("Can't read class " + clazz);
             }
