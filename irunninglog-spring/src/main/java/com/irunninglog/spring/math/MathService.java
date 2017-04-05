@@ -92,7 +92,7 @@ public final class MathService {
         return getPercentage(BigDecimal.valueOf(value), BigDecimal.valueOf(max));
     }
 
-    private int getPercentage(BigDecimal value, BigDecimal max) {
+    public int getPercentage(BigDecimal value, BigDecimal max) {
         return max.doubleValue() < 1E-9 ? 0 : intValue(divide(value.multiply(BigDecimal.valueOf(100)), max));
     }
 

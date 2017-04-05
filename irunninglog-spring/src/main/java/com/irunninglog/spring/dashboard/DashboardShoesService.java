@@ -53,6 +53,7 @@ final class     DashboardShoesService {
             BigDecimal target = BigDecimal.valueOf(shoeEntity.getMax());
 
             Progress progress = mathService.progress(distance, target, Boolean.TRUE);
+            int percentage = mathService.getPercentage(distance, target);
 
             IProgressInfo progressInfo = factory.get(IProgressInfo.class)
                     .setTitle(shoeEntity.getName())
@@ -60,6 +61,7 @@ final class     DashboardShoesService {
                     .setTextOne(formatStart(shoeEntity))
                     .setTextTwo(mathService.formatProgressText(distance, target, profile.getPreferredUnits()))
                     .setMax(target.intValue())
+                    .setPercentage(percentage)
                     .setValue(Math.min(target.intValue(), distance.intValue()))
                     .setProgress(progress);
 
