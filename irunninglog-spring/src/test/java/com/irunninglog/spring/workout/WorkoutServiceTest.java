@@ -180,4 +180,16 @@ public class WorkoutServiceTest extends AbstractTest {
         assertEquals(0, workoutCount());
     }
 
+    @Test
+    public void ownedBy() {
+        IWorkoutEntry workoutEntry = factory.get(IWorkoutEntry.class)
+                .setId(-1)
+                .setDate(dateService.format(LocalDate.now()));
+
+        IWorkout workout = workoutService.put(profileEntity.getId(), workoutEntry, 300);
+
+        assertTrue(workoutService.ownedBy(profileEntity.getId(), workout.getId()));
+        assertFalse(workoutService.ownedBy(profileEntity.getId() + 1, workout.getId()));
+    }
+
 }
