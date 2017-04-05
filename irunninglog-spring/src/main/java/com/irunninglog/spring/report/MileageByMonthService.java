@@ -69,8 +69,9 @@ class MileageByMonthService {
             yearDataSet.getData().sort((o1, o2) -> {
                 int index1 = MONTHS.indexOf(o1.getLabel());
                 int index2 = MONTHS.indexOf(o2.getLabel());
+                int indexComparison = index1 < index2 ? -1 : 1;
 
-                return index1 == index2 ? 0 : index1 < index2 ? -1 : 1;
+                return index1 == index2 ? 0 : indexComparison;
             });
         }
 
