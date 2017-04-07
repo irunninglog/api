@@ -2,6 +2,8 @@ package com.irunninglog.spring.workout;
 
 import com.irunninglog.api.Privacy;
 import com.irunninglog.api.Progress;
+import com.irunninglog.api.ResponseStatus;
+import com.irunninglog.api.ResponseStatusException;
 import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.workout.*;
 import com.irunninglog.spring.AbstractTest;
@@ -131,7 +133,7 @@ public class WorkoutServiceTest extends AbstractTest {
     }
 
     @Test
-    public void put() {
+    public void putSuccess() {
         assertEquals(0, workoutCount());
 
         RouteEntity routeEntity = saveRoute("route", Boolean.FALSE, profileEntity);
@@ -161,6 +163,17 @@ public class WorkoutServiceTest extends AbstractTest {
         assertEquals(shoeEntity.getId(), workout.getShoe().getId());
 
         assertEquals(1, workoutCount());
+    }
+
+    @Test
+    public void putFailure() {
+        try {
+            IWorkoutEntry workoutEntry = factory.get(IWorkoutEntry.class);
+            workoutService.put(profileEntity.getId(), workoutEntry, 300);
+            fail("Should have thrown");
+        } catch (ResponseStatusException ex) {
+            assertEquals(ResponseStatus.BAD, ex.getResponseStatus());
+        }
     }
 
     @Test

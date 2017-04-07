@@ -2,6 +2,8 @@ package com.irunninglog.spring.workout;
 
 import com.irunninglog.api.Privacy;
 import com.irunninglog.api.Progress;
+import com.irunninglog.api.ResponseStatus;
+import com.irunninglog.api.ResponseStatusException;
 import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.workout.*;
 import com.irunninglog.spring.data.*;
@@ -11,6 +13,7 @@ import com.irunninglog.spring.profile.IProfileEntityRepository;
 import com.irunninglog.spring.profile.ProfileEntity;
 import com.irunninglog.spring.service.ApiService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.DataBinder;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -33,6 +36,7 @@ final class WorkoutService implements IWorkoutService {
     private final DateService dateService;
     private final MathService mathService;
     private final IFactory factory;
+    private final WorkoutEntryValidator validator;
 
     @Autowired
     public WorkoutService(IProfileEntityRepository profileEntityRepository,
@@ -41,7 +45,8 @@ final class WorkoutService implements IWorkoutService {
                           FindWorkoutsService findWorkoutsService,
                           DateService dateService,
                           MathService mathService,
-                          IFactory factory) {
+                          IFactory factory,
+                          WorkoutEntryValidator validator) {
 
         this.profileEntityRepository = profileEntityRepository;
         this.workoutEntityRepository = workoutEntityRepository;
@@ -52,6 +57,7 @@ final class WorkoutService implements IWorkoutService {
         this.dateService = dateService;
         this.mathService = mathService;
         this.factory = factory;
+        this.validator = validator;
     }
 
     @Override
@@ -148,6 +154,12 @@ final class WorkoutService implements IWorkoutService {
 
     @Override
     public IWorkout put(long profileId, IWorkoutEntry workout, int offset) {
+        DataBinder dataBinder = new DataBinder(workout);
+        validator.validate(workout, dataBinder.getBindingResult());
+        if (dataBinder.getBindingResult().hasErrors()) {
+            throw new ResponseStatusException(ResponseStatus.BAD);
+        }
+
         WorkoutEntity workoutEntity = new WorkoutEntity();
         workoutEntity.setId(workout.getId());
         workoutEntity.setProfile(profileEntityRepository.findOne(profileId));

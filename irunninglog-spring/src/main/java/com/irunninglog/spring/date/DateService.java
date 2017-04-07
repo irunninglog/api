@@ -12,7 +12,8 @@ import java.util.regex.Pattern;
 @InternalService
 public final class DateService {
 
-    private static final String DATE_INCOMING = "^(0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])[-](19|20)\\d\\d$";
+    public static final String DATE_INCOMING = "^(0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])[-](19|20)\\d\\d$";
+
     private static final String WIRE_FORMAT = "MM-dd-yyyy";
 
     public String formatFull(LocalDate date) {
