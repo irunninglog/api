@@ -71,8 +71,8 @@ final class SecurityHandler implements Handler<RoutingContext> {
                 routingContext.next();
             } else if (authorized(endpoint, routingContext, asyncResult.result())) {
                 IUser user = asyncResult.result();
-
-                routingContext.vertx().<IUser>executeBlocking(future -> token(routingContext, user, future), asyncResult1 -> token(routingContext, asyncResult));
+                routingContext.put("user", user);
+                routingContext.next();
             } else {
                 fail(routingContext, ResponseStatus.UNAUTHORIZED);
             }
@@ -80,28 +80,6 @@ final class SecurityHandler implements Handler<RoutingContext> {
             //noinspection ThrowableResultOfMethodCallIgnored
             fail(routingContext, ResponseStatus.UNAUTHENTICATED);
         }
-    }
-
-    private void token(RoutingContext routingContext, AsyncResult<IUser> asyncResult) {
-        if (asyncResult.succeeded()) {
-            routingContext.next();
-        } else {
-            fail(routingContext, ResponseStatus.UNAUTHENTICATED);
-        }
-    }
-
-    private void token(RoutingContext routingContext, IUser user, Future<IUser> future) {
-        if (user != null) {
-            routingContext.put("user", user);
-
-            try {
-                routingContext.response().putHeader("iRunningLog-Token", authenticationService.token(user));
-            } catch(AuthnException ex) {
-                future.fail(ex);
-            }
-        }
-
-        future.complete();
     }
 
     private boolean authorized(Endpoint endpoint, RoutingContext routingContext, IUser user) {
