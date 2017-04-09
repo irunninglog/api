@@ -12,6 +12,7 @@ import io.vertx.ext.unit.TestContext;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 
+import java.io.UnsupportedEncodingException;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.Collection;
@@ -34,9 +35,9 @@ public class GetWorkoutsTest extends AbstractTest {
     }
 
     @Override
-    protected void afterBefore(TestContext context) {
+    protected void afterBefore(TestContext context) throws UnsupportedEncodingException {
         profileEntity = save("workouts@irunninglog.com", "password", "MYPROFILE");
-        token = token("workouts@irunninglog.com", "password");
+        token = token("workouts@irunninglog.com");
 
         dateService = applicationContext.getBean(DateService.class);
 

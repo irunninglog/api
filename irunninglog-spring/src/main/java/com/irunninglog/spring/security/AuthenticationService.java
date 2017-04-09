@@ -1,5 +1,9 @@
 package com.irunninglog.spring.security;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.security.AuthnException;
 import com.irunninglog.api.security.IAuthenticationService;
@@ -8,9 +12,9 @@ import com.irunninglog.spring.service.ApiService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.core.env.Environment;
 
-import java.util.Base64;
+import java.io.UnsupportedEncodingException;
 import java.util.stream.Collectors;
 
 @ApiService
@@ -19,58 +23,57 @@ final class AuthenticationService implements IAuthenticationService {
     private static final Logger LOG = LoggerFactory.getLogger(AuthenticationService.class);
 
     private final IUserEntityRepository userEntityRepository;
-    private final PasswordEncoder passwordEncoder;
     private final IFactory factory;
+    private final JWTVerifier verifier;
 
     @Autowired
     public AuthenticationService(IUserEntityRepository userEntityRepository,
-                                 PasswordEncoder passwordEncoder,
-                                 IFactory factory) {
+                                 IFactory factory,
+                                 Environment environment) throws UnsupportedEncodingException {
 
         this.userEntityRepository = userEntityRepository;
-        this.passwordEncoder = passwordEncoder;
         this.factory = factory;
+
+        verifier = verifier(environment);
+    }
+
+    private JWTVerifier verifier(Environment environment) throws UnsupportedEncodingException {
+        String authConfig = environment.getRequiredProperty("jwt");
+
+        String[] tokens = authConfig.split("\\|");
+        Algorithm algorithm = Algorithm.HMAC256(tokens[1]);
+        return JWT.require(algorithm)
+                .withIssuer(tokens[0])
+                .build();
     }
 
     @Override
     public IUser authenticate(String token) throws AuthnException {
-        IUser user;
-        if (token != null) {
-            user = basicAuth(token);
-        } else {
+        if (token == null) {
             throw new AuthnException("No token provided");
+        } else if (!token.startsWith("Bearer ")) {
+            throw new AuthnException("Invalid token format");
+        } else {
+            try {
+                return verify(token.split(" ")[1]);
+            } catch (AuthnException ex) {
+                throw ex;
+            } catch (Exception ex) {
+                LOG.error("Token verification failed", ex);
+                throw new AuthnException("Token verification failed");
+            }
         }
-
-        return user;
     }
 
-    private IUser basicAuth(String token) throws AuthnException {
-        String username;
-        String password;
+    private IUser verify(String token) throws AuthnException {
+        DecodedJWT decodedJWT = verifier.verify(token);
 
-        try {
-            String decoded = new String(Base64.getDecoder().decode(token.split(" ")[1]));
-            String [] tokens = decoded.split(":");
-            username = tokens[0];
-            password = tokens[1];
-        } catch (Exception ex) {
-            LOG.error("credential", ex);
-            throw new AuthnException("Unable to decode credential");
-        }
+        String username = decodedJWT.getSubject();
 
-        return checkBasic(username, password);
-    }
-
-    private IUser checkBasic(String username, String password) throws AuthnException {
         UserEntity userEntity = userEntityRepository.findByUsername(username);
         if (userEntity == null) {
             LOG.error("checkBasic:bad user:{}", username);
             throw new AuthnException("User not found");
-        }
-
-        if (!passwordEncoder.matches(password, userEntity.getPassword())) {
-            LOG.error("checkBasic:password mismatch");
-            throw new AuthnException("Passwords don't match");
         }
 
         return factory.get(IUser.class)

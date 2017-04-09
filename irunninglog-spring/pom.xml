@@ -66,6 +66,13 @@
             <version>${version.spring-security-web}</version>
         </dependency>
 
+        <!-- auth0 dependencies -->
+        <dependency>
+            <groupId>com.auth0</groupId>
+            <artifactId>java-jwt</artifactId>
+            <version>${version.auth0}</version>
+        </dependency>
+
         <!-- test dependencies -->
         <dependency>
             <groupId>org.springframework</groupId>

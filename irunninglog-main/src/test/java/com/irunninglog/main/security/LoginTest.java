@@ -27,7 +27,7 @@ public class LoginTest extends AbstractTest {
     @Override
     protected void afterBefore(TestContext context) throws Exception {
         save("login@irunninglog.com", "password", "MYPROFILE");
-        basic = token("login@irunninglog.com", "password");
+        basic = token("login@irunninglog.com");
     }
 
     @Test

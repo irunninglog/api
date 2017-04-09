@@ -14,6 +14,7 @@ import io.vertx.ext.unit.TestContext;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 
+import java.io.UnsupportedEncodingException;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Collections;
@@ -49,7 +50,7 @@ public class PutWorkoutTest extends AbstractTest {
     }
 
     @Test
-    public void put(TestContext context) {
+    public void put(TestContext context) throws UnsupportedEncodingException {
         IWorkoutEntry workoutEntry = factory.get(IWorkoutEntry.class)
                 .setId(-1)
                 .setDate(dateService.format(LocalDate.now()))
@@ -61,7 +62,7 @@ public class PutWorkoutTest extends AbstractTest {
 
         context.assertEquals(200, put(context,
                 "/profiles/" + profileEntity.getId() + "/workouts",
-                token("allan@irunninglog.com", "password"),
+                token("allan@irunninglog.com"),
                 mapper.encode(workoutEntry)));
     }
 

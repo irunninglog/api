@@ -15,6 +15,7 @@
     <packaging>pom</packaging>
 
     <properties>
+        <version.auth0>3.1.0</version.auth0>
         <version.guava>19.0</version.guava>
         <version.h2>1.4.192</version.h2>
         <version.hibernate>4.3.11.Final</version.hibernate>

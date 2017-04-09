@@ -13,6 +13,7 @@ import io.vertx.ext.unit.TestContext;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 
+import java.io.UnsupportedEncodingException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -42,24 +43,24 @@ public class GetAllDataTest extends AbstractTest {
     }
 
     @Test
-    public void shoes(TestContext context) {
+    public void shoes(TestContext context) throws UnsupportedEncodingException {
         saveShoe(profileEntity, "name1", Boolean.TRUE);
         saveShoe(profileEntity, "name2", Boolean.TRUE, LocalDate.now());
         saveShoe(profileEntity, "name3", Boolean.TRUE, LocalDate.now().minusDays(3));
         saveShoe(profileEntity, "name4", Boolean.TRUE);
-        context.assertEquals(200, get(context, "/profiles/" + profileEntity.getId() + "/shoes", token("data@irunninglog.com", "password")));
+        context.assertEquals(200, get(context, "/profiles/" + profileEntity.getId() + "/shoes", token("data@irunninglog.com")));
     }
 
     @Test
-    public void routes(TestContext context) {
+    public void routes(TestContext context) throws UnsupportedEncodingException {
         saveRoute(profileEntity, "name", Boolean.TRUE);
-        context.assertEquals(200, get(context, "/profiles/" + profileEntity.getId() + "/routes", token("data@irunninglog.com", "password")));
+        context.assertEquals(200, get(context, "/profiles/" + profileEntity.getId() + "/routes", token("data@irunninglog.com")));
     }
 
     @Test
-    public void runs(TestContext context) {
+    public void runs(TestContext context) throws UnsupportedEncodingException {
         saveRun(profileEntity, "name", Boolean.TRUE);
-        context.assertEquals(200, get(context, "/profiles/" + profileEntity.getId() + "/runs", token("data@irunninglog.com", "password")));
+        context.assertEquals(200, get(context, "/profiles/" + profileEntity.getId() + "/runs", token("data@irunninglog.com")));
     }
 
 }

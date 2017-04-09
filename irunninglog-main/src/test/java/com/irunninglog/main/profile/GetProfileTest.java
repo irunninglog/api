@@ -11,6 +11,7 @@ import io.vertx.ext.unit.TestContext;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -41,24 +42,24 @@ public class GetProfileTest extends AbstractTest {
     }
 
     @Test
-    public void profile(TestContext context) {
+    public void profile(TestContext context) throws UnsupportedEncodingException {
         context.assertEquals(200,
                 get(context, "/profiles/" + profile.getId(),
-                        token("allan@irunninglog.com", "password")));
+                        token("allan@irunninglog.com")));
     }
 
     @Test
-    public void admin(TestContext context) {
+    public void admin(TestContext context) throws UnsupportedEncodingException {
         context.assertEquals(200,
                 get(context, "/profiles/" + profile.getId(),
-                        token(admin.getEmail(), "password")));
+                        token(admin.getEmail())));
     }
 
     @Test
-    public void unauthorized(TestContext context) {
+    public void unauthorized(TestContext context) throws UnsupportedEncodingException {
         context.assertEquals(403,
                 get(context, "/profiles/" + profile.getId() + 1,
-                        token("allan@irunninglog.com", "password")));
+                        token("allan@irunninglog.com")));
     }
 
     @Test
@@ -69,24 +70,17 @@ public class GetProfileTest extends AbstractTest {
     }
 
     @Test
-    public void wrongPassword(TestContext context) {
+    public void wrongUser(TestContext context) throws UnsupportedEncodingException {
         context.assertEquals(401,
                 get(context, "/profiles/" + profile.getId(),
-                        token("allan@irunninglog.com", "passwordd")));
+                        token("allann@irunninglog.com")));
     }
 
     @Test
-    public void wrongUser(TestContext context) {
-        context.assertEquals(401,
-                get(context, "/profiles/" + profile.getId(),
-                        token("allann@irunninglog.com", "password")));
-    }
-
-    @Test
-    public void notFound(TestContext context) {
+    public void notFound(TestContext context) throws UnsupportedEncodingException {
         context.assertEquals(404,
                 get(context, "/profiles/" + profile.getId() + admin.getId(),
-                        token(admin.getEmail(), "password")));
+                        token(admin.getEmail())));
     }
 
 }

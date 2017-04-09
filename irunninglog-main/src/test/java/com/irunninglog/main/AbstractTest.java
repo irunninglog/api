@@ -1,5 +1,7 @@
 package com.irunninglog.main;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
 import com.irunninglog.api.Gender;
 import com.irunninglog.api.Privacy;
 import com.irunninglog.api.Unit;
@@ -31,10 +33,10 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.io.UnsupportedEncodingException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
-import java.util.Base64;
 import java.util.Collection;
 
 @RunWith(VertxUnitRunner.class)
@@ -59,7 +61,7 @@ public abstract class AbstractTest {
     public final void before(TestContext context) throws Exception {
         System.setProperty("dataSource", "org.h2.Driver|jdbc:h2:mem:test;DB_CLOSE_DELAY=-1|sa");
         System.setProperty("jpa", "update|org.hibernate.dialect.H2Dialect");
-        System.setProperty("authenticationService", "3600000|foo");
+        System.setProperty("jwt", "issuer|secret");
 
         applicationContext = new AnnotationConfigApplicationContext(ContextConfiguration.class);
 
@@ -284,26 +286,14 @@ public abstract class AbstractTest {
         return responseCode[0];
     }
 
-    protected final String postAndGetToken(TestContext context, String path, String token) {
-        HttpClient client = vertx.createHttpClient();
-        Async async = context.async();
-        HttpClientRequest req = client.post(8889, "localhost", path);
-        req.putHeader("Authorization", token);
+    protected String token(String username) throws UnsupportedEncodingException {
+        Algorithm algorithm = Algorithm.HMAC256("secret");
+        String token = JWT.create()
+                .withIssuer("issuer")
+                .withSubject(username)
+                .sign(algorithm);
 
-        final String[] headers = new String[1];
-        req.handler(resp -> {
-            headers[0] = resp.getHeader("iRunningLog-Token");
-            async.complete();
-        });
-        req.end();
-
-        async.awaitSuccess(10000);
-
-        return headers[0];
-    }
-
-    protected String token(String username, String password) {
-        return "Basic " + Base64.getEncoder().encodeToString((username + ":" + password).getBytes());
+        return "Bearer " + token;
     }
 
 }

@@ -12,6 +12,7 @@ import io.vertx.ext.unit.TestContext;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 
+import java.io.UnsupportedEncodingException;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Collections;
@@ -33,10 +34,10 @@ public class DeleteWorkoutTest extends AbstractTest {
     }
 
     @Test
-    public void delete(TestContext context) {
+    public void delete(TestContext context) throws UnsupportedEncodingException {
         WorkoutEntity workoutEntity = saveWorkout(profileEntity, LocalDate.now(), 0, 0, null, null, null);
 
-        context.assertEquals(200, delete(context, "/profiles/" + profileEntity.getId() + "/workouts/" + workoutEntity.getId() , token("allan@irunninglog.com", "password")));
+        context.assertEquals(200, delete(context, "/profiles/" + profileEntity.getId() + "/workouts/" + workoutEntity.getId() , token("allan@irunninglog.com")));
     }
 
 }

@@ -11,6 +11,7 @@ import io.vertx.ext.unit.TestContext;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 
+import java.io.UnsupportedEncodingException;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Collections;
@@ -37,7 +38,7 @@ public class GetDashboardTest extends AbstractTest {
     }
 
     @Test
-    public void ok(TestContext context) {
+    public void ok(TestContext context) throws UnsupportedEncodingException {
         saveWorkout(profile, LocalDate.now(), 10, 60 * 60 * 1000, null, null, null);
         saveWorkout(profile, LocalDate.now().minusDays(1), 10, 60 * 60 * 1000, null, null, null);
         saveWorkout(profile, LocalDate.now().minusMonths(1), 10, 60 * 60 * 1000, null, null, null);
@@ -45,12 +46,12 @@ public class GetDashboardTest extends AbstractTest {
 
         saveShoe(profile, "one", Boolean.TRUE);
         saveShoe(profile, "two", Boolean.TRUE, LocalDate.now());
-        context.assertEquals(200, get(context, "/profiles/" +profile.getId() + "/dashboard", token("dashboard@irunninglog.com", "password")));
+        context.assertEquals(200, get(context, "/profiles/" +profile.getId() + "/dashboard", token("dashboard@irunninglog.com")));
     }
 
     @Test
-    public void notFound(TestContext context) {
-        context.assertEquals(404, get(context, "/profiles/" + (profile.getId() + admin.getId()) + "/dashboard", token("admin@irunninglog.com", "password")));
+    public void notFound(TestContext context) throws UnsupportedEncodingException {
+        context.assertEquals(404, get(context, "/profiles/" + (profile.getId() + admin.getId()) + "/dashboard", token("admin@irunninglog.com")));
     }
 
 }

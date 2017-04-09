@@ -15,6 +15,7 @@ import io.vertx.ext.unit.TestContext;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 
+import java.io.UnsupportedEncodingException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -40,9 +41,9 @@ public class GetAllReportsTest extends AbstractTest {
     }
 
     @Override
-    protected void afterBefore(TestContext context) {
+    protected void afterBefore(TestContext context) throws UnsupportedEncodingException {
         profileEntity = save("reports@irunninglog.com", "password", "MYPROFILE");
-        token = token("reports@irunninglog.com", "password");
+        token = token("reports@irunninglog.com");
     }
 
     @Test
