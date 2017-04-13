@@ -14,8 +14,6 @@ import com.irunninglog.api.profile.IGetProfileResponse;
 import com.irunninglog.api.report.IGetDataSetResponse;
 import com.irunninglog.api.report.IGetMultiSetResponse;
 import com.irunninglog.api.report.IGetReportRequest;
-import com.irunninglog.api.security.ILoginRequest;
-import com.irunninglog.api.security.ILoginResponse;
 import com.irunninglog.api.workout.*;
 import com.irunninglog.vertx.Envelope;
 
@@ -61,12 +59,6 @@ public class MockMapper implements IMapper {
             } else if (clazz == IGetWorkoutsResponse.class) {
                 //noinspection unchecked
                 return (T) objectMapper.readValue(string, MockGetWorkoutsResponse.class);
-            } else if (clazz == ILoginRequest.class) {
-                //noinspection unchecked
-                return (T) objectMapper.readValue(string, MockLoginRequest.class);
-            } else if (clazz == ILoginResponse.class) {
-                //noinspection unchecked
-                return (T) objectMapper.readValue(string, MockLoginResponse.class);
             } else if (clazz == IPingRequest.class) {
                 //noinspection unchecked
                 return (T) objectMapper.readValue(string, MockPingRequest.class);

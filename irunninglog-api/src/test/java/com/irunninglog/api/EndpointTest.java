@@ -16,6 +16,14 @@ public class EndpointTest {
     }
 
     @Test
+    public void identity() {
+        assertEquals("407a8fc3-ce60-4076-81d6-a7432dd7defb", Endpoint.IDENTITY.getAddress());
+        assertEquals("/identity", Endpoint.IDENTITY.getPath());
+        assertEquals(AccessControl.ALLOW, Endpoint.IDENTITY.getControl());
+        assertEquals(EndpointMethod.POST, Endpoint.IDENTITY.getMethod());
+    }
+
+    @Test
     public void tostring() {
         assertNotNull(Endpoint.PING.toString());
     }

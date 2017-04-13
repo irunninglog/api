@@ -15,8 +15,6 @@ import com.irunninglog.api.profile.IGetProfileResponse;
 import com.irunninglog.api.report.IGetDataSetResponse;
 import com.irunninglog.api.report.IGetMultiSetResponse;
 import com.irunninglog.api.security.IForbiddenRequest;
-import com.irunninglog.api.security.ILoginRequest;
-import com.irunninglog.api.security.ILoginResponse;
 import com.irunninglog.api.workout.*;
 
 public class MockFactory implements IFactory {
@@ -44,12 +42,6 @@ public class MockFactory implements IFactory {
         } else if (clazz == IGetWorkoutsResponse.class) {
             //noinspection unchecked
             return (T) new MockGetWorkoutsResponse();
-        } else if (clazz == ILoginRequest.class) {
-            //noinspection unchecked
-            return (T) new MockLoginRequest();
-        } else if (clazz == ILoginResponse.class) {
-            //noinspection unchecked
-            return (T) new MockLoginResponse();
         } else if (clazz == IForbiddenRequest.class) {
             //noinspection unchecked
             return (T) new MockForbiddenRequest();

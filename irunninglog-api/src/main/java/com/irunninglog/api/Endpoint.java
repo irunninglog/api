@@ -4,8 +4,8 @@ import com.google.common.base.MoreObjects;
 
 public enum Endpoint {
 
-    LOGIN("407a8fc3-ce60-4076-81d6-a7432dd7defb",
-            "/authn",
+    IDENTITY("407a8fc3-ce60-4076-81d6-a7432dd7defb",
+            "/identity",
             AccessControl.ALLOW,
             EndpointMethod.POST),
     DASHBOARD_GET("c83068b3-2d60-4578-b981-a6c173441ba4",
