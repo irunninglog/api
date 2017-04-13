@@ -21,9 +21,7 @@ public class AuthenticationServiceTest extends AbstractTest {
     public void afterBefore(ApplicationContext context) {
         authenticationService = context.getBean(IAuthenticationService.class);
 
-        saveProfile("allan@irunninglog.com", "password", "MYPROFILE");
-        saveProfile("admin@irunninglog.com", "password", "ADMIN");
-        saveProfile("none@irunninglog.com", "password");
+        saveProfile("allan@irunninglog.com", "password");
     }
 
     @Test
@@ -88,33 +86,6 @@ public class AuthenticationServiceTest extends AbstractTest {
         assertEquals("allan@irunninglog.com", user.getUsername());
         assertEquals(1, user.getAuthorities().size());
         assertEquals("MYPROFILE", user.getAuthorities().iterator().next());
-    }
-
-    @Test
-    public void successAdmin() throws UnsupportedEncodingException, AuthnException {
-        Algorithm algorithm = Algorithm.HMAC256("secret");
-        String token = JWT.create()
-                .withIssuer("issuer")
-                .withSubject("admin@irunninglog.com")
-                .sign(algorithm);
-
-        IUser user = authenticationService.authenticate("Bearer " + token);
-        assertEquals("admin@irunninglog.com", user.getUsername());
-        assertEquals(1, user.getAuthorities().size());
-        assertEquals("ADMIN", user.getAuthorities().iterator().next());
-    }
-
-    @Test
-    public void successNone() throws UnsupportedEncodingException, AuthnException {
-        Algorithm algorithm = Algorithm.HMAC256("secret");
-        String token = JWT.create()
-                .withIssuer("issuer")
-                .withSubject("none@irunninglog.com")
-                .sign(algorithm);
-
-        IUser user = authenticationService.authenticate("Bearer " + token);
-        assertEquals("none@irunninglog.com", user.getUsername());
-        assertEquals(0, user.getAuthorities().size());
     }
 
 }

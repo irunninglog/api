@@ -39,7 +39,7 @@ public class GetAllDataTest extends AbstractTest {
 
     @Override
     protected void afterBefore(TestContext context) {
-        profileEntity = save("data@irunninglog.com", "password", "MYPROFILE");
+        profileEntity = save("data@irunninglog.com", "password");
     }
 
     @Test

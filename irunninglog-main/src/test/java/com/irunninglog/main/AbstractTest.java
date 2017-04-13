@@ -12,10 +12,6 @@ import com.irunninglog.spring.context.ContextConfiguration;
 import com.irunninglog.spring.data.*;
 import com.irunninglog.spring.profile.IProfileEntityRepository;
 import com.irunninglog.spring.profile.ProfileEntity;
-import com.irunninglog.spring.security.AuthorityEntity;
-import com.irunninglog.spring.security.IAuthorityEntityRepository;
-import com.irunninglog.spring.security.IUserEntityRepository;
-import com.irunninglog.spring.security.UserEntity;
 import com.irunninglog.spring.workout.IWorkoutEntityRepository;
 import com.irunninglog.spring.workout.WorkoutEntity;
 import com.irunninglog.vertx.http.ServerVerticle;
@@ -45,8 +41,6 @@ public abstract class AbstractTest {
     private final Integer offset = -1 * ZonedDateTime.now().getOffset().getTotalSeconds() / 60;
 
     private IProfileEntityRepository profileEntityRepository;
-    private IUserEntityRepository userEntityRepository;
-    private IAuthorityEntityRepository authorityEntityRepository;
     private IWorkoutEntityRepository workoutEntityRepository;
     private IRouteEntityRespository routeEntityRespository;
     private IRunEntityRepository runEntityRepository;
@@ -66,8 +60,6 @@ public abstract class AbstractTest {
         applicationContext = new AnnotationConfigApplicationContext(ContextConfiguration.class);
 
         profileEntityRepository = applicationContext.getBean(IProfileEntityRepository.class);
-        userEntityRepository = applicationContext.getBean(IUserEntityRepository.class);
-        authorityEntityRepository = applicationContext.getBean(IAuthorityEntityRepository.class);
         passwordEncoder = applicationContext.getBean(PasswordEncoder.class);
 
         workoutEntityRepository = applicationContext.getBean(IWorkoutEntityRepository.class);
@@ -111,13 +103,12 @@ public abstract class AbstractTest {
         runEntityRepository.deleteAll();
         shoeEntityRepository.deleteAll();
 
-        userEntityRepository.deleteAll();
-        authorityEntityRepository.deleteAll();
+        profileEntityRepository.deleteAll();
 
         vertx.close(context.asyncAssertSuccess());
     }
 
-    protected ProfileEntity save(String email, String password, String ... authorities) {
+    protected ProfileEntity save(String email, String password) {
         ProfileEntity entity = new ProfileEntity();
         entity.setId(-1);
         entity.setEmail(email);
@@ -136,21 +127,6 @@ public abstract class AbstractTest {
         entity.setDefaultShoe(null);
 
         entity = profileEntityRepository.save(entity);
-
-        UserEntity userEntity = userEntityRepository.findOne(entity.getId());
-        userEntity.setId(entity.getId());
-        userEntity.setPassword(entity.getPassword());
-        userEntity.setUsername(entity.getEmail());
-        userEntity.setAuthorities(userEntity.getAuthorities());
-
-        for (String authority : authorities) {
-            AuthorityEntity authorityEntity = new AuthorityEntity();
-            authorityEntity.setId(-1);
-            authorityEntity.setName(authority);
-
-            userEntity.getAuthorities().add(authorityEntityRepository.save(authorityEntity));
-        }
-        userEntityRepository.save(userEntity);
 
         return entity;
     }

@@ -19,7 +19,6 @@ import java.util.Collections;
 public class GetDashboardTest extends AbstractTest {
 
     private ProfileEntity profile;
-    private ProfileEntity admin;
 
     @Override
     protected Collection<Verticle> verticles(ApplicationContext applicationContext) {
@@ -33,8 +32,7 @@ public class GetDashboardTest extends AbstractTest {
 
     @Override
     protected void afterBefore(TestContext context) {
-        profile = save("dashboard@irunninglog.com", "password", "MYPROFILE");
-        admin = save("admin@irunninglog.com", "password", "ADMIN");
+        profile = save("dashboard@irunninglog.com", "password");
     }
 
     @Test
@@ -47,11 +45,6 @@ public class GetDashboardTest extends AbstractTest {
         saveShoe(profile, "one", Boolean.TRUE);
         saveShoe(profile, "two", Boolean.TRUE, LocalDate.now());
         context.assertEquals(200, get(context, "/profiles/" +profile.getId() + "/dashboard", token("dashboard@irunninglog.com")));
-    }
-
-    @Test
-    public void notFound(TestContext context) throws UnsupportedEncodingException {
-        context.assertEquals(404, get(context, "/profiles/" + (profile.getId() + admin.getId()) + "/dashboard", token("admin@irunninglog.com")));
     }
 
 }

@@ -18,12 +18,10 @@ import java.util.Collections;
 public class GetProfileTest extends AbstractTest {
 
     private ProfileEntity profile;
-    private ProfileEntity admin;
 
     @Override
     protected void afterBefore(TestContext context) {
-        profile = save("allan@irunninglog.com", "password", "MYPROFILE");
-        admin = save("admin@irunninglog.com", "password", "ADMIN");
+        profile = save("allan@irunninglog.com", "password");
     }
 
     @Override
@@ -49,13 +47,6 @@ public class GetProfileTest extends AbstractTest {
     }
 
     @Test
-    public void admin(TestContext context) throws UnsupportedEncodingException {
-        context.assertEquals(200,
-                get(context, "/profiles/" + profile.getId(),
-                        token(admin.getEmail())));
-    }
-
-    @Test
     public void unauthorized(TestContext context) throws UnsupportedEncodingException {
         context.assertEquals(403,
                 get(context, "/profiles/" + profile.getId() + 1,
@@ -74,13 +65,6 @@ public class GetProfileTest extends AbstractTest {
         context.assertEquals(401,
                 get(context, "/profiles/" + profile.getId(),
                         token("allann@irunninglog.com")));
-    }
-
-    @Test
-    public void notFound(TestContext context) throws UnsupportedEncodingException {
-        context.assertEquals(404,
-                get(context, "/profiles/" + profile.getId() + admin.getId(),
-                        token(admin.getEmail())));
     }
 
 }

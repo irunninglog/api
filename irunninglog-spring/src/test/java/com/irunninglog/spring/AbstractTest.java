@@ -6,10 +6,6 @@ import com.irunninglog.api.Unit;
 import com.irunninglog.spring.data.*;
 import com.irunninglog.spring.profile.IProfileEntityRepository;
 import com.irunninglog.spring.profile.ProfileEntity;
-import com.irunninglog.spring.security.AuthorityEntity;
-import com.irunninglog.spring.security.IAuthorityEntityRepository;
-import com.irunninglog.spring.security.IUserEntityRepository;
-import com.irunninglog.spring.security.UserEntity;
 import com.irunninglog.spring.workout.IWorkoutEntityRepository;
 import com.irunninglog.spring.workout.WorkoutEntity;
 import org.junit.After;
@@ -37,8 +33,6 @@ public abstract class AbstractTest implements ApplicationContextAware {
     private IRouteEntityRespository routeEntityRespository;
     private IRunEntityRepository runEntityRepository;
     private IWorkoutEntityRepository workoutEntityRepository;
-    private IUserEntityRepository userEntityRepository;
-    private IAuthorityEntityRepository authorityEntityRepository;
 
     @Before
     public final void before() {
@@ -49,8 +43,6 @@ public abstract class AbstractTest implements ApplicationContextAware {
         runEntityRepository = applicationContext.getBean(IRunEntityRepository.class);
         routeEntityRespository = applicationContext.getBean(IRouteEntityRespository.class);
         workoutEntityRepository = applicationContext.getBean(IWorkoutEntityRepository.class);
-        userEntityRepository = applicationContext.getBean(IUserEntityRepository.class);
-        authorityEntityRepository = applicationContext.getBean(IAuthorityEntityRepository.class);
 
         afterBefore(applicationContext);
     }
@@ -66,8 +58,7 @@ public abstract class AbstractTest implements ApplicationContextAware {
         shoeEntityRepository.deleteAll();
         runEntityRepository.deleteAll();
         routeEntityRespository.deleteAll();
-        userEntityRepository.deleteAll();
-        authorityEntityRepository.deleteAll();
+        profileEntityRepository.deleteAll();
     }
 
     @Override
@@ -75,7 +66,7 @@ public abstract class AbstractTest implements ApplicationContextAware {
         this.applicationContext = applicationContext;
     }
 
-    protected final ProfileEntity saveProfile(String email, String password, String ... authorities) {
+    protected final ProfileEntity saveProfile(String email, String password) {
         ProfileEntity profileEntity = new ProfileEntity();
         profileEntity.setEmail(email);
         profileEntity.setPassword(passwordEncoder.encode(password));
@@ -86,16 +77,6 @@ public abstract class AbstractTest implements ApplicationContextAware {
         profileEntity.setWeekStart(DayOfWeek.MONDAY);
         profileEntity.setPreferredUnits(Unit.ENGLISH);
         profileEntity = profileEntityRepository.save(profileEntity);
-
-        UserEntity userEntity = userEntityRepository.findOne(profileEntity.getId());
-        for (String authority : authorities) {
-            AuthorityEntity authorityEntity = new AuthorityEntity();
-            authorityEntity.setName(authority);
-            authorityEntity = authorityEntityRepository.save(authorityEntity);
-            userEntity.getAuthorities().add(authorityEntity);
-        }
-
-        userEntityRepository.save(userEntity);
 
         return profileEntity;
     }

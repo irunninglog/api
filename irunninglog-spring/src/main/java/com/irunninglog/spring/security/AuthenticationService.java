@@ -8,6 +8,8 @@ import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.security.AuthnException;
 import com.irunninglog.api.security.IAuthenticationService;
 import com.irunninglog.api.security.IUser;
+import com.irunninglog.spring.profile.IProfileEntityRepository;
+import com.irunninglog.spring.profile.ProfileEntity;
 import com.irunninglog.spring.service.ApiService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,23 +17,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 
 import java.io.UnsupportedEncodingException;
-import java.util.stream.Collectors;
+import java.util.Collections;
 
 @ApiService
 final class AuthenticationService implements IAuthenticationService {
 
     private static final Logger LOG = LoggerFactory.getLogger(AuthenticationService.class);
 
-    private final IUserEntityRepository userEntityRepository;
+    private final IProfileEntityRepository profileEntityRepository;
     private final IFactory factory;
     private final JWTVerifier verifier;
 
     @Autowired
-    public AuthenticationService(IUserEntityRepository userEntityRepository,
+    public AuthenticationService(IProfileEntityRepository profileEntityRepository,
                                  IFactory factory,
                                  Environment environment) throws UnsupportedEncodingException {
 
-        this.userEntityRepository = userEntityRepository;
+        this.profileEntityRepository = profileEntityRepository;
         this.factory = factory;
 
         verifier = verifier(environment);
@@ -70,16 +72,16 @@ final class AuthenticationService implements IAuthenticationService {
 
         String username = decodedJWT.getSubject();
 
-        UserEntity userEntity = userEntityRepository.findByUsername(username);
-        if (userEntity == null) {
+        ProfileEntity profileEntity = profileEntityRepository.findByEmail(username);
+        if (profileEntity == null) {
             LOG.error("checkBasic:bad user:{}", username);
             throw new AuthnException("User not found");
         }
 
         return factory.get(IUser.class)
-                .setId(userEntity.getId())
-                .setUsername(userEntity.getUsername())
-                .setAuthorities(userEntity.getAuthorities().stream().map(AuthorityEntity::getName).collect(Collectors.toList()));
+                .setId(profileEntity.getId())
+                .setUsername(profileEntity.getEmail())
+                .setAuthorities(Collections.singletonList("MYPROFILE"));
     }
 
 }
