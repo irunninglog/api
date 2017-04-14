@@ -6,6 +6,8 @@ import com.irunninglog.api.dashboard.IDashboardInfo;
 import com.irunninglog.api.dashboard.IGetDashboardRequest;
 import com.irunninglog.api.dashboard.IGetDashboardResponse;
 import com.irunninglog.api.data.*;
+import com.irunninglog.api.identity.IIdentityRequest;
+import com.irunninglog.api.identity.IIdentityResponse;
 import com.irunninglog.api.mapping.IMapper;
 import com.irunninglog.api.ping.IPingRequest;
 import com.irunninglog.api.ping.IPingResponse;
@@ -107,6 +109,12 @@ public class MockMapper implements IMapper {
             } else if (clazz == Envelope.class) {
                 //noinspection unchecked
                 return (T) objectMapper.readValue(string, Envelope.class);
+            } else if (clazz == IIdentityRequest.class) {
+                //noinspection unchecked
+                return (T) objectMapper.readValue(string, MockIdentityRequest.class);
+            } else if (clazz == IIdentityResponse.class) {
+                //noinspection unchecked
+                return (T) objectMapper.readValue(string, MockIdentityResponse.class);
             } else {
                 throw new IllegalArgumentException("Can't read class " + clazz);
             }

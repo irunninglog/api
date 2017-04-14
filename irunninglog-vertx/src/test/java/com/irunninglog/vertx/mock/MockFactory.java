@@ -8,6 +8,8 @@ import com.irunninglog.api.data.IGetRoutesResponse;
 import com.irunninglog.api.data.IGetRunsResponse;
 import com.irunninglog.api.data.IGetShoesResponse;
 import com.irunninglog.api.factory.IFactory;
+import com.irunninglog.api.identity.IIdentityRequest;
+import com.irunninglog.api.identity.IIdentityResponse;
 import com.irunninglog.api.ping.IPingRequest;
 import com.irunninglog.api.ping.IPingResponse;
 import com.irunninglog.api.profile.IGetProfileRequest;
@@ -81,6 +83,12 @@ public class MockFactory implements IFactory {
         } else if (clazz == IDeleteWorkoutResponse.class) {
             //noinspection unchecked
             return (T) new MockDeleteWorkoutResponse();
+        } else if (clazz == IIdentityRequest.class) {
+            //noinspection unchecked
+            return (T) new MockIdentityRequest();
+        } else if (clazz == IIdentityResponse.class) {
+            //noinspection unchecked
+            return (T) new MockIdentityResponse();
         }   else {
             throw new IllegalArgumentException("Can't create class " + clazz);
         }

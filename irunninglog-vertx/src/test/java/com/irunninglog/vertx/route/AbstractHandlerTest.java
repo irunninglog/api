@@ -39,7 +39,7 @@ public abstract class AbstractHandlerTest {
     Vertx vertx;
 
     @Before
-    public final void before(TestContext context) {
+    public final void before(TestContext context) throws Exception {
         logger.info("Before {}", context);
 
         vertx = Vertx.vertx();
@@ -61,7 +61,7 @@ public abstract class AbstractHandlerTest {
         vertx.close(context.asyncAssertSuccess());
     }
 
-    protected abstract void afterBefore(TestContext context);
+    protected abstract void afterBefore(TestContext context) throws Exception;
 
     final void authn() throws AuthnException {
         Mockito.when(authenticationService.authenticate(any(String.class)))
