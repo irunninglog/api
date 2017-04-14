@@ -1,8 +1,12 @@
-package com.irunninglog.vertx.mock;
+package com.irunninglog.spring.identity;
 
 import com.irunninglog.api.identity.IIdentity;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
-public class MockIdentity implements IIdentity {
+@Component
+@Scope("prototype")
+public class Identity implements IIdentity {
 
     private String username;
     private long id;
@@ -13,7 +17,8 @@ public class MockIdentity implements IIdentity {
         return username;
     }
 
-    public MockIdentity setUsername(String username) {
+    @Override
+    public IIdentity setUsername(String username) {
         this.username = username;
         return this;
     }
@@ -23,7 +28,8 @@ public class MockIdentity implements IIdentity {
         return id;
     }
 
-    public MockIdentity setId(long id) {
+    @Override
+    public IIdentity setId(long id) {
         this.id = id;
         return this;
     }
@@ -33,7 +39,8 @@ public class MockIdentity implements IIdentity {
         return created;
     }
 
-    public MockIdentity setCreated(boolean created) {
+    @Override
+    public IIdentity setCreated(boolean created) {
         this.created = created;
         return this;
     }

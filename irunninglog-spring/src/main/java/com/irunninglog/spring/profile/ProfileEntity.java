@@ -21,13 +21,13 @@ public final class ProfileEntity {
     @javax.persistence.Column(name="username", nullable = false, unique = true)
     private String email;
 
-    @Column(name = "password", nullable = false)
+    @Column(name = "password")
     private String password;
 
-    @Column(name="first_name", nullable = false)
+    @Column(name="first_name")
     private String firstName;
 
-    @Column(name="last_name", nullable = false)
+    @Column(name="last_name")
     private String lastName;
 
     @Column(name="weekly", nullable = false)
@@ -47,10 +47,10 @@ public final class ProfileEntity {
     @Enumerated(EnumType.STRING)
     private Unit preferredUnits;
 
-    @Column(nullable = false)
+    @Column
     private LocalDate birthday;
 
-    @Column(nullable = false)
+    @Column
     @Enumerated(EnumType.STRING)
     private Gender gender;
 

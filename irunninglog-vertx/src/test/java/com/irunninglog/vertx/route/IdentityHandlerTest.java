@@ -25,13 +25,13 @@ public class IdentityHandlerTest extends AbstractHandlerTest {
 
     @Test
     public void getNewIdentity(TestContext context) {
-        Mockito.when(service.identity(any(String.class))).thenReturn(new MockIdentity().created(Boolean.TRUE).username("foo").id(1));
+        Mockito.when(service.identity(any(String.class))).thenReturn(new MockIdentity().setCreated(Boolean.TRUE).setUsername("foo").setId(1));
         context.assertEquals(201, post(context, "/identity", TOKEN));
     }
 
     @Test
     public void getExistingIdentity(TestContext context) {
-        Mockito.when(service.identity(any(String.class))).thenReturn(new MockIdentity().created(Boolean.FALSE).username("foo").id(1));
+        Mockito.when(service.identity(any(String.class))).thenReturn(new MockIdentity().setCreated(Boolean.FALSE).setUsername("foo").setId(1));
         context.assertEquals(200, post(context, "/identity", TOKEN));
     }
 
