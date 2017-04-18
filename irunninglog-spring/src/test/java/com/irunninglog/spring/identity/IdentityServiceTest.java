@@ -1,5 +1,7 @@
 package com.irunninglog.spring.identity;
 
+import com.irunninglog.api.ResponseStatus;
+import com.irunninglog.api.ResponseStatusException;
 import com.irunninglog.api.identity.IIdentity;
 import com.irunninglog.api.identity.IIdentityService;
 import com.irunninglog.spring.AbstractTest;
@@ -27,16 +29,17 @@ public class IdentityServiceTest extends AbstractTest {
     }
 
     @Test
-    public void created() {
+    public void nonExistent() {
         assertEquals(1, profileEntityRepository.count());
 
-        IIdentity identity = identityService.identity("newuser");
-        assertNotNull(identity);
-        assertEquals("newuser", identity.getUsername());
-        assertTrue(identity.getId() > 0);
-        assertTrue(identity.isCreated());
+        try {
+            identityService.identity("newuser");
+            fail("Should have thrown");
+        } catch (ResponseStatusException ex) {
+            assertEquals(ResponseStatus.UNAUTHORIZED, ex.getResponseStatus());
+            assertEquals(1, profileEntityRepository.count());
+        }
 
-        assertEquals(2, profileEntityRepository.count());
     }
 
     @Test
@@ -47,7 +50,6 @@ public class IdentityServiceTest extends AbstractTest {
         assertNotNull(identity);
         assertEquals("existinguser", identity.getUsername());
         assertEquals(existing.getId(), identity.getId());
-        assertFalse(identity.isCreated());
 
         assertEquals(1, profileEntityRepository.count());
     }

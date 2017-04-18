@@ -1,15 +1,15 @@
 package com.irunninglog.spring.identity;
 
-import com.irunninglog.api.identity.IIdentity;
+import com.irunninglog.api.identity.IIdentityRequest;
+import com.irunninglog.spring.AbstractRequest;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 @Component
 @Scope("prototype")
-public class Identity implements IIdentity {
+final class IdentityRequest extends AbstractRequest<IdentityRequest> implements IIdentityRequest<IdentityRequest> {
 
     private String username;
-    private long id;
 
     @Override
     public String getUsername() {
@@ -17,19 +17,8 @@ public class Identity implements IIdentity {
     }
 
     @Override
-    public IIdentity setUsername(String username) {
+    public IdentityRequest setUsername(String username) {
         this.username = username;
-        return this;
-    }
-
-    @Override
-    public long getId() {
-        return id;
-    }
-
-    @Override
-    public IIdentity setId(long id) {
-        this.id = id;
         return this;
     }
 

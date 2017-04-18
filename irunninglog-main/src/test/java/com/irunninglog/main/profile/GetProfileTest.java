@@ -62,7 +62,7 @@ public class GetProfileTest extends AbstractTest {
 
     @Test
     public void wrongUser(TestContext context) throws UnsupportedEncodingException {
-        context.assertEquals(401,
+        context.assertEquals(403,
                 get(context, "/profiles/" + profile.getId(),
                         token("allann@irunninglog.com")));
     }

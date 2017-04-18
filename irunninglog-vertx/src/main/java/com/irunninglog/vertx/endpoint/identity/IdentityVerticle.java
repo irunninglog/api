@@ -30,10 +30,10 @@ public class IdentityVerticle extends AbstractRequestResponseVerticle<IIdentityR
 
     @Override
     protected void handle(IIdentityRequest request, IIdentityResponse response) {
-        IIdentity identity = identityService.identity(request.username());
+        IIdentity identity = identityService.identity(request.getUsername());
 
         //noinspection unchecked
-        response.setBody(identity).setStatus(identity.isCreated() ? ResponseStatus.CREATED : ResponseStatus.OK);
+        response.setBody(identity).setStatus(ResponseStatus.OK);
     }
 
 }

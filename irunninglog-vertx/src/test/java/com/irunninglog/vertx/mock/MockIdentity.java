@@ -6,7 +6,6 @@ public class MockIdentity implements IIdentity {
 
     private String username;
     private long id;
-    private boolean created;
 
     @Override
     public String getUsername() {
@@ -25,16 +24,6 @@ public class MockIdentity implements IIdentity {
 
     public MockIdentity setId(long id) {
         this.id = id;
-        return this;
-    }
-
-    @Override
-    public boolean isCreated() {
-        return created;
-    }
-
-    public MockIdentity setCreated(boolean created) {
-        this.created = created;
         return this;
     }
 

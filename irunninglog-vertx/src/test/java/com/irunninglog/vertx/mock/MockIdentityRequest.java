@@ -19,12 +19,12 @@ class MockIdentityRequest implements IIdentityRequest<MockIdentityRequest> {
     }
 
     @Override
-    public String username() {
+    public String getUsername() {
         return username;
     }
 
     @Override
-    public MockIdentityRequest username(String username) {
+    public MockIdentityRequest setUsername(String username) {
         this.username = username;
         return this;
     }

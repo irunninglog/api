@@ -4,8 +4,8 @@ import com.irunninglog.api.IRequest;
 
 public interface IIdentityRequest<T extends IIdentityRequest> extends IRequest<T> {
 
-    String username();
+    String getUsername();
 
-    T username(String username);
+    T setUsername(String username);
 
 }

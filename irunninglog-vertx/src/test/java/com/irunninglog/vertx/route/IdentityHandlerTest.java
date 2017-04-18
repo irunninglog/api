@@ -1,5 +1,7 @@
 package com.irunninglog.vertx.route;
 
+import com.irunninglog.api.ResponseStatus;
+import com.irunninglog.api.ResponseStatusException;
 import com.irunninglog.api.identity.IIdentityService;
 import com.irunninglog.api.security.AuthnException;
 import com.irunninglog.vertx.endpoint.identity.IdentityVerticle;
@@ -24,14 +26,14 @@ public class IdentityHandlerTest extends AbstractHandlerTest {
     }
 
     @Test
-    public void getNewIdentity(TestContext context) {
-        Mockito.when(service.identity(any(String.class))).thenReturn(new MockIdentity().setCreated(Boolean.TRUE).setUsername("foo").setId(1));
-        context.assertEquals(201, post(context, "/identity", TOKEN));
+    public void errorOnNoIdentity(TestContext context) {
+        Mockito.when(service.identity(any(String.class))).thenThrow(new ResponseStatusException(ResponseStatus.UNAUTHORIZED));
+        context.assertEquals(403, post(context, "/identity", TOKEN));
     }
 
     @Test
     public void getExistingIdentity(TestContext context) {
-        Mockito.when(service.identity(any(String.class))).thenReturn(new MockIdentity().setCreated(Boolean.FALSE).setUsername("foo").setId(1));
+        Mockito.when(service.identity(any(String.class))).thenReturn(new MockIdentity().setUsername("foo").setId(1));
         context.assertEquals(200, post(context, "/identity", TOKEN));
     }
 

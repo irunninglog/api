@@ -1,6 +1,7 @@
 package com.irunninglog.spring.identity;
 
-import com.irunninglog.api.Unit;
+import com.irunninglog.api.ResponseStatus;
+import com.irunninglog.api.ResponseStatusException;
 import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.identity.IIdentity;
 import com.irunninglog.api.identity.IIdentityService;
@@ -10,8 +11,6 @@ import com.irunninglog.spring.service.ApiService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.time.DayOfWeek;
 
 @ApiService
 public class IdentityService implements IIdentityService {
@@ -33,25 +32,12 @@ public class IdentityService implements IIdentityService {
     public IIdentity identity(String username) {
         ProfileEntity entity = profileEntityRepository.findByEmail(username);
         if (entity == null) {
-            LOG.info("Creating a new profile/identity for {}", username);
-            return newIdentity(username);
+            LOG.info("No profile exists for {}", username);
+            throw new ResponseStatusException(ResponseStatus.UNAUTHORIZED);
         } else {
             LOG.info("Retrieving existing profile/identity for {}", username);
-            return fromExistingProfile(entity, Boolean.FALSE);
+            return factory.get(IIdentity.class).setUsername(entity.getEmail()).setId(entity.getId());
         }
-    }
-
-    private IIdentity newIdentity(String username) {
-        ProfileEntity profileEntity = new ProfileEntity();
-        profileEntity.setEmail(username);
-        profileEntity.setWeekStart(DayOfWeek.MONDAY);
-        profileEntity.setPreferredUnits(Unit.ENGLISH);
-
-        return fromExistingProfile(profileEntityRepository.save(profileEntity), Boolean.TRUE);
-    }
-
-    private IIdentity fromExistingProfile(ProfileEntity entity, boolean created) {
-        return factory.get(IIdentity.class).setUsername(entity.getEmail()).setId(entity.getId()).setCreated(created);
     }
 
 }

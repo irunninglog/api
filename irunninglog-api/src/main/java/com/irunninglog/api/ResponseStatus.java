@@ -5,7 +5,6 @@ import com.google.common.base.MoreObjects;
 public enum ResponseStatus {
 
     OK(200, "Ok"),
-    CREATED(201, "Created"),
     BAD(400, "Bad Request"),
     UNAUTHENTICATED(401, "Not Authenticated"),
     UNAUTHORIZED(403, "Not Authorized"),

@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Date;
 
 import static org.junit.Assert.*;
 
@@ -58,23 +59,6 @@ public class AuthenticationServiceTest extends AbstractTest {
     }
 
     @Test
-    public void failUserNotFound() throws UnsupportedEncodingException {
-        try {
-            Algorithm algorithm = Algorithm.HMAC256("secret");
-            String token = JWT.create()
-                    .withIssuer("issuer")
-                    .withSubject("invalid")
-                    .sign(algorithm);
-
-            authenticationService.authenticate("Bearer " + token);
-
-            fail("Should have thrown");
-        } catch (AuthnException ex) {
-            assertEquals("User not found", ex.getMessage());
-        }
-    }
-
-    @Test
     public void successMyProfile() throws UnsupportedEncodingException, AuthnException {
         Algorithm algorithm = Algorithm.HMAC256("secret");
         String token = JWT.create()
@@ -86,6 +70,24 @@ public class AuthenticationServiceTest extends AbstractTest {
         assertEquals("allan@irunninglog.com", user.getUsername());
         assertEquals(1, user.getAuthorities().size());
         assertEquals("MYPROFILE", user.getAuthorities().iterator().next());
+    }
+
+    @Test
+    public void expiredToken() throws AuthnException, UnsupportedEncodingException {
+        Algorithm algorithm = Algorithm.HMAC256("secret");
+        String token = JWT.create()
+                .withExpiresAt(new Date(System.currentTimeMillis() - 1000))
+                .withIssuer("issuer")
+                .withSubject("allan@irunninglog.com")
+                .sign(algorithm);
+
+        try {
+            authenticationService.authenticate("Bearer " + token);
+
+            fail("Should have thrown");
+        } catch (AuthnException ex) {
+            assertTrue(Boolean.TRUE);
+        }
     }
 
 }

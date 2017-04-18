@@ -10,8 +10,4 @@ public interface IIdentity {
 
     IIdentity setId(long id);
 
-    boolean isCreated();
-
-    IIdentity setCreated(boolean created);
-
 }

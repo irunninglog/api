@@ -22,7 +22,7 @@ public class IdentityHandler extends AbstractRouteHandler<IIdentityRequest, IIde
     protected void request(IIdentityRequest request, RoutingContext routingContext) {
         super.request(request, routingContext);
 
-        request.username(((IUser) routingContext.get("user")).getUsername());
+        request.setUsername(((IUser) routingContext.get("user")).getUsername());
     }
 
 }

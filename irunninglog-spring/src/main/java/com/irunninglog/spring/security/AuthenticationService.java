@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.irunninglog.api.Unit;
 import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.security.AuthnException;
 import com.irunninglog.api.security.IAuthenticationService;
@@ -17,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 
 import java.io.UnsupportedEncodingException;
+import java.time.DayOfWeek;
 import java.util.Collections;
 
 @ApiService
@@ -74,8 +76,11 @@ final class AuthenticationService implements IAuthenticationService {
 
         ProfileEntity profileEntity = profileEntityRepository.findByEmail(username);
         if (profileEntity == null) {
-            LOG.error("checkBasic:bad user:{}", username);
-            throw new AuthnException("User not found");
+            ProfileEntity newProfile = new ProfileEntity();
+            newProfile.setEmail(username);
+            newProfile.setWeekStart(DayOfWeek.MONDAY);
+            newProfile.setPreferredUnits(Unit.ENGLISH);
+            profileEntity = profileEntityRepository.save(newProfile);
         }
 
         return factory.get(IUser.class)
