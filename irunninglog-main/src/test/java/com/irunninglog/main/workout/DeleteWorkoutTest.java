@@ -6,7 +6,7 @@ import com.irunninglog.api.workout.IWorkoutService;
 import com.irunninglog.main.AbstractTest;
 import com.irunninglog.spring.profile.ProfileEntity;
 import com.irunninglog.spring.workout.WorkoutEntity;
-import com.irunninglog.vertx.endpoint.workout.DeleteWorkoutVerticle;
+import com.irunninglog.vertx.workout.DeleteWorkoutVerticle;
 import io.vertx.core.Verticle;
 import io.vertx.ext.unit.TestContext;
 import org.junit.Test;

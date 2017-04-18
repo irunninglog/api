@@ -6,7 +6,7 @@ import com.irunninglog.api.workout.IWorkoutService;
 import com.irunninglog.main.AbstractTest;
 import com.irunninglog.spring.date.DateService;
 import com.irunninglog.spring.profile.ProfileEntity;
-import com.irunninglog.vertx.endpoint.workout.GetWorkoutsVerticle;
+import com.irunninglog.vertx.workout.GetWorkoutsVerticle;
 import io.vertx.core.Verticle;
 import io.vertx.ext.unit.TestContext;
 import org.junit.Test;

@@ -4,7 +4,7 @@ import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.mapping.IMapper;
 import com.irunninglog.api.ping.IPingService;
 import com.irunninglog.main.AbstractTest;
-import com.irunninglog.vertx.endpoint.ping.PingVerticle;
+import com.irunninglog.vertx.ping.PingVerticle;
 import io.vertx.core.Verticle;
 import io.vertx.ext.unit.TestContext;
 import org.junit.Test;

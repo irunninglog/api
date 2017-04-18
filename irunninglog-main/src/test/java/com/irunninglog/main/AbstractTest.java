@@ -14,7 +14,7 @@ import com.irunninglog.spring.profile.IProfileEntityRepository;
 import com.irunninglog.spring.profile.ProfileEntity;
 import com.irunninglog.spring.workout.IWorkoutEntityRepository;
 import com.irunninglog.spring.workout.WorkoutEntity;
-import com.irunninglog.vertx.http.ServerVerticle;
+import com.irunninglog.vertx.ServerVerticle;
 import io.vertx.core.Verticle;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpClient;

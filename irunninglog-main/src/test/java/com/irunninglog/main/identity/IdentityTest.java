@@ -5,7 +5,7 @@ import com.irunninglog.api.identity.IIdentityService;
 import com.irunninglog.api.mapping.IMapper;
 import com.irunninglog.main.AbstractTest;
 import com.irunninglog.spring.profile.ProfileEntity;
-import com.irunninglog.vertx.endpoint.identity.IdentityVerticle;
+import com.irunninglog.vertx.identity.IdentityVerticle;
 import io.vertx.core.Verticle;
 import io.vertx.ext.unit.TestContext;
 import org.junit.Test;

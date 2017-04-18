@@ -3,7 +3,7 @@ package com.irunninglog.main;
 import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.mapping.IMapper;
 import com.irunninglog.api.security.IAuthenticationService;
-import com.irunninglog.vertx.http.ServerVerticle;
+import com.irunninglog.vertx.ServerVerticle;
 import io.vertx.core.Vertx;
 import io.vertx.ext.unit.TestContext;
 import io.vertx.ext.unit.junit.VertxUnitRunner;

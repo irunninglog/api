@@ -5,7 +5,7 @@ import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.mapping.IMapper;
 import com.irunninglog.main.AbstractTest;
 import com.irunninglog.spring.profile.ProfileEntity;
-import com.irunninglog.vertx.endpoint.dashboard.GetDashboardVerticle;
+import com.irunninglog.vertx.dashboard.GetDashboardVerticle;
 import io.vertx.core.Verticle;
 import io.vertx.ext.unit.TestContext;
 import org.junit.Test;
