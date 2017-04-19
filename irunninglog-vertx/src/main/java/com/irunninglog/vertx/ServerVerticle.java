@@ -71,7 +71,7 @@ public final class ServerVerticle extends AbstractVerticle {
 
         Set<Class<?>> set = reflections.getTypesAnnotatedWith(RouteHandler.class);
 
-        router.route().handler(BodyHandler.create());
+        router.route().handler(BodyHandler.create().setBodyLimit(1024));
 
         SecurityHandler securityHandler = new SecurityHandler(authenticationService);
         for (Class<?> clazz : set) {
