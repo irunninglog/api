@@ -105,4 +105,9 @@ public class WorkoutEntryTest extends AbstractTest {
         assertEquals(1, errors.getFieldErrors("duration").size());
     }
 
+    @Test
+    public void supports() {
+        assertTrue(workoutEntryValidator.supports(WorkoutEntry.class));
+    }
+
 }

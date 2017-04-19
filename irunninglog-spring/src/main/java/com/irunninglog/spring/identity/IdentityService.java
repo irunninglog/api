@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @ApiService
-public class IdentityService implements IIdentityService {
+final class IdentityService implements IIdentityService {
 
     private static final Logger LOG = LoggerFactory.getLogger(IdentityService.class);
 

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Scope("prototype")
-public class Identity implements IIdentity {
+final class Identity implements IIdentity {
 
     private String username;
     private long id;

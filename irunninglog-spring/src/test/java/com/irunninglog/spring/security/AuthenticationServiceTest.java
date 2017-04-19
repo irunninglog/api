@@ -68,6 +68,8 @@ public class AuthenticationServiceTest extends AbstractTest {
 
         IUser user = authenticationService.authenticate("Bearer " + token);
         assertEquals("allan@irunninglog.com", user.getUsername());
+        assertTrue(user.getId() > 0);
+        assertTrue(user.hasAuthority("MYPROFILE"));
         assertEquals(1, user.getAuthorities().size());
         assertEquals("MYPROFILE", user.getAuthorities().iterator().next());
     }
