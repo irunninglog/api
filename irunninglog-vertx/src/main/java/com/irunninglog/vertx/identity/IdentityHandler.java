@@ -22,7 +22,8 @@ public final class IdentityHandler extends AbstractRouteHandler<IIdentityRequest
     protected void request(IIdentityRequest request, RoutingContext routingContext) {
         super.request(request, routingContext);
 
-        request.setUsername(((IUser) routingContext.get("user")).getUsername());
+        IUser user = routingContext.get("user");
+        request.setUsername(user.getUsername());
     }
 
 }

@@ -67,7 +67,7 @@ final class RunningLogApplication {
         });
     }
 
-    private void verticles(ApplicationContext applicationContext, Vertx vertx, Handler<AsyncResult<String>> asyncResultHandler) throws ClassNotFoundException, IllegalAccessException, InvocationTargetException, InstantiationException {
+    private void verticles(ApplicationContext applicationContext, Vertx vertx, Handler<AsyncResult<String>> asyncResultHandler) throws IllegalAccessException, InvocationTargetException, InstantiationException {
         List<AbstractVerticle> list = new ArrayList<>();
 
         LOG.info("verticles:before");

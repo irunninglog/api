@@ -14,6 +14,8 @@ import java.util.regex.Pattern;
 @Component
 public class WorkoutEntryValidator implements Validator {
 
+    private static final String DISTANCE = "distance";
+
     private final MathService mathService;
 
     @Autowired
@@ -42,15 +44,15 @@ public class WorkoutEntryValidator implements Validator {
 
         // If distance is there, make sure it's valid
         if (workoutEntry.getDistance() != null && workoutEntry.getDistance().trim().isEmpty()) {
-            errors.rejectValue("distance", "workout.distance.empty", "Workout distance cannot be empty");
+            errors.rejectValue(DISTANCE, "workout.distance.empty", "Workout distance cannot be empty");
         } else if (workoutEntry.getDistance() != null) {
             try {
                 double distance = mathService.parse(workoutEntry.getDistance());
                 if (distance < 1E-9) {
-                    errors.rejectValue("distance", "workout.distance.invalid", "Workout distance is not valid");
+                    errors.rejectValue(DISTANCE, "workout.distance.invalid", "Workout distance is not valid");
                 }
             } catch (Exception ex) {
-                errors.rejectValue("distance", "workout.distance.invalid", "Workout distance is not valid");
+                errors.rejectValue(DISTANCE, "workout.distance.invalid", "Workout distance is not valid");
             }
         }
 
