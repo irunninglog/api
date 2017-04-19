@@ -1,11 +1,7 @@
 package com.irunninglog.spring.profile;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.irunninglog.api.Unit;
 import com.irunninglog.api.profile.IProfile;
-import com.irunninglog.spring.json.UnitDeserializer;
-import com.irunninglog.spring.json.UnitSerializer;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -18,8 +14,6 @@ final class Profile implements IProfile {
     private long id;
     private String username;
     private DayOfWeek weekStart;
-    @JsonSerialize(using = UnitSerializer.class)
-    @JsonDeserialize(using = UnitDeserializer.class)
     private Unit preferredUnits;
     private double weeklyTarget;
     private double monthlyTarget;

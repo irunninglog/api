@@ -28,24 +28,24 @@ public class WorkoutsSummarySerializeTest extends AbstractTest {
     @Test
     public void serialize() throws JsonProcessingException {
         IWorkoutsSummary none = applicationContext.getBean(IWorkoutsSummary.class).setProgress(Progress.NONE);
-        assertTrue(objectMapper.writeValueAsString(none).contains("None"));
+        assertTrue(objectMapper.writeValueAsString(none).contains("NONE"));
 
         IWorkoutsSummary bad = applicationContext.getBean(IWorkoutsSummary.class).setProgress(Progress.BAD);
-        assertTrue(objectMapper.writeValueAsString(bad).contains("Bad"));
+        assertTrue(objectMapper.writeValueAsString(bad).contains("BAD"));
 
         IWorkoutsSummary ok = applicationContext.getBean(IWorkoutsSummary.class).setProgress(Progress.OK);
-        assertTrue(objectMapper.writeValueAsString(ok).contains("Ok"));
+        assertTrue(objectMapper.writeValueAsString(ok).contains("OK"));
 
         IWorkoutsSummary good = applicationContext.getBean(IWorkoutsSummary.class).setProgress(Progress.GOOD);
-        assertTrue(objectMapper.writeValueAsString(good).contains("Good"));
+        assertTrue(objectMapper.writeValueAsString(good).contains("GOOD"));
     }
 
     @Test
     public void deserialize() throws IOException {
-        assertEquals(Progress.NONE, objectMapper.readValue("{\"progress\":\"None\"}", WorkoutsSummary.class).getProgress());
-        assertEquals(Progress.BAD, objectMapper.readValue("{\"progress\":\"Bad\"}", WorkoutsSummary.class).getProgress());
-        assertEquals(Progress.OK, objectMapper.readValue("{\"progress\":\"Ok\"}", WorkoutsSummary.class).getProgress());
-        assertEquals(Progress.GOOD, objectMapper.readValue("{\"progress\":\"Good\"}", WorkoutsSummary.class).getProgress());
+        assertEquals(Progress.NONE, objectMapper.readValue("{\"progress\":\"NONE\"}", WorkoutsSummary.class).getProgress());
+        assertEquals(Progress.BAD, objectMapper.readValue("{\"progress\":\"BAD\"}", WorkoutsSummary.class).getProgress());
+        assertEquals(Progress.OK, objectMapper.readValue("{\"progress\":\"OK\"}", WorkoutsSummary.class).getProgress());
+        assertEquals(Progress.GOOD, objectMapper.readValue("{\"progress\":\"GOOD\"}", WorkoutsSummary.class).getProgress());
     }
 
 }

@@ -1,13 +1,9 @@
 package com.irunninglog.spring.report;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.irunninglog.api.Unit;
 import com.irunninglog.api.report.IDataPoint;
 import com.irunninglog.api.report.IDataSet;
-import com.irunninglog.spring.json.UnitDeserializer;
-import com.irunninglog.spring.json.UnitSerializer;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -19,8 +15,6 @@ import java.util.List;
 final class DataSet implements IDataSet {
 
     private String key;
-    @JsonSerialize(using = UnitSerializer.class)
-    @JsonDeserialize(using = UnitDeserializer.class)
     private Unit units;
 
     @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, defaultImpl = DataPoint.class)

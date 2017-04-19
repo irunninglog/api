@@ -1,13 +1,9 @@
 package com.irunninglog.spring.workout;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.irunninglog.api.Privacy;
 import com.irunninglog.api.workout.IWorkout;
 import com.irunninglog.api.workout.IWorkoutData;
-import com.irunninglog.spring.json.PrivacyDeserializer;
-import com.irunninglog.spring.json.PrivacySerializer;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -21,8 +17,6 @@ final class Workout implements IWorkout {
     private String duration;
     private String pace;
     private String title;
-    @JsonSerialize(using = PrivacySerializer.class)
-    @JsonDeserialize(using = PrivacyDeserializer.class)
     private Privacy privacy;
 
     @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, defaultImpl = WorkoutData.class)

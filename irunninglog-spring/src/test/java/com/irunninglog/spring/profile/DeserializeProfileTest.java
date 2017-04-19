@@ -14,8 +14,8 @@ public class DeserializeProfileTest extends AbstractTest {
     @Test
     public void unit() throws Exception {
         assertEquals(null, mapper.readValue("{\"preferredUnits\":null}", Profile.class).getPreferredUnits());
-        assertEquals(Unit.ENGLISH, mapper.readValue("{\"preferredUnits\":\"English\"}", Profile.class).getPreferredUnits());
-        assertEquals(Unit.METRIC, mapper.readValue("{\"preferredUnits\":\"Metric\"}", Profile.class).getPreferredUnits());
+        assertEquals(Unit.ENGLISH, mapper.readValue("{\"preferredUnits\":\"ENGLISH\"}", Profile.class).getPreferredUnits());
+        assertEquals(Unit.METRIC, mapper.readValue("{\"preferredUnits\":\"METRIC\"}", Profile.class).getPreferredUnits());
     }
 
 }

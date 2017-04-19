@@ -28,10 +28,10 @@ public class SerializeProfileTest extends AbstractTest {
         assertTrue(mapper.writeValueAsString(profile).contains("\"preferredUnits\":null"));
 
         profile.setPreferredUnits(Unit.ENGLISH);
-        assertTrue(mapper.writeValueAsString(profile).contains("\"preferredUnits\":\"English\""));
+        assertTrue(mapper.writeValueAsString(profile).contains("\"preferredUnits\":\"ENGLISH\""));
 
         profile.setPreferredUnits(Unit.METRIC);
-        assertTrue(mapper.writeValueAsString(profile).contains("\"preferredUnits\":\"Metric\""));
+        assertTrue(mapper.writeValueAsString(profile).contains("\"preferredUnits\":\"METRIC\""));
     }
 
 }

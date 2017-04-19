@@ -1,11 +1,7 @@
 package com.irunninglog.spring.workout;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.irunninglog.api.Progress;
 import com.irunninglog.api.workout.IWorkoutsSummary;
-import com.irunninglog.spring.json.ProgressDeserializer;
-import com.irunninglog.spring.json.ProgressSerializer;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -16,8 +12,6 @@ final class WorkoutsSummary implements IWorkoutsSummary {
     private String title;
     private int count;
     private String mileage;
-    @JsonSerialize(using = ProgressSerializer.class)
-    @JsonDeserialize(using = ProgressDeserializer.class)
     private Progress progress;
     private int percentage;
 

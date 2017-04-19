@@ -28,16 +28,16 @@ public class WorkoutSerializeTest extends AbstractTest {
     @Test
     public void privacySerialize() throws JsonProcessingException {
         IWorkout privateWorkout = applicationContext.getBean(IWorkout.class).setPrivacy(Privacy.PRIVATE);
-        assertTrue(objectMapper.writeValueAsString(privateWorkout).contains("Private"));
+        assertTrue(objectMapper.writeValueAsString(privateWorkout).contains("PRIVATE"));
 
         IWorkout publicWorkout = applicationContext.getBean(IWorkout.class).setPrivacy(Privacy.PUBLIC);
-        assertTrue(objectMapper.writeValueAsString(publicWorkout).contains("Public"));
+        assertTrue(objectMapper.writeValueAsString(publicWorkout).contains("PUBLIC"));
     }
 
     @Test
     public void privacyDeserialize() throws IOException {
-        assertEquals(Privacy.PRIVATE, objectMapper.readValue("{\"privacy\":\"Private\"}", Workout.class).getPrivacy());
-        assertEquals(Privacy.PUBLIC, objectMapper.readValue("{\"privacy\":\"Public\"}", Workout.class).getPrivacy());
+        assertEquals(Privacy.PRIVATE, objectMapper.readValue("{\"privacy\":\"PRIVATE\"}", Workout.class).getPrivacy());
+        assertEquals(Privacy.PUBLIC, objectMapper.readValue("{\"privacy\":\"PUBLIC\"}", Workout.class).getPrivacy());
     }
 
 }
