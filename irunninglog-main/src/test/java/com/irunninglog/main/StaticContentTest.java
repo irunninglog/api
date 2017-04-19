@@ -21,12 +21,6 @@ public class StaticContentTest extends AbstractTest {
     }
 
     @Test
-    public void ok(TestContext context) {
-        context.assertEquals(200, get(context, "/index.html", null));
-        context.assertEquals(200, get(context, "/", null));
-    }
-
-    @Test
     public void notFound(TestContext context) {
         context.assertEquals(404, get(context, "/indexxx.html", null));
     }

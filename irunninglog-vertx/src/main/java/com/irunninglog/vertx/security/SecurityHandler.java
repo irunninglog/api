@@ -28,11 +28,7 @@ public final class SecurityHandler implements Handler<RoutingContext> {
 
     @Override
     public void handle(RoutingContext routingContext) {
-        if ("/".equals(routingContext.currentRoute().getPath())) {
-            routingContext.next();
-        } else {
-            handleEndpoint(routingContext);
-        }
+        handleEndpoint(routingContext);
     }
 
     private void handleEndpoint(RoutingContext routingContext) {
