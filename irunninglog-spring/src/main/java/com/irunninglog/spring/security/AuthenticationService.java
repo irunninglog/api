@@ -60,8 +60,6 @@ final class AuthenticationService implements IAuthenticationService {
         } else {
             try {
                 return verify(token.split(" ")[1]);
-            } catch (AuthnException ex) {
-                throw ex;
             } catch (Exception ex) {
                 LOG.error("Token verification failed", ex);
                 throw new AuthnException("Token verification failed");
@@ -69,7 +67,7 @@ final class AuthenticationService implements IAuthenticationService {
         }
     }
 
-    private IUser verify(String token) throws AuthnException {
+    private IUser verify(String token) {
         DecodedJWT decodedJWT = verifier.verify(token);
 
         String username = decodedJWT.getSubject();
