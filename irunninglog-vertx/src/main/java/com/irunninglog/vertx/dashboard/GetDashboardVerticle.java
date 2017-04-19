@@ -11,13 +11,13 @@ import com.irunninglog.api.security.IUser;
 import com.irunninglog.vertx.AbstractProfileIdEndpointVerticle;
 import com.irunninglog.vertx.EndpointVerticle;
 
-@EndpointVerticle(endpoint = Endpoint.DASHBOARD_GET)
+@EndpointVerticle(endpoint = Endpoint.DASHBOARD_GET, request = IGetDashboardRequest.class, response = IGetDashboardResponse.class)
 public final class GetDashboardVerticle extends AbstractProfileIdEndpointVerticle<IGetDashboardRequest, IGetDashboardResponse> {
 
     private final IDashboardService service;
 
     public GetDashboardVerticle(IDashboardService service, IFactory factory, IMapper mapper) {
-        super(factory, mapper, IGetDashboardRequest.class, IGetDashboardResponse.class);
+        super(factory, mapper);
 
         this.service = service;
     }

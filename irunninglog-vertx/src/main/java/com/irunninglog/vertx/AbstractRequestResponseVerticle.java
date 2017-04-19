@@ -25,19 +25,18 @@ public abstract class AbstractRequestResponseVerticle<Q extends IRequest, S exte
 
     private final String address;
 
-    public AbstractRequestResponseVerticle(IFactory factory,
-                                    IMapper mapper,
-                                    Class<Q> requestClass,
-                                    Class<S> responseClass) {
+    public AbstractRequestResponseVerticle(IFactory factory, IMapper mapper) {
         super();
 
         this.factory = factory;
         this.mapper = mapper;
-        this.responseClass = responseClass;
-        this.requestClass = requestClass;
 
         EndpointVerticle endpointVerticle = getClass().getAnnotation(EndpointVerticle.class);
         address = endpointVerticle.endpoint().getAddress();
+        //noinspection unchecked
+        requestClass = (Class<Q>) endpointVerticle.request();
+        //noinspection unchecked
+        responseClass = (Class<S>) endpointVerticle.response();
     }
 
     @Override

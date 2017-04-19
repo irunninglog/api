@@ -14,14 +14,14 @@ import io.vertx.ext.web.RoutingContext;
 
 import java.util.regex.Pattern;
 
-@RouteHandler(endpoint = Endpoint.WORKOUTS_GET)
+@RouteHandler(endpoint = Endpoint.WORKOUTS_GET, request = IGetWorkoutsRequest.class, response = IGetWorkoutsResponse.class)
 public final class GetWorkoutsHandler extends AbstractProfileIdRouteHandler<IGetWorkoutsRequest, IGetWorkoutsResponse> {
 
     private static final Pattern PATTERN1 = Pattern.compile("^\\bworkouts\\b$");
     private static final Pattern PATTERN2 = Pattern.compile("^\\bworkouts\\b/(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])-(19|20)\\d\\d$");
 
     public GetWorkoutsHandler(Vertx vertx, IFactory factory, IMapper mapper) {
-        super(vertx, factory, mapper, IGetWorkoutsRequest.class, IGetWorkoutsResponse.class);
+        super(vertx, factory, mapper);
     }
 
     @Override

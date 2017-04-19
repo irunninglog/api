@@ -9,11 +9,11 @@ import com.irunninglog.vertx.AbstractRouteHandler;
 import com.irunninglog.vertx.RouteHandler;
 import io.vertx.core.Vertx;
 
-@RouteHandler(endpoint = Endpoint.PING)
+@RouteHandler(endpoint = Endpoint.PING, request = IPingRequest.class, response = IPingResponse.class)
 public final class PingHandler extends AbstractRouteHandler<IPingRequest, IPingResponse> {
 
     public PingHandler(Vertx vertx, IFactory factory, IMapper mapper) {
-        super(vertx, factory, mapper, IPingRequest.class,  IPingResponse.class);
+        super(vertx, factory, mapper);
     }
 
 }

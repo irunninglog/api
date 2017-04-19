@@ -9,11 +9,11 @@ import com.irunninglog.api.report.IGetReportRequest;
 import com.irunninglog.api.report.IReportService;
 import com.irunninglog.vertx.EndpointVerticle;
 
-@EndpointVerticle(endpoint = Endpoint.REPORT_MILEAGE_ROUTE_GET)
+@EndpointVerticle(endpoint = Endpoint.REPORT_MILEAGE_ROUTE_GET, request = IGetReportRequest.class, response = IGetDataSetResponse.class)
 public final class GetMileageByRouteVerticle extends AbstractGetReportVerticle<IGetDataSetResponse> {
 
     public GetMileageByRouteVerticle(IReportService reportService, IFactory factory, IMapper mapper) {
-        super(reportService, factory, mapper, IGetDataSetResponse.class);
+        super(reportService, factory, mapper);
     }
 
     @Override

@@ -9,8 +9,8 @@ import io.vertx.core.Vertx;
 
 abstract class AbstractGetReportHandler<T extends IResponse> extends AbstractProfileIdRouteHandler<IGetReportRequest, T> {
 
-    AbstractGetReportHandler(Vertx vertx, IFactory factory, IMapper mapper, Class<T> responseClass) {
-        super(vertx, factory, mapper, IGetReportRequest.class, responseClass);
+    AbstractGetReportHandler(Vertx vertx, IFactory factory, IMapper mapper) {
+        super(vertx, factory, mapper);
     }
 
 }

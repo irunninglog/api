@@ -9,11 +9,11 @@ import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.mapping.IMapper;
 import com.irunninglog.vertx.EndpointVerticle;
 
-@EndpointVerticle(endpoint = Endpoint.RUNS_GET)
+@EndpointVerticle(endpoint = Endpoint.RUNS_GET, request = IGetDataRequest.class, response = IGetRunsResponse.class)
 public final class GetRunsVerticle extends AbstractGetDataVerticle<IGetRunsResponse> {
 
     public GetRunsVerticle(IDataService dataService, IFactory factory, IMapper mapper) {
-        super(dataService, factory, mapper, IGetRunsResponse.class);
+        super(dataService, factory, mapper);
     }
 
     @Override

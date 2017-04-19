@@ -8,8 +8,8 @@ import com.irunninglog.api.security.IUser;
 
 public abstract class AbstractProfileIdEndpointVerticle<Q extends IProfileIdRequest, S extends IResponse> extends AbstractRequestResponseVerticle<Q, S> {
 
-    protected AbstractProfileIdEndpointVerticle(IFactory factory, IMapper mapper, Class<Q> requestClass, Class<S> responseClass) {
-        super(factory, mapper, requestClass, responseClass);
+    protected AbstractProfileIdEndpointVerticle(IFactory factory, IMapper mapper) {
+        super(factory, mapper);
     }
 
     protected final boolean admin(IUser user) {

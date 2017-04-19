@@ -11,13 +11,13 @@ import com.irunninglog.vertx.RouteHandler;
 import io.vertx.core.Vertx;
 import io.vertx.ext.web.RoutingContext;
 
-@RouteHandler(endpoint = Endpoint.WORKOUT_PUT)
+@RouteHandler(endpoint = Endpoint.WORKOUT_PUT, request = IPutWorkoutRequest.class, response = IPutWorkoutResponse.class)
 public final class PutWorkoutHandler extends AbstractProfileIdRouteHandler<IPutWorkoutRequest, IPutWorkoutResponse> {
 
     private final IMapper mapper;
 
     public PutWorkoutHandler(Vertx vertx, IFactory factory, IMapper mapper) {
-        super(vertx, factory, mapper, IPutWorkoutRequest.class, IPutWorkoutResponse.class);
+        super(vertx, factory, mapper);
 
         this.mapper = mapper;
     }

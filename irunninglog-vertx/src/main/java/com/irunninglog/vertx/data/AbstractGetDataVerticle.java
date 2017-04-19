@@ -12,8 +12,8 @@ abstract class AbstractGetDataVerticle<T extends IResponse> extends AbstractProf
 
     final IDataService dataService;
 
-    AbstractGetDataVerticle(IDataService dataService, IFactory factory, IMapper mapper, Class<T> responseClass) {
-        super(factory, mapper, IGetDataRequest.class, responseClass);
+    AbstractGetDataVerticle(IDataService dataService, IFactory factory, IMapper mapper) {
+        super(factory, mapper);
 
         this.dataService = dataService;
     }

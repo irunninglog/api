@@ -11,13 +11,13 @@ import com.irunninglog.api.security.IUser;
 import com.irunninglog.vertx.AbstractProfileIdEndpointVerticle;
 import com.irunninglog.vertx.EndpointVerticle;
 
-@EndpointVerticle(endpoint = Endpoint.PROFILE_GET)
+@EndpointVerticle(endpoint = Endpoint.PROFILE_GET, request = IGetProfileRequest.class, response = IGetProfileResponse.class)
 public final class GetProfileVerticle extends AbstractProfileIdEndpointVerticle<IGetProfileRequest, IGetProfileResponse> {
 
     private final IProfileService profileService;
 
     public GetProfileVerticle(IFactory factory, IMapper mapper, IProfileService profileService) {
-        super(factory, mapper, IGetProfileRequest.class, IGetProfileResponse.class);
+        super(factory, mapper);
 
         this.profileService = profileService;
     }

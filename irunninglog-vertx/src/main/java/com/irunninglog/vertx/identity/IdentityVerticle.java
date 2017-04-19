@@ -12,13 +12,13 @@ import com.irunninglog.api.security.IUser;
 import com.irunninglog.vertx.AbstractRequestResponseVerticle;
 import com.irunninglog.vertx.EndpointVerticle;
 
-@EndpointVerticle(endpoint = Endpoint.IDENTITY)
+@EndpointVerticle(endpoint = Endpoint.IDENTITY, request = IIdentityRequest.class, response = IIdentityResponse.class)
 public final class IdentityVerticle extends AbstractRequestResponseVerticle<IIdentityRequest, IIdentityResponse> {
 
     private final IIdentityService identityService;
 
     public IdentityVerticle(IFactory factory, IMapper mapper, IIdentityService identityService) {
-        super(factory, mapper, IIdentityRequest.class, IIdentityResponse.class);
+        super(factory, mapper);
 
         this.identityService = identityService;
     }

@@ -9,8 +9,8 @@ import io.vertx.ext.web.RoutingContext;
 
 public abstract class AbstractProfileIdRouteHandler<Q extends IProfileIdRequest<Q>, R extends IResponse> extends AbstractRouteHandler<Q, R> {
 
-    public AbstractProfileIdRouteHandler(Vertx vertx, IFactory factory, IMapper mapper, Class<Q> requestClass, Class<R> responseClass) {
-        super(vertx, factory, mapper, requestClass, responseClass);
+    public AbstractProfileIdRouteHandler(Vertx vertx, IFactory factory, IMapper mapper) {
+        super(vertx, factory, mapper);
     }
 
     @Override

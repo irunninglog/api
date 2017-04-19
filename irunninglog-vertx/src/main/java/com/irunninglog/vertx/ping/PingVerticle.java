@@ -11,13 +11,13 @@ import com.irunninglog.api.security.IUser;
 import com.irunninglog.vertx.AbstractRequestResponseVerticle;
 import com.irunninglog.vertx.EndpointVerticle;
 
-@EndpointVerticle(endpoint = Endpoint.PING)
+@EndpointVerticle(endpoint = Endpoint.PING, request = IPingRequest.class, response = IPingResponse.class)
 public final class PingVerticle extends AbstractRequestResponseVerticle<IPingRequest, IPingResponse> {
 
     private final IPingService pingService;
 
     public PingVerticle(IFactory factory, IMapper mapper, IPingService pingService) {
-        super(factory, mapper, IPingRequest.class, IPingResponse.class);
+        super(factory, mapper);
 
         this.pingService = pingService;
     }

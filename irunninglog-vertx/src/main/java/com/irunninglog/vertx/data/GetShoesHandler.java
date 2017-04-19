@@ -9,11 +9,11 @@ import com.irunninglog.vertx.AbstractProfileIdRouteHandler;
 import com.irunninglog.vertx.RouteHandler;
 import io.vertx.core.Vertx;
 
-@RouteHandler(endpoint = Endpoint.SHOES_GET)
+@RouteHandler(endpoint = Endpoint.SHOES_GET, request = IGetDataRequest.class, response = IGetShoesResponse.class)
 public final class GetShoesHandler extends AbstractProfileIdRouteHandler<IGetDataRequest, IGetShoesResponse> {
 
     public GetShoesHandler(Vertx vertx, IFactory factory, IMapper mapper) {
-        super(vertx, factory, mapper, IGetDataRequest.class, IGetShoesResponse.class);
+        super(vertx, factory, mapper);
     }
 
 }

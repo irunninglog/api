@@ -1,6 +1,8 @@
 package com.irunninglog.vertx;
 
 import com.irunninglog.api.Endpoint;
+import com.irunninglog.api.IRequest;
+import com.irunninglog.api.IResponse;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -13,5 +15,9 @@ import static java.lang.annotation.ElementType.TYPE;
 public @interface RouteHandler {
 
     Endpoint endpoint();
+
+    Class<? extends IRequest> request();
+
+    Class<? extends IResponse> response();
 
 }

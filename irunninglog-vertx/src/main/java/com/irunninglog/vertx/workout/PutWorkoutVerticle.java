@@ -11,13 +11,13 @@ import com.irunninglog.api.workout.IWorkoutService;
 import com.irunninglog.vertx.AbstractProfileIdEndpointVerticle;
 import com.irunninglog.vertx.EndpointVerticle;
 
-@EndpointVerticle(endpoint = Endpoint.WORKOUT_PUT)
+@EndpointVerticle(endpoint = Endpoint.WORKOUT_PUT, request = IPutWorkoutRequest.class, response = IPutWorkoutResponse.class)
 public final class PutWorkoutVerticle extends AbstractProfileIdEndpointVerticle<IPutWorkoutRequest, IPutWorkoutResponse> {
 
     private final IWorkoutService workoutService;
 
     public PutWorkoutVerticle(IFactory factory, IMapper mapper, IWorkoutService workoutService) {
-        super(factory, mapper, IPutWorkoutRequest.class, IPutWorkoutResponse.class);
+        super(factory, mapper);
 
         this.workoutService = workoutService;
     }

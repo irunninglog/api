@@ -12,8 +12,8 @@ abstract class AbstractGetReportVerticle<T extends IResponse> extends AbstractPr
 
     final IReportService reportService;
 
-    AbstractGetReportVerticle(IReportService reportService, IFactory factory, IMapper mapper, Class<T> responseClass) {
-        super(factory, mapper, IGetReportRequest.class, responseClass);
+    AbstractGetReportVerticle(IReportService reportService, IFactory factory, IMapper mapper) {
+        super(factory, mapper);
 
         this.reportService = reportService;
     }

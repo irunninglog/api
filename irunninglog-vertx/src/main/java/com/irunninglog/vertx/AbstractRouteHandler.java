@@ -30,18 +30,18 @@ public abstract class AbstractRouteHandler<Q extends IRequest, S extends IRespon
 
     public AbstractRouteHandler(Vertx vertx,
                                 IFactory factory,
-                                IMapper mapper,
-                                Class<Q> requestClass,
-                                Class<S> responseClass) {
+                                IMapper mapper) {
 
         this.vertx = vertx;
         this.factory = factory;
         this.mapper = mapper;
-        this.requestClass = requestClass;
-        this.responseClass = responseClass;
 
         RouteHandler routeHandler = this.getClass().getAnnotation(RouteHandler.class);
         this.endpoint = routeHandler.endpoint();
+        //noinspection unchecked
+        this.requestClass = (Class<Q>) routeHandler.request();
+        //noinspection unchecked
+        this.responseClass = (Class<S>) routeHandler.response();
     }
 
     @Override
