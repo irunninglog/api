@@ -41,7 +41,7 @@ public class FindWorkoutsServiceTest extends AbstractTest {
         thisYear = Integer.parseInt(yearFormat.format(new Date(System.currentTimeMillis())));
         lastYear = thisYear - 1;
 
-        profileEntity = saveProfile("allan@irunninglog.com", "password");
+        profileEntity = saveProfile("allan@irunninglog.com");
 
         WorkoutEntity today = new WorkoutEntity();
         today.setDate(LocalDate.now());

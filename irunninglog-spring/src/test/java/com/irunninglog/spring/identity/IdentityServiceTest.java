@@ -25,7 +25,7 @@ public class IdentityServiceTest extends AbstractTest {
         identityService = applicationContext.getBean(IIdentityService.class);
         profileEntityRepository = applicationContext.getBean(IProfileEntityRepository.class);
 
-        existing = saveProfile("existinguser", "foo");
+        existing = saveProfile("existinguser");
     }
 
     @Test

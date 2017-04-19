@@ -4,8 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="run_entity")
-// Needs to be public
+@Table(name="irl_entity_run")
 public final class RunEntity extends AbstractDataEntity {
 
     public RunEntity() {

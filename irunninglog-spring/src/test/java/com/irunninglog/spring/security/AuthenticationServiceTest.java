@@ -22,7 +22,7 @@ public class AuthenticationServiceTest extends AbstractTest {
     public void afterBefore(ApplicationContext context) {
         authenticationService = context.getBean(IAuthenticationService.class);
 
-        saveProfile("allan@irunninglog.com", "password");
+        saveProfile("allan@irunninglog.com");
     }
 
     @Test

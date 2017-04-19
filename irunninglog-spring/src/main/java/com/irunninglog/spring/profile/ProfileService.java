@@ -8,8 +8,6 @@ import com.irunninglog.api.profile.IProfileService;
 import com.irunninglog.spring.service.ApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.time.format.DateTimeFormatter;
-
 @ApiService
 final class ProfileService implements IProfileService {
 
@@ -32,11 +30,7 @@ final class ProfileService implements IProfileService {
 
         return factory.get(IProfile.class)
                 .setId(entity.getId())
-                .setEmail(entity.getEmail())
-                .setFirstName(entity.getFirstName())
-                .setLastName(entity.getLastName())
-                .setBirthday(entity.getBirthday().format(DateTimeFormatter.ISO_DATE))
-                .setGender(entity.getGender())
+                .setUsername(entity.getUsername())
                 .setWeekStart(entity.getWeekStart())
                 .setPreferredUnits(entity.getPreferredUnits())
                 .setWeeklyTarget(entity.getWeeklyTarget())

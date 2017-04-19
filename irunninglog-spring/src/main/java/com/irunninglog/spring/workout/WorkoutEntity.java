@@ -10,7 +10,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "workout_entity")
+@Table(name = "irl_entity_workout")
 public final class WorkoutEntity extends AbstractEntityWithProfile {
 
     @Column(nullable = false)
@@ -19,7 +19,7 @@ public final class WorkoutEntity extends AbstractEntityWithProfile {
     @Column(nullable = false)
     private long duration;
 
-    @Column(nullable = false, name = "ddate")
+    @Column(nullable = false, name = "workout_date")
     private LocalDate date;
 
     @Column(nullable = false)

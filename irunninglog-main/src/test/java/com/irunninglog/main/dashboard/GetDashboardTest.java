@@ -32,7 +32,7 @@ public class GetDashboardTest extends AbstractTest {
 
     @Override
     protected void afterBefore(TestContext context) {
-        profile = save("dashboard@irunninglog.com", "password");
+        profile = save("dashboard@irunninglog.com");
     }
 
     @Test

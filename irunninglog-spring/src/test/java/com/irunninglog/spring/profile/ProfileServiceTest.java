@@ -22,7 +22,7 @@ public class ProfileServiceTest extends AbstractTest {
 
         profileService = applicationContext.getBean(IProfileService.class);
 
-        ProfileEntity profileEntity = saveProfile("allan@irunninglog.com", "password");
+        ProfileEntity profileEntity = saveProfile("allan@irunninglog.com");
 
         goodId = profileEntity.getId();
         badId = profileEntity.getId() + 1;
@@ -33,11 +33,7 @@ public class ProfileServiceTest extends AbstractTest {
         IProfile profile = profileService.get(goodId);
         assertNotNull(profile);
         assertEquals(goodId, profile.getId());
-        assertEquals("allan@irunninglog.com", profile.getEmail());
-        assertNotNull(profile.getFirstName());
-        assertNotNull(profile.getLastName());
-        assertNotNull(profile.getBirthday());
-        assertNotNull(profile.getGender());
+        assertEquals("allan@irunninglog.com", profile.getUsername());
         assertNotNull(profile.getPreferredUnits());
         assertNotNull(profile.getWeekStart());
         assertEquals(0, profile.getWeeklyTarget(), 1E-9);

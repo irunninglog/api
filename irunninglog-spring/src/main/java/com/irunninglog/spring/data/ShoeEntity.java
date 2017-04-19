@@ -1,11 +1,12 @@
 package com.irunninglog.spring.data;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "shoe_entity")
-// Needs to be public
+@Table(name = "irl_entity_shoe")
 public final class ShoeEntity extends AbstractDataEntity {
 
     @Column(name="start_date")

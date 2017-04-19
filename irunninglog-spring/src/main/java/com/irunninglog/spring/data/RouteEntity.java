@@ -4,8 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="route_entity")
-// Needs to be public
+@Table(name="irl_entity_route")
 public final class RouteEntity extends AbstractDataEntity {
 
     public RouteEntity() {

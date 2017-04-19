@@ -10,7 +10,7 @@ import javax.persistence.MappedSuperclass;
 public abstract class AbstractEntityWithProfile extends AbstractEntity {
 
     @ManyToOne(optional=false)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "profile_id")
     private ProfileEntity profile;
 
     public ProfileEntity getProfile() {

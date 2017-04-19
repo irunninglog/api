@@ -34,7 +34,7 @@ public class WorkoutServiceTest extends AbstractTest {
         workoutService = applicationContext.getBean(IWorkoutService.class);
         dateService = applicationContext.getBean(DateService.class);
 
-        profileEntity = saveProfile("workouts@irunninglog.com", "password");
+        profileEntity = saveProfile("workouts@irunninglog.com");
 
         factory = applicationContext.getBean(IFactory.class);
     }

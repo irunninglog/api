@@ -2,7 +2,6 @@ package com.irunninglog.main;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.irunninglog.api.Gender;
 import com.irunninglog.api.Privacy;
 import com.irunninglog.api.Unit;
 import com.irunninglog.api.factory.IFactory;
@@ -27,7 +26,6 @@ import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.UnsupportedEncodingException;
 import java.time.DayOfWeek;
@@ -45,7 +43,6 @@ public abstract class AbstractTest {
     private IRouteEntityRespository routeEntityRespository;
     private IRunEntityRepository runEntityRepository;
     private IShoeEntityRepository shoeEntityRepository;
-    private PasswordEncoder passwordEncoder;
 
     protected ApplicationContext applicationContext;
 
@@ -60,7 +57,6 @@ public abstract class AbstractTest {
         applicationContext = new AnnotationConfigApplicationContext(ContextConfiguration.class);
 
         profileEntityRepository = applicationContext.getBean(IProfileEntityRepository.class);
-        passwordEncoder = applicationContext.getBean(PasswordEncoder.class);
 
         workoutEntityRepository = applicationContext.getBean(IWorkoutEntityRepository.class);
         routeEntityRespository = applicationContext.getBean(IRouteEntityRespository.class);
@@ -108,15 +104,10 @@ public abstract class AbstractTest {
         vertx.close(context.asyncAssertSuccess());
     }
 
-    protected ProfileEntity save(String email, String password) {
+    protected ProfileEntity save(String email) {
         ProfileEntity entity = new ProfileEntity();
         entity.setId(-1);
-        entity.setEmail(email);
-        entity.setPassword(passwordEncoder.encode(password));
-        entity.setFirstName("First");
-        entity.setLastName("Last");
-        entity.setBirthday(LocalDate.now());
-        entity.setGender(Gender.MALE);
+        entity.setUsername(email);
         entity.setPreferredUnits(Unit.ENGLISH);
         entity.setWeekStart(DayOfWeek.MONDAY);
         entity.setWeeklyTarget(0);

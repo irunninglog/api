@@ -28,7 +28,7 @@ public class ReportServiceTest extends AbstractTest {
         super.afterBefore(applicationContext);
 
         this.reportService = applicationContext.getBean(IReportService.class);
-        profileEntity = saveProfile("allan@irunninglog.com", "password");
+        profileEntity = saveProfile("allan@irunninglog.com");
     }
 
     @Test

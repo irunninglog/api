@@ -1,6 +1,5 @@
 package com.irunninglog.spring;
 
-import com.irunninglog.api.Gender;
 import com.irunninglog.api.Privacy;
 import com.irunninglog.api.Unit;
 import com.irunninglog.spring.data.*;
@@ -14,7 +13,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -26,7 +24,6 @@ import java.time.LocalDate;
 public abstract class AbstractTest implements ApplicationContextAware {
 
     private ApplicationContext applicationContext;
-    private PasswordEncoder passwordEncoder;
     private IProfileEntityRepository profileEntityRepository;
     private IGoalEntityRepository goalEntityRepository;
     private IShoeEntityRepository shoeEntityRepository;
@@ -36,7 +33,6 @@ public abstract class AbstractTest implements ApplicationContextAware {
 
     @Before
     public final void before() {
-        passwordEncoder = applicationContext.getBean(PasswordEncoder.class);
         profileEntityRepository = applicationContext.getBean(IProfileEntityRepository.class);
         goalEntityRepository = applicationContext.getBean(IGoalEntityRepository.class);
         shoeEntityRepository = applicationContext.getBean(IShoeEntityRepository.class);
@@ -66,14 +62,9 @@ public abstract class AbstractTest implements ApplicationContextAware {
         this.applicationContext = applicationContext;
     }
 
-    protected final ProfileEntity saveProfile(String email, String password) {
+    protected final ProfileEntity saveProfile(String email) {
         ProfileEntity profileEntity = new ProfileEntity();
-        profileEntity.setEmail(email);
-        profileEntity.setPassword(passwordEncoder.encode(password));
-        profileEntity.setFirstName("Allan");
-        profileEntity.setLastName("Lewis");
-        profileEntity.setBirthday(LocalDate.now());
-        profileEntity.setGender(Gender.MALE);
+        profileEntity.setUsername(email);
         profileEntity.setWeekStart(DayOfWeek.MONDAY);
         profileEntity.setPreferredUnits(Unit.ENGLISH);
         profileEntity = profileEntityRepository.save(profileEntity);

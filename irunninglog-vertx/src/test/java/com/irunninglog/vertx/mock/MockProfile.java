@@ -1,6 +1,5 @@
 package com.irunninglog.vertx.mock;
 
-import com.irunninglog.api.Gender;
 import com.irunninglog.api.Unit;
 import com.irunninglog.api.profile.IProfile;
 
@@ -21,27 +20,7 @@ public class MockProfile implements IProfile {
     }
 
     @Override
-    public IProfile setEmail(String email) {
-        return this;
-    }
-
-    @Override
-    public IProfile setFirstName(String firstName) {
-        return this;
-    }
-
-    @Override
-    public IProfile setLastName(String lastName) {
-        return this;
-    }
-
-    @Override
-    public IProfile setBirthday(String birthday) {
-        return null;
-    }
-
-    @Override
-    public IProfile setGender(Gender gender) {
+    public IProfile setUsername(String username) {
         return this;
     }
 
@@ -86,27 +65,7 @@ public class MockProfile implements IProfile {
     }
 
     @Override
-    public String getEmail() {
-        return null;
-    }
-
-    @Override
-    public String getFirstName() {
-        return null;
-    }
-
-    @Override
-    public String getLastName() {
-        return null;
-    }
-
-    @Override
-    public String getBirthday() {
-        return null;
-    }
-
-    @Override
-    public Gender getGender() {
+    public String getUsername() {
         return null;
     }
 

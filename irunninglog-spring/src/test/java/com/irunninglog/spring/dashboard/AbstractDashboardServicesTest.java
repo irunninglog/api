@@ -10,7 +10,7 @@ abstract class AbstractDashboardServicesTest extends AbstractTest {
 
     @Override
     public final void afterBefore(ApplicationContext context) {
-        profileEntity = saveProfile("allan@irunninglog.com", "password");
+        profileEntity = saveProfile("allan@irunninglog.com");
 
         afterAfterBefore(context);
     }

@@ -41,7 +41,7 @@ public class PutWorkoutTest extends AbstractTest {
 
     @Override
     protected void afterBefore(TestContext context) {
-        profileEntity = save("allan@irunninglog.com", "password");
+        profileEntity = save("allan@irunninglog.com");
     }
 
     @Test

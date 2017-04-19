@@ -6,8 +6,7 @@ import javax.persistence.Table;
 import java.time.LocalDate;
 
 @Entity
-@Table(name="goal_entity")
-// Needs to be public
+@Table(name="irl_entity_goal")
 public final class GoalEntity extends AbstractDataEntity {
 
     @Column(name="start_date")

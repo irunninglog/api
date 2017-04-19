@@ -36,7 +36,7 @@ public class GetWorkoutsTest extends AbstractTest {
 
     @Override
     protected void afterBefore(TestContext context) throws UnsupportedEncodingException {
-        profileEntity = save("workouts@irunninglog.com", "password");
+        profileEntity = save("workouts@irunninglog.com");
         token = token("workouts@irunninglog.com");
 
         dateService = applicationContext.getBean(DateService.class);

@@ -30,13 +30,13 @@ public class IdentityService implements IIdentityService {
 
     @Override
     public IIdentity identity(String username) {
-        ProfileEntity entity = profileEntityRepository.findByEmail(username);
+        ProfileEntity entity = profileEntityRepository.findByUsername(username);
         if (entity == null) {
             LOG.info("No profile exists for {}", username);
             throw new ResponseStatusException(ResponseStatus.UNAUTHORIZED);
         } else {
             LOG.info("Retrieving existing profile/identity for {}", username);
-            return factory.get(IIdentity.class).setUsername(entity.getEmail()).setId(entity.getId());
+            return factory.get(IIdentity.class).setUsername(entity.getUsername()).setId(entity.getId());
         }
     }
 

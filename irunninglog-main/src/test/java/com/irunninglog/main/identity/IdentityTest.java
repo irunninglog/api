@@ -30,12 +30,12 @@ public class IdentityTest extends AbstractTest {
 
     @Override
     protected void afterBefore(TestContext context) throws Exception {
-        profile = save("username", "anything");
+        profile = save("username");
     }
 
     @Test
     public void okExisting(TestContext context) throws UnsupportedEncodingException {
-        context.assertEquals(200, post(context, "/identity", token(profile.getEmail())));
+        context.assertEquals(200, post(context, "/identity", token(profile.getUsername())));
     }
 
     @Test

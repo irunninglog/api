@@ -21,7 +21,7 @@ public class GetProfileTest extends AbstractTest {
 
     @Override
     protected void afterBefore(TestContext context) {
-        profile = save("allan@irunninglog.com", "password");
+        profile = save("allan@irunninglog.com");
     }
 
     @Override

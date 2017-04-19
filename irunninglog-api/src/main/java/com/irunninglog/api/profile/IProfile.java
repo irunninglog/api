@@ -1,6 +1,5 @@
 package com.irunninglog.api.profile;
 
-import com.irunninglog.api.Gender;
 import com.irunninglog.api.Unit;
 
 import java.time.DayOfWeek;
@@ -9,15 +8,7 @@ public interface IProfile {
 
     IProfile setId(long id);
 
-    IProfile setEmail(String email);
-
-    IProfile setFirstName(String firstName);
-
-    IProfile setLastName(String lastName);
-
-    IProfile setBirthday(String birthday);
-
-    IProfile setGender(Gender gender);
+    IProfile setUsername(String email);
 
     IProfile setWeekStart(DayOfWeek weekStart);
 
@@ -37,15 +28,7 @@ public interface IProfile {
 
     long getId();
 
-    String getEmail();
-
-    String getFirstName();
-
-    String getLastName();
-
-    String getBirthday();
-
-    Gender getGender();
+    String getUsername();
 
     DayOfWeek getWeekStart();
 
@@ -62,4 +45,5 @@ public interface IProfile {
     long getDefaultRunId();
 
     long getDefaultShoeId();
+
 }

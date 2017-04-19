@@ -2,11 +2,8 @@ package com.irunninglog.spring.profile;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.irunninglog.api.Gender;
 import com.irunninglog.api.Unit;
 import com.irunninglog.api.profile.IProfile;
-import com.irunninglog.spring.json.GenderDeserializer;
-import com.irunninglog.spring.json.GenderSerializer;
 import com.irunninglog.spring.json.UnitDeserializer;
 import com.irunninglog.spring.json.UnitSerializer;
 import org.springframework.context.annotation.Scope;
@@ -19,13 +16,7 @@ import java.time.DayOfWeek;
 final class Profile implements IProfile {
 
     private long id;
-    private String email;
-    private String firstName;
-    private String lastName;
-    private String birthday;
-    @JsonSerialize(using = GenderSerializer.class)
-    @JsonDeserialize(using = GenderDeserializer.class)
-    private Gender gender;
+    private String username;
     private DayOfWeek weekStart;
     @JsonSerialize(using = UnitSerializer.class)
     @JsonDeserialize(using = UnitDeserializer.class)
@@ -44,32 +35,8 @@ final class Profile implements IProfile {
     }
 
     @Override
-    public IProfile setEmail(String email) {
-        this.email = email;
-        return this;
-    }
-
-    @Override
-    public IProfile setFirstName(String firstName) {
-        this.firstName = firstName;
-        return this;
-    }
-
-    @Override
-    public IProfile setLastName(String lastName) {
-        this.lastName = lastName;
-        return this;
-    }
-
-    @Override
-    public IProfile setBirthday(String birthday) {
-        this.birthday = birthday;
-        return this;
-    }
-
-    @Override
-    public IProfile setGender(Gender gender) {
-        this.gender = gender;
+    public IProfile setUsername(String username) {
+        this.username = username;
         return this;
     }
 
@@ -127,28 +94,8 @@ final class Profile implements IProfile {
     }
 
     @Override
-    public String getEmail() {
-        return email;
-    }
-
-    @Override
-    public String getFirstName() {
-        return firstName;
-    }
-
-    @Override
-    public String getLastName() {
-        return lastName;
-    }
-
-    @Override
-    public String getBirthday() {
-        return birthday;
-    }
-
-    @Override
-    public Gender getGender() {
-        return gender;
+    public String getUsername() {
+        return username;
     }
 
     @Override

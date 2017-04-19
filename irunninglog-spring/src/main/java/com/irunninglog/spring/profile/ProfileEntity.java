@@ -1,6 +1,5 @@
 package com.irunninglog.spring.profile;
 
-import com.irunninglog.api.Gender;
 import com.irunninglog.api.Unit;
 import com.irunninglog.spring.data.RouteEntity;
 import com.irunninglog.spring.data.RunEntity;
@@ -8,35 +7,25 @@ import com.irunninglog.spring.data.ShoeEntity;
 
 import javax.persistence.*;
 import java.time.DayOfWeek;
-import java.time.LocalDate;
 
 @Entity
-@Table(name = "user_entity")
+@Table(name = "irl_entity_profile")
 public final class ProfileEntity {
 
-    @javax.persistence.Id
-    @javax.persistence.GeneratedValue(strategy=GenerationType.TABLE)
+    @Id
+    @GeneratedValue(strategy=GenerationType.TABLE)
     private long id;
 
-    @javax.persistence.Column(name="username", nullable = false, unique = true)
-    private String email;
+    @Column(name = "username", nullable = false, unique = true)
+    private String username;
 
-    @Column(name = "password")
-    private String password;
-
-    @Column(name="first_name")
-    private String firstName;
-
-    @Column(name="last_name")
-    private String lastName;
-
-    @Column(name="weekly", nullable = false)
+    @Column(name="target_weekly", nullable = false)
     private double weeklyTarget;
 
-    @Column(name="monthly", nullable = false)
+    @Column(name="target_monthly", nullable = false)
     private double monthlyTarget;
 
-    @Column(name="yearly", nullable = false)
+    @Column(name="target_yearly", nullable = false)
     private double yearlyTarget;
 
     @Column(name="week_start", nullable = false)
@@ -46,13 +35,6 @@ public final class ProfileEntity {
     @Column(name="preferred_units", nullable = false)
     @Enumerated(EnumType.STRING)
     private Unit preferredUnits;
-
-    @Column
-    private LocalDate birthday;
-
-    @Column
-    @Enumerated(EnumType.STRING)
-    private Gender gender;
 
     @ManyToOne
     @JoinColumn(name = "default_shoe_id")
@@ -74,36 +56,12 @@ public final class ProfileEntity {
         this.id = id;
     }
 
-    public String getEmail() {
-        return email;
+    public String getUsername() {
+        return username;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setUsername(String email) {
+        this.username = email;
     }
 
     public double getWeeklyTarget() {
@@ -144,22 +102,6 @@ public final class ProfileEntity {
 
     public void setPreferredUnits(Unit preferredUnits) {
         this.preferredUnits = preferredUnits;
-    }
-
-    LocalDate getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(LocalDate birthday) {
-        this.birthday = birthday;
-    }
-
-    Gender getGender() {
-        return gender;
-    }
-
-    public void setGender(Gender gender) {
-        this.gender = gender;
     }
 
     ShoeEntity getDefaultShoe() {

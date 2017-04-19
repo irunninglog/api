@@ -74,10 +74,10 @@ final class AuthenticationService implements IAuthenticationService {
 
         String username = decodedJWT.getSubject();
 
-        ProfileEntity profileEntity = profileEntityRepository.findByEmail(username);
+        ProfileEntity profileEntity = profileEntityRepository.findByUsername(username);
         if (profileEntity == null) {
             ProfileEntity newProfile = new ProfileEntity();
-            newProfile.setEmail(username);
+            newProfile.setUsername(username);
             newProfile.setWeekStart(DayOfWeek.MONDAY);
             newProfile.setPreferredUnits(Unit.ENGLISH);
             profileEntity = profileEntityRepository.save(newProfile);
@@ -85,7 +85,7 @@ final class AuthenticationService implements IAuthenticationService {
 
         return factory.get(IUser.class)
                 .setId(profileEntity.getId())
-                .setUsername(profileEntity.getEmail())
+                .setUsername(profileEntity.getUsername())
                 .setAuthorities(Collections.singletonList("MYPROFILE"));
     }
 

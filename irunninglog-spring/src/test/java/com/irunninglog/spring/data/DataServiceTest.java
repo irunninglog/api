@@ -23,7 +23,7 @@ public class DataServiceTest extends AbstractTest {
         super.afterBefore(applicationContext);
 
         dataService = applicationContext.getBean(IDataService.class);
-        profileEntity = saveProfile("allan@irunninglog.com", "password");
+        profileEntity = saveProfile("allan@irunninglog.com");
     }
 
     @Test

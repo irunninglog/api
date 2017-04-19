@@ -42,7 +42,7 @@ public class GetAllReportsTest extends AbstractTest {
 
     @Override
     protected void afterBefore(TestContext context) throws UnsupportedEncodingException {
-        profileEntity = save("reports@irunninglog.com", "password");
+        profileEntity = save("reports@irunninglog.com");
         token = token("reports@irunninglog.com");
     }
 
