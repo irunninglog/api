@@ -128,4 +128,8 @@ public abstract class AbstractRequestResponseVerticle<Q extends IRequest, S exte
         return response;
     }
 
+    protected IFactory factory() {
+        return factory;
+    }
+
 }

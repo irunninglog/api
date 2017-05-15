@@ -1,0 +1,6 @@
+# DEFAULT CACHE REGION
+
+# sets the default aux value for any non configured caches
+jcs.default=DC,RFailover
+jcs.default.cacheattributes=org.apache.commons.jcs.engine.CompositeCacheAttributes
+jcs.default.cacheattributes.MaxObjects=1000

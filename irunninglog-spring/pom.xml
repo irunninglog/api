@@ -73,6 +73,13 @@
             <version>${version.auth0}</version>
         </dependency>
 
+        <!-- strava dependencies -->
+        <dependency>
+            <groupId>com.github.danshannon</groupId>
+            <artifactId>javastrava-api</artifactId>
+            <version>1.0.1</version>
+        </dependency>
+
         <!-- test dependencies -->
         <dependency>
             <groupId>org.springframework</groupId>
