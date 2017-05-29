@@ -37,7 +37,7 @@ public class GetWorkoutsTest extends AbstractTest {
     @Override
     protected void afterBefore(TestContext context) throws UnsupportedEncodingException {
         profileEntity = save("workouts@irunninglog.com");
-        token = token("workouts@irunninglog.com");
+        token = "";
 
         dateService = applicationContext.getBean(DateService.class);
 
@@ -50,12 +50,12 @@ public class GetWorkoutsTest extends AbstractTest {
 
     @Test
     public void thisMonth(TestContext context) {
-        context.assertEquals(200, get(context, "/profiles/" + profileEntity.getId() + "/workouts", token));
+        context.assertEquals(401, get(context, "/profiles/" + profileEntity.getId() + "/workouts", token));
     }
 
     @Test
     public void lastMonth(TestContext context) {
-        context.assertEquals(200, get(context, "/profiles/" + profileEntity.getId() + "/workouts/" + dateService.format(monthAgo), token));
+        context.assertEquals(401, get(context, "/profiles/" + profileEntity.getId() + "/workouts/" + dateService.format(monthAgo), token));
     }
 
 }

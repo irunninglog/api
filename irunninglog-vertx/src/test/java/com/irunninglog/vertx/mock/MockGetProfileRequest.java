@@ -6,6 +6,7 @@ public class MockGetProfileRequest implements IGetProfileRequest {
 
     private int offset;
     private long profileId;
+    private String token;
 
     @Override
     public IGetProfileRequest setOffset(int offset) {
@@ -27,6 +28,17 @@ public class MockGetProfileRequest implements IGetProfileRequest {
     @Override
     public long getProfileId() {
         return profileId;
+    }
+
+    @Override
+    public String getToken() {
+        return token;
+    }
+
+    @Override
+    public IGetProfileRequest setToken(String token) {
+        this.token = token;
+        return this;
     }
 
 }

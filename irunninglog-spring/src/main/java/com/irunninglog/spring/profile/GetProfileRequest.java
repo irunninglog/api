@@ -9,10 +9,23 @@ import org.springframework.stereotype.Component;
 @Scope("prototype")
 final class GetProfileRequest extends AbstractProfileIdRequest<IGetProfileRequest> implements IGetProfileRequest {
 
+    private String token;
+
     public GetProfileRequest() {
         super();
 
         logger.debug("Created an instance {}", hashCode());
+    }
+
+    @Override
+    public String getToken() {
+        return token;
+    }
+
+    @Override
+    public GetProfileRequest setToken(String token) {
+        this.token = token;
+        return this;
     }
 
 }

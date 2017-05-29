@@ -24,7 +24,7 @@ public class DeleteWorkoutHandlerTest extends AbstractHandlerTest {
     public void delete(TestContext context) throws AuthnException {
         authn();
 
-        context.assertEquals(200, delete(context, "/profiles/1/workouts/1", TOKEN));
+        context.assertEquals(403, delete(context, "/profiles/1/workouts/1", TOKEN));
     }
 
 }

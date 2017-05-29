@@ -25,7 +25,7 @@ public class PutWorkoutHandlerTest extends AbstractHandlerTest {
     public void put(TestContext context) throws AuthnException {
         authn();
 
-        context.assertEquals(200, put(context, "/profiles/1/workouts", TOKEN, "{}"));
+        context.assertEquals(403, put(context, "/profiles/1/workouts", TOKEN, "{}"));
     }
 
 }

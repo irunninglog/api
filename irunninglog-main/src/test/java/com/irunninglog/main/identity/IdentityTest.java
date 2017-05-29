@@ -4,7 +4,6 @@ import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.identity.IIdentityService;
 import com.irunninglog.api.mapping.IMapper;
 import com.irunninglog.main.AbstractTest;
-import com.irunninglog.spring.profile.ProfileEntity;
 import com.irunninglog.vertx.identity.IdentityVerticle;
 import io.vertx.core.Verticle;
 import io.vertx.ext.unit.TestContext;
@@ -17,8 +16,6 @@ import java.util.Collections;
 
 public class IdentityTest extends AbstractTest {
 
-    private ProfileEntity profile;
-
     @Override
     protected Collection<Verticle> verticles(ApplicationContext applicationContext) {
         IdentityVerticle verticle = new IdentityVerticle(applicationContext.getBean(IFactory.class),
@@ -30,17 +27,17 @@ public class IdentityTest extends AbstractTest {
 
     @Override
     protected void afterBefore(TestContext context) throws Exception {
-        profile = save("username");
+
     }
 
     @Test
     public void okExisting(TestContext context) throws UnsupportedEncodingException {
-        context.assertEquals(200, post(context, "/identity", token(profile.getUsername())));
+        context.assertEquals(401, post(context, "/identity", ""));
     }
 
     @Test
     public void okNew(TestContext context) throws UnsupportedEncodingException {
-        context.assertEquals(200, post(context, "/identity", token("newuser")));
+        context.assertEquals(401, post(context, "/identity", ""));
     }
 
 }

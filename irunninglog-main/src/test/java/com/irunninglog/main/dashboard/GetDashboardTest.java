@@ -44,7 +44,7 @@ public class GetDashboardTest extends AbstractTest {
 
         saveShoe(profile, "one", Boolean.TRUE);
         saveShoe(profile, "two", Boolean.TRUE, LocalDate.now());
-        context.assertEquals(200, get(context, "/profiles/" +profile.getId() + "/dashboard", token("dashboard@irunninglog.com")));
+        context.assertEquals(401, get(context, "/profiles/" +profile.getId() + "/dashboard", ""));
     }
 
 }

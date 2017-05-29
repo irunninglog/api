@@ -26,6 +26,12 @@ public interface IProfile {
 
     IProfile setDefaultShoeId(long defaultShoeId);
 
+    IProfile setFirstName(String firstName);
+
+    IProfile setLastName(String lastName);
+
+    IProfile setAvatar(String avatar);
+
     long getId();
 
     String getUsername();
@@ -45,5 +51,11 @@ public interface IProfile {
     long getDefaultRunId();
 
     long getDefaultShoeId();
+
+    String getFirstName();
+
+    String getLastName();
+
+    String getAvatar();
 
 }

@@ -1,7 +1,5 @@
 package com.irunninglog.main;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
 import com.irunninglog.api.Privacy;
 import com.irunninglog.api.Unit;
 import com.irunninglog.api.factory.IFactory;
@@ -27,7 +25,6 @@ import org.junit.runner.RunWith;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-import java.io.UnsupportedEncodingException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
@@ -252,16 +249,6 @@ public abstract class AbstractTest {
         async.awaitSuccess(5000);
 
         return responseCode[0];
-    }
-
-    protected String token(String username) throws UnsupportedEncodingException {
-        Algorithm algorithm = Algorithm.HMAC256("secret");
-        String token = JWT.create()
-                .withIssuer("issuer")
-                .withSubject(username)
-                .sign(algorithm);
-
-        return "Bearer " + token;
     }
 
 }

@@ -13,12 +13,19 @@ import io.vertx.ext.web.RoutingContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class SecurityHandler implements Handler<RoutingContext> {
 
-    private static final String PATTERN = "/profiles/{0}";
+    private static final List<Endpoint> PROFILE_ENDPOINTS;
+
     private static final Logger LOG = LoggerFactory.getLogger(SecurityHandler.class);
+
+    static {
+        PROFILE_ENDPOINTS = new ArrayList<>();
+        PROFILE_ENDPOINTS.add(Endpoint.PROFILE);
+    }
 
     private final IAuthenticationService authenticationService;
 
@@ -65,7 +72,7 @@ public final class SecurityHandler implements Handler<RoutingContext> {
             if (endpoint == null) {
                 // Static content
                 routingContext.next();
-            } else if (authorized(endpoint, routingContext, asyncResult.result())) {
+            } else if (authorized(endpoint, asyncResult.result())) {
                 IUser user = asyncResult.result();
                 routingContext.put("user", user);
                 routingContext.next();
@@ -78,12 +85,11 @@ public final class SecurityHandler implements Handler<RoutingContext> {
         }
     }
 
-    private boolean authorized(Endpoint endpoint, RoutingContext routingContext, IUser user) {
+    private boolean authorized(Endpoint endpoint, IUser user) {
         if (endpoint.getControl() == AccessControl.ALLOW || hasRole(user, "ADMIN")) {
             return Boolean.TRUE;
-        } else if (hasRole(user, "MYPROFILE")) {
-            String path = MessageFormat.format(PATTERN, String.valueOf(user.getId()));
-            return routingContext.normalisedPath().equals(path) || routingContext.normalisedPath().startsWith(path + "/");
+        } else if (hasRole(user, "MYPROFILE") && PROFILE_ENDPOINTS.contains(endpoint)) {
+            return Boolean.TRUE;
         }
 
         return Boolean.FALSE;

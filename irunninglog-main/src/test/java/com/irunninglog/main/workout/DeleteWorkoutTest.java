@@ -37,7 +37,7 @@ public class DeleteWorkoutTest extends AbstractTest {
     public void delete(TestContext context) throws UnsupportedEncodingException {
         WorkoutEntity workoutEntity = saveWorkout(profileEntity, LocalDate.now(), 0, 0, null, null, null);
 
-        context.assertEquals(200, delete(context, "/profiles/" + profileEntity.getId() + "/workouts/" + workoutEntity.getId() , token("allan@irunninglog.com")));
+        context.assertEquals(401, delete(context, "/profiles/" + profileEntity.getId() + "/workouts/" + workoutEntity.getId() , ""));
     }
 
 }

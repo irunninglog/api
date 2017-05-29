@@ -109,4 +109,34 @@ public class MockProfile implements IProfile {
         return 0;
     }
 
+    @Override
+    public IProfile setFirstName(String firstName) {
+        return null;
+    }
+
+    @Override
+    public IProfile setLastName(String lastName) {
+        return null;
+    }
+
+    @Override
+    public String getFirstName() {
+        return null;
+    }
+
+    @Override
+    public String getLastName() {
+        return null;
+    }
+
+    @Override
+    public IProfile setAvatar(String avatar) {
+        return null;
+    }
+
+    @Override
+    public String getAvatar() {
+        return null;
+    }
+
 }

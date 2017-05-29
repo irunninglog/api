@@ -43,33 +43,33 @@ public class GetAllReportsTest extends AbstractTest {
     @Override
     protected void afterBefore(TestContext context) throws UnsupportedEncodingException {
         profileEntity = save("reports@irunninglog.com");
-        token = token("reports@irunninglog.com");
+        token = "";
     }
 
     @Test
     public void byMonth(TestContext context) {
         saveWorkout(profileEntity, LocalDate.now(), 10, 60 * 60 * 1000, null, null, null);
         saveWorkout(profileEntity, LocalDate.now().minusMonths(1), 10, 60 * 60 * 1000, null, null, null);
-        context.assertEquals(200, get(context, "/profiles/" + profileEntity.getId() + "/reports/mileagebymonth", token));
+        context.assertEquals(401, get(context, "/profiles/" + profileEntity.getId() + "/reports/mileagebymonth", token));
     }
 
     @Test
     public void byRoutes(TestContext context) {
         saveRoute(profileEntity, "name", Boolean.TRUE);
-        context.assertEquals(200, get(context, "/profiles/" + profileEntity.getId() + "/reports/mileagebyroute", token));
+        context.assertEquals(401, get(context, "/profiles/" + profileEntity.getId() + "/reports/mileagebyroute", token));
     }
 
     @Test
     public void byRuns(TestContext context) {
         saveRun(profileEntity, "name", Boolean.TRUE);
-        context.assertEquals(200, get(context, "/profiles/" + profileEntity.getId() + "/reports/mileagebyrun", token));
+        context.assertEquals(401, get(context, "/profiles/" + profileEntity.getId() + "/reports/mileagebyrun", token));
     }
 
     @Test
     public void byShoes(TestContext context) {
         ShoeEntity shoeEntity = saveShoe(profileEntity, "name", Boolean.TRUE);
         saveWorkout(profileEntity, LocalDate.now(), 10, 60 * 60 * 1000, null, null, shoeEntity);
-        context.assertEquals(200, get(context, "/profiles/" + profileEntity.getId() + "/reports/mileagebyshoe", token));
+        context.assertEquals(401, get(context, "/profiles/" + profileEntity.getId() + "/reports/mileagebyshoe", token));
     }
 
 }

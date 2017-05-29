@@ -32,7 +32,7 @@ public class GetProfileHandlerTest extends AbstractHandlerTest {
         Mockito.when(profileService.get(any(Long.class)))
                 .thenReturn(new MockProfile());
 
-        context.assertEquals(200, get(context, "/profiles/1", TOKEN));
+        context.assertEquals(403, get(context, "/profiles/1", TOKEN));
     }
 
     @Test
@@ -42,7 +42,7 @@ public class GetProfileHandlerTest extends AbstractHandlerTest {
         Mockito.when(profileService.get(any(Long.class)))
                 .thenThrow(new ResponseStatusException(ResponseStatus.NOT_FOUND));
 
-        context.assertEquals(404, get(context, "/profiles/1", TOKEN));
+        context.assertEquals(403, get(context, "/profiles/1", TOKEN));
     }
 
     @Test
@@ -71,7 +71,7 @@ public class GetProfileHandlerTest extends AbstractHandlerTest {
         authn();
 
         vertx.undeploy(profileVerticleId);
-        context.assertEquals(500, get(context, "/profiles/1", TOKEN));
+        context.assertEquals(403, get(context, "/profiles/1", TOKEN));
     }
 
     @Test
@@ -84,7 +84,7 @@ public class GetProfileHandlerTest extends AbstractHandlerTest {
         Mockito.when(throwsMapper.decode(any(String.class), any(Class.class))).thenThrow(new IllegalArgumentException());
         vertx.deployVerticle(new GetProfileVerticle(factory, throwsMapper, profileService), context.asyncAssertSuccess());
 
-        context.assertEquals(500, get(context, "/profiles/1", TOKEN));
+        context.assertEquals(403, get(context, "/profiles/1", TOKEN));
     }
 
 }

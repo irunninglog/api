@@ -60,9 +60,9 @@ public class PutWorkoutTest extends AbstractTest {
                 .setRunId(-1)
                 .setShoeId(-1);
 
-        context.assertEquals(200, put(context,
+        context.assertEquals(401, put(context,
                 "/profiles/" + profileEntity.getId() + "/workouts",
-                token("allan@irunninglog.com"),
+                "",
                 mapper.encode(workoutEntry)));
     }
 

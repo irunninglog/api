@@ -48,19 +48,19 @@ public class GetAllDataTest extends AbstractTest {
         saveShoe(profileEntity, "name2", Boolean.TRUE, LocalDate.now());
         saveShoe(profileEntity, "name3", Boolean.TRUE, LocalDate.now().minusDays(3));
         saveShoe(profileEntity, "name4", Boolean.TRUE);
-        context.assertEquals(200, get(context, "/profiles/" + profileEntity.getId() + "/shoes", token("data@irunninglog.com")));
+        context.assertEquals(401, get(context, "/profiles/" + profileEntity.getId() + "/shoes", ""));
     }
 
     @Test
     public void routes(TestContext context) throws UnsupportedEncodingException {
         saveRoute(profileEntity, "name", Boolean.TRUE);
-        context.assertEquals(200, get(context, "/profiles/" + profileEntity.getId() + "/routes", token("data@irunninglog.com")));
+        context.assertEquals(401, get(context, "/profiles/" + profileEntity.getId() + "/routes", ""));
     }
 
     @Test
     public void runs(TestContext context) throws UnsupportedEncodingException {
         saveRun(profileEntity, "name", Boolean.TRUE);
-        context.assertEquals(200, get(context, "/profiles/" + profileEntity.getId() + "/runs", token("data@irunninglog.com")));
+        context.assertEquals(401, get(context, "/profiles/" + profileEntity.getId() + "/runs", ""));
     }
 
 }

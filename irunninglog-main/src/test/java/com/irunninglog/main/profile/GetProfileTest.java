@@ -41,16 +41,16 @@ public class GetProfileTest extends AbstractTest {
 
     @Test
     public void profile(TestContext context) throws UnsupportedEncodingException {
-        context.assertEquals(200,
+        context.assertEquals(401,
                 get(context, "/profiles/" + profile.getId(),
-                        token("allan@irunninglog.com")));
+                        ""));
     }
 
     @Test
     public void unauthorized(TestContext context) throws UnsupportedEncodingException {
-        context.assertEquals(403,
+        context.assertEquals(401,
                 get(context, "/profiles/" + profile.getId() + 1,
-                        token("allan@irunninglog.com")));
+                        ""));
     }
 
     @Test
@@ -62,9 +62,9 @@ public class GetProfileTest extends AbstractTest {
 
     @Test
     public void wrongUser(TestContext context) throws UnsupportedEncodingException {
-        context.assertEquals(403,
+        context.assertEquals(401,
                 get(context, "/profiles/" + profile.getId(),
-                        token("allann@irunninglog.com")));
+                        ""));
     }
 
 }
