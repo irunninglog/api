@@ -1,13 +1,13 @@
 package com.irunninglog.api;
 
-public interface IResponse<B, T extends IResponse> {
+public interface IResponse {
 
-    T setStatus(ResponseStatus status);
+    IResponse setStatus(ResponseStatus status);
 
     ResponseStatus getStatus();
 
-    T setBody(B body);
+    IResponse setBody(Object body);
 
-    B getBody();
+    Object getBody();
 
 }

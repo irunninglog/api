@@ -8,7 +8,7 @@
     <parent>
         <groupId>com.irunninglog</groupId>
         <artifactId>irunninlog</artifactId>
-        <version>3.0.0-m3</version>
+        <version>4.0.0</version>
     </parent>
 
     <artifactId>irunninglog-spring</artifactId>
@@ -21,25 +21,6 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>irunninglog-api</artifactId>
             <version>${project.version}</version>
-        </dependency>
-
-        <!-- database dependencies -->
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>${version.mysql}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <version>${version.h2}</version>
-        </dependency>
-
-        <!-- hibernate dependencies -->
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-entitymanager</artifactId>
-            <version>${version.hibernate}</version>
         </dependency>
 
         <!-- jackson dependencies -->

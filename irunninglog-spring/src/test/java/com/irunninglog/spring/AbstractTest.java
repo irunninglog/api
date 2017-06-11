@@ -1,12 +1,5 @@
 package com.irunninglog.spring;
 
-import com.irunninglog.api.Privacy;
-import com.irunninglog.api.Unit;
-import com.irunninglog.spring.data.*;
-import com.irunninglog.spring.profile.IProfileEntityRepository;
-import com.irunninglog.spring.profile.ProfileEntity;
-import com.irunninglog.spring.workout.IWorkoutEntityRepository;
-import com.irunninglog.spring.workout.WorkoutEntity;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -16,30 +9,14 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {com.irunninglog.spring.context.ContextConfiguration.class})
 public abstract class AbstractTest implements ApplicationContextAware {
 
     private ApplicationContext applicationContext;
-    private IProfileEntityRepository profileEntityRepository;
-    private IGoalEntityRepository goalEntityRepository;
-    private IShoeEntityRepository shoeEntityRepository;
-    private IRouteEntityRespository routeEntityRespository;
-    private IRunEntityRepository runEntityRepository;
-    private IWorkoutEntityRepository workoutEntityRepository;
 
     @Before
     public final void before() {
-        profileEntityRepository = applicationContext.getBean(IProfileEntityRepository.class);
-        goalEntityRepository = applicationContext.getBean(IGoalEntityRepository.class);
-        shoeEntityRepository = applicationContext.getBean(IShoeEntityRepository.class);
-        runEntityRepository = applicationContext.getBean(IRunEntityRepository.class);
-        routeEntityRespository = applicationContext.getBean(IRouteEntityRespository.class);
-        workoutEntityRepository = applicationContext.getBean(IWorkoutEntityRepository.class);
-
         afterBefore(applicationContext);
     }
 
@@ -49,107 +26,12 @@ public abstract class AbstractTest implements ApplicationContextAware {
 
     @After
     public final void after() {
-        goalEntityRepository.deleteAll();
-        workoutEntityRepository.deleteAll();
-        shoeEntityRepository.deleteAll();
-        runEntityRepository.deleteAll();
-        routeEntityRespository.deleteAll();
-        profileEntityRepository.deleteAll();
+
     }
 
     @Override
     public final void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
-    }
-
-    protected final ProfileEntity saveProfile(String email) {
-        ProfileEntity profileEntity = new ProfileEntity();
-        profileEntity.setUsername(email);
-        profileEntity.setWeekStart(DayOfWeek.MONDAY);
-        profileEntity.setPreferredUnits(Unit.ENGLISH);
-        profileEntity = profileEntityRepository.save(profileEntity);
-
-        return profileEntity;
-    }
-
-
-    protected final WorkoutEntity saveWorkout(LocalDate localDate, ProfileEntity entity) {
-        return saveWorkout(localDate, 0, entity);
-    }
-
-    protected final WorkoutEntity saveWorkout(LocalDate localDate, double distance, long duration, ProfileEntity profileEntity, RouteEntity routeEntity, RunEntity runEntity, ShoeEntity shoeEntity) {
-        WorkoutEntity entity = new WorkoutEntity();
-        entity.setPrivacy(Privacy.PRIVATE);
-        entity.setDate(localDate);
-        entity.setDistance(distance);
-        entity.setDuration(duration);
-        entity.setProfile(profileEntity);
-        entity.setRoute(routeEntity);
-        entity.setRun(runEntity);
-        entity.setShoe(shoeEntity);
-
-        return workoutEntityRepository.save(entity);
-    }
-
-    protected final WorkoutEntity saveWorkout(LocalDate localDate, double distance, ProfileEntity profileEntity) {
-        return saveWorkout(localDate, distance, 0, profileEntity, null, null, null);
-    }
-
-    protected final WorkoutEntity saveWorkout(LocalDate localDate, double distance, long duration, ProfileEntity profileEntity) {
-        return saveWorkout(localDate, distance, duration, profileEntity, null, null, null);
-    }
-
-    protected final GoalEntity saveGoal(LocalDate start, LocalDate end, boolean dashboard, ProfileEntity entity) {
-        return saveGoal("Goal", start, end, dashboard, entity);
-    }
-
-    protected final GoalEntity saveGoal(String name, LocalDate start, LocalDate end, boolean dashboard, ProfileEntity entity) {
-        GoalEntity goal = new GoalEntity();
-        goal.setStartDate(start);
-        goal.setEndDate(end);
-        goal.setGoal(0);
-        goal.setName(name);
-        goal.setDescription(null);
-        goal.setDashboard(dashboard);
-        goal.setProfile(entity);
-
-        return goalEntityRepository.save(goal);
-    }
-
-    protected final ShoeEntity saveShoe(String name, boolean dashboard, ProfileEntity entity) {
-        return saveShoe(name, null, dashboard, entity);
-    }
-
-    protected final ShoeEntity saveShoe(String name, LocalDate date, boolean dashboard, ProfileEntity entity) {
-        ShoeEntity shoeEntity = new ShoeEntity();
-        shoeEntity.setName(name);
-        shoeEntity.setDashboard(dashboard);
-        shoeEntity.setProfile(entity);
-        shoeEntity.setStartDate(date);
-
-        return shoeEntityRepository.save(shoeEntity);
-    }
-
-    protected final RunEntity saveRun(String name, boolean dashboard, ProfileEntity profileEntity) {
-        RunEntity entity = new RunEntity();
-        entity.setName(name);
-        entity.setDashboard(dashboard);
-        entity.setProfile(profileEntity);
-
-        return runEntityRepository.save(entity);
-    }
-
-    protected final RouteEntity saveRoute(String name, boolean dashboard, ProfileEntity profileEntity) {
-        RouteEntity entity = new RouteEntity();
-        entity.setName(name);
-        entity.setDashboard(dashboard);
-        entity.setProfile(profileEntity);
-
-        return routeEntityRespository.save(entity);
-    }
-
-    protected long workoutCount() {
-        return workoutEntityRepository.count();
     }
 
 }

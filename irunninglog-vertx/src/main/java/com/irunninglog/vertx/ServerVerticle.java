@@ -75,7 +75,7 @@ public final class ServerVerticle extends AbstractVerticle {
 
         SecurityHandler securityHandler = new SecurityHandler(authenticationService);
         for (Class<?> clazz : set) {
-            AbstractRouteHandler<?, ?> handler = (AbstractRouteHandler) clazz.getConstructors()[0].newInstance(vertx, factory, mapper);
+            AbstractRouteHandler handler = (AbstractRouteHandler) clazz.getConstructors()[0].newInstance(vertx, factory, mapper);
 
             LOG.info("httpServer:{}:before", handler);
             router.route(HttpMethod.valueOf(handler.endpoint().getMethod().name()), handler.endpoint().getPath()).handler(securityHandler);

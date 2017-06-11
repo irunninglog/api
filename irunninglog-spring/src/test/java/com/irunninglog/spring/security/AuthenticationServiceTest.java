@@ -15,8 +15,6 @@ public class AuthenticationServiceTest extends AbstractTest {
     @Override
     public void afterBefore(ApplicationContext context) {
         authenticationService = context.getBean(IAuthenticationService.class);
-
-        saveProfile("allan@irunninglog.com");
     }
 
     @Test

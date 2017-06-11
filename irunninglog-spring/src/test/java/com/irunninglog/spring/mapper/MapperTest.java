@@ -1,6 +1,5 @@
 package com.irunninglog.spring.mapper;
 
-import com.irunninglog.api.dashboard.IProgressInfo;
 import com.irunninglog.api.mapping.IMapper;
 import com.irunninglog.api.profile.IProfile;
 import com.irunninglog.spring.AbstractTest;
@@ -8,9 +7,7 @@ import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.context.ApplicationContext;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 public class MapperTest extends AbstractTest {
 

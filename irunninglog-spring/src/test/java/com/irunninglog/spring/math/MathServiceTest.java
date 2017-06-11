@@ -1,7 +1,6 @@
 package com.irunninglog.spring.math;
 
 import com.irunninglog.api.Progress;
-import com.irunninglog.api.Unit;
 import com.irunninglog.spring.AbstractTest;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
@@ -24,54 +23,54 @@ public class MathServiceTest extends AbstractTest {
     @Test
     public void testFormatBigDecimal1() {
         BigDecimal bigDecimal = new BigDecimal(101.4999);
-        assertEquals("101.5 mi", mathService.format(bigDecimal, Unit.ENGLISH));
+        assertEquals("101.5 mi", mathService.format(bigDecimal, false));
     }
 
     @Test
     public void testFormatBigDecimal2() {
         BigDecimal bigDecimal = new BigDecimal(1000);
-        assertEquals("1,000 mi", mathService.format(bigDecimal, Unit.ENGLISH));
+        assertEquals("1,000 mi", mathService.format(bigDecimal, false));
     }
 
     @Test
     public void testFormatBigDecimal3() {
         BigDecimal bigDecimal = new BigDecimal(66.6666);
-        assertEquals("66.67 mi", mathService.format(bigDecimal, Unit.ENGLISH));
+        assertEquals("66.67 mi", mathService.format(bigDecimal, false));
     }
 
     @Test
     public void testFormatDouble1() {
-        assertEquals("101.5 mi", mathService.format(101.49999, Unit.ENGLISH));
+        assertEquals("101.5 mi", mathService.format(101.49999, false));
     }
 
     @Test
     public void testFormatDouble2() {
-        assertEquals("1,000 mi", mathService.format(1000, Unit.ENGLISH));
+        assertEquals("1,000 mi", mathService.format(1000, false));
     }
 
     @Test
     public void testFormatDouble3() {
-        assertEquals("66.67 mi", mathService.format(new BigDecimal(66.6667), Unit.ENGLISH));
+        assertEquals("66.67 mi", mathService.format(new BigDecimal(66.6667), false));
     }
 
     @Test
     public void testFormatAndConvert1() {
-        assertEquals("1.61 km", mathService.format(new BigDecimal(1), Unit.METRIC));
+        assertEquals("1.61 km", mathService.format(new BigDecimal(1), true));
     }
 
     @Test
     public void testFormatAndConvert2() {
-        assertEquals("16.09 km", mathService.format(new BigDecimal(10), Unit.METRIC));
+        assertEquals("16.09 km", mathService.format(new BigDecimal(10), true));
     }
 
     @Test
     public void testFormatAndConvert3() {
-        assertEquals("160.93 km", mathService.format(new BigDecimal(100), Unit.METRIC));
+        assertEquals("160.93 km", mathService.format(new BigDecimal(100), true));
     }
 
     @Test
     public void testFormatAndConvert4() {
-        assertEquals("10 km", mathService.format(new BigDecimal(6.213), Unit.METRIC));
+        assertEquals("10 km", mathService.format(new BigDecimal(6.213), true));
     }
 
     @Test
@@ -121,9 +120,9 @@ public class MathServiceTest extends AbstractTest {
 
     @Test
     public void formatProgressTest() {
-        assertEquals("No progress to track", mathService.formatProgressText(new BigDecimal(0), new BigDecimal(0), Unit.ENGLISH));
-        assertEquals("50 mi of 100 mi (50%)", mathService.formatProgressText(new BigDecimal(50), new BigDecimal(100), Unit.ENGLISH));
-        assertEquals("101 mi of 100 mi (100%)", mathService.formatProgressText(new BigDecimal(101), new BigDecimal(100), Unit.ENGLISH));
+        assertEquals("No progress to track", mathService.formatProgressText(new BigDecimal(0), new BigDecimal(0), false));
+        assertEquals("50 mi of 100 mi (50%)", mathService.formatProgressText(new BigDecimal(50), new BigDecimal(100), false));
+        assertEquals("101 mi of 100 mi (100%)", mathService.formatProgressText(new BigDecimal(101), new BigDecimal(100), false));
     }
 
     @Test
@@ -133,8 +132,8 @@ public class MathServiceTest extends AbstractTest {
 
     @Test
     public void formatShort() {
-        assertEquals("100.00", mathService.formatShort(100, Unit.ENGLISH));
-        assertEquals("160.93", mathService.formatShort(100, Unit.METRIC));
+        assertEquals("100.00", mathService.formatShort(100, false));
+        assertEquals("160.93", mathService.formatShort(100, true));
     }
 
     @Test

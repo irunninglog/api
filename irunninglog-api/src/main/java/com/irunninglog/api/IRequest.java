@@ -1,9 +1,11 @@
 package com.irunninglog.api;
 
-public interface IRequest<T extends IRequest> {
+import java.util.Map;
 
-    T setOffset(int offset);
+public interface IRequest {
 
-    int getOffset();
+    IRequest setMap(Map<String, Object> map);
+
+    Map<String, Object> getMap();
 
 }

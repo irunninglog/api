@@ -1,7 +1,6 @@
 package com.irunninglog.spring.math;
 
 import com.irunninglog.api.Progress;
-import com.irunninglog.api.Unit;
 import com.irunninglog.spring.service.InternalService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,11 +25,11 @@ public final class MathService {
         return bigDecimal.setScale(2, RoundingMode.HALF_UP);
     }
 
-    public Progress progress(BigDecimal number, BigDecimal target) {
+    Progress progress(BigDecimal number, BigDecimal target) {
         return progress(number, target, Boolean.FALSE);
     }
 
-    public Progress progress(final BigDecimal input, final BigDecimal target, final boolean inverted) {
+    private Progress progress(final BigDecimal input, final BigDecimal target, final boolean inverted) {
         Progress progress;
 
         BigDecimal number = round(input);
@@ -50,63 +49,63 @@ public final class MathService {
         return progress;
     }
 
-    public String formatProgressText(BigDecimal mileage, BigDecimal target, Unit units) {
+    String formatProgressText(BigDecimal mileage, BigDecimal target, boolean metric) {
         if (target.doubleValue() < 1E-9) {
             return NO_PROGRESS;
         }
 
         if (mileage.compareTo(target) > 0) {
             return MessageFormat.format(FORMAT_PROGRESS,
-                    format(mileage, units),
-                    format(target, units),
+                    format(mileage, metric),
+                    format(target, metric),
                     100);
         } else {
             BigDecimal percent = divide(mileage.multiply(BigDecimal.valueOf(100)), target);
 
             return MessageFormat.format(FORMAT_PROGRESS,
-                    format(mileage, units),
-                    format(target, units),
+                    format(mileage, metric),
+                    format(target, metric),
                     intValue(percent));
         }
     }
 
-    public String format(double number, Unit units) {
-        return format(BigDecimal.valueOf(number), units);
+    String format(double number, boolean metric) {
+        return format(BigDecimal.valueOf(number), metric);
     }
 
-    public String format(final BigDecimal input, final Unit units) {
-        BigDecimal number = units == Unit.METRIC ? input.multiply(CONVERTER) : input;
+    String format(final BigDecimal input, final boolean metric) {
+        BigDecimal number = metric ? input.multiply(CONVERTER) : input;
 
-        return DecimalFormat.getInstance().format(number.setScale(2, RoundingMode.HALF_UP)) + (units == Unit.ENGLISH ? " mi" : " km");
+        return DecimalFormat.getInstance().format(number.setScale(2, RoundingMode.HALF_UP)) + (!metric ? " mi" : " km");
     }
 
-    public int intValue(BigDecimal number) {
+    int intValue(BigDecimal number) {
         return number.setScale(0, RoundingMode.HALF_UP).intValue();
     }
 
-    public BigDecimal divide(BigDecimal top, BigDecimal bottom) {
+    BigDecimal divide(BigDecimal top, BigDecimal bottom) {
         return top.divide(bottom, 2, RoundingMode.HALF_UP);
     }
 
-    public int getPercentage(int value, int max) {
+    int getPercentage(int value, int max) {
         return getPercentage(BigDecimal.valueOf(value), BigDecimal.valueOf(max));
     }
 
-    public int getPercentage(BigDecimal value, BigDecimal max) {
+    private int getPercentage(BigDecimal value, BigDecimal max) {
         return max.doubleValue() < 1E-9 ? 0 : intValue(divide(value.multiply(BigDecimal.valueOf(100)), max));
     }
 
-    public String formatShort(double total, Unit units) {
+    String formatShort(double total, boolean metric) {
         BigDecimal number = BigDecimal.valueOf(total);
 
-        if (units == Unit.METRIC) {
+        if (metric) {
             number = number.multiply(CONVERTER);
         }
 
         return number.setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString();
     }
 
-    public double parse(String value) {
+    double parse(String value) {
         try {
             return NumberFormat.getInstance(Locale.getDefault()).parse(value).doubleValue();
         } catch (Exception ex) {

@@ -15,18 +15,18 @@ import io.vertx.ext.web.RoutingContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class AbstractRouteHandler<Q extends IRequest, S extends IResponse> implements Handler<RoutingContext> {
+import java.util.HashMap;
+
+public abstract class AbstractRouteHandler implements Handler<RoutingContext> {
 
     private static final String LOG_STMT = "handle:{}:{}";
 
     private final Vertx vertx;
     private final IFactory factory;
     private final IMapper mapper;
-    private final Class<Q> requestClass;
-    private final Class<S> responseClass;
     private final Endpoint endpoint;
 
-    protected final Logger logger = LoggerFactory.getLogger(getClass());
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     public AbstractRouteHandler(Vertx vertx,
                                 IFactory factory,
@@ -38,10 +38,6 @@ public abstract class AbstractRouteHandler<Q extends IRequest, S extends IRespon
 
         RouteHandler routeHandler = this.getClass().getAnnotation(RouteHandler.class);
         this.endpoint = routeHandler.endpoint();
-        //noinspection unchecked
-        this.requestClass = (Class<Q>) routeHandler.request();
-        //noinspection unchecked
-        this.responseClass = (Class<S>) routeHandler.response();
     }
 
     @Override
@@ -53,7 +49,8 @@ public abstract class AbstractRouteHandler<Q extends IRequest, S extends IRespon
                 logger.info("handle:start:{}", routingContext.normalisedPath());
             }
 
-            Q request = factory.get(requestClass);
+            IRequest request = factory.get(IRequest.class);
+            request.setMap(new HashMap<>());
 
             request(request, routingContext);
 
@@ -71,7 +68,7 @@ public abstract class AbstractRouteHandler<Q extends IRequest, S extends IRespon
         }
     }
 
-    protected void request(Q request, RoutingContext routingContext) {
+    protected void request(IRequest request, RoutingContext routingContext) {
         // Empty for subclasses
     }
 
@@ -82,7 +79,7 @@ public abstract class AbstractRouteHandler<Q extends IRequest, S extends IRespon
 
                 logger.info("handleAuthenticated:{}:{}", endpoint.getAddress(), resultString);
 
-                S response = mapper.decode(resultString, responseClass);
+                IResponse response = mapper.decode(resultString, IResponse.class);
 
                 logger.info(LOG_STMT, endpoint.getAddress(), response);
 

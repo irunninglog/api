@@ -6,7 +6,6 @@ import com.irunninglog.api.ResponseStatus;
 import com.irunninglog.api.ResponseStatusException;
 import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.mapping.IMapper;
-import com.irunninglog.api.security.IUser;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
@@ -14,14 +13,12 @@ import io.vertx.core.eventbus.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class AbstractRequestResponseVerticle<Q extends IRequest, S extends IResponse> extends AbstractVerticle {
+public abstract class AbstractRequestResponseVerticle extends AbstractVerticle {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private final IFactory factory;
     private final IMapper mapper;
-    private final Class<S> responseClass;
-    private final Class<Q> requestClass;
 
     private final String address;
 
@@ -33,10 +30,6 @@ public abstract class AbstractRequestResponseVerticle<Q extends IRequest, S exte
 
         EndpointVerticle endpointVerticle = getClass().getAnnotation(EndpointVerticle.class);
         address = endpointVerticle.endpoint().getAddress();
-        //noinspection unchecked
-        requestClass = (Class<Q>) endpointVerticle.request();
-        //noinspection unchecked
-        responseClass = (Class<S>) endpointVerticle.response();
     }
 
     @Override
@@ -67,16 +60,11 @@ public abstract class AbstractRequestResponseVerticle<Q extends IRequest, S exte
 
             Envelope envelope = mapper.decode(msg.body(), Envelope.class);
 
-            Q request = mapper.decode(envelope.getRequest(), requestClass);
-
-            if (!authorized(envelope.getUser(), request)) {
-                logger.error("handler:not allowed");
-                throw new ResponseStatusException(ResponseStatus.UNAUTHORIZED);
-            }
+            IRequest request = mapper.decode(envelope.getRequest(), IRequest.class);
 
             logger.info("handler:request:{}", request);
 
-            S response = factory.get(responseClass);
+            IResponse response = factory.get(IResponse.class);
             handle(request, response);
 
             logger.info("handler:response:{}", response);
@@ -86,7 +74,7 @@ public abstract class AbstractRequestResponseVerticle<Q extends IRequest, S exte
             try {
                 logger.error("handler:exception:{}", ex);
 
-                S response = fromException(ex);
+                IResponse response = fromException(ex);
 
                 logger.error("handler:exception:{}", response);
 
@@ -103,12 +91,10 @@ public abstract class AbstractRequestResponseVerticle<Q extends IRequest, S exte
         }
     }
 
-    protected abstract boolean authorized(IUser user, Q request);
+    protected abstract void handle(IRequest request, IResponse response);
 
-    protected abstract void handle(Q request, S response);
-
-    private S fromException(Exception ex) {
-        S response = factory.get(responseClass);
+    private IResponse fromException(Exception ex) {
+        IResponse response = factory.get(IResponse.class);
 
         ResponseStatus status;
         boolean statusException = ex instanceof ResponseStatusException;

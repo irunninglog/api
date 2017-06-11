@@ -1,18 +1,17 @@
 package com.irunninglog.vertx.profile;
 
 import com.irunninglog.api.Endpoint;
+import com.irunninglog.api.IRequest;
+import com.irunninglog.api.IResponse;
 import com.irunninglog.api.ResponseStatus;
 import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.mapping.IMapper;
-import com.irunninglog.api.profile.IGetProfileRequest;
-import com.irunninglog.api.profile.IGetProfileResponse;
 import com.irunninglog.api.profile.IProfileService;
-import com.irunninglog.api.security.IUser;
-import com.irunninglog.vertx.AbstractProfileIdEndpointVerticle;
+import com.irunninglog.vertx.AbstractRequestResponseVerticle;
 import com.irunninglog.vertx.EndpointVerticle;
 
-@EndpointVerticle(endpoint = Endpoint.PROFILE_GET, request = IGetProfileRequest.class, response = IGetProfileResponse.class)
-public final class GetProfileVerticle extends AbstractProfileIdEndpointVerticle<IGetProfileRequest, IGetProfileResponse> {
+@EndpointVerticle(endpoint = Endpoint.GET_PROFILE)
+public final class GetProfileVerticle extends AbstractRequestResponseVerticle {
 
     private final IProfileService profileService;
 
@@ -23,14 +22,8 @@ public final class GetProfileVerticle extends AbstractProfileIdEndpointVerticle<
     }
 
     @Override
-    protected void handle(IGetProfileRequest request, IGetProfileResponse response) {
-        //noinspection unchecked
-        response.setStatus(ResponseStatus.OK).setBody(profileService.get(request.getProfileId()));
-    }
-
-    @Override
-    protected boolean authorized(IUser user, IGetProfileRequest request) {
-        return matches(user, request);
+    protected void handle(IRequest request, IResponse response) {
+        response.setStatus(ResponseStatus.OK).setBody(profileService.get((String) request.getMap().get("token")));
     }
 
 }

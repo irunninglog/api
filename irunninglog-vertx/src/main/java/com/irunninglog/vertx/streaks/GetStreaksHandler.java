@@ -1,4 +1,4 @@
-package com.irunninglog.vertx.login;
+package com.irunninglog.vertx.streaks;
 
 import com.irunninglog.api.Endpoint;
 import com.irunninglog.api.IRequest;
@@ -9,10 +9,10 @@ import com.irunninglog.vertx.RouteHandler;
 import io.vertx.core.Vertx;
 import io.vertx.ext.web.RoutingContext;
 
-@RouteHandler(endpoint = Endpoint.LOGIN)
-public class LoginHandler extends AbstractRouteHandler {
+@RouteHandler(endpoint = Endpoint.GET_STREAKS)
+public class GetStreaksHandler extends AbstractRouteHandler {
 
-    public LoginHandler(Vertx vertx, IFactory factory, IMapper mapper) {
+    public GetStreaksHandler(Vertx vertx, IFactory factory, IMapper mapper) {
         super(vertx, factory, mapper);
     }
 
@@ -20,7 +20,7 @@ public class LoginHandler extends AbstractRouteHandler {
     protected void request(IRequest request, RoutingContext routingContext) {
         super.request(request, routingContext);
 
-        request.getMap().put("code", routingContext.request().getParam("code"));
+        request.getMap().put("token", routingContext.request().getHeader("Authorization"));
     }
 
 }

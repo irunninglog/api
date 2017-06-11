@@ -24,7 +24,10 @@ public final class SecurityHandler implements Handler<RoutingContext> {
 
     static {
         PROFILE_ENDPOINTS = new ArrayList<>();
-        PROFILE_ENDPOINTS.add(Endpoint.PROFILE);
+        PROFILE_ENDPOINTS.add(Endpoint.GET_CHALLENGES);
+        PROFILE_ENDPOINTS.add(Endpoint.GET_PROFILE);
+        PROFILE_ENDPOINTS.add(Endpoint.GET_SHOES);
+        PROFILE_ENDPOINTS.add(Endpoint.GET_STREAKS);
     }
 
     private final IAuthenticationService authenticationService;

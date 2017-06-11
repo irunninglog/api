@@ -4,9 +4,7 @@ import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.mapping.IMapper;
 import com.irunninglog.api.security.AuthnException;
 import com.irunninglog.api.security.IAuthenticationService;
-import com.irunninglog.vertx.mock.MockFactory;
-import com.irunninglog.vertx.mock.MockMapper;
-import com.irunninglog.vertx.mock.MockUser;
+import com.irunninglog.api.security.IUser;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpClient;
@@ -33,8 +31,8 @@ public abstract class AbstractHandlerTest {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     protected final IAuthenticationService authenticationService = Mockito.mock(IAuthenticationService.class);
-    protected final IMapper mapper = new MockMapper();
-    protected final IFactory factory = new MockFactory();
+    protected IFactory factory;
+    protected IMapper mapper;
 
     protected Vertx vertx;
 
@@ -65,7 +63,7 @@ public abstract class AbstractHandlerTest {
 
     protected final void authn() throws AuthnException {
         Mockito.when(authenticationService.authenticate(any(String.class)))
-                .thenReturn(new MockUser().setId(1).setAuthorities(Collections.singletonList("MYPROFILE")));
+                .thenReturn(factory.get(IUser.class).setId(1).setAuthorities(Collections.singletonList("MYPROFILE")));
     }
 
     protected final int get(TestContext context, String path, String token) {
@@ -108,7 +106,7 @@ public abstract class AbstractHandlerTest {
         return responseCode[0];
     }
 
-    protected int put(TestContext context, String path, String token, String body) {
+    int put(TestContext context, String path, String token, String body) {
         HttpClient client = vertx.createHttpClient();
         Async async = context.async();
         HttpClientRequest req = client.put(8889, "localhost", path);
