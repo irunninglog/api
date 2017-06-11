@@ -1,6 +1,6 @@
 package com.irunninglog.spring.date;
 
-import com.irunninglog.spring.service.InternalService;
+import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.time.*;
@@ -9,7 +9,7 @@ import java.time.format.FormatStyle;
 import java.time.temporal.TemporalAdjusters;
 import java.util.regex.Pattern;
 
-@InternalService
+@Service
 public final class DateService {
 
     public static final String DATE_INCOMING = "^(0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])[-](19|20)\\d\\d$";

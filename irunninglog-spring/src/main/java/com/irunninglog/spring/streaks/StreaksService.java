@@ -2,13 +2,14 @@ package com.irunninglog.spring.streaks;
 
 import com.irunninglog.api.Progress;
 import com.irunninglog.api.factory.IFactory;
+import com.irunninglog.api.security.IUser;
 import com.irunninglog.api.streaks.IStreak;
 import com.irunninglog.api.streaks.IStreaks;
 import com.irunninglog.api.streaks.IStreaksService;
-import com.irunninglog.spring.service.ApiService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-@ApiService
+@Service
 public class StreaksService implements IStreaksService {
 
     private final IFactory factory;
@@ -19,7 +20,7 @@ public class StreaksService implements IStreaksService {
     }
 
     @Override
-    public IStreaks getStreaks(String token) {
+    public IStreaks getStreaks(IUser user) {
         IStreak longest = factory.get(IStreak.class)
                 .setStartDate("2015-01-01")
                 .setEndDate("2017-10-01")

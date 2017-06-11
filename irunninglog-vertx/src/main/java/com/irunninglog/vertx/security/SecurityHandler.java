@@ -13,22 +13,9 @@ import io.vertx.ext.web.RoutingContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public final class SecurityHandler implements Handler<RoutingContext> {
 
-    private static final List<Endpoint> PROFILE_ENDPOINTS;
-
     private static final Logger LOG = LoggerFactory.getLogger(SecurityHandler.class);
-
-    static {
-        PROFILE_ENDPOINTS = new ArrayList<>();
-        PROFILE_ENDPOINTS.add(Endpoint.GET_CHALLENGES);
-        PROFILE_ENDPOINTS.add(Endpoint.GET_PROFILE);
-        PROFILE_ENDPOINTS.add(Endpoint.GET_SHOES);
-        PROFILE_ENDPOINTS.add(Endpoint.GET_STREAKS);
-    }
 
     private final IAuthenticationService authenticationService;
 
@@ -75,12 +62,10 @@ public final class SecurityHandler implements Handler<RoutingContext> {
             if (endpoint == null) {
                 // Static content
                 routingContext.next();
-            } else if (authorized(endpoint, asyncResult.result())) {
+            } else {
                 IUser user = asyncResult.result();
                 routingContext.put("user", user);
                 routingContext.next();
-            } else {
-                fail(routingContext, ResponseStatus.UNAUTHORIZED);
             }
         } else {
             //noinspection ThrowableResultOfMethodCallIgnored
@@ -88,29 +73,9 @@ public final class SecurityHandler implements Handler<RoutingContext> {
         }
     }
 
-    private boolean authorized(Endpoint endpoint, IUser user) {
-        if (endpoint.getControl() == AccessControl.ALLOW || hasRole(user, "ADMIN")) {
-            return Boolean.TRUE;
-        } else if (hasRole(user, "MYPROFILE") && PROFILE_ENDPOINTS.contains(endpoint)) {
-            return Boolean.TRUE;
-        }
-
-        return Boolean.FALSE;
-    }
-
-    private boolean hasRole(IUser user, String role) {
-        for (String string : user.getAuthorities()) {
-            if (string.equals(role)) {
-                return Boolean.TRUE;
-            }
-        }
-
-        return Boolean.FALSE;
-    }
-
     private void authenticate(RoutingContext routingContext, Future<IUser> future) {
         try {
-            future.complete(authenticationService.authenticate(routingContext.request().getHeader("Authorization")));
+            future.complete(authenticationService.authenticateToken(routingContext.request().getHeader("Authorization")));
         } catch (AuthnException ex) {
             LOG.error("authenticate:exception", ex);
             future.fail(ex);

@@ -1,9 +1,9 @@
 package com.irunninglog.spring.math;
 
 import com.irunninglog.api.Progress;
-import com.irunninglog.spring.service.InternalService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -12,7 +12,7 @@ import java.text.MessageFormat;
 import java.text.NumberFormat;
 import java.util.Locale;
 
-@InternalService
+@Service
 public final class MathService {
 
     private static final Logger LOG = LoggerFactory.getLogger(MathService.class);

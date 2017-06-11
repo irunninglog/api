@@ -3,13 +3,14 @@ package com.irunninglog.spring.profile;
 import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.profile.IProfile;
 import com.irunninglog.api.profile.IProfileService;
-import com.irunninglog.spring.service.ApiService;
+import com.irunninglog.api.security.IUser;
 import javastrava.api.v3.auth.model.Token;
 import javastrava.api.v3.model.StravaAthlete;
 import javastrava.api.v3.rest.API;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-@ApiService
+@Service
 final class ProfileService implements IProfileService {
 
     private final IFactory factory;
@@ -20,9 +21,9 @@ final class ProfileService implements IProfileService {
     }
 
     @Override
-    public IProfile get(String token) {
+    public IProfile get(IUser user) {
         Token apiToken = new Token();
-        apiToken.setToken(token);
+        apiToken.setToken(user.getToken());
 
         API api = new API(apiToken);
         StravaAthlete athlete = api.getAuthenticatedAthlete();

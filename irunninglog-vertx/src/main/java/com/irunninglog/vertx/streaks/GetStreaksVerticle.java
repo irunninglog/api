@@ -23,7 +23,7 @@ public class GetStreaksVerticle extends AbstractRequestResponseVerticle {
 
     @Override
     protected void handle(IRequest request, IResponse response) {
-        response.setStatus(ResponseStatus.OK).setBody(streaksService.getStreaks((String) request.getMap().get("token")));
+        response.setStatus(ResponseStatus.OK).setBody(streaksService.getStreaks(request.getUser()));
     }
 
 }

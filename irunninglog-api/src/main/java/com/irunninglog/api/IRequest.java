@@ -1,11 +1,17 @@
 package com.irunninglog.api;
 
+import com.irunninglog.api.security.IUser;
+
 import java.util.Map;
 
 public interface IRequest {
 
-    IRequest setMap(Map<String, Object> map);
+    IRequest setMap(Map<String, String> map);
 
-    Map<String, Object> getMap();
+    IRequest setUser(IUser user);
+
+    Map<String, String> getMap();
+
+    IUser getUser();
 
 }

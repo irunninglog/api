@@ -6,6 +6,7 @@ import com.irunninglog.api.mapping.IMapper;
 import com.irunninglog.api.profile.IProfile;
 import com.irunninglog.api.profile.IProfileService;
 import com.irunninglog.api.security.AuthnException;
+import com.irunninglog.api.security.IUser;
 import com.irunninglog.vertx.AbstractHandlerTest;
 import io.vertx.ext.unit.TestContext;
 import org.junit.Ignore;
@@ -31,7 +32,7 @@ public class GetProfileHandlerTest extends AbstractHandlerTest {
     public void ok(TestContext context) throws AuthnException {
         authn();
 
-        Mockito.when(profileService.get(any(String.class)))
+        Mockito.when(profileService.get(any(IUser.class)))
                 .thenReturn(factory.get(IProfile.class));
 
         context.assertEquals(403, get(context, "/profiles/1", TOKEN));
@@ -41,7 +42,7 @@ public class GetProfileHandlerTest extends AbstractHandlerTest {
     public void notFound(TestContext context) throws AuthnException {
         authn();
 
-        Mockito.when(profileService.get(any(String.class)))
+        Mockito.when(profileService.get(any(IUser.class)))
                 .thenThrow(new ResponseStatusException(ResponseStatus.NOT_FOUND));
 
         context.assertEquals(403, get(context, "/profiles/1", TOKEN));
@@ -49,21 +50,21 @@ public class GetProfileHandlerTest extends AbstractHandlerTest {
 
     @Test
     public void unauthenticated1(TestContext context) throws AuthnException {
-        Mockito.when(authenticationService.authenticate(any(String.class))).thenThrow(new AuthnException("UNAUTHENTICATED"));
+        Mockito.when(authenticationService.authenticateToken(any(String.class))).thenThrow(new AuthnException("UNAUTHENTICATED"));
 
         context.assertEquals(401, get(context, "/profiles/1", ""));
     }
 
     @Test
     public void unauthenticated2(TestContext context) throws AuthnException {
-        Mockito.when(authenticationService.authenticate(any(String.class))).thenThrow(new AuthnException("UNAUTHENTICATED"));
+        Mockito.when(authenticationService.authenticateToken(any(String.class))).thenThrow(new AuthnException("UNAUTHENTICATED"));
 
         context.assertEquals(401, get(context, "/profiles/1", TOKEN));
     }
 
     @Test
     public void unauthenticated3(TestContext context) throws AuthnException {
-        Mockito.when(authenticationService.authenticate(any(String.class))).thenThrow(new AuthnException("UNAUTHENTICATED"));
+        Mockito.when(authenticationService.authenticateToken(any(String.class))).thenThrow(new AuthnException("UNAUTHENTICATED"));
 
         context.assertEquals(401, get(context, "/profiles/1", "Basic @@@"));
     }

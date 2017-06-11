@@ -19,8 +19,6 @@ import org.mockito.Mockito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Collections;
-
 import static org.mockito.Matchers.any;
 
 @RunWith(VertxUnitRunner.class)
@@ -62,8 +60,8 @@ public abstract class AbstractHandlerTest {
     protected abstract void afterBefore(TestContext context) throws Exception;
 
     protected final void authn() throws AuthnException {
-        Mockito.when(authenticationService.authenticate(any(String.class)))
-                .thenReturn(factory.get(IUser.class).setId(1).setAuthorities(Collections.singletonList("MYPROFILE")));
+        Mockito.when(authenticationService.authenticateToken(any(String.class)))
+                .thenReturn(factory.get(IUser.class).setId(1));
     }
 
     protected final int get(TestContext context, String path, String token) {

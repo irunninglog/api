@@ -5,25 +5,25 @@ import com.irunninglog.api.IRequest;
 import com.irunninglog.api.IResponse;
 import com.irunninglog.api.ResponseStatus;
 import com.irunninglog.api.factory.IFactory;
-import com.irunninglog.api.login.ILoginService;
 import com.irunninglog.api.mapping.IMapper;
+import com.irunninglog.api.security.IAuthenticationService;
 import com.irunninglog.vertx.AbstractRequestResponseVerticle;
 import com.irunninglog.vertx.EndpointVerticle;
 
 @EndpointVerticle(endpoint = Endpoint.LOGIN)
 public class LoginVerticle extends AbstractRequestResponseVerticle {
 
-    private final ILoginService loginService;
+    private final IAuthenticationService authenticationService;
 
-    public LoginVerticle(IFactory factory, IMapper mapper, ILoginService loginService) {
+    public LoginVerticle(IFactory factory, IMapper mapper, IAuthenticationService loginService) {
         super(factory, mapper);
 
-        this.loginService = loginService;
+        this.authenticationService = loginService;
     }
 
     @Override
-    protected void handle(IRequest request, IResponse response) {
-        response.setBody(loginService.login((String) request.getMap().get("code"))).setStatus(ResponseStatus.OK);
+    protected void handle(IRequest request, IResponse response) throws Exception {
+        response.setBody(authenticationService.authenticateCode(request.getMap().get("code"))).setStatus(ResponseStatus.OK);
     }
 
 }

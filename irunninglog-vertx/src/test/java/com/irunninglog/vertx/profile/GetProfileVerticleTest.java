@@ -30,7 +30,7 @@ public class GetProfileVerticleTest extends AbstractVerticleTest {
 
     @Test
     public void ok(TestContext context) {
-        Mockito.when(profileService.get(any(String.class))).thenReturn(factory.get(IProfile.class).setId(1));
+        Mockito.when(profileService.get(any(IUser.class))).thenReturn(factory.get(IProfile.class).setId(1));
 
         Envelope envelope = new Envelope().setUser(factory.get(IUser.class).setId(1)).setRequest(mapper.encode(factory.get(IRequest.class)));
 
@@ -46,7 +46,7 @@ public class GetProfileVerticleTest extends AbstractVerticleTest {
 
     @Test
     public void statusException(TestContext context) {
-        Mockito.when(profileService.get(any(String.class))).thenThrow(new ResponseStatusException(ResponseStatus.NOT_FOUND));
+        Mockito.when(profileService.get(any(IUser.class))).thenThrow(new ResponseStatusException(ResponseStatus.NOT_FOUND));
 
         Envelope envelope = new Envelope().setUser(factory.get(IUser.class).setId(1)).setRequest(mapper.encode(factory.get(IRequest.class)));
 
@@ -62,7 +62,7 @@ public class GetProfileVerticleTest extends AbstractVerticleTest {
 
     @Test
     public void error1(TestContext context) {
-        Mockito.when(profileService.get(any(String.class))).thenThrow(new RuntimeException());
+        Mockito.when(profileService.get(any(IUser.class))).thenThrow(new RuntimeException());
 
         rule.vertx().eventBus().<String>send(Endpoint.GET_PROFILE.getAddress(),
                 mapper.encode(factory.get(IRequest.class)), context.asyncAssertSuccess(o -> {
@@ -76,7 +76,7 @@ public class GetProfileVerticleTest extends AbstractVerticleTest {
 
     @Test
     public void error2(TestContext context) {
-        Mockito.when(profileService.get(any(String.class))).thenThrow(new RuntimeException());
+        Mockito.when(profileService.get(any(IUser.class))).thenThrow(new RuntimeException());
 
         rule.vertx().undeploy(profileVerticleId, context.asyncAssertSuccess());
         IFactory throwsFactory = Mockito.mock(IFactory.class);

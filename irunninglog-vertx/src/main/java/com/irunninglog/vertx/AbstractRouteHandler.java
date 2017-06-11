@@ -51,6 +51,7 @@ public abstract class AbstractRouteHandler implements Handler<RoutingContext> {
 
             IRequest request = factory.get(IRequest.class);
             request.setMap(new HashMap<>());
+            request.setUser(routingContext.get("user"));
 
             request(request, routingContext);
 

@@ -20,7 +20,7 @@ public class AuthenticationServiceTest extends AbstractTest {
     @Test
     public void failTokenNull() throws SecurityException {
         try {
-            assertNull(authenticationService.authenticate(null));
+            assertNull(authenticationService.authenticateToken(null));
 
             fail("Should have thrown");
         } catch (AuthnException ex) {
@@ -31,7 +31,7 @@ public class AuthenticationServiceTest extends AbstractTest {
     @Test
     public void failTokenFormat() throws SecurityException {
         try {
-            authenticationService.authenticate("Basic invalid");
+            authenticationService.authenticateToken("Basic invalid");
 
             fail("Should have thrown");
         } catch (AuthnException ex) {
@@ -42,7 +42,7 @@ public class AuthenticationServiceTest extends AbstractTest {
     @Test
     public void failTokenVerification() throws SecurityException {
         try {
-            authenticationService.authenticate("Bearer invalid");
+            authenticationService.authenticateToken("Bearer invalid");
 
             fail("Should have thrown");
         } catch (AuthnException ex) {

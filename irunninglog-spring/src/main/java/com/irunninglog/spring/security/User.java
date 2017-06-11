@@ -5,16 +5,14 @@ import com.irunninglog.api.security.IUser;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 @Component
 @Scope("prototype")
 @JsonTypeInfo(use= JsonTypeInfo.Id.CLASS, include= JsonTypeInfo.As.PROPERTY, property="class")
-final class User implements IUser {
+public final class User implements IUser {
 
     private long id;
     private String username;
-    private List<String> authorities;
+    private String token;
 
     @Override
     public IUser setId(long id) {
@@ -29,8 +27,8 @@ final class User implements IUser {
     }
 
     @Override
-    public IUser setAuthorities(List<String> authorities) {
-        this.authorities = authorities;
+    public IUser setToken(String token) {
+        this.token = token;
         return this;
     }
 
@@ -45,13 +43,8 @@ final class User implements IUser {
     }
 
     @Override
-    public List<String> getAuthorities() {
-        return authorities;
-    }
-
-    @Override
-    public boolean hasAuthority(String authority) {
-        return authorities != null && authorities.contains(authority);
+    public String getToken() {
+        return token;
     }
 
 }

@@ -1,21 +1,17 @@
 package com.irunninglog.api.security;
 
-import java.util.List;
-
 public interface IUser {
 
     IUser setId(long id);
 
     IUser setUsername(String username);
 
-    IUser setAuthorities(List<String> authorities);
+    IUser setToken(String token);
 
     String getUsername();
 
     long getId();
 
-    List<String> getAuthorities();
-
-    boolean hasAuthority(String authority);
+    String getToken();
 
 }

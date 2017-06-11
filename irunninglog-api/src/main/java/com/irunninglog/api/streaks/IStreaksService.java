@@ -1,7 +1,9 @@
 package com.irunninglog.api.streaks;
 
+import com.irunninglog.api.security.IUser;
+
 public interface IStreaksService {
 
-    IStreaks getStreaks(String token);
+    IStreaks getStreaks(IUser user);
 
 }
