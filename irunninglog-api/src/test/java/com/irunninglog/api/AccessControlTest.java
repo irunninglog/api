@@ -8,7 +8,7 @@ public class AccessControlTest {
 
     @Test
     public void sanity() {
-        assertNotNull(AccessControl.ADMIN);
+        assertNotNull(AccessControl.AUTHENTICATED);
     }
 
 

@@ -21,6 +21,7 @@ import java.util.Set;
 public final class ServerVerticle extends AbstractVerticle {
 
     private static final Logger LOG = LoggerFactory.getLogger(ServerVerticle.class);
+    static final int BODY_SIZE_LIMIT = 1024;
 
     private final int listenPort;
     private final Handler<AsyncResult<HttpServer>> listenHandler;
@@ -69,7 +70,7 @@ public final class ServerVerticle extends AbstractVerticle {
     private void install(Router router) throws IllegalAccessException, InvocationTargetException, InstantiationException {
         Reflections reflections = new Reflections("com.irunninglog");
 
-        Set<Class<?>> set = reflections.getTypesAnnotatedWith(RouteHandler.class);
+        Set<Class<?>> set = reflections.getTypesAnnotatedWith(EndpointHandler.class);
 
         router.route().handler(BodyHandler.create().setBodyLimit(1024));
 

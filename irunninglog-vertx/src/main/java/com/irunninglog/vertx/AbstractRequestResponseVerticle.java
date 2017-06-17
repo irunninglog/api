@@ -3,9 +3,9 @@ package com.irunninglog.vertx;
 import com.irunninglog.api.IRequest;
 import com.irunninglog.api.IResponse;
 import com.irunninglog.api.ResponseStatus;
-import com.irunninglog.api.ResponseStatusException;
 import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.mapping.IMapper;
+import com.irunninglog.api.security.AuthnException;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
@@ -58,9 +58,7 @@ public abstract class AbstractRequestResponseVerticle extends AbstractVerticle {
         try {
             logger.info("handler:start");
 
-            Envelope envelope = mapper.decode(msg.body(), Envelope.class);
-
-            IRequest request = mapper.decode(envelope.getRequest(), IRequest.class);
+            IRequest request = mapper.decode(msg.body(), IRequest.class);
 
             logger.info("handler:request:{}", request);
 
@@ -71,19 +69,13 @@ public abstract class AbstractRequestResponseVerticle extends AbstractVerticle {
 
             future.complete(mapper.encode(response));
         } catch (Exception ex) {
-            try {
-                logger.error("handler:exception:{}", ex);
+            logger.error("handler:exception:{}", ex);
 
-                IResponse response = fromException(ex);
+            IResponse response = fromException(ex);
 
-                logger.error("handler:exception:{}", response);
+            logger.error("handler:exception:{}", response);
 
-                future.complete(mapper.encode(response));
-            } catch (Exception ex1) {
-                logger.error("handler:exception:" + ex1, ex1);
-
-                future.fail(ex1);
-            }
+            future.complete(mapper.encode(response));
         } finally {
             if (logger.isInfoEnabled()) {
                 logger.info("handler:{}:{}ms", address, System.currentTimeMillis() - start);
@@ -97,12 +89,11 @@ public abstract class AbstractRequestResponseVerticle extends AbstractVerticle {
         IResponse response = factory.get(IResponse.class);
 
         ResponseStatus status;
-        boolean statusException = ex instanceof ResponseStatusException;
 
-        logger.info("fromException:{}:{}", statusException, ex.getClass());
+        logger.info("fromException:{}", ex.getClass());
 
-        if (statusException) {
-            status = ((ResponseStatusException) ex).getResponseStatus();
+        if (ex instanceof AuthnException) {
+            status = ResponseStatus.UNAUTHENTICATED;
         } else {
             status = ResponseStatus.ERROR;
         }
@@ -112,10 +103,6 @@ public abstract class AbstractRequestResponseVerticle extends AbstractVerticle {
         response.setStatus(status);
 
         return response;
-    }
-
-    protected IFactory factory() {
-        return factory;
     }
 
 }

@@ -43,27 +43,25 @@ public final class SecurityHandler implements Handler<RoutingContext> {
     }
 
     private void handle(Endpoint endpoint, RoutingContext routingContext) {
-        if (endpoint.getControl() == AccessControl.ANONYMOUS) {
+        if (endpoint.getControl() == AccessControl.ALL) {
             if (LOG.isInfoEnabled()) {
                 LOG.info("handle:anonymous:{}:{}", routingContext.normalisedPath(), endpoint);
             }
 
             routingContext.next();
-        } else if (endpoint.getControl() == AccessControl.DENY) {
-            fail(routingContext, ResponseStatus.UNAUTHORIZED);
         } else {
             routingContext.vertx().<IUser>executeBlocking(future -> authenticate(routingContext, future),
-                    asyncResult -> authenticated(endpoint, routingContext, asyncResult));
+                    asyncResult -> authenticated(routingContext, asyncResult));
         }
     }
 
-    private void authenticated(Endpoint endpoint, RoutingContext routingContext, AsyncResult<IUser> asyncResult) {
+    private void authenticated(RoutingContext routingContext, AsyncResult<IUser> asyncResult) {
         if (asyncResult.succeeded()) {
-            if (endpoint == null) {
-                // Static content
-                routingContext.next();
+            IUser user = asyncResult.result();
+            if (user == null) {
+                LOG.error("Treating a null authentication response as a failure");
+                fail(routingContext, ResponseStatus.UNAUTHENTICATED);
             } else {
-                IUser user = asyncResult.result();
                 routingContext.put("user", user);
                 routingContext.next();
             }

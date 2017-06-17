@@ -36,8 +36,8 @@ public abstract class AbstractRouteHandler implements Handler<RoutingContext> {
         this.factory = factory;
         this.mapper = mapper;
 
-        RouteHandler routeHandler = this.getClass().getAnnotation(RouteHandler.class);
-        this.endpoint = routeHandler.endpoint();
+        EndpointHandler endpointHandler = this.getClass().getAnnotation(EndpointHandler.class);
+        this.endpoint = endpointHandler.endpoint();
     }
 
     @Override
@@ -55,12 +55,8 @@ public abstract class AbstractRouteHandler implements Handler<RoutingContext> {
 
             request(request, routingContext);
 
-            String requestString = mapper.encode(request);
-
-            Envelope envelope = new Envelope().setRequest(requestString).setUser(routingContext.get("user"));
-
             vertx.eventBus().<String>send(endpoint.getAddress(),
-                    mapper.encode(envelope),
+                    mapper.encode(request),
                     result -> handle(result, routingContext));
         } finally {
             if (logger.isInfoEnabled()) {

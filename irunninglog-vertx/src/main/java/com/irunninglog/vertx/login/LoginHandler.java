@@ -5,11 +5,11 @@ import com.irunninglog.api.IRequest;
 import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.mapping.IMapper;
 import com.irunninglog.vertx.AbstractRouteHandler;
-import com.irunninglog.vertx.RouteHandler;
+import com.irunninglog.vertx.EndpointHandler;
 import io.vertx.core.Vertx;
 import io.vertx.ext.web.RoutingContext;
 
-@RouteHandler(endpoint = Endpoint.LOGIN)
+@EndpointHandler(endpoint = Endpoint.LOGIN)
 public class LoginHandler extends AbstractRouteHandler {
 
     public LoginHandler(Vertx vertx, IFactory factory, IMapper mapper) {

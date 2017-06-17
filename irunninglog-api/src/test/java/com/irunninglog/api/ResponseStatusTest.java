@@ -3,6 +3,7 @@ package com.irunninglog.api;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class ResponseStatusTest {
 
@@ -25,6 +26,7 @@ public class ResponseStatusTest {
 
         assertEquals(500, ResponseStatus.ERROR.getCode());
         assertEquals("Unknown Error", ResponseStatus.ERROR.getMessage());
+        assertNotNull(ResponseStatus.ERROR.toString());
     }
 
 }

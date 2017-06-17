@@ -10,7 +10,7 @@ import static java.lang.annotation.ElementType.TYPE;
 
 @Target(value=TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface RouteHandler {
+public @interface EndpointHandler {
 
     Endpoint endpoint();
 

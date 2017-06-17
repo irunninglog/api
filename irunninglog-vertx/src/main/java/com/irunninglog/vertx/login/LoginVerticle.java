@@ -15,7 +15,7 @@ public class LoginVerticle extends AbstractRequestResponseVerticle {
 
     private final IAuthenticationService authenticationService;
 
-    public LoginVerticle(IFactory factory, IMapper mapper, IAuthenticationService loginService) {
+    LoginVerticle(IFactory factory, IMapper mapper, IAuthenticationService loginService) {
         super(factory, mapper);
 
         this.authenticationService = loginService;
@@ -23,7 +23,7 @@ public class LoginVerticle extends AbstractRequestResponseVerticle {
 
     @Override
     protected void handle(IRequest request, IResponse response) throws Exception {
-        response.setBody(authenticationService.authenticateCode(request.getMap().get("code"))).setStatus(ResponseStatus.OK);
+        response.setStatus(ResponseStatus.OK).setBody(authenticationService.authenticateCode(request.getMap().get("code")));
     }
 
 }
