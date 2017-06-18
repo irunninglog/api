@@ -10,7 +10,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {com.irunninglog.spring.context.ContextConfiguration.class})
+@ContextConfiguration(classes = {com.irunninglog.spring.Config.class})
 public abstract class AbstractTest implements ApplicationContextAware {
 
     private ApplicationContext applicationContext;

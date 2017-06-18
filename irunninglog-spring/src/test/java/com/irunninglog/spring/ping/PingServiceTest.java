@@ -1,5 +1,6 @@
 package com.irunninglog.spring.ping;
 
+import com.irunninglog.api.ping.IPing;
 import com.irunninglog.api.ping.IPingService;
 import com.irunninglog.spring.AbstractTest;
 import org.junit.Test;
@@ -9,18 +10,20 @@ import static org.junit.Assert.assertNotNull;
 
 public class PingServiceTest extends AbstractTest {
 
-    private IPingService service;
+    private IPingService pingService;
 
     @Override
     protected void afterBefore(ApplicationContext applicationContext) {
         super.afterBefore(applicationContext);
 
-        service = applicationContext.getBean(IPingService.class);
+        this.pingService = applicationContext.getBean(IPingService.class);
     }
 
     @Test
     public void ping() {
-        assertNotNull(service.ping().getTimestamp());
+        IPing ping = pingService.ping();
+        assertNotNull(ping);
+        assertNotNull(ping.getTimestamp());
     }
 
 }

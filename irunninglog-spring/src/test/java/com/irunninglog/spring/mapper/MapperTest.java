@@ -1,54 +1,53 @@
 package com.irunninglog.spring.mapper;
 
+import com.irunninglog.api.IRequest;
 import com.irunninglog.api.mapping.IMapper;
-import com.irunninglog.api.profile.IProfile;
 import com.irunninglog.spring.AbstractTest;
 import org.junit.Test;
-import org.mockito.Mockito;
 import org.springframework.context.ApplicationContext;
 
 import static org.junit.Assert.*;
 
 public class MapperTest extends AbstractTest {
 
+    private IRequest request;
     private IMapper mapper;
-    private ApplicationContext applicationContext;
 
     @Override
     protected void afterBefore(ApplicationContext applicationContext) {
         super.afterBefore(applicationContext);
 
         mapper = applicationContext.getBean(IMapper.class);
-        this.applicationContext = applicationContext;
+        request = applicationContext.getBean(IRequest.class);
     }
 
     @Test
-    public void encode() {
-        assertNotNull(mapper.encode(applicationContext.getBean(IProfile.class)));
+    public void encodeSuccess() {
+        assertNotNull(mapper.encode(request));
     }
 
     @Test
-    public void encodeError() {
+    public void encodeFailure() {
         try {
-            mapper.encode(Mockito.mock(IProfile.class));
-            fail("Should have failed");
+            mapper.encode(new Object());
+            fail("Should have thrown");
         } catch (IllegalArgumentException ex) {
-            assertTrue(Boolean.TRUE);
+            assertTrue(ex.getMessage().contains("Can't encode"));
         }
     }
 
     @Test
-    public void decode() {
-        assertNotNull(mapper.decode("{\"id\": 1}", IProfile.class));
+    public void decodeSuccess() {
+        assertNotNull(mapper.decode("{}", IRequest.class));
     }
 
     @Test
-    public void decodeError() {
+    public void decodeFailure() {
         try {
-            mapper.decode("foo", IProfile.class);
-            fail("Should have failed");
-        } catch (Exception ex) {
-            assertTrue(Boolean.TRUE);
+            mapper.decode("{\"foo\":\"bar\"}", IRequest.class);
+            fail("Should have thrown");
+        } catch (IllegalArgumentException ex){
+            assertTrue(ex.getMessage().contains("Can't decode"));
         }
     }
 

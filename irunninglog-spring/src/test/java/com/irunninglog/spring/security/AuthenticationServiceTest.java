@@ -2,52 +2,55 @@ package com.irunninglog.spring.security;
 
 import com.irunninglog.api.security.AuthnException;
 import com.irunninglog.api.security.IAuthenticationService;
+import com.irunninglog.api.security.IUser;
 import com.irunninglog.spring.AbstractTest;
+import com.irunninglog.spring.strava.IStravaService;
 import org.junit.Test;
+import org.mockito.Mockito;
 import org.springframework.context.ApplicationContext;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.Matchers.any;
 
 public class AuthenticationServiceTest extends AbstractTest {
 
     private IAuthenticationService authenticationService;
+    private IStravaService stravaService;
+    private IUser user;
 
     @Override
-    public void afterBefore(ApplicationContext context) {
-        authenticationService = context.getBean(IAuthenticationService.class);
+    protected void afterBefore(ApplicationContext applicationContext) {
+        super.afterBefore(applicationContext);
+
+        authenticationService = applicationContext.getBean(IAuthenticationService.class);
+        stravaService = applicationContext.getBean(IStravaService.class);
+        user = applicationContext.getBean(IUser.class)
+                .setId(1)
+                .setUsername("allan@irunninglog.com")
+                .setToken("TOKEN");
     }
 
     @Test
-    public void failTokenNull() throws SecurityException {
-        try {
-            assertNull(authenticationService.authenticateToken(null));
+    public void authenticateToken() throws AuthnException {
+        Mockito.when(stravaService.userFromToken(any(String.class))).thenReturn(user);
 
-            fail("Should have thrown");
-        } catch (AuthnException ex) {
-            assertTrue(Boolean.TRUE);
-        }
+        IUser response = authenticationService.authenticateToken("token");
+        assertNotNull(response);
+        assertEquals(user.getUsername(), response.getUsername());
+        assertEquals(user.getToken(), response.getToken());
+        assertEquals(user.getId(), response.getId());
     }
 
     @Test
-    public void failTokenFormat() throws SecurityException {
-        try {
-            authenticationService.authenticateToken("Basic invalid");
+    public void authenticateCode() throws AuthnException {
+        Mockito.when(stravaService.userFromCode(any(String.class))).thenReturn(user);
 
-            fail("Should have thrown");
-        } catch (AuthnException ex) {
-            assertEquals("Invalid token format", ex.getMessage());
-        }
-    }
-
-    @Test
-    public void failTokenVerification() throws SecurityException {
-        try {
-            authenticationService.authenticateToken("Bearer invalid");
-
-            fail("Should have thrown");
-        } catch (AuthnException ex) {
-            assertEquals("Token verification failed", ex.getMessage());
-        }
+        IUser response = authenticationService.authenticateCode("code");
+        assertNotNull(response);
+        assertEquals(user.getUsername(), response.getUsername());
+        assertEquals(user.getToken(), response.getToken());
+        assertEquals(user.getId(), response.getId());
     }
 
 }

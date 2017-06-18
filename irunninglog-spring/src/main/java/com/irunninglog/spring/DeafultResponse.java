@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Scope("prototype")
-public final class DeafultResponse implements IResponse {
+final class DeafultResponse implements IResponse {
 
     private ResponseStatus status;
     private Object body;

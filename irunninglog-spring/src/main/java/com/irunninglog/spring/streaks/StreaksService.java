@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class StreaksService implements IStreaksService {
+final class StreaksService implements IStreaksService {
 
     private final IFactory factory;
 
@@ -23,7 +23,7 @@ public class StreaksService implements IStreaksService {
     public IStreaks getStreaks(IUser user) {
         IStreak longest = factory.get(IStreak.class)
                 .setStartDate("2015-01-01")
-                .setEndDate("2017-10-01")
+                .setEndDate("2015-10-01")
                 .setProgress(Progress.GOOD)
                 .setDays(274)
                 .setRuns(274)

@@ -1,6 +1,5 @@
 package com.irunninglog.spring.mapper;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.mapping.IMapper;
@@ -8,8 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.io.IOException;
 
 @Component
 final class Mapper implements IMapper {
@@ -28,7 +25,7 @@ final class Mapper implements IMapper {
     public String encode(Object object) {
         try {
             return objectMapper.writeValueAsString(object);
-        } catch (JsonProcessingException ex) {
+        } catch (Exception ex) {
             LOG.error("encode:illegal:" + object, ex);
             throw new IllegalArgumentException("Can't encode " + object, ex);
         }
@@ -37,9 +34,10 @@ final class Mapper implements IMapper {
     @Override
     public <T> T decode(final String string, final Class<T> clazz) {
         try {
+            @SuppressWarnings("unchecked")
             Class<T> classToRead = clazz.isInterface() ? (Class<T>) factory.get(clazz).getClass() : clazz;
             return objectMapper.readValue(string, classToRead);
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             LOG.error("decode:illegal:" + string + ":" + clazz, ex);
             throw new IllegalArgumentException("Can't decode " + string + " " + clazz, ex);
         }

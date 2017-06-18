@@ -6,7 +6,7 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
 @Component
-public class Factory implements IFactory, ApplicationContextAware {
+final class Factory implements IFactory, ApplicationContextAware {
 
     private ApplicationContext applicationContext;
 

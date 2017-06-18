@@ -11,7 +11,7 @@ import java.util.Map;
 
 @Component
 @Scope("prototype")
-public final class DefaultRequest implements IRequest {
+final class DefaultRequest implements IRequest {
 
     private Map<String, String> map;
     @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, defaultImpl = User.class)
