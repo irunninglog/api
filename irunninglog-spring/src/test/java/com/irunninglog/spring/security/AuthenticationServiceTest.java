@@ -4,7 +4,7 @@ import com.irunninglog.api.security.AuthnException;
 import com.irunninglog.api.security.IAuthenticationService;
 import com.irunninglog.api.security.IUser;
 import com.irunninglog.spring.AbstractTest;
-import com.irunninglog.spring.strava.IStravaService;
+import com.irunninglog.strava.IStravaService;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.context.ApplicationContext;

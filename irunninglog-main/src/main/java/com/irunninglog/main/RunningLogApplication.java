@@ -3,7 +3,8 @@ package com.irunninglog.main;
 import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.mapping.IMapper;
 import com.irunninglog.api.security.IAuthenticationService;
-import com.irunninglog.spring.context.ContextConfiguration;
+import com.irunninglog.spring.SpringConfig;
+import com.irunninglog.strava.impl.StravaConfig;
 import com.irunninglog.vertx.EndpointVerticle;
 import com.irunninglog.vertx.ServerVerticle;
 import io.vertx.core.AbstractVerticle;
@@ -40,7 +41,7 @@ final class RunningLogApplication {
         LOG.info("start:logging:after");
 
         LOG.info("start:applicationContext:before");
-        ApplicationContext applicationContext = new AnnotationConfigApplicationContext(ContextConfiguration.class);
+        ApplicationContext applicationContext = new AnnotationConfigApplicationContext(SpringConfig.class, StravaConfig.class);
         LOG.info("start:applicationContext:after");
 
         LOG.info("start:server:before");

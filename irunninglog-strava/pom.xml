@@ -11,9 +11,9 @@
         <version>4.0.0</version>
     </parent>
 
-    <artifactId>irunninglog-spring</artifactId>
+    <artifactId>irunninglog-strava</artifactId>
 
-    <name>irunninglog spring services</name>
+    <name>irunninglog strava services</name>
 
     <dependencies>
         <!-- irunninglog dependencies -->
@@ -22,29 +22,19 @@
             <artifactId>irunninglog-api</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>irunninglog-strava</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <!-- jackson dependencies -->
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
-            <version>${version.jackson}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>${version.jackson}</version>
-        </dependency>
 
         <!-- spring dependencies -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
             <version>${version.spring}</version>
+        </dependency>
+
+        <!-- strava dependencies -->
+        <dependency>
+            <groupId>com.github.danshannon</groupId>
+            <artifactId>javastrava-api</artifactId>
+            <version>${version.javastrava}</version>
         </dependency>
 
         <!-- test dependencies -->
@@ -55,5 +45,5 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-    
+
 </project>

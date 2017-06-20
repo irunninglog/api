@@ -4,8 +4,8 @@ import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.profile.IProfile;
 import com.irunninglog.api.profile.IProfileService;
 import com.irunninglog.api.security.IUser;
-import com.irunninglog.spring.strava.IStravaAthlete;
-import com.irunninglog.spring.strava.IStravaService;
+import com.irunninglog.strava.IStravaAthlete;
+import com.irunninglog.strava.IStravaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

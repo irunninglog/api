@@ -20,15 +20,14 @@
         <version.h2>1.4.192</version.h2>
         <version.hibernate>4.3.11.Final</version.hibernate>
         <version.jackson>2.7.4</version.jackson>
+        <version.javastrava>1.0.1</version.javastrava>
         <version.junit>4.12</version.junit>
         <version.logback>1.1.7</version.logback>
         <version.mockito>1.9.5</version.mockito>
         <version.mysql>5.1.40</version.mysql>
         <version.reflections>0.9.10</version.reflections>
         <version.slf4j>1.7.21</version.slf4j>
-        <version.spring-data-jpa>1.10.4.RELEASE</version.spring-data-jpa>
-        <version.spring-security-web>4.1.3.RELEASE</version.spring-security-web>
-        <version.spring-test>4.1.3.RELEASE</version.spring-test>
+        <version.spring>4.1.3.RELEASE</version.spring>
         <version.sysout-over-slf4j>1.0.2</version.sysout-over-slf4j>
         <version.vertx>3.4.0</version.vertx>
     </properties>
@@ -123,6 +122,7 @@
     <modules>
         <module>irunninglog-api</module>
         <module>irunninglog-vertx</module>
+        <module>irunninglog-strava</module>
         <module>irunninglog-spring</module>
         <module>irunninglog-main</module>
     </modules>

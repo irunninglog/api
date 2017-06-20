@@ -3,7 +3,7 @@ package com.irunninglog.spring.security;
 import com.irunninglog.api.security.AuthnException;
 import com.irunninglog.api.security.IAuthenticationService;
 import com.irunninglog.api.security.IUser;
-import com.irunninglog.spring.strava.IStravaService;
+import com.irunninglog.strava.IStravaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,11 +19,6 @@ final class AuthenticationService implements IAuthenticationService {
     @Autowired
     public AuthenticationService(IStravaService stravaService) throws UnsupportedEncodingException {
         this.stravaService = stravaService;
-
-//        String config = environment.getRequiredProperty("strava");
-//        String [] tokens = config.split("\\|");
-//        id = Integer.parseInt(tokens[0]);
-//        secret = tokens[1];
     }
 
     @Override
@@ -46,25 +41,6 @@ final class AuthenticationService implements IAuthenticationService {
     @Override
     public IUser authenticateCode(String code) throws AuthnException {
         return stravaService.userFromCode(code);
-//        AuthorisationService service = new AuthorisationServiceImpl();
-//        Token token= service.tokenExchange(id, secret, code);
-//        return factory.get(IUser.class)
-//                .setId(token.getAthlete().getId())
-//                .setUsername(token.getAthlete().getEmail())
-//                .setToken(token.getToken());
     }
-
-//    private IUser verify(String token) {
-//        Token apiToken = new Token();
-//        apiToken.setToken(token);
-//        API api = new API(apiToken);
-//
-//        StravaAthlete athlete = api.getAuthenticatedAthlete();
-//
-//        return factory.get(IUser.class)
-//                .setId(athlete.getId())
-//                .setUsername(athlete.getEmail())
-//                .setToken(token);
-//    }
 
 }

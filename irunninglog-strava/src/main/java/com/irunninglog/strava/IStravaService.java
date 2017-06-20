@@ -1,4 +1,4 @@
-package com.irunninglog.spring.strava;
+package com.irunninglog.strava;
 
 import com.irunninglog.api.security.AuthnException;
 import com.irunninglog.api.security.IUser;
