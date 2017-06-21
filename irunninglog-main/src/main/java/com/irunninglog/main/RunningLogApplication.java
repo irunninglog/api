@@ -7,13 +7,13 @@ import com.irunninglog.spring.SpringConfig;
 import com.irunninglog.strava.impl.StravaConfig;
 import com.irunninglog.vertx.EndpointVerticle;
 import com.irunninglog.vertx.ServerVerticle;
+import io.github.lukehutch.fastclasspathscanner.FastClasspathScanner;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.bridge.SLF4JBridgeHandler;
@@ -27,7 +27,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 final class RunningLogApplication {
 
@@ -68,17 +67,18 @@ final class RunningLogApplication {
         });
     }
 
-    private void verticles(ApplicationContext applicationContext, Vertx vertx, Handler<AsyncResult<String>> asyncResultHandler) throws IllegalAccessException, InvocationTargetException, InstantiationException {
+    private void verticles(ApplicationContext applicationContext, Vertx vertx, Handler<AsyncResult<String>> asyncResultHandler) throws IllegalAccessException, InvocationTargetException, InstantiationException, ClassNotFoundException {
         List<AbstractVerticle> list = new ArrayList<>();
 
         LOG.info("verticles:before");
 
-        Reflections reflections = new Reflections("com.irunninglog.vertx");
+        FastClasspathScanner scanner = new FastClasspathScanner("com.irunninglog");
+        List<String> classes = scanner.scan().getNamesOfClassesWithAnnotation(EndpointVerticle.class);
 
-        Set<Class<?>> classes = reflections.getTypesAnnotatedWith(EndpointVerticle.class);
+        for (String className : classes) {
+            LOG.info("verticles:{}", className);
 
-        for (Class<?> clazz : classes) {
-            LOG.info("verticles:{}", clazz);
+            Class<?> clazz = Class.forName(className);
 
             Constructor [] constructors = clazz.getConstructors();
             if (constructors.length != 1) {

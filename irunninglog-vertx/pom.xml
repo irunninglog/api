@@ -37,9 +37,9 @@
 
         <!-- other dependencies -->
         <dependency>
-            <groupId>org.reflections</groupId>
-            <artifactId>reflections</artifactId>
-            <version>${version.reflections}</version>
+            <groupId>io.github.lukehutch</groupId>
+            <artifactId>fast-classpath-scanner</artifactId>
+            <version>LATEST</version>
         </dependency>
 
         <!-- test dependencies -->

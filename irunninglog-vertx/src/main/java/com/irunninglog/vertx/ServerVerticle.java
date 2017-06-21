@@ -4,6 +4,7 @@ import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.mapping.IMapper;
 import com.irunninglog.api.security.IAuthenticationService;
 import com.irunninglog.vertx.security.SecurityHandler;
+import io.github.lukehutch.fastclasspathscanner.FastClasspathScanner;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
@@ -11,12 +12,11 @@ import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.HttpServer;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.BodyHandler;
-import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.Set;
+import java.util.List;
 
 public final class ServerVerticle extends AbstractVerticle {
 
@@ -53,7 +53,7 @@ public final class ServerVerticle extends AbstractVerticle {
         LOG.info("start:end");
     }
 
-    private void httpServer() throws IllegalAccessException, InstantiationException, InvocationTargetException {
+    private void httpServer() throws IllegalAccessException, InstantiationException, InvocationTargetException, ClassNotFoundException {
         LOG.info("httpServer:start");
         HttpServer server = vertx.createHttpServer();
 
@@ -67,16 +67,15 @@ public final class ServerVerticle extends AbstractVerticle {
         LOG.info("httpServer:end");
     }
 
-    private void install(Router router) throws IllegalAccessException, InvocationTargetException, InstantiationException {
-        Reflections reflections = new Reflections("com.irunninglog.vertx");
-
-        Set<Class<?>> set = reflections.getTypesAnnotatedWith(EndpointHandler.class);
+    private void install(Router router) throws IllegalAccessException, InvocationTargetException, InstantiationException, ClassNotFoundException {
+        FastClasspathScanner scanner = new FastClasspathScanner("com.irunninglog");
+        List<String> classes = scanner.scan().getNamesOfClassesWithAnnotation(EndpointHandler.class);
 
         router.route().handler(BodyHandler.create().setBodyLimit(1024));
 
         SecurityHandler securityHandler = new SecurityHandler(authenticationService);
-        for (Class<?> clazz : set) {
-            AbstractRouteHandler handler = (AbstractRouteHandler) clazz.getConstructors()[0].newInstance(vertx, factory, mapper);
+        for (String clazz : classes) {
+            AbstractRouteHandler handler = (AbstractRouteHandler) Class.forName(clazz).getConstructors()[0].newInstance(vertx, factory, mapper);
 
             LOG.info("httpServer:{}:before", handler);
             router.route(HttpMethod.valueOf(handler.endpoint().getMethod().name()), handler.endpoint().getPath()).handler(securityHandler);
