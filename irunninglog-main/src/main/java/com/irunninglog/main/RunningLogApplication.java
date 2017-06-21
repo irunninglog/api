@@ -73,7 +73,7 @@ final class RunningLogApplication {
 
         LOG.info("verticles:before");
 
-        Reflections reflections = new Reflections("com.irunninglog");
+        Reflections reflections = new Reflections("com.irunninglog.vertx");
 
         Set<Class<?>> classes = reflections.getTypesAnnotatedWith(EndpointVerticle.class);
 
