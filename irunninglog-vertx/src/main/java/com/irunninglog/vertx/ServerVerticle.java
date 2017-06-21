@@ -68,7 +68,7 @@ public final class ServerVerticle extends AbstractVerticle {
     }
 
     private void install(Router router) throws IllegalAccessException, InvocationTargetException, InstantiationException {
-        Reflections reflections = new Reflections("com.irunninglog");
+        Reflections reflections = new Reflections("com.irunninglog.vertx");
 
         Set<Class<?>> set = reflections.getTypesAnnotatedWith(EndpointHandler.class);
 
