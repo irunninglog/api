@@ -23,11 +23,6 @@ final class ProfileService implements IProfileService {
 
     @Override
     public IProfile get(IUser user) {
-//        Token apiToken = new Token();
-//        apiToken.setToken(user.getToken());
-//
-//        API api = new API(apiToken);
-//        StravaAthlete athlete = api.getAuthenticatedAthlete();
         IStravaAthlete athlete = stravaService.athlete(user);
 
         return factory.get(IProfile.class)
