@@ -6,6 +6,7 @@ import com.irunninglog.api.IResponse;
 import com.irunninglog.api.ResponseStatus;
 import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.mapping.IMapper;
+import com.irunninglog.api.security.AuthnException;
 import com.irunninglog.api.security.IAuthenticationService;
 import com.irunninglog.vertx.AbstractRequestResponseVerticle;
 import com.irunninglog.vertx.EndpointVerticle;
@@ -22,7 +23,7 @@ public class LoginVerticle extends AbstractRequestResponseVerticle {
     }
 
     @Override
-    protected void handle(IRequest request, IResponse response) throws Exception {
+    protected void handle(IRequest request, IResponse response) throws AuthnException {
         response.setStatus(ResponseStatus.OK).setBody(authenticationService.authenticateCode(request.getMap().get("code")));
     }
 

@@ -83,7 +83,7 @@ public abstract class AbstractRequestResponseVerticle extends AbstractVerticle {
         }
     }
 
-    protected abstract void handle(IRequest request, IResponse response);
+    protected abstract void handle(IRequest request, IResponse response) throws AuthnException;
 
     private IResponse fromException(Exception ex) {
         IResponse response = factory.get(IResponse.class);
