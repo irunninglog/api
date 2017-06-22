@@ -1,6 +1,5 @@
 package com.irunninglog.vertx.login;
 
-import com.irunninglog.api.ResponseStatus;
 import com.irunninglog.api.security.AuthnException;
 import com.irunninglog.vertx.AbstractTest;
 import io.vertx.ext.unit.TestContext;
@@ -21,14 +20,11 @@ public class LoginTest extends AbstractTest {
 
     @Test
     public void loginSuccess(TestContext context) {
-        setResponseCode(ResponseStatus.OK);
-
         assertEquals(200, get(context, "/api/login"));
     }
 
     @Test
     public void exceptionFromAuthService(TestContext context) throws AuthnException {
-        setResponseCode(ResponseStatus.UNAUTHENTICATED);
         Mockito.when(authenticationService().authenticateCode(any(String.class))).thenThrow(new AuthnException(""));
 
         assertEquals(401, get(context, "/api/login"));

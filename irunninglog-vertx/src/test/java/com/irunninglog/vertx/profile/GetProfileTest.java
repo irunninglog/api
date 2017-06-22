@@ -1,9 +1,8 @@
 package com.irunninglog.vertx.profile;
 
-import com.irunninglog.api.ResponseStatus;
 import com.irunninglog.api.profile.IProfileService;
 import com.irunninglog.api.security.AuthnException;
-import com.irunninglog.api.security.IUser;
+import com.irunninglog.mock.MockUser;
 import com.irunninglog.vertx.AbstractTest;
 import io.vertx.ext.unit.TestContext;
 import org.junit.Test;
@@ -23,8 +22,7 @@ public class GetProfileTest extends AbstractTest {
 
     @Test
     public void getProfile(TestContext context) throws AuthnException {
-        setResponseCode(ResponseStatus.OK);
-        returnFromAuthentication(Mockito.mock(IUser.class));
+        returnFromAuthentication(new MockUser());
 
         assertEquals(200, get(context, "/api/profile"));
     }

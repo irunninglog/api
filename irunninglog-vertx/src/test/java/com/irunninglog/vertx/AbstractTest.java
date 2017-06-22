@@ -2,12 +2,14 @@ package com.irunninglog.vertx;
 
 import com.irunninglog.api.IRequest;
 import com.irunninglog.api.IResponse;
-import com.irunninglog.api.ResponseStatus;
 import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.mapping.IMapper;
 import com.irunninglog.api.security.AuthnException;
 import com.irunninglog.api.security.IAuthenticationService;
 import com.irunninglog.api.security.IUser;
+import com.irunninglog.mock.MockMapper;
+import com.irunninglog.mock.MockRequest;
+import com.irunninglog.mock.MockResponse;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpClient;
@@ -21,7 +23,6 @@ import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 
-import java.util.HashMap;
 import java.util.function.Function;
 
 import static org.mockito.Matchers.any;
@@ -33,7 +34,7 @@ public abstract class AbstractTest {
 
     private final IAuthenticationService authenticationService = Mockito.mock(IAuthenticationService.class);
     private final IFactory factory = Mockito.mock(IFactory.class);
-    private final IMapper mapper = Mockito.mock(IMapper.class);
+    private final IMapper mapper = new MockMapper(factory);
 
     private Vertx vertx;
 
@@ -41,14 +42,17 @@ public abstract class AbstractTest {
     public final void before(TestContext context) throws Exception {
         vertx = Vertx.vertx();
 
-        Mockito.when(mapper.encode(null)).thenReturn("");
+        Mockito.when(factory.get(IRequest.class)).thenReturn(new MockRequest());
+        Mockito.when(factory.get(IResponse.class)).thenReturn(new MockResponse());
 
-        IRequest request = Mockito.mock(IRequest.class);
-        Mockito.when(request.getMap()).thenReturn(new HashMap<>());
-        Mockito.when(factory.get(IRequest.class)).thenReturn(request);
-        Mockito.when(mapper.decode(null, IRequest.class)).thenReturn(request);
-
-        Mockito.when(factory.get(IResponse.class)).thenReturn(Mockito.mock(IResponse.class));
+//        Mockito.when(mapper.encode(null)).thenReturn("");
+//
+//        IRequest request = Mockito.mock(IRequest.class);
+//        Mockito.when(request.getMap()).thenReturn(new HashMap<>());
+//        Mockito.when(factory.get(IRequest.class)).thenReturn(request);
+//        Mockito.when(mapper.decode(null, IRequest.class)).thenReturn(request);
+//
+//        Mockito.when(factory.get(IResponse.class)).thenReturn(Mockito.mock(IResponse.class));
 
         Async async = context.async();
 
@@ -123,15 +127,6 @@ public abstract class AbstractTest {
 
     protected void returnFromAuthentication(IUser user) throws AuthnException {
         Mockito.when(authenticationService.authenticateToken(any(String.class))).thenReturn(user);
-    }
-
-    protected void setResponseCode(ResponseStatus responseStatus) {
-        IResponse mockResponse = Mockito.mock(IResponse.class);
-        Mockito.when(mockResponse.setStatus(any(ResponseStatus.class))).thenReturn(mockResponse);
-        Mockito.when(mapper.decode(null, IResponse.class)).thenReturn(mockResponse);
-        Mockito.when(mockResponse.getStatus()).thenReturn(responseStatus);
-
-        Mockito.when(factory.get(IResponse.class)).thenReturn(mockResponse);
     }
 
 }
