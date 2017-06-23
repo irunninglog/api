@@ -17,7 +17,7 @@ public final class PingVerticle extends AbstractRequestResponseVerticle {
 
     // Public for reflection
     @SuppressWarnings("WeakerAccess")
-    PingVerticle(IFactory factory, IMapper mapper, IPingService pingService) {
+    public PingVerticle(IFactory factory, IMapper mapper, IPingService pingService) {
         super(factory, mapper);
 
         this.pingService = pingService;

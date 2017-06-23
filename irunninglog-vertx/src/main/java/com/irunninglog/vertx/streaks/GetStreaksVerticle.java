@@ -17,7 +17,7 @@ public class GetStreaksVerticle extends AbstractRequestResponseVerticle {
 
     // Public for reflection
     @SuppressWarnings("WeakerAccess")
-    GetStreaksVerticle(IFactory factory, IMapper mapper, IStreaksService streaksService) {
+    public GetStreaksVerticle(IFactory factory, IMapper mapper, IStreaksService streaksService) {
         super(factory, mapper);
 
         this.streaksService = streaksService;
