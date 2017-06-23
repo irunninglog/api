@@ -15,7 +15,9 @@ public final class GetProfileVerticle extends AbstractRequestResponseVerticle {
 
     private final IProfileService profileService;
 
-    public GetProfileVerticle(IFactory factory, IMapper mapper, IProfileService profileService) {
+    // Public for reflection
+    @SuppressWarnings("WeakerAccess")
+    GetProfileVerticle(IFactory factory, IMapper mapper, IProfileService profileService) {
         super(factory, mapper);
 
         this.profileService = profileService;

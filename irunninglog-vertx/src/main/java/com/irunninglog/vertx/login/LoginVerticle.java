@@ -16,6 +16,8 @@ public class LoginVerticle extends AbstractRequestResponseVerticle {
 
     private final IAuthenticationService authenticationService;
 
+    // Public for reflection
+    @SuppressWarnings("WeakerAccess")
     LoginVerticle(IFactory factory, IMapper mapper, IAuthenticationService loginService) {
         super(factory, mapper);
 
