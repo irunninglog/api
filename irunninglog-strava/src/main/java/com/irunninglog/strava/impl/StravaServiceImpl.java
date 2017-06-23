@@ -54,7 +54,17 @@ final class StravaServiceImpl implements IStravaService {
 
     @Override
     public IStravaAthlete athlete(IUser user) {
-        return null;
+        Token apiToken = new Token();
+        apiToken.setToken(user.getToken());
+
+        API api = new API(apiToken);
+        StravaAthlete stravaAthlete = api.getAuthenticatedAthlete();
+
+        return factory.get(IStravaAthlete.class)
+                .setId(stravaAthlete.getId())
+                .setFirstname(stravaAthlete.getFirstname())
+                .setLastname(stravaAthlete.getLastname())
+                .setEmail(stravaAthlete.getEmail()).setAvatar(stravaAthlete.getProfileMedium());
     }
 
 }
