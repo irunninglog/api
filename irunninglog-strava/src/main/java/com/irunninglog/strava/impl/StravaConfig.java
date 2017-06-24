@@ -2,6 +2,7 @@ package com.irunninglog.strava.impl;
 
 import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.strava.IStravaAthlete;
+import com.irunninglog.strava.IStravaRun;
 import com.irunninglog.strava.IStravaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -25,6 +26,12 @@ public class StravaConfig {
     @Scope("prototype")
     public IStravaAthlete athlete() {
         return new StravaAthleteImpl();
+    }
+
+    @Bean
+    @Scope("prototype")
+    public IStravaRun activity() {
+        return new StravaRunImpl();
     }
 
 }
