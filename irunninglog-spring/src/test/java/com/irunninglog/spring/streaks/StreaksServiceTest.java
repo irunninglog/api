@@ -35,23 +35,5 @@ public class StreaksServiceTest extends AbstractTest {
         assertEquals(274, longest.getRuns());
         assertEquals(100, longest.getPercentage());
         assertEquals(Progress.GOOD, longest.getProgress());
-
-        IStreak current = streaks.getCurrent();
-        assertNotNull(current);
-        assertEquals("2017-06-10", current.getStartDate());
-        assertEquals("2017-06-12", current.getEndDate());
-        assertEquals(3, current.getDays());
-        assertEquals(3, current.getRuns());
-        assertEquals(1, current.getPercentage());
-        assertEquals(Progress.BAD, current.getProgress());
-
-        IStreak thisYear = streaks.getThisYear();
-        assertNotNull(thisYear);
-        assertEquals("2016-12-04", thisYear.getStartDate());
-        assertEquals("2017-06-02", thisYear.getEndDate());
-        assertEquals(181, thisYear.getDays());
-        assertEquals(184, thisYear.getRuns());
-        assertEquals(68, thisYear.getPercentage());
-        assertEquals(Progress.OK, thisYear.getProgress());
     }
 }
