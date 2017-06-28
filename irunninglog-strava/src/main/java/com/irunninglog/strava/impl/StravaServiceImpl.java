@@ -114,7 +114,9 @@ final class StravaServiceImpl implements IStravaService {
                 .setId(stravaActivity.getId())
                 .setStartTime(stravaActivity.getStartDate())
                 .setStartTimeLocal(stravaActivity.getStartDateLocal())
-                .setTimezone(stravaActivity.getTimezone());
+                .setTimezone(stravaActivity.getTimezone())
+                .setDistance(stravaActivity.getDistance())
+                .setShoes(stravaActivity.getGearId());
     }
 
 }

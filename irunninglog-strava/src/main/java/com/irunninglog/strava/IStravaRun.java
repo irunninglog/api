@@ -20,4 +20,12 @@ public interface IStravaRun {
     String getTimezone();
 
     IStravaRun setTimezone(String timezone);
+
+    float getDistance();
+
+    IStravaRun setDistance(float distance);
+
+    String getShoes();
+
+    IStravaRun setShoes(String gear);
 }

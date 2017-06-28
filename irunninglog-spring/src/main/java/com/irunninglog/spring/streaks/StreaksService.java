@@ -36,7 +36,6 @@ final class StreaksService implements IStreaksService {
         List<IStravaRun> activities = stravaService.runs(user);
         activities.sort((o1, o2) -> o2.getStartTimeLocal().compareTo(o1.getStartTimeLocal()));
 
-
         List<IStreak> streaksList = new ArrayList<>();
 
         IStreak streak = null;
@@ -50,13 +49,7 @@ final class StreaksService implements IStreaksService {
             }
         }
 
-        streaksList.sort((o1, o2) -> new Integer(o2.getDays()).compareTo(o1.getDays()));
-        // TODO - Remove mock data
-        streaksList.add(0, factory.get(IStreak.class)
-                .setStartDate("2015-01-01")
-                .setEndDate("2015-10-01")
-                .setDays(274)
-                .setRuns(274));
+        streaksList.sort((o1, o2) -> Integer.compare(o2.getDays(), o1.getDays()));
 
         return populate(factory.get(IStreaks.class), streaksList);
     }

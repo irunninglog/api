@@ -11,6 +11,8 @@ final class StravaRunImpl implements IStravaRun {
     private ZonedDateTime startTime;
     private LocalDateTime startTimeLocal;
     private String timezone;
+    private float distance;
+    private String shoes;
 
     @Override
     public long getId() {
@@ -52,6 +54,27 @@ final class StravaRunImpl implements IStravaRun {
     @Override
     public IStravaRun setTimezone(String timezone) {
         this.timezone = timezone;
+        return this;
+    }
+
+    @Override
+    public float getDistance() {
+        return distance;
+    }
+
+    @Override
+    public IStravaRun setDistance(float distance) {
+        this.distance = distance;
+        return this;
+    }
+
+    public String getShoes() {
+        return shoes;
+    }
+
+    @Override
+    public IStravaRun setShoes(String shoes) {
+        this.shoes = shoes;
         return this;
     }
 
