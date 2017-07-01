@@ -10,8 +10,12 @@ public interface IRequest {
 
     IRequest setUser(IUser user);
 
+    IRequest setOffset(int offset);
+
     Map<String, String> getMap();
 
     IUser getUser();
+
+    int getOffset();
 
 }

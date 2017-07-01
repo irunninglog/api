@@ -4,6 +4,6 @@ import com.irunninglog.api.security.IUser;
 
 public interface IStreaksService {
 
-    IStreaks getStreaks(IUser user);
+    IStreaks getStreaks(IUser user, int offset);
 
 }

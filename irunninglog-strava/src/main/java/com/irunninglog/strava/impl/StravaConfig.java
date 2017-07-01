@@ -30,7 +30,7 @@ public class StravaConfig {
 
     @Bean
     @Scope("prototype")
-    public IStravaRun activity() {
+    public IStravaRun run() {
         return new StravaRunImpl();
     }
 

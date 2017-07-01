@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
@@ -32,7 +34,7 @@ final class StreaksService implements IStreaksService {
     }
 
     @Override
-    public IStreaks getStreaks(IUser user) {
+    public IStreaks getStreaks(IUser user, int offset) {
         List<IStravaRun> activities = stravaService.runs(user);
         activities.sort((o1, o2) -> o2.getStartTimeLocal().compareTo(o1.getStartTimeLocal()));
 
@@ -51,19 +53,22 @@ final class StreaksService implements IStreaksService {
 
         streaksList.sort((o1, o2) -> Integer.compare(o2.getDays(), o1.getDays()));
 
-        return populate(factory.get(IStreaks.class), streaksList);
+        return populate(factory.get(IStreaks.class), streaksList, offset);
     }
 
-    private IStreaks populate(IStreaks streaks, List<IStreak> streaksList) {
+    private IStreaks populate(IStreaks streaks, List<IStreak> streaksList, int minutes) {
         return streaks.setLongest(findLongest(streaksList))
-                .setCurrent(findCurrent(streaks.getLongest(), streaksList))
-                .setThisYear(findThisYear(streaks.getLongest(), streaksList));
+                .setCurrent(findCurrent(streaks.getLongest(), streaksList, minutes))
+                .setThisYear(findThisYear(streaks.getLongest(), streaksList, minutes));
     }
 
-    private IStreak findThisYear(IStreak longest, List<IStreak> streaksList) {
+    private IStreak findThisYear(IStreak longest, List<IStreak> streaksList, int minutes) {
+        if (longest == null) {
+            return null;
+        }
+
         for (IStreak value : streaksList) {
-            // TODO - Need to factor in user time zone
-            if (!LocalDate.parse(value.getEndDate(), FORMATTER).isBefore(LocalDate.now().with(TemporalAdjusters.firstDayOfYear()))) {
+            if (!LocalDate.parse(value.getEndDate(), FORMATTER).isBefore(yearStart(minutes))) {
                 return copyOf(value, longest);
             }
         }
@@ -71,10 +76,13 @@ final class StreaksService implements IStreaksService {
         return null;
     }
 
-    private IStreak findCurrent(IStreak longest, List<IStreak> streaksList) {
+    private IStreak findCurrent(IStreak longest, List<IStreak> streaksList, int minutes) {
+        if (longest == null) {
+            return null;
+        }
+
         for (IStreak value : streaksList) {
-            // TODO - Need to factor in user time zone
-            if (!LocalDate.parse(value.getEndDate(), FORMATTER).isBefore(LocalDate.now().minusDays(1))) {
+            if (!LocalDate.parse(value.getEndDate(), FORMATTER).isBefore(current(minutes))) {
                 return copyOf(value, longest);
             }
         }
@@ -133,6 +141,19 @@ final class StreaksService implements IStreaksService {
 
     private LocalDate toLocalDate(String date) {
         return LocalDate.parse(date, FORMATTER);
+    }
+
+    private LocalDate current(int minutes) {
+        return clientTimeFromServerTime(ZonedDateTime.now(), minutes).toLocalDate().minusDays(2);
+    }
+
+    private LocalDate yearStart(int minutes) {
+        return clientTimeFromServerTime(ZonedDateTime.now(), minutes).toLocalDate().with(TemporalAdjusters.firstDayOfYear());
+    }
+
+    private ZonedDateTime clientTimeFromServerTime(ZonedDateTime time, int minutes) {
+        ZonedDateTime utc = time.withZoneSameInstant(ZoneOffset.UTC);
+        return utc.withZoneSameInstant(ZoneOffset.ofTotalSeconds(minutes * 60 * -1));
     }
 
 }

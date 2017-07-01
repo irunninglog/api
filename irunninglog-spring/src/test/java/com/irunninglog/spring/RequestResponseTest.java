@@ -30,9 +30,11 @@ public class RequestResponseTest extends AbstractTest {
     public void request() {
         request.setUser(Mockito.mock(IUser.class));
         request.setMap(new HashMap<>());
+        request.setOffset(100);
 
         assertNotNull(request.getUser());
         assertNotNull(request.getMap());
+        assertEquals(100, request.getOffset());
     }
 
     @Test

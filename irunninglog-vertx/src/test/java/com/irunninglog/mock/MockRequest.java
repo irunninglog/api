@@ -11,6 +11,7 @@ public class MockRequest implements IRequest {
     private Map<String, String> map;
     @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, defaultImpl = MockUser.class)
     private IUser user;
+    private int offset;
 
     @Override
     public IRequest setMap(Map<String, String> map) {
@@ -32,6 +33,17 @@ public class MockRequest implements IRequest {
     @Override
     public IUser getUser() {
         return user;
+    }
+
+    @Override
+    public int getOffset() {
+        return offset;
+    }
+
+    @Override
+    public IRequest setOffset(int offset) {
+        this.offset = offset;
+        return this;
     }
 
 }

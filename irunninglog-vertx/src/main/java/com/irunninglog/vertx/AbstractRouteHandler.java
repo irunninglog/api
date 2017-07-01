@@ -53,6 +53,9 @@ public abstract class AbstractRouteHandler implements Handler<RoutingContext> {
             request.setMap(new HashMap<>());
             request.setUser(routingContext.get("user"));
 
+            String offset = routingContext.request().getHeader("IRL-TimeZone-Offset");
+            request.setOffset(offset == null ? 0 : Integer.parseInt(offset));
+
             request(request, routingContext);
 
             vertx.eventBus().<String>send(endpoint.getAddress(),
