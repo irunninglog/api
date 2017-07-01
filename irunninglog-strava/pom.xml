@@ -8,7 +8,7 @@
     <parent>
         <groupId>com.irunninglog</groupId>
         <artifactId>irunninlog</artifactId>
-        <version>4.0.0</version>
+        <version>4.1.0</version>
     </parent>
 
     <artifactId>irunninglog-strava</artifactId>
