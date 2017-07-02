@@ -1,7 +1,11 @@
 package com.irunninglog.strava.impl;
 
 import com.irunninglog.strava.IStravaAthlete;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
+@Component
+@Scope("prototype")
 final class StravaAthleteImpl implements IStravaAthlete {
 
     private long id;

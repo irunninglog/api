@@ -3,45 +3,40 @@ package com.irunninglog.strava.impl;
 import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.security.AuthnException;
 import com.irunninglog.api.security.IUser;
+import com.irunninglog.strava.IStravaApi;
 import com.irunninglog.strava.IStravaAthlete;
 import com.irunninglog.strava.IStravaRun;
 import com.irunninglog.strava.IStravaService;
-import javastrava.api.v3.auth.AuthorisationService;
-import javastrava.api.v3.auth.impl.retrofit.AuthorisationServiceImpl;
 import javastrava.api.v3.auth.model.Token;
 import javastrava.api.v3.model.StravaActivity;
 import javastrava.api.v3.model.StravaAthlete;
 import javastrava.api.v3.model.reference.StravaActivityType;
-import javastrava.api.v3.rest.API;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.env.Environment;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 final class StravaServiceImpl implements IStravaService {
 
     private static final Logger LOG = LoggerFactory.getLogger(StravaServiceImpl.class);
 
-    private final int id;
-    private final String secret;
-
     private final IFactory factory;
+    private final IStravaApi api;
 
-    StravaServiceImpl(Environment environment, IFactory factory) {
+    @Autowired
+    StravaServiceImpl(IFactory factory, IStravaApi api) {
         this.factory = factory;
-
-        String config = environment.getRequiredProperty("strava");
-        String [] tokens = config.split("\\|");
-        id = Integer.parseInt(tokens[0]);
-        secret = tokens[1];
+        this.api = api;
     }
 
     @Override
     public IUser userFromCode(String code) throws AuthnException {
-        AuthorisationService service = new AuthorisationServiceImpl();
-        Token token= service.tokenExchange(id, secret, code);
+        Token token = api.token(code);
+
         return factory.get(IUser.class)
                 .setId(token.getAthlete().getId())
                 .setUsername(token.getAthlete().getEmail())
@@ -50,11 +45,7 @@ final class StravaServiceImpl implements IStravaService {
 
     @Override
     public IUser userFromToken(String token) throws AuthnException {
-        Token apiToken = new Token();
-        apiToken.setToken(token);
-        API api = new API(apiToken);
-
-        StravaAthlete athlete = api.getAuthenticatedAthlete();
+        StravaAthlete athlete = api.athlete(token);
 
         return factory.get(IUser.class)
                 .setId(athlete.getId())
@@ -64,32 +55,24 @@ final class StravaServiceImpl implements IStravaService {
 
     @Override
     public IStravaAthlete athlete(IUser user) {
-        Token apiToken = new Token();
-        apiToken.setToken(user.getToken());
-
-        API api = new API(apiToken);
-        StravaAthlete stravaAthlete = api.getAuthenticatedAthlete();
+        StravaAthlete stravaAthlete = api.athlete(user.getToken());
 
         return factory.get(IStravaAthlete.class)
                 .setId(stravaAthlete.getId())
                 .setFirstname(stravaAthlete.getFirstname())
                 .setLastname(stravaAthlete.getLastname())
-                .setEmail(stravaAthlete.getEmail()).setAvatar(stravaAthlete.getProfileMedium());
+                .setEmail(stravaAthlete.getEmail())
+                .setAvatar(stravaAthlete.getProfileMedium());
     }
 
     @Override
     public List<IStravaRun> runs(IUser user) {
-        Token apiToken = new Token();
-        apiToken.setToken(user.getToken());
-
-        API api = new API(apiToken);
-
         List<IStravaRun> list = new ArrayList<>();
 
         int page = 1;
         int count = -1;
         while (count != 0) {
-            StravaActivity [] activities = api.listAuthenticatedAthleteActivities(null, null, page, 200);
+            StravaActivity [] activities = api.activities(user, page);
 
             count = activities.length;
 

@@ -1,10 +1,14 @@
 package com.irunninglog.strava.impl;
 
 import com.irunninglog.strava.IStravaRun;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 
+@Component
+@Scope("prototype")
 final class StravaRunImpl implements IStravaRun {
 
     private long id;

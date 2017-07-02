@@ -13,7 +13,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {StravaConfig.class, Config.class})
+@ContextConfiguration(classes = {Config.class})
 public class StravaAthleteTest implements ApplicationContextAware {
 
     private ApplicationContext context;
