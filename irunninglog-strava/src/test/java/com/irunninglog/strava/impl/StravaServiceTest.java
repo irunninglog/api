@@ -3,6 +3,7 @@ package com.irunninglog.strava.impl;
 import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.security.AuthnException;
 import com.irunninglog.api.security.IUser;
+import com.irunninglog.api.shoes.IShoe;
 import com.irunninglog.strava.IStravaApi;
 import com.irunninglog.strava.IStravaAthlete;
 import com.irunninglog.strava.IStravaRun;
@@ -10,6 +11,7 @@ import com.irunninglog.strava.IStravaService;
 import javastrava.api.v3.auth.model.Token;
 import javastrava.api.v3.model.StravaActivity;
 import javastrava.api.v3.model.StravaAthlete;
+import javastrava.api.v3.model.StravaGear;
 import javastrava.api.v3.model.reference.StravaActivityType;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,6 +23,7 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -84,6 +87,97 @@ public class StravaServiceTest implements ApplicationContextAware {
 
         Mockito.when(factory.get(IStravaAthlete.class)).thenReturn(new StravaAthleteImpl());
         Mockito.when(factory.get(IStravaRun.class)).thenReturn(new StravaRunImpl());
+        Mockito.when(factory.get(IShoe.class)).thenReturn(createShoe());
+    }
+
+    private IShoe createShoe() {
+        return new IShoe() {
+
+            private String id;
+            private String name;
+            private String brand;
+            private String model;
+            private String description;
+            private float distance;
+            private boolean primary;
+
+            @Override
+            public String getId() {
+                return id;
+            }
+
+            @Override
+            public String getName() {
+                return name;
+            }
+
+            @Override
+            public String getBrand() {
+                return brand;
+            }
+
+            @Override
+            public String getModel() {
+                return model;
+            }
+
+            @Override
+            public String getDescription() {
+                return description;
+            }
+
+            @Override
+            public boolean isPrimary() {
+                return primary;
+            }
+
+            @Override
+            public IShoe setId(String id) {
+                this.id = id;
+                return this;
+            }
+
+            @Override
+            public IShoe setName(String name) {
+                this.name = name;
+                return this;
+            }
+
+            @Override
+            public IShoe setBrand(String brand) {
+                this.brand = brand;
+                return this;
+            }
+
+            @Override
+            public IShoe setModel(String model) {
+                this.model = model;
+                return this;
+            }
+
+            @Override
+            public IShoe setDesription(String description) {
+                this.description = description;
+                return this;
+            }
+
+            @Override
+            public IShoe setPrimary(boolean primary) {
+                this.primary = primary;
+                return this;
+            }
+
+            @Override
+            public float getDistance() {
+                return distance;
+            }
+
+            @Override
+            public IShoe setDistance(float distance) {
+                this.distance = distance;
+                return this;
+            }
+        };
     }
 
     @Test
@@ -145,6 +239,38 @@ public class StravaServiceTest implements ApplicationContextAware {
         List<IStravaRun> runs = service.runs(user);
         assertNotNull(runs);
         assertEquals(1, runs.size());
+    }
+
+    @Test
+    public void shoes() {
+        StravaGear shoe1 = new StravaGear();
+        shoe1.setId("shoe_one");
+        shoe1.setDistance(100F);
+        shoe1.setName("Alpha");
+        shoe1.setBrandName("Mizuno");
+        shoe1.setModelName("Wave Inspire 13");
+        shoe1.setDescription("foo");
+        shoe1.setPrimary(Boolean.TRUE);
+
+        StravaAthlete athlete = new StravaAthlete();
+        athlete.setId(20);
+        athlete.setShoes(Collections.singletonList(shoe1));
+        Mockito.when(api.athlete(any(String.class))).thenReturn(athlete);
+
+        IUser user = factory.get(IUser.class).setToken("shoes_token");
+
+        List<IShoe> shoes = service.shoes(user);
+        assertNotNull(shoes);
+        assertEquals(1, shoes.size());
+
+        IShoe one = shoes.get(0);
+        assertEquals("shoe_one", one.getId());
+        assertEquals("Alpha", one.getName());
+        assertEquals("Mizuno", one.getBrand());
+        assertEquals("Wave Inspire 13", one.getModel());
+        assertEquals("foo", one.getDescription());
+        assertEquals(100, one.getDistance(), 1E-9);
+        assertEquals(true, one.isPrimary());
     }
 
     @Override

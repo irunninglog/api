@@ -3,6 +3,7 @@ package com.irunninglog.strava.impl;
 import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.security.AuthnException;
 import com.irunninglog.api.security.IUser;
+import com.irunninglog.api.shoes.IShoe;
 import com.irunninglog.strava.IStravaApi;
 import com.irunninglog.strava.IStravaAthlete;
 import com.irunninglog.strava.IStravaRun;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 final class StravaServiceImpl implements IStravaService {
@@ -100,6 +102,21 @@ final class StravaServiceImpl implements IStravaService {
                 .setTimezone(stravaActivity.getTimezone())
                 .setDistance(stravaActivity.getDistance())
                 .setShoes(stravaActivity.getGearId());
+    }
+
+    @Override
+    public List<IShoe> shoes(IUser user) {
+        StravaAthlete stravaAthlete = api.athlete(user.getToken());
+
+        // TODO - Load real shoe from API
+        return stravaAthlete.getShoes().stream().map(gear -> factory.get(IShoe.class)
+                .setId(gear.getId())
+                .setName(gear.getName())
+                .setBrand(gear.getBrandName())
+                .setModel(gear.getModelName())
+                .setDesription(gear.getDescription())
+                .setDistance(gear.getDistance())
+                .setPrimary(gear.getPrimary())).collect(Collectors.toList());
     }
 
 }
