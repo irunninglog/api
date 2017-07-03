@@ -256,6 +256,7 @@ public class StravaServiceTest implements ApplicationContextAware {
         athlete.setId(20);
         athlete.setShoes(Collections.singletonList(shoe1));
         Mockito.when(api.athlete(any(String.class))).thenReturn(athlete);
+        Mockito.when(api.gear(any(IUser.class), any(String.class))).thenReturn(shoe1);
 
         IUser user = factory.get(IUser.class).setToken("shoes_token");
 

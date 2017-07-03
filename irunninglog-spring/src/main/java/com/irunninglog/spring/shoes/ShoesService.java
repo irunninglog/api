@@ -21,8 +21,11 @@ final class ShoesService implements IShoesService {
 
     @Override
     public List<IShoe> getShoes(IUser user) {
-        // TODO - Sort shoes by primary, distance, retired
-        return stravaService.shoes(user);
+        List<IShoe> shoes = stravaService.shoes(user);
+
+        shoes.sort((o1, o2) ->  Float.compare(o2.getDistance(), o1.getDistance()));
+
+        return shoes;
     }
 
 }

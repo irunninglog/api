@@ -7,6 +7,7 @@ import javastrava.api.v3.auth.impl.retrofit.AuthorisationServiceImpl;
 import javastrava.api.v3.auth.model.Token;
 import javastrava.api.v3.model.StravaActivity;
 import javastrava.api.v3.model.StravaAthlete;
+import javastrava.api.v3.model.StravaGear;
 import javastrava.api.v3.rest.API;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -47,6 +48,15 @@ final class StravaApiImpl implements IStravaApi {
 
         API api = new API(apiToken);
         return api.listAuthenticatedAthleteActivities(null, null, page, 200);
+    }
+
+    @Override
+    public StravaGear gear(IUser user, String id) {
+        Token apiToken = new Token();
+        apiToken.setToken(user.getToken());
+
+        API api = new API(apiToken);
+        return api.getGear(id);
     }
 
 }

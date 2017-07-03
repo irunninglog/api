@@ -11,6 +11,7 @@ import com.irunninglog.strava.IStravaService;
 import javastrava.api.v3.auth.model.Token;
 import javastrava.api.v3.model.StravaActivity;
 import javastrava.api.v3.model.StravaAthlete;
+import javastrava.api.v3.model.StravaGear;
 import javastrava.api.v3.model.reference.StravaActivityType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +20,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 final class StravaServiceImpl implements IStravaService {
@@ -108,15 +108,21 @@ final class StravaServiceImpl implements IStravaService {
     public List<IShoe> shoes(IUser user) {
         StravaAthlete stravaAthlete = api.athlete(user.getToken());
 
-        // TODO - Load real shoe from API
-        return stravaAthlete.getShoes().stream().map(gear -> factory.get(IShoe.class)
-                .setId(gear.getId())
-                .setName(gear.getName())
-                .setBrand(gear.getBrandName())
-                .setModel(gear.getModelName())
-                .setDesription(gear.getDescription())
-                .setDistance(gear.getDistance())
-                .setPrimary(gear.getPrimary())).collect(Collectors.toList());
+        List<IShoe> shoes = new ArrayList<>(stravaAthlete.getShoes().size());
+        for (StravaGear gear : stravaAthlete.getShoes()) {
+            StravaGear full = api.gear(user, gear.getId());
+
+            shoes.add(factory.get(IShoe.class)
+                    .setId(full.getId())
+                    .setName(full.getName())
+                    .setBrand(full.getBrandName())
+                    .setModel(full.getModelName())
+                    .setDesription(full.getDescription())
+                    .setDistance(full.getDistance())
+                    .setPrimary(full.getPrimary()));
+        }
+
+        return shoes;
     }
 
 }
