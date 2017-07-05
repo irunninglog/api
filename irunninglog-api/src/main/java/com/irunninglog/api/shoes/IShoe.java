@@ -1,5 +1,7 @@
 package com.irunninglog.api.shoes;
 
+import com.irunninglog.api.Progress;
+
 public interface IShoe {
 
     String getId();
@@ -12,9 +14,13 @@ public interface IShoe {
 
     String getDescription();
 
-    float getDistance();
+    String getDistance();
 
     boolean isPrimary();
+
+    int getPercentage();
+
+    Progress getProgress();
 
     IShoe setId(String id);
 
@@ -24,10 +30,14 @@ public interface IShoe {
 
     IShoe setModel(String model);
 
-    IShoe setDesription(String description);
+    IShoe setDescription(String description);
 
-    IShoe setDistance(float distance);
+    IShoe setDistance(String distance);
 
     IShoe setPrimary(boolean primary);
+
+    IShoe setProgress(Progress progress);
+
+    IShoe setPercentage(int perentage);
 
 }

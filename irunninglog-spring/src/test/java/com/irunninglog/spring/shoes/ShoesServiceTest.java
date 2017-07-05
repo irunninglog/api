@@ -1,11 +1,13 @@
 package com.irunninglog.spring.shoes;
 
+import com.irunninglog.api.Progress;
 import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.security.IUser;
 import com.irunninglog.api.shoes.IShoe;
 import com.irunninglog.api.shoes.IShoesService;
 import com.irunninglog.spring.AbstractTest;
 import com.irunninglog.strava.IStravaService;
+import com.irunninglog.strava.IStravaShoe;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.context.ApplicationContext;
@@ -33,40 +35,52 @@ public class ShoesServiceTest extends AbstractTest {
 
     @Test
     public void getShoes() {
-        IShoe shoe1 = factory.get(IShoe.class)
+        IStravaShoe shoe1 = factory.get(IStravaShoe.class)
                 .setId("id1")
                 .setName("name1")
                 .setBrand("brand1")
                 .setModel("model1")
-                .setDesription("description1")
-                .setDistance(100)
+                .setDescription("description1")
+                .setDistance(161095.33F)
                 .setPrimary(false);
 
-        IShoe shoe2 = factory.get(IShoe.class)
+        IStravaShoe shoe2 = factory.get(IStravaShoe.class)
                 .setId("id2")
                 .setName("name2")
                 .setBrand("brand2")
                 .setModel("model2")
-                .setDesription("description2")
-                .setDistance(200)
+                .setDescription("description2")
+                .setDistance(322995.34F)
                 .setPrimary(true);
 
-        List<IShoe> before = new ArrayList<>();
+        IStravaShoe shoe3 = factory.get(IStravaShoe.class)
+                .setId("id3")
+                .setName("name3")
+                .setBrand("brand3")
+                .setModel("model3")
+                .setDescription("description3")
+                .setDistance(804672)
+                .setPrimary(false);
+
+        List<IStravaShoe> before = new ArrayList<>();
         before.add(shoe1);
         before.add(shoe2);
+        before.add(shoe3);
         Mockito.when(stravaService.shoes(any(IUser.class))).thenReturn(before);
 
         List<IShoe> shoes = shoesService.getShoes(null);
         assertNotNull(shoes);
-        assertEquals(2, shoes.size());
+        assertEquals(3, shoes.size());
 
-        IShoe after = shoes.get(0);
+        IShoe after = shoes.get(1);
         assertEquals("id2", after.getId());
         assertEquals("name2", after.getName());
         assertEquals("brand2", after.getBrand());
         assertEquals("model2", after.getModel());
         assertEquals("description2", after.getDescription());
-        assertEquals(200, after.getDistance(), 1E-9);
+        assertEquals("200.7 mi", after.getDistance());
+        assertEquals(40, after.getPercentage());
+        assertEquals(Progress.OK, after.getProgress());
         assertTrue(after.isPrimary());
     }
 

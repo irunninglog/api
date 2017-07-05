@@ -3,11 +3,7 @@ package com.irunninglog.strava.impl;
 import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.security.AuthnException;
 import com.irunninglog.api.security.IUser;
-import com.irunninglog.api.shoes.IShoe;
-import com.irunninglog.strava.IStravaApi;
-import com.irunninglog.strava.IStravaAthlete;
-import com.irunninglog.strava.IStravaRun;
-import com.irunninglog.strava.IStravaService;
+import com.irunninglog.strava.*;
 import javastrava.api.v3.auth.model.Token;
 import javastrava.api.v3.model.StravaActivity;
 import javastrava.api.v3.model.StravaAthlete;
@@ -105,19 +101,19 @@ final class StravaServiceImpl implements IStravaService {
     }
 
     @Override
-    public List<IShoe> shoes(IUser user) {
+    public List<IStravaShoe> shoes(IUser user) {
         StravaAthlete stravaAthlete = api.athlete(user.getToken());
 
-        List<IShoe> shoes = new ArrayList<>(stravaAthlete.getShoes().size());
+        List<IStravaShoe> shoes = new ArrayList<>(stravaAthlete.getShoes().size());
         for (StravaGear gear : stravaAthlete.getShoes()) {
             StravaGear full = api.gear(user, gear.getId());
 
-            shoes.add(factory.get(IShoe.class)
+            shoes.add(factory.get(IStravaShoe.class)
                     .setId(full.getId())
                     .setName(full.getName())
                     .setBrand(full.getBrandName())
                     .setModel(full.getModelName())
-                    .setDesription(full.getDescription())
+                    .setDescription(full.getDescription())
                     .setDistance(full.getDistance())
                     .setPrimary(full.getPrimary()));
         }

@@ -1,5 +1,6 @@
 package com.irunninglog.spring.shoes;
 
+import com.irunninglog.api.Progress;
 import com.irunninglog.api.shoes.IShoe;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -13,7 +14,9 @@ final class Shoe implements IShoe {
     private String brand;
     private String model;
     private String description;
-    private float distance;
+    private int percentage;
+    private Progress progress;
+    private String distance;
     private boolean primary;
 
     @Override
@@ -71,7 +74,7 @@ final class Shoe implements IShoe {
     }
 
     @Override
-    public IShoe setDesription(String description) {
+    public IShoe setDescription(String description) {
         this.description = description;
         return this;
     }
@@ -83,13 +86,35 @@ final class Shoe implements IShoe {
     }
 
     @Override
-    public float getDistance() {
+    public String getDistance() {
         return distance;
     }
 
     @Override
-    public IShoe setDistance(float distance) {
+    public IShoe setDistance(String distance) {
         this.distance = distance;
+        return this;
+    }
+
+    @Override
+    public int getPercentage() {
+        return percentage;
+    }
+
+    @Override
+    public IShoe setPercentage(int percentage) {
+        this.percentage = percentage;
+        return this;
+    }
+
+    @Override
+    public Progress getProgress() {
+        return progress;
+    }
+
+    @Override
+    public IShoe setProgress(Progress progress) {
+        this.progress = progress;
         return this;
     }
 
