@@ -58,12 +58,12 @@ final class ShoesService implements IShoesService {
 
     private int percentage(IStravaShoe stravaShoe) {
         double result = stravaShoe.getDistance() * 100.0 / 804672.0;
-        return new BigDecimal(result).setScale(1, BigDecimal.ROUND_HALF_UP).intValue();
+        return BigDecimal.valueOf(result).setScale(1, BigDecimal.ROUND_HALF_UP).intValue();
     }
 
     private String distance(IStravaShoe stravaShoe) {
-        return DecimalFormat.getInstance().format(new BigDecimal(stravaShoe.getDistance())
-                .multiply(new BigDecimal(0.000621371))
+        return DecimalFormat.getInstance().format(BigDecimal.valueOf(stravaShoe.getDistance())
+                .multiply(BigDecimal.valueOf(0.000621371))
                 .setScale(1, BigDecimal.ROUND_HALF_UP)) + " mi";
     }
 

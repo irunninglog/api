@@ -110,7 +110,7 @@ final class StravaServiceImpl implements IStravaService {
 
             shoes.add(factory.get(IStravaShoe.class)
                     .setId(full.getId())
-                    .setName(full.getName())
+                    .setName(full.getName().replace(full.getBrandName() + " ", "").replace(full.getModelName() + " ", ""))
                     .setBrand(full.getBrandName())
                     .setModel(full.getModelName())
                     .setDescription(full.getDescription())
