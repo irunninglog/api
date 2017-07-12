@@ -1,11 +1,11 @@
 package com.irunninglog.spring.streaks;
 
-import com.irunninglog.api.Progress;
 import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.security.IUser;
 import com.irunninglog.api.streaks.IStreak;
 import com.irunninglog.api.streaks.IStreaks;
 import com.irunninglog.api.streaks.IStreaksService;
+import com.irunninglog.spring.util.DistanceService;
 import com.irunninglog.strava.IStravaRun;
 import com.irunninglog.strava.IStravaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,11 +26,17 @@ final class StreaksService implements IStreaksService {
 
     private final IFactory factory;
     private final IStravaService stravaService;
+    private final DistanceService distanceService;
 
     @Autowired
-    public StreaksService(IFactory factory, IStravaService stravaService) {
+    public StreaksService(IFactory factory,
+                          IStravaService stravaService,
+                          DistanceService distanceService) {
+        super();
+
         this.factory = factory;
         this.stravaService = stravaService;
+        this.distanceService = distanceService;
     }
 
     @Override
@@ -91,7 +97,7 @@ final class StreaksService implements IStreaksService {
     }
 
     private IStreak copyOf(IStreak value, IStreak longest) {
-        int percentage = value.getDays() * 100 / longest.getDays();
+        int percentage = distanceService.percentage(longest.getDays(), value.getDays());
 
         return factory.get(IStreak.class)
                 .setStartDate(value.getStartDate())
@@ -99,17 +105,7 @@ final class StreaksService implements IStreaksService {
                 .setDays(value.getDays())
                 .setRuns(value.getRuns())
                 .setPercentage(percentage)
-                .setProgress(progess(percentage));
-    }
-
-    private Progress progess(int percentage) {
-        if (percentage >= 80) {
-            return Progress.GOOD;
-        } else if (percentage >= 20) {
-            return Progress.OK;
-        } else {
-            return Progress.BAD;
-        }
+                .setProgress(distanceService.progressWhereLowIsBad(percentage));
     }
 
     private IStreak findLongest(List<IStreak> streaksList) {

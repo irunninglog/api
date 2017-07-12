@@ -8,17 +8,19 @@ import java.util.List;
 @Component
 final class ChallengeDefinitions {
 
+    private static final String DRIVING_DISTANCE = "Driving distance";
+
     List<ChallengeDefinition> definitions() {
         List<ChallengeDefinition> definitions = new ArrayList<>();
 
         definitions.add(new ChallengeDefinition()
                 .setName("New York to Boston")
-                .setDesctiption("Driving distance")
+                .setDesctiption(DRIVING_DISTANCE)
                 .setDistance(346160));
 
         definitions.add(new ChallengeDefinition()
                 .setName("London to Rome")
-                .setDesctiption("Driving distance")
+                .setDesctiption(DRIVING_DISTANCE)
                 .setDistance(1880196.6F));
 
         definitions.add(new ChallengeDefinition()
@@ -28,7 +30,7 @@ final class ChallengeDefinitions {
 
         definitions.add(new ChallengeDefinition()
                 .setName("New York to Los Angeles")
-                .setDesctiption("Driving distance")
+                .setDesctiption(DRIVING_DISTANCE)
                 .setDistance(4468830));
 
         definitions.add(new ChallengeDefinition()

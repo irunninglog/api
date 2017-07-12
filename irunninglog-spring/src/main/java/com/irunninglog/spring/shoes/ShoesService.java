@@ -1,17 +1,15 @@
 package com.irunninglog.spring.shoes;
 
-import com.irunninglog.api.Progress;
 import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.security.IUser;
 import com.irunninglog.api.shoes.IShoe;
 import com.irunninglog.api.shoes.IShoesService;
+import com.irunninglog.spring.util.DistanceService;
 import com.irunninglog.strava.IStravaService;
 import com.irunninglog.strava.IStravaShoe;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,11 +18,18 @@ final class ShoesService implements IShoesService {
 
     private final IStravaService stravaService;
     private final IFactory factory;
+    private final DistanceService distanceService;
 
     @Autowired
-    ShoesService(IStravaService stravaService, IFactory factory) {
+    ShoesService(IStravaService stravaService,
+                 IFactory factory,
+                 DistanceService distanceService) {
+
+        super();
+
         this.stravaService = stravaService;
         this.factory = factory;
+        this.distanceService = distanceService;
     }
 
     @Override
@@ -40,31 +45,9 @@ final class ShoesService implements IShoesService {
                 .setModel(stravaShoe.getModel())
                 .setDescription(stravaShoe.getDescription())
                 .setPrimary(stravaShoe.isPrimary())
-                .setPercentage(percentage(stravaShoe))
-                .setProgress(progress(stravaShoe))
-                .setDistance(distance(stravaShoe))).collect(Collectors.toList());
-    }
-
-    private Progress progress(IStravaShoe stravaShoe) {
-        int percentage = percentage(stravaShoe);
-        if (percentage < 40) {
-            return Progress.GOOD;
-        } else if (percentage < 80) {
-            return Progress.OK;
-        } else {
-            return Progress.BAD;
-        }
-    }
-
-    private int percentage(IStravaShoe stravaShoe) {
-        double result = stravaShoe.getDistance() * 100.0 / 804672.0;
-        return Math.min(100, BigDecimal.valueOf(result).setScale(1, BigDecimal.ROUND_HALF_UP).intValue());
-    }
-
-    private String distance(IStravaShoe stravaShoe) {
-        return DecimalFormat.getInstance().format(BigDecimal.valueOf(stravaShoe.getDistance())
-                .multiply(BigDecimal.valueOf(0.000621371))
-                .setScale(1, BigDecimal.ROUND_HALF_UP)) + " mi";
+                .setPercentage(distanceService.percentage(804672.0F, stravaShoe.getDistance()))
+                .setProgress(distanceService.progressWhereLowIsGood(distanceService.percentage(804672.0F, stravaShoe.getDistance())))
+                .setDistance(distanceService.mileage(stravaShoe.getDistance()))).collect(Collectors.toList());
     }
 
 }

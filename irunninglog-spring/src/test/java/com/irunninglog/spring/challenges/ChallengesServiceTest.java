@@ -45,7 +45,7 @@ public class ChallengesServiceTest extends AbstractTest {
         expect(challenges.get(0), "New York to Boston", "Driving distance", "215.1 mi", "215.1 mi", 100, Progress.GOOD);
         expect(challenges.get(1), "London to Rome", "Driving distance", "1,168.3 mi", "1,000 mi", 85, Progress.GOOD);
         expect(challenges.get(2), "Appalachain Trail", "Official website distance", "2,190 mi", "1,000 mi", 45, Progress.OK);
-        expect(challenges.get(3), "New York to Los Angeles", "Driving distance", "2,776.8 mi", "1,000 mi", 36, Progress.BAD);
+        expect(challenges.get(3), "New York to Los Angeles", "Driving distance", "2,776.8 mi", "1,000 mi", 36, Progress.OK);
         expect(challenges.get(4), "Around the World", "Distance at the equator", "24,873.5 mi", "1,000 mi", 4, Progress.BAD);
         expect(challenges.get(5), "From the Earth to the Moon", "Average distance", "238,855 mi", "1,000 mi", 0, Progress.BAD);
     }

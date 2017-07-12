@@ -41,7 +41,7 @@ public class ShoesServiceTest extends AbstractTest {
                 .setBrand("brand1")
                 .setModel("model1")
                 .setDescription("description1")
-                .setDistance(161095.33F)
+                .setDistance(101095.33F)
                 .setPrimary(false);
 
         IStravaShoe shoe2 = factory.get(IStravaShoe.class)
