@@ -2,12 +2,8 @@ package com.irunninglog.spring;
 
 import com.irunninglog.api.IResponse;
 import com.irunninglog.api.ResponseStatus;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 
-@Component
-@Scope("prototype")
-final class DeafultResponse implements IResponse {
+final class DefaultResponse implements IResponse {
 
     private ResponseStatus status;
     private Object body;

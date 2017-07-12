@@ -58,7 +58,7 @@ final class ShoesService implements IShoesService {
 
     private int percentage(IStravaShoe stravaShoe) {
         double result = stravaShoe.getDistance() * 100.0 / 804672.0;
-        return BigDecimal.valueOf(result).setScale(1, BigDecimal.ROUND_HALF_UP).intValue();
+        return Math.min(100, BigDecimal.valueOf(result).setScale(1, BigDecimal.ROUND_HALF_UP).intValue());
     }
 
     private String distance(IStravaShoe stravaShoe) {

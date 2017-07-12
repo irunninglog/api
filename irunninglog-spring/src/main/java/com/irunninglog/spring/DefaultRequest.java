@@ -3,13 +3,9 @@ package com.irunninglog.spring;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.irunninglog.api.IRequest;
 import com.irunninglog.api.security.IUser;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
-@Component
-@Scope("prototype")
 final class DefaultRequest implements IRequest {
 
     private Map<String, String> map;
