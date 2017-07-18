@@ -40,14 +40,20 @@ public class ChallengesServiceTest extends AbstractTest {
         List<IChallenge> challenges = service.getChallenges(null);
 
         assertNotNull(challenges);
-        assertEquals(6, challenges.size());
+        assertEquals(12, challenges.size());
 
         expect(challenges.get(0), "New York to Boston", "Driving distance", "215.1 mi", "215.1 mi", 100, Progress.GOOD);
         expect(challenges.get(1), "London to Rome", "Driving distance", "1,168.3 mi", "1,000 mi", 85, Progress.GOOD);
         expect(challenges.get(2), "Appalachain Trail", "Official website distance", "2,190 mi", "1,000 mi", 45, Progress.OK);
         expect(challenges.get(3), "New York to Los Angeles", "Driving distance", "2,776.8 mi", "1,000 mi", 36, Progress.OK);
-        expect(challenges.get(4), "Around the World", "Distance at the equator", "24,873.5 mi", "1,000 mi", 4, Progress.BAD);
-        expect(challenges.get(5), "From the Earth to the Moon", "Average distance", "238,855 mi", "1,000 mi", 0, Progress.BAD);
+        expect(challenges.get(4), "New York to Prudhoe Bay", "Driving distance", "4,757.1 mi", "1,000 mi", 21, Progress.OK);
+        expect(challenges.get(5), "Miami to Anchorage", "Driving distance", "4,958 mi", "1,000 mi", 20, Progress.OK);
+        expect(challenges.get(6), "Around the Moon", "Distance at the equator", "6,786 mi", "1,000 mi", 14, Progress.BAD);
+        expect(challenges.get(7), "London to Cape Town", "Driving distance", "8,246.7 mi", "1,000 mi", 12, Progress.BAD);
+        expect(challenges.get(8), "Lisbon to Magadan", "Driving distance", "9,410.7 mi", "1,000 mi", 10, Progress.BAD);
+        expect(challenges.get(9), "Prudhoe Bay to Ushuaia", "Driving distance", "15,051 mi", "1,000 mi", 6, Progress.BAD);
+        expect(challenges.get(10), "Around the World", "Distance at the equator", "24,873.5 mi", "1,000 mi", 4, Progress.BAD);
+        expect(challenges.get(11), "From the Earth to the Moon", "Average distance", "238,855 mi", "1,000 mi", 0, Progress.BAD);
     }
 
     private void expect(IChallenge challenge, String name, String description, String total, String done, int percentage, Progress progress) {
