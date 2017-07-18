@@ -6,13 +6,15 @@ import javastrava.api.v3.model.StravaActivity;
 import javastrava.api.v3.model.StravaAthlete;
 import javastrava.api.v3.model.StravaGear;
 
+import java.util.List;
+
 public interface IStravaApi {
 
     Token token(String code);
 
     StravaAthlete athlete(String token);
 
-    StravaActivity[] activities(IUser user, int page);
+    List<StravaActivity> activities(IUser user);
 
     StravaGear gear(IUser user, String id);
 

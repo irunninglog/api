@@ -8,16 +8,26 @@ import javastrava.api.v3.auth.model.Token;
 import javastrava.api.v3.model.StravaActivity;
 import javastrava.api.v3.model.StravaAthlete;
 import javastrava.api.v3.model.StravaGear;
+import javastrava.api.v3.model.reference.StravaActivityType;
 import javastrava.api.v3.rest.API;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Component
 final class StravaApiImpl implements IStravaApi {
 
     private final int id;
     private final String secret;
+
+    private StravaAthlete athlete;
+    private List<StravaActivity> activities;
+    private final Map<String, StravaGear> shoes = new HashMap<>();
 
     @Autowired
     StravaApiImpl(Environment environment) {
@@ -35,28 +45,60 @@ final class StravaApiImpl implements IStravaApi {
 
     @Override
     public StravaAthlete athlete(String token) {
-        Token apiToken = new Token();
-        apiToken.setToken(token);
-        API api = new API(apiToken);
-        return api.getAuthenticatedAthlete();
+        if (athlete == null) {
+            Token apiToken = new Token();
+            apiToken.setToken(token);
+            API api = new API(apiToken);
+            athlete = api.getAuthenticatedAthlete();
+        }
+
+        return athlete;
     }
 
     @Override
-    public StravaActivity[] activities(IUser user, int page) {
-        Token apiToken = new Token();
-        apiToken.setToken(user.getToken());
+    public List<StravaActivity> activities(IUser user) {
+        if (activities == null) {
+            activities = new ArrayList<>();
 
-        API api = new API(apiToken);
-        return api.listAuthenticatedAthleteActivities(null, null, page, 200);
+            int page = 1;
+            int count = -1;
+
+            Token apiToken = new Token();
+            apiToken.setToken(user.getToken());
+
+            API api = new API(apiToken);
+
+            while (count != 0) {
+                StravaActivity[] array = api.listAuthenticatedAthleteActivities(null, null, page, 200);
+
+                count = array.length;
+                for (StravaActivity activity : array) {
+                    if (activity.getType() == StravaActivityType.RUN) {
+                        activities.add(activity);
+                    }
+                }
+
+                page++;
+            }
+        }
+
+        return activities;
     }
 
     @Override
     public StravaGear gear(IUser user, String id) {
-        Token apiToken = new Token();
-        apiToken.setToken(user.getToken());
+        StravaGear shoe = shoes.get(id);
 
-        API api = new API(apiToken);
-        return api.getGear(id);
+        if (shoe == null) {
+            Token apiToken = new Token();
+            apiToken.setToken(user.getToken());
+
+            API api = new API(apiToken);
+            shoe = api.getGear(id);
+            shoes.put(id, shoe);
+        }
+
+        return shoe;
     }
 
 }

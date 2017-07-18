@@ -20,8 +20,14 @@ public class Config {
 
     @Bean
     public IStravaService service() {
-        return new StravaServiceImpl(factory(), api());
+        return new StravaServiceImpl(factory(), api(), cache());
     }
+
+    @Bean
+    public StravaApiCache cache() {
+        return new StravaApiCache(factory());
+    }
+
     @Bean
     public IStravaApi api() {
         return Mockito.mock(IStravaApi.class);

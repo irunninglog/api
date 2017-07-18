@@ -33,13 +33,12 @@ public class StravaServiceTest implements ApplicationContextAware {
     private ApplicationContext context;
     private IStravaService service;
     private IStravaApi api;
-    private IFactory factory;
 
     @Before
     public void before() {
         service = context.getBean(IStravaService.class);
         api = context.getBean(IStravaApi.class);
-        factory = context.getBean(IFactory.class);
+        IFactory factory = context.getBean(IFactory.class);
 
         Mockito.when(factory.get(IUser.class)).thenReturn(new IUser() {
 
@@ -84,6 +83,7 @@ public class StravaServiceTest implements ApplicationContextAware {
         Mockito.when(factory.get(IStravaAthlete.class)).thenReturn(new StravaAthleteImpl());
         Mockito.when(factory.get(IStravaRun.class)).thenReturn(new StravaRunImpl());
         Mockito.when(factory.get(IStravaShoe.class)).thenReturn(new StravaShoeImpl());
+        Mockito.when(factory.get(IStravaApi.class)).thenReturn(api);
     }
 
     @Test
@@ -120,27 +120,26 @@ public class StravaServiceTest implements ApplicationContextAware {
     }
 
     @Test
-    public void athlete() {
+    public void athlete() throws AuthnException {
         StravaAthlete athlete = new StravaAthlete();
         athlete.setId(2);
         Mockito.when(api.athlete(any(String.class))).thenReturn(athlete);
 
-        IUser user = factory.get(IUser.class).setToken("bar");
+        IUser user = service.userFromToken("foo");
 
         IStravaAthlete stravaAthlete = service.athlete(user);
         assertNotNull(stravaAthlete);
     }
 
     @Test
-    public void runs() {
-        IUser user = factory.get(IUser.class).setToken("bar");
+    public void runs() throws AuthnException {
+        IUser user = service.userFromToken("foo");
 
         StravaActivity activity = new StravaActivity();
         activity.setType(StravaActivityType.RUN);
         activity.setId(3);
         activity.setDistance(1F);
-        Mockito.when(api.activities(user, 1)).thenReturn(new StravaActivity[] {activity});
-        Mockito.when(api.activities(user, 2)).thenReturn(new StravaActivity[0]);
+        Mockito.when(api.activities(user)).thenReturn(Collections.singletonList(activity));
 
         List<IStravaRun> runs = service.runs(user);
         assertNotNull(runs);
@@ -148,7 +147,7 @@ public class StravaServiceTest implements ApplicationContextAware {
     }
 
     @Test
-    public void shoes() {
+    public void shoes() throws AuthnException {
         StravaGear shoe1 = new StravaGear();
         shoe1.setId("shoe_one");
         shoe1.setDistance(100F);
@@ -164,7 +163,7 @@ public class StravaServiceTest implements ApplicationContextAware {
         Mockito.when(api.athlete(any(String.class))).thenReturn(athlete);
         Mockito.when(api.gear(any(IUser.class), any(String.class))).thenReturn(shoe1);
 
-        IUser user = factory.get(IUser.class).setToken("shoes_token");
+        IUser user = service.userFromToken("foo");
 
         List<IStravaShoe> shoes = service.shoes(user);
         assertNotNull(shoes);

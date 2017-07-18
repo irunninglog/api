@@ -8,27 +8,25 @@ import javastrava.api.v3.auth.model.Token;
 import javastrava.api.v3.model.StravaActivity;
 import javastrava.api.v3.model.StravaAthlete;
 import javastrava.api.v3.model.StravaGear;
-import javastrava.api.v3.model.reference.StravaActivityType;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 final class StravaServiceImpl implements IStravaService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(StravaServiceImpl.class);
-
     private final IFactory factory;
     private final IStravaApi api;
+    private final StravaApiCache cache;
 
     @Autowired
-    StravaServiceImpl(IFactory factory, IStravaApi api) {
+    StravaServiceImpl(IFactory factory, IStravaApi api, StravaApiCache cache) {
         this.factory = factory;
         this.api = api;
+        this.cache = cache;
     }
 
     @Override
@@ -43,7 +41,7 @@ final class StravaServiceImpl implements IStravaService {
 
     @Override
     public IUser userFromToken(String token) throws AuthnException {
-        StravaAthlete athlete = api.athlete(token);
+        StravaAthlete athlete = cache.create(token).athlete(token);
 
         return factory.get(IUser.class)
                 .setId(athlete.getId())
@@ -53,7 +51,7 @@ final class StravaServiceImpl implements IStravaService {
 
     @Override
     public IStravaAthlete athlete(IUser user) {
-        StravaAthlete stravaAthlete = api.athlete(user.getToken());
+        StravaAthlete stravaAthlete = cache.get(user.getToken()).athlete(user.getToken());
 
         return factory.get(IStravaAthlete.class)
                 .setId(stravaAthlete.getId())
@@ -65,29 +63,7 @@ final class StravaServiceImpl implements IStravaService {
 
     @Override
     public List<IStravaRun> runs(IUser user) {
-        List<IStravaRun> list = new ArrayList<>();
-
-        int page = 1;
-        int count = -1;
-        while (count != 0) {
-            StravaActivity [] activities = api.activities(user, page);
-
-            count = activities.length;
-
-            for (StravaActivity stravaActivity : activities) {
-                if (stravaActivity.getType() == StravaActivityType.RUN) {
-                    list.add(fromStravaActivity(stravaActivity));
-                }
-            }
-
-            LOG.info("runs:{}:{}:{}", user.getUsername(), page, count);
-
-            page++;
-        }
-
-        LOG.info("runs:{}:{}", user.getUsername(), list.size());
-
-        return list;
+        return api.activities(user).stream().map(this::fromStravaActivity).collect(Collectors.toList());
     }
 
     private IStravaRun fromStravaActivity(StravaActivity stravaActivity) {
@@ -102,11 +78,11 @@ final class StravaServiceImpl implements IStravaService {
 
     @Override
     public List<IStravaShoe> shoes(IUser user) {
-        StravaAthlete stravaAthlete = api.athlete(user.getToken());
+        StravaAthlete stravaAthlete = cache.get(user.getToken()).athlete(user.getToken());
 
         List<IStravaShoe> shoes = new ArrayList<>(stravaAthlete.getShoes().size());
         for (StravaGear gear : stravaAthlete.getShoes()) {
-            StravaGear full = api.gear(user, gear.getId());
+            StravaGear full = cache.get(user.getToken()).gear(user, gear.getId());
 
             shoes.add(factory.get(IStravaShoe.class)
                     .setId(full.getId())
