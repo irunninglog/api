@@ -139,7 +139,7 @@ public class StravaServiceTest implements ApplicationContextAware {
         activity.setType(StravaActivityType.RUN);
         activity.setId(3);
         activity.setDistance(1F);
-        Mockito.when(api.activities(user)).thenReturn(Collections.singletonList(activity));
+        Mockito.when(api.activities(user.getToken())).thenReturn(Collections.singletonList(activity));
 
         List<IStravaRun> runs = service.runs(user);
         assertNotNull(runs);
@@ -161,7 +161,7 @@ public class StravaServiceTest implements ApplicationContextAware {
         athlete.setId(20);
         athlete.setShoes(Collections.singletonList(shoe1));
         Mockito.when(api.athlete(any(String.class))).thenReturn(athlete);
-        Mockito.when(api.gear(any(IUser.class), any(String.class))).thenReturn(shoe1);
+        Mockito.when(api.gear(any(String.class), any(String.class))).thenReturn(shoe1);
 
         IUser user = service.userFromToken("foo");
 

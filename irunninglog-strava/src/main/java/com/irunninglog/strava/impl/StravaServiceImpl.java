@@ -63,7 +63,7 @@ final class StravaServiceImpl implements IStravaService {
 
     @Override
     public List<IStravaRun> runs(IUser user) {
-        return api.activities(user).stream().map(this::fromStravaActivity).collect(Collectors.toList());
+        return api.activities(user.getToken()).stream().map(this::fromStravaActivity).collect(Collectors.toList());
     }
 
     private IStravaRun fromStravaActivity(StravaActivity stravaActivity) {
@@ -82,7 +82,7 @@ final class StravaServiceImpl implements IStravaService {
 
         List<IStravaShoe> shoes = new ArrayList<>(stravaAthlete.getShoes().size());
         for (StravaGear gear : stravaAthlete.getShoes()) {
-            StravaGear full = cache.get(user.getToken()).gear(user, gear.getId());
+            StravaGear full = cache.get(user.getToken()).gear(user.getToken(), gear.getId());
 
             shoes.add(factory.get(IStravaShoe.class)
                     .setId(full.getId())

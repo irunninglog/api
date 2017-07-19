@@ -1,6 +1,5 @@
 package com.irunninglog.strava.impl;
 
-import com.irunninglog.api.security.IUser;
 import com.irunninglog.strava.IStravaApi;
 import javastrava.api.v3.auth.AuthorisationService;
 import javastrava.api.v3.auth.impl.retrofit.AuthorisationServiceImpl;
@@ -44,29 +43,23 @@ final class StravaApiImpl implements IStravaApi {
     }
 
     @Override
-    public StravaAthlete athlete(String token) {
+    public synchronized StravaAthlete athlete(String token) {
         if (athlete == null) {
-            Token apiToken = new Token();
-            apiToken.setToken(token);
-            API api = new API(apiToken);
-            athlete = api.getAuthenticatedAthlete();
+            athlete = api(token).getAuthenticatedAthlete();
         }
 
         return athlete;
     }
 
     @Override
-    public List<StravaActivity> activities(IUser user) {
+    public synchronized List<StravaActivity> activities(String token) {
         if (activities == null) {
             activities = new ArrayList<>();
 
             int page = 1;
             int count = -1;
 
-            Token apiToken = new Token();
-            apiToken.setToken(user.getToken());
-
-            API api = new API(apiToken);
+            API api = api(token);
 
             while (count != 0) {
                 StravaActivity[] array = api.listAuthenticatedAthleteActivities(null, null, page, 200);
@@ -86,19 +79,21 @@ final class StravaApiImpl implements IStravaApi {
     }
 
     @Override
-    public StravaGear gear(IUser user, String id) {
+    public synchronized StravaGear gear(String token, String id) {
         StravaGear shoe = shoes.get(id);
 
         if (shoe == null) {
-            Token apiToken = new Token();
-            apiToken.setToken(user.getToken());
-
-            API api = new API(apiToken);
-            shoe = api.getGear(id);
+            shoe = api(token).getGear(id);
             shoes.put(id, shoe);
         }
 
         return shoe;
+    }
+
+    private API api(String token) {
+        Token apiToken = new Token();
+        apiToken.setToken(token);
+        return new API(apiToken);
     }
 
 }
