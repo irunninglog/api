@@ -32,7 +32,7 @@ final class StravaApiImpl implements IStravaApi {
 
     private static final Logger LOG = LoggerFactory.getLogger(StravaApiImpl.class);
     private static final long DELAY_FULL = 30; // MINUTES
-    private static final long DELAY_POLL = 1;
+    private static final long DELAY_POLL = 5;
 
     private final int id;
     private final String secret;
