@@ -11,10 +11,12 @@ public interface IStravaApi {
 
     Token token(String code);
 
-    StravaAthlete athlete(String token);
+    void load(String token);
 
-    List<StravaActivity> activities(String token);
+    StravaAthlete athlete();
 
-    StravaGear gear(String token, String id);
+    List<StravaActivity> activities();
+
+    StravaGear gear(String id);
 
 }

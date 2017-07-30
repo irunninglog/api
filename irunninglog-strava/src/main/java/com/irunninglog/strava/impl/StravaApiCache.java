@@ -24,6 +24,7 @@ final class StravaApiCache {
 
         if (api == null) {
             api = factory.get(IStravaApi.class);
+            api.load(token);
             map.put(token, api);
         }
 

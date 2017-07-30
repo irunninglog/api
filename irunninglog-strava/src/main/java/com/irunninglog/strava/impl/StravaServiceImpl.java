@@ -41,7 +41,7 @@ final class StravaServiceImpl implements IStravaService {
 
     @Override
     public IUser userFromToken(String token) throws AuthnException {
-        StravaAthlete athlete = cache.create(token).athlete(token);
+        StravaAthlete athlete = cache.create(token).athlete();
 
         return factory.get(IUser.class)
                 .setId(athlete.getId())
@@ -51,7 +51,7 @@ final class StravaServiceImpl implements IStravaService {
 
     @Override
     public IStravaAthlete athlete(IUser user) {
-        StravaAthlete stravaAthlete = cache.get(user.getToken()).athlete(user.getToken());
+        StravaAthlete stravaAthlete = cache.get(user.getToken()).athlete();
 
         return factory.get(IStravaAthlete.class)
                 .setId(stravaAthlete.getId())
@@ -63,7 +63,7 @@ final class StravaServiceImpl implements IStravaService {
 
     @Override
     public List<IStravaRun> runs(IUser user) {
-        return api.activities(user.getToken()).stream().map(this::fromStravaActivity).collect(Collectors.toList());
+        return cache.get(user.getToken()).activities().stream().map(this::fromStravaActivity).collect(Collectors.toList());
     }
 
     private IStravaRun fromStravaActivity(StravaActivity stravaActivity) {
@@ -78,20 +78,22 @@ final class StravaServiceImpl implements IStravaService {
 
     @Override
     public List<IStravaShoe> shoes(IUser user) {
-        StravaAthlete stravaAthlete = cache.get(user.getToken()).athlete(user.getToken());
+        StravaAthlete stravaAthlete = cache.get(user.getToken()).athlete();
 
         List<IStravaShoe> shoes = new ArrayList<>(stravaAthlete.getShoes().size());
         for (StravaGear gear : stravaAthlete.getShoes()) {
-            StravaGear full = cache.get(user.getToken()).gear(user.getToken(), gear.getId());
+            StravaGear full = cache.get(user.getToken()).gear(gear.getId());
 
-            shoes.add(factory.get(IStravaShoe.class)
-                    .setId(full.getId())
-                    .setName(full.getName().replace(full.getBrandName() + " ", "").replace(full.getModelName() + " ", ""))
-                    .setBrand(full.getBrandName())
-                    .setModel(full.getModelName())
-                    .setDescription(full.getDescription())
-                    .setDistance(full.getDistance())
-                    .setPrimary(full.getPrimary()));
+            if (full != null) {
+                shoes.add(factory.get(IStravaShoe.class)
+                        .setId(full.getId())
+                        .setName(full.getName().replace(full.getBrandName() + " ", "").replace(full.getModelName() + " ", ""))
+                        .setBrand(full.getBrandName())
+                        .setModel(full.getModelName())
+                        .setDescription(full.getDescription())
+                        .setDistance(full.getDistance())
+                        .setPrimary(full.getPrimary()));
+            }
         }
 
         return shoes;
