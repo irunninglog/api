@@ -1,6 +1,7 @@
 package com.irunninglog.spring;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.google.common.base.MoreObjects;
 import com.irunninglog.api.IRequest;
 import com.irunninglog.api.security.IUser;
 
@@ -44,6 +45,15 @@ final class DefaultRequest implements IRequest {
     public IRequest setOffset(int offset) {
         this.offset = offset;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("map", map)
+                .add("user", user)
+                .add("offset", offset)
+                .toString();
     }
 
 }

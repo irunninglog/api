@@ -51,8 +51,8 @@ public abstract class AbstractRequestResponseVerticle extends AbstractVerticle {
     private void handleResponse(Future<String> future, Message<String> msg) {
         long start = System.currentTimeMillis();
 
-        if (logger.isInfoEnabled()) {
-            logger.info("handler:{}:{}", address, msg.body());
+        if (logger.isDebugEnabled()) {
+            logger.debug("handler:{}:{}", address, msg.body());
         }
 
         try {

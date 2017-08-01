@@ -1,5 +1,6 @@
 package com.irunninglog.spring.security;
 
+import com.google.common.base.MoreObjects;
 import com.irunninglog.api.security.IUser;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -43,6 +44,15 @@ final class User implements IUser {
     @Override
     public String getToken() {
         return token;
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("id", id)
+                .add("username", username)
+                .add("token", token == null ? null : "*****")
+                .toString();
     }
 
 }
