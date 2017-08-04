@@ -77,7 +77,9 @@ public abstract class AbstractRouteHandler implements Handler<RoutingContext> {
             if (result.succeeded()) {
                 String resultString = result.result().body();
 
-                logger.info("handleAuthenticated:{}:{}", endpoint.getAddress(), resultString);
+                if (logger.isDebugEnabled()) {
+                    logger.debug("handleAuthenticated:{}:{}", endpoint.getAddress(), resultString);
+                }
 
                 IResponse response = mapper.decode(resultString, IResponse.class);
 
