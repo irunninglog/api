@@ -78,7 +78,7 @@ public abstract class AbstractRouteHandler implements Handler<RoutingContext> {
                 String resultString = result.result().body();
 
                 if (logger.isDebugEnabled()) {
-                    logger.debug("handleAuthenticated:{}:{}", endpoint.getAddress(), resultString);
+                    logger.debug("handle:{}:{}", endpoint.getAddress(), resultString);
                 }
 
                 IResponse response = mapper.decode(resultString, IResponse.class);
@@ -92,14 +92,14 @@ public abstract class AbstractRouteHandler implements Handler<RoutingContext> {
                 }
             } else {
                 if (logger.isErrorEnabled()) {
-                    logger.error("handleAuthenticated:failure", result.cause());
-                    logger.error("handleAuthenticated:failure{}", routingContext.normalisedPath());
+                    logger.error("handle:failure", result.cause());
+                    logger.error("handle:failure{}", routingContext.normalisedPath());
                 }
 
                 fail(routingContext, ResponseStatus.ERROR);
             }
         } catch (Exception ex) {
-            logger.error("handleAuthenticated:exception", ex);
+            logger.error("handle:exception", ex);
             fail(routingContext, ResponseStatus.ERROR);
         }
     }

@@ -1,5 +1,6 @@
 package com.irunninglog.spring.streaks;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.irunninglog.api.streaks.IStreak;
 import com.irunninglog.api.streaks.IStreaks;
 import org.springframework.context.annotation.Scope;
@@ -9,8 +10,11 @@ import org.springframework.stereotype.Component;
 @Scope("prototype")
 final class Streaks implements IStreaks {
 
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, defaultImpl = Streak.class)
     private IStreak longest;
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, defaultImpl = Streak.class)
     private IStreak current;
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, defaultImpl = Streak.class)
     private IStreak thisYear;
 
     @Override
