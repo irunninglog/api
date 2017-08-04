@@ -35,14 +35,9 @@ final class ChallengeDefinitions {
                 .setDistance(4468830));
 
         definitions.add(new ChallengeDefinition()
-                .setName("New York to Prudhoe Bay")
+                .setName("Miami to Prudhoe Bay")
                 .setDesctiption(DRIVING_DISTANCE)
-                .setDistance(7655810.342F));
-
-        definitions.add(new ChallengeDefinition()
-                .setName("Miami to Anchorage")
-                .setDesctiption(DRIVING_DISTANCE)
-                .setDistance(7979128));
+                .setDistance(8596000));
 
         definitions.add(new ChallengeDefinition()
                 .setName("Around the Moon")
@@ -58,6 +53,11 @@ final class ChallengeDefinitions {
                 .setName("Lisbon to Magadan")
                 .setDesctiption(DRIVING_DISTANCE)
                 .setDistance(15145000));
+
+        definitions.add(new ChallengeDefinition()
+                .setName("Around Mars")
+                .setDesctiption(EQUATORIAL_DISTANCE)
+                .setDistance(21344729));
 
         definitions.add(new ChallengeDefinition()
                 .setName("Prudhoe Bay to Ushuaia")
