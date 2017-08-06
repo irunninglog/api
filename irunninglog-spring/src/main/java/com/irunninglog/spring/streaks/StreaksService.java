@@ -140,7 +140,7 @@ final class StreaksService implements IStreaksService {
     }
 
     private LocalDate current(int minutes) {
-        return clientTimeFromServerTime(ZonedDateTime.now(), minutes).toLocalDate().minusDays(2);
+        return clientTimeFromServerTime(ZonedDateTime.now(), minutes).toLocalDate().minusDays(1);
     }
 
     private LocalDate yearStart(int minutes) {

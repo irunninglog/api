@@ -60,6 +60,17 @@ public class StreaksServiceTest extends AbstractTest {
     }
 
     @Test
+    public void currentStreakMustStartTodayOrYesteday() {
+        List<IStravaRun> runs = new ArrayList<>();
+        runs.add(run(LocalDateTime.now().minusDays(2)));
+        runs.add(run(LocalDateTime.now().minusDays(3)));
+        Mockito.when(stravaService.runs(any(IUser.class))).thenReturn(runs);
+
+        IStreaks streaks = streaksService.getStreaks(null, 0);
+        assertNull(streaks.getCurrent());
+    }
+
+    @Test
     public void veryOld() {
         List<IStravaRun> runs = new ArrayList<>();
         runs.add(run(LocalDateTime.now().minusYears(2)));
