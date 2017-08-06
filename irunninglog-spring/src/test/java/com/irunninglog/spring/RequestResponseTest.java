@@ -10,8 +10,7 @@ import org.springframework.context.ApplicationContext;
 
 import java.util.HashMap;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 public class RequestResponseTest extends AbstractTest {
 
@@ -35,6 +34,7 @@ public class RequestResponseTest extends AbstractTest {
         assertNotNull(request.getUser());
         assertNotNull(request.getMap());
         assertEquals(100, request.getOffset());
+        assertTrue(request.toString().contains("offset"));
     }
 
     @Test
@@ -44,6 +44,7 @@ public class RequestResponseTest extends AbstractTest {
 
         assertNotNull(response.getBody());
         assertEquals(ResponseStatus.ERROR, response.getStatus());
+        assertTrue(response.toString().contains("body"));
     }
 
 }
