@@ -18,6 +18,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 final class StreaksService implements IStreaksService {
@@ -57,9 +58,11 @@ final class StreaksService implements IStreaksService {
             }
         }
 
-        streaksList.sort((o1, o2) -> Integer.compare(o2.getDays(), o1.getDays()));
+        List<IStreak> result = streaksList.stream().filter(item -> item.getDays() > 1).collect(Collectors.toList());
 
-        return populate(factory.get(IStreaks.class), streaksList, offset);
+        result.sort((o1, o2) -> Integer.compare(o2.getDays(), o1.getDays()));
+
+        return populate(factory.get(IStreaks.class), result, offset);
     }
 
     private IStreaks populate(IStreaks streaks, List<IStreak> streaksList, int minutes) {

@@ -41,7 +41,7 @@ public class StreaksServiceTest extends AbstractTest {
         runs.add(run(LocalDateTime.now().minusDays(1)));
         Mockito.when(stravaService.runs(any(IUser.class))).thenReturn(runs);
 
-        IStreaks streaks = streaksService.getStreaks(null, 0);
+        IStreaks streaks = streaksService.getStreaks(null, ZonedDateTime.now().getOffset().getTotalSeconds() / 60 * -1);
         expect(streaks.getCurrent(), runs.get(1).getStartTimeLocal(), runs.get(0).getStartTimeLocal(), 2, 2, 100, Progress.GOOD);
         expect(streaks.getLongest(), runs.get(1).getStartTimeLocal(), runs.get(0).getStartTimeLocal(), 2, 2, 100, Progress.GOOD);
         expect(streaks.getThisYear(), runs.get(1).getStartTimeLocal(), runs.get(0).getStartTimeLocal(), 2, 2, 100, Progress.GOOD);
@@ -53,9 +53,23 @@ public class StreaksServiceTest extends AbstractTest {
         runs.add(run(LocalDateTime.now()));
         Mockito.when(stravaService.runs(any(IUser.class))).thenReturn(runs);
 
-        IStreaks streaks = streaksService.getStreaks(null, 0);
+        IStreaks streaks = streaksService.getStreaks(null, ZonedDateTime.now().getOffset().getTotalSeconds() / 60 * -1);
         assertNull(streaks.getCurrent());
         assertNull(streaks.getLongest());
+        assertNull(streaks.getThisYear());
+    }
+
+    @Test
+    public void noCurrentStreak() {
+        List<IStravaRun> runs = new ArrayList<>();
+        runs.add(run(LocalDateTime.now()));
+        runs.add(run(LocalDateTime.now().minusYears(1)));
+        runs.add(run(LocalDateTime.now().minusYears(1).minusDays(1)));
+        Mockito.when(stravaService.runs(any(IUser.class))).thenReturn(runs);
+
+        IStreaks streaks = streaksService.getStreaks(null, ZonedDateTime.now().getOffset().getTotalSeconds() / 60 * -1);
+        assertNull(streaks.getCurrent());
+        assertNotNull(streaks.getLongest());
         assertNull(streaks.getThisYear());
     }
 
@@ -66,7 +80,7 @@ public class StreaksServiceTest extends AbstractTest {
         runs.add(run(LocalDateTime.now().minusDays(3)));
         Mockito.when(stravaService.runs(any(IUser.class))).thenReturn(runs);
 
-        IStreaks streaks = streaksService.getStreaks(null, 0);
+        IStreaks streaks = streaksService.getStreaks(null, ZonedDateTime.now().getOffset().getTotalSeconds() / 60 * -1);
         assertNull(streaks.getCurrent());
     }
 
@@ -77,7 +91,7 @@ public class StreaksServiceTest extends AbstractTest {
         runs.add(run(LocalDateTime.now().minusYears(2).minusDays(1)));
         Mockito.when(stravaService.runs(any(IUser.class))).thenReturn(runs);
 
-        IStreaks streaks = streaksService.getStreaks(null, 0);
+        IStreaks streaks = streaksService.getStreaks(null, ZonedDateTime.now().getOffset().getTotalSeconds() / 60 * -1);
         assertNull(streaks.getCurrent());
         expect(streaks.getLongest(), runs.get(1).getStartTimeLocal(), runs.get(0).getStartTimeLocal(), 2, 2, 100, Progress.GOOD);
         assertNull(streaks.getThisYear());
@@ -93,7 +107,7 @@ public class StreaksServiceTest extends AbstractTest {
         runs.add(run(LocalDateTime.now().minusYears(1).minusDays(3)));
         Mockito.when(stravaService.runs(any(IUser.class))).thenReturn(runs);
 
-        IStreaks streaks = streaksService.getStreaks(null, 0);
+        IStreaks streaks = streaksService.getStreaks(null, ZonedDateTime.now().getOffset().getTotalSeconds() / 60 * -1);
         expect(streaks.getCurrent(), runs.get(1).getStartTimeLocal(), runs.get(0).getStartTimeLocal(), 2, 2, 66, Progress.OK);
         expect(streaks.getLongest(), runs.get(4).getStartTimeLocal(), runs.get(2).getStartTimeLocal(), 3, 3, 100, Progress.GOOD);
         expect(streaks.getThisYear(), runs.get(1).getStartTimeLocal(), runs.get(0).getStartTimeLocal(), 2, 2, 66, Progress.OK);
@@ -118,7 +132,7 @@ public class StreaksServiceTest extends AbstractTest {
         runs.add(run(LocalDateTime.now().minusYears(1).minusDays(11)));
         Mockito.when(stravaService.runs(any(IUser.class))).thenReturn(runs);
 
-        IStreaks streaks = streaksService.getStreaks(null, 0);
+        IStreaks streaks = streaksService.getStreaks(null, ZonedDateTime.now().getOffset().getTotalSeconds() / 60 * -1);
         expect(streaks.getCurrent(), runs.get(1).getStartTimeLocal(), runs.get(0).getStartTimeLocal(), 2, 2, 18, Progress.BAD);
         expect(streaks.getLongest(), runs.get(13).getStartTimeLocal(), runs.get(2).getStartTimeLocal(), 11, 12, 100, Progress.GOOD);
         expect(streaks.getThisYear(), runs.get(1).getStartTimeLocal(), runs.get(0).getStartTimeLocal(), 2, 2, 18, Progress.BAD);
