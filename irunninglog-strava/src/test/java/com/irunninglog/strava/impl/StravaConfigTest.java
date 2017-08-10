@@ -1,6 +1,6 @@
 package com.irunninglog.strava.impl;
 
-import com.irunninglog.strava.IStravaApi;
+import com.irunninglog.strava.IStravaRemoteApi;
 import com.irunninglog.strava.IStravaService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,7 +17,7 @@ public class StravaConfigTest {
     @Autowired
     private IStravaService service;
     @Autowired
-    private IStravaApi api;
+    private IStravaRemoteApi api;
 
     static {
         System.setProperty("strava", "1|foo");
@@ -28,4 +28,5 @@ public class StravaConfigTest {
         assertNotNull(service);
         assertNotNull(api);
     }
+
 }

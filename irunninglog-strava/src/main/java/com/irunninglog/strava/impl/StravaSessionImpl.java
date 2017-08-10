@@ -1,20 +1,17 @@
 package com.irunninglog.strava.impl;
 
-import com.irunninglog.strava.IStravaApi;
-import javastrava.api.v3.auth.AuthorisationService;
-import javastrava.api.v3.auth.impl.retrofit.AuthorisationServiceImpl;
-import javastrava.api.v3.auth.model.Token;
+import com.irunninglog.api.factory.IFactory;
+import com.irunninglog.strava.IStravaRemoteApi;
+import com.irunninglog.strava.IStravaSession;
 import javastrava.api.v3.model.StravaActivity;
 import javastrava.api.v3.model.StravaAthlete;
 import javastrava.api.v3.model.StravaGear;
 import javastrava.api.v3.model.StravaStatistics;
 import javastrava.api.v3.model.reference.StravaActivityType;
-import javastrava.api.v3.rest.API;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -28,14 +25,14 @@ import java.util.concurrent.atomic.AtomicReference;
 
 @Component
 @Scope("prototype")
-final class StravaApiImpl implements IStravaApi {
+final class StravaSessionImpl implements IStravaSession {
 
-    private static final Logger LOG = LoggerFactory.getLogger(StravaApiImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(StravaSessionImpl.class);
     private static final long DELAY_FULL = 30; // MINUTES
     private static final long DELAY_POLL = 5;
 
-    private final int id;
-    private final String secret;
+    private final IFactory factory;
+
     private String token;
     private final AtomicReference<StravaAthlete> athlete = new AtomicReference<>();
     private final AtomicReference<StravaStatistics> statistics = new AtomicReference<>();
@@ -43,17 +40,8 @@ final class StravaApiImpl implements IStravaApi {
     private final AtomicReference<Map<String, StravaGear>> shoes = new AtomicReference<>();
 
     @Autowired
-    StravaApiImpl(Environment environment) {
-        String config = environment.getRequiredProperty("strava");
-        String [] tokens = config.split("\\|");
-        id = Integer.parseInt(tokens[0]);
-        secret = tokens[1];
-    }
-
-    @Override
-    public Token token(String code) {
-        AuthorisationService service = new AuthorisationServiceImpl();
-        return service.tokenExchange(id, secret, code);
+    StravaSessionImpl(IFactory factory) {
+        this.factory = factory;
     }
 
     @Override
@@ -142,7 +130,7 @@ final class StravaApiImpl implements IStravaApi {
         try {
             LOG.info("reloadAll");
 
-            API api = api(token);
+            IStravaRemoteApi api = api(token);
 
             loadAthlete(api);
 
@@ -156,7 +144,7 @@ final class StravaApiImpl implements IStravaApi {
         }
     }
 
-    private void loadActivities(API api) {
+    private void loadActivities(IStravaRemoteApi api) {
         long start = System.currentTimeMillis();
 
         LOG.info("loadActivities");
@@ -171,7 +159,7 @@ final class StravaApiImpl implements IStravaApi {
 
             List<StravaActivity> activityList = new ArrayList<>();
             while (count != 0) {
-                StravaActivity[] array = api.listAuthenticatedAthleteActivities(null, null, page, 200);
+                StravaActivity[] array = api.listAuthenticatedAthleteActivities(page, 200);
 
                 count = array.length;
                 for (StravaActivity activity : array) {
@@ -192,7 +180,7 @@ final class StravaApiImpl implements IStravaApi {
         LOG.info("loadActivities:{}", System.currentTimeMillis() - start);
     }
 
-    private void loadAthlete(API api) {
+    private void loadAthlete(IStravaRemoteApi api) {
         long start = System.currentTimeMillis();
 
         LOG.info("loadAthlete");
@@ -207,7 +195,7 @@ final class StravaApiImpl implements IStravaApi {
         LOG.info("loadAthlete:{}", System.currentTimeMillis() - start);
     }
 
-    private void loadShoes(API api) {
+    private void loadShoes(IStravaRemoteApi api) {
         long start = System.currentTimeMillis();
 
         LOG.info("loadShoes");
@@ -227,10 +215,10 @@ final class StravaApiImpl implements IStravaApi {
         LOG.info("loadShoes:{}", System.currentTimeMillis() - start);
     }
 
-    private API api(String token) {
-        Token apiToken = new Token();
-        apiToken.setToken(token);
-        return new API(apiToken);
+    private IStravaRemoteApi api(String token) {
+        IStravaRemoteApi api = factory.get(IStravaRemoteApi.class);
+        api.setToken(token);
+        return api;
     }
 
 }

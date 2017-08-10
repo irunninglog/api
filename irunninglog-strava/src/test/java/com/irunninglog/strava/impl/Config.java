@@ -1,10 +1,7 @@
 package com.irunninglog.strava.impl;
 
 import com.irunninglog.api.factory.IFactory;
-import com.irunninglog.strava.IStravaApi;
-import com.irunninglog.strava.IStravaAthlete;
-import com.irunninglog.strava.IStravaRun;
-import com.irunninglog.strava.IStravaService;
+import com.irunninglog.strava.*;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,17 +17,17 @@ public class Config {
 
     @Bean
     public IStravaService service() {
-        return new StravaServiceImpl(factory(), api(), cache());
+        return new StravaServiceImpl(factory(), exchange(), cache());
     }
 
     @Bean
-    public StravaApiCache cache() {
-        return new StravaApiCache(factory());
+    public IStravaTokenExchange exchange() {
+        return Mockito.mock(IStravaTokenExchange.class);
     }
 
     @Bean
-    public IStravaApi api() {
-        return Mockito.mock(IStravaApi.class);
+    public StravaSessionCache cache() {
+        return new StravaSessionCache(factory());
     }
 
     @Bean
@@ -43,6 +40,17 @@ public class Config {
     @Scope("prototype")
     public IStravaRun run() {
         return new StravaRunImpl();
+    }
+
+    @Bean
+    @Scope("prototype")
+    public IStravaSession session() {
+        return new StravaSessionImpl(factory());
+    }
+    @Bean
+    @Scope("prototype")
+    public IStravaRemoteApi api() {
+        return Mockito.mock(IStravaRemoteApi.class);
     }
 
 }

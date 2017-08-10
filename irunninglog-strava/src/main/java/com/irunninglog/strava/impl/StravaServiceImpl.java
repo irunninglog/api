@@ -19,19 +19,19 @@ import java.util.stream.Collectors;
 final class StravaServiceImpl implements IStravaService {
 
     private final IFactory factory;
-    private final IStravaApi api;
-    private final StravaApiCache cache;
+    private final IStravaTokenExchange exchange;
+    private final StravaSessionCache cache;
 
     @Autowired
-    StravaServiceImpl(IFactory factory, IStravaApi api, StravaApiCache cache) {
+    StravaServiceImpl(IFactory factory, IStravaTokenExchange exchange, StravaSessionCache cache) {
         this.factory = factory;
-        this.api = api;
+        this.exchange = exchange;
         this.cache = cache;
     }
 
     @Override
     public IUser userFromCode(String code) throws AuthnException {
-        Token token = api.token(code);
+        Token token = exchange.token(code);
 
         return factory.get(IUser.class)
                 .setId(token.getAthlete().getId())
