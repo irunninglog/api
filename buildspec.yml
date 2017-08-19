@@ -11,4 +11,4 @@ phases:
       - mvn package
 artifacts:
   files:
-    - target/irunninglog*.jar
+    - /irunninglog-main/target/irunninglog.jar
