@@ -11,4 +11,5 @@ phases:
       - mvn package
 artifacts:
   files:
+    - ./appspec.yml
     - ./irunninglog-main/target/irunninglog.jar
