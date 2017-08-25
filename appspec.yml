@@ -2,6 +2,6 @@ version: 0.0
 os: linux
 hooks:
   ApplicationStop:
-    - location: app_stop.sh
+    - location: ./app_stop.sh
   ApplicationStart:
-    - location: app_start.sh
+    - location: ./app_start.sh
