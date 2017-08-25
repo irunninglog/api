@@ -1,3 +1,3 @@
-pkill -9 -f IRUNNINGLOGAPI
+sudo pkill -9 -f IRUNNINGLOGAPI
 
 exit 0
