@@ -12,4 +12,6 @@ phases:
 artifacts:
   files:
     - ./appspec.yml
+    - ./app_start.sh
+    - ./app_stop.sh
     - ./irunninglog-main/target/irunninglog.jar
