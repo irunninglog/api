@@ -10,6 +10,7 @@ phases:
       - echo Build completed on `date`
       - mvn package
       - chmod +x *.sh
+
 artifacts:
   files:
     - ./appspec.yml
