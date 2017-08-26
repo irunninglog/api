@@ -3,16 +3,10 @@ os: linux
 files:
   - source: irunninglog-main/target/irunninglog.jar
     destination: /opt/irunninglog/api
-  - source: app_start.sh
-    destination: /opt/irunninglog/api
-  - source: app_stop.sh
-    destination: /opt/irunninglog/api
-  - source: app_clean.sh
-    destination: /opt/irunninglog/api
 hooks:
   ApplicationStop:
-    - location: /opt/irunninglog/api/app_stop.sh
+    - location: app_stop.sh
   ApplicationStart:
-    - location: /opt/irunninglog/api/app_start.sh
+    - location: app_start.sh
   BeforeInstall:
-    - location: /opt/irunninglog/api/app_clean.sh
+    - location: app_clean.sh
