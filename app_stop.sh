@@ -1,4 +1,4 @@
-touch /opt/irunninglog/stop
+touch /opt/irunninglog/api/stop
 
 pkill -9 -f IRUNNINGLOGAPI
 
