@@ -7,8 +7,12 @@ files:
     destination: /opt/irunninglog/api
   - source: app_stop.sh
     destination: /opt/irunninglog/api
+  - source: app_clean.sh
+    destination: /opt/irunninglog/api
 hooks:
   ApplicationStop:
     - location: app_stop.sh
   ApplicationStart:
     - location: app_start.sh
+  BeforeInstall:
+    - location: app_clean.sh

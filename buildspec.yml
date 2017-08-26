@@ -16,4 +16,5 @@ artifacts:
     - ./appspec.yml
     - ./app_start.sh
     - ./app_stop.sh
+    - ./app_clean.sh
     - ./irunninglog-main/target/irunninglog.jar
