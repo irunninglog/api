@@ -1,5 +1,12 @@
 version: 0.0
 os: linux
+files:
+  - source: irunninglog-main/target/irunninglog.jar
+    destination: /opt/irunninglog
+  - source: app_start.sh
+    destination: /opt/irunninglog
+  - source: app_stop.sh
+    destination: /opt/irunninglog
 hooks:
   ApplicationStop:
     - location: app_stop.sh

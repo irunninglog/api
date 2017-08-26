@@ -1,5 +1,5 @@
-touch /tmp/stop
+touch /opt/irunninglog/stop
 
-sudo pkill -9 -f IRUNNINGLOGAPI
+pkill -9 -f IRUNNINGLOGAPI
 
 exit 0
