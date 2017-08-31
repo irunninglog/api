@@ -21,7 +21,7 @@
         <version.jacoco-maven-plugin>0.7.9</version.jacoco-maven-plugin>
         <version.javastrava>1.0.1</version.javastrava>
         <version.junit>4.12</version.junit>
-        <version.logback>1.1.7</version.logback>
+        <version.logback>1.2.3</version.logback>
         <version.maven-compiler-plugin>3.1</version.maven-compiler-plugin>
         <version.maven-shade-plugin>2.3</version.maven-shade-plugin>
         <version.mockito>1.9.5</version.mockito>
@@ -58,11 +58,6 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>jul-to-slf4j</artifactId>
-            <version>${version.slf4j}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-simple</artifactId>
             <version>${version.slf4j}</version>
         </dependency>
         <dependency>
