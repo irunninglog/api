@@ -3,6 +3,8 @@ os: linux
 files:
   - source: irunninglog-main/target/irunninglog.jar
     destination: /opt/irunninglog/api
+  - source: logback.xml
+    destination: /opt/irunninglog/api
 hooks:
   ApplicationStop:
     - location: app_stop.sh

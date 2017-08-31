@@ -17,4 +17,5 @@ artifacts:
     - ./app_start.sh
     - ./app_stop.sh
     - ./app_clean.sh
+    - ./logback.xml
     - ./irunninglog-main/target/irunninglog.jar
