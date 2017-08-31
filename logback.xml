@@ -1,9 +1,9 @@
 <configuration>
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>/opt/irunninglog/api/irunninglog-root.log</file>
+        <file>/opt/irunninglog/api/logs/irunninglog-root.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- daily rollover -->
-            <fileNamePattern>/opt/irunninglog/api/irunninglog-root.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>/opt/irunninglog/api/logs/irunninglog-root.%d{yyyy-MM-dd}.log</fileNamePattern>
 
             <!-- keep 7 days' worth of history -->
             <maxHistory>7</maxHistory>
