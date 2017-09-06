@@ -4,6 +4,6 @@ import com.irunninglog.api.security.IUser;
 
 public interface IStatisticsService {
 
-    IStatistics get(IUser user);
+    IStatistics get(IUser user, int offset);
 
 }

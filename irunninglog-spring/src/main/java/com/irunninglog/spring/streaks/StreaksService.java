@@ -5,6 +5,7 @@ import com.irunninglog.api.security.IUser;
 import com.irunninglog.api.streaks.IStreak;
 import com.irunninglog.api.streaks.IStreaks;
 import com.irunninglog.api.streaks.IStreaksService;
+import com.irunninglog.spring.util.DateService;
 import com.irunninglog.spring.util.DistanceService;
 import com.irunninglog.strava.IStravaRun;
 import com.irunninglog.strava.IStravaService;
@@ -12,10 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,16 +26,19 @@ final class StreaksService implements IStreaksService {
     private final IFactory factory;
     private final IStravaService stravaService;
     private final DistanceService distanceService;
+    private final DateService dateService;
 
     @Autowired
     public StreaksService(IFactory factory,
                           IStravaService stravaService,
-                          DistanceService distanceService) {
+                          DistanceService distanceService,
+                          DateService dateService) {
         super();
 
         this.factory = factory;
         this.stravaService = stravaService;
         this.distanceService = distanceService;
+        this.dateService = dateService;
     }
 
     @Override
@@ -143,16 +144,11 @@ final class StreaksService implements IStreaksService {
     }
 
     private LocalDate current(int minutes) {
-        return clientTimeFromServerTime(ZonedDateTime.now(), minutes).toLocalDate().minusDays(1);
+        return dateService.current(minutes).minusDays(1);
     }
 
     private LocalDate yearStart(int minutes) {
-        return clientTimeFromServerTime(ZonedDateTime.now(), minutes).toLocalDate().with(TemporalAdjusters.firstDayOfYear());
-    }
-
-    private ZonedDateTime clientTimeFromServerTime(ZonedDateTime time, int minutes) {
-        ZonedDateTime utc = time.withZoneSameInstant(ZoneOffset.UTC);
-        return utc.withZoneSameInstant(ZoneOffset.ofTotalSeconds(minutes * 60 * -1));
+        return dateService.yearStart(minutes);
     }
 
 }

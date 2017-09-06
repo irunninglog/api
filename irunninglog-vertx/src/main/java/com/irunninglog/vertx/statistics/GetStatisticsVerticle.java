@@ -24,7 +24,7 @@ public class GetStatisticsVerticle extends AbstractRequestResponseVerticle {
 
     @Override
     protected void handle(IRequest request, IResponse response) throws AuthnException {
-        response.setStatus(ResponseStatus.OK).setBody(service.get(request.getUser()));
+        response.setStatus(ResponseStatus.OK).setBody(service.get(request.getUser(), request.getOffset()));
     }
 
 }

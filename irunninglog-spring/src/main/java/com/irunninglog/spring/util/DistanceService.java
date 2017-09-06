@@ -8,7 +8,7 @@ import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
 @Service
-public class DistanceService {
+public final class DistanceService {
 
     public Progress progressWhereLowIsBad(int percentage) {
         if (percentage < 20) {

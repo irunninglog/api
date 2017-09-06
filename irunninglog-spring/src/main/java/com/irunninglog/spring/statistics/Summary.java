@@ -11,6 +11,7 @@ final class Summary implements ISummary {
     private String thisWeek;
     private String thisMonth;
     private String thisYear;
+    private String allTime;
 
     @Override
     public String getThisWeek() {
@@ -25,6 +26,11 @@ final class Summary implements ISummary {
     @Override
     public String getThisYear() {
         return thisYear;
+    }
+
+    @Override
+    public String getAllTime() {
+        return allTime;
     }
 
     @Override
@@ -44,4 +50,11 @@ final class Summary implements ISummary {
         thisYear = value;
         return this;
     }
+
+    @Override
+    public ISummary setAllTime(String value) {
+        allTime = value;
+        return this;
+    }
+
 }
