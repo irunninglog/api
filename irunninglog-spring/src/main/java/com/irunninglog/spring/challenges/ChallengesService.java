@@ -10,6 +10,7 @@ import com.irunninglog.strava.IStravaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,19 +37,19 @@ final class ChallengesService implements IChallengesService {
     @Override
     public List<IChallenge> getChallenges(IUser user) {
         List<IStravaRun> runs = stravaService.runs(user);
-        float total = 0.0F;
+        BigDecimal total = BigDecimal.ZERO;
         for (IStravaRun run : runs) {
-            total += run.getDistance();
+            total = total.add(BigDecimal.valueOf(run.getDistance()));
         }
 
-        final float done = total;
+        final BigDecimal done = total;
         return definitions.definitions().stream().map(definition -> factory.get(IChallenge.class)
                 .setName(definition.getName())
                 .setDescription(definition.getDesctiption())
                 .setDistanceTotal(distanceService.mileage(definition.getDistance()))
-                .setDistanceDone(distanceService.mileage(Math.min(definition.getDistance(), done)))
-                .setPercentage(distanceService.percentage(definition.getDistance(), done))
-                .setProgress(distanceService.progressWhereLowIsBad(distanceService.percentage(definition.getDistance(), done))))
+                .setDistanceDone(distanceService.mileage(Math.min(definition.getDistance(), done.floatValue())))
+                .setPercentage(distanceService.percentage(definition.getDistance(), done.floatValue()))
+                .setProgress(distanceService.progressWhereLowIsBad(distanceService.percentage(definition.getDistance(), done.floatValue()))))
                 .collect(Collectors.toList());
     }
 
