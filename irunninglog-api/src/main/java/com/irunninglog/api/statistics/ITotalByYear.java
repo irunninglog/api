@@ -6,8 +6,12 @@ public interface ITotalByYear {
 
     String getTotal();
 
+    int getPercentage();
+
     ITotalByYear setYear(int year);
 
     ITotalByYear setTotal(String total);
+
+    ITotalByYear setPercentage(int percentage);
 
 }

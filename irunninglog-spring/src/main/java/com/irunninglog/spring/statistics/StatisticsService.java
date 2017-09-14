@@ -62,9 +62,19 @@ final class StatisticsService implements IStatisticsService {
             map.put(year, bigDecimal.add(BigDecimal.valueOf(run.getDistance())));
         }
 
+        BigDecimal max = BigDecimal.ZERO;
+        for (Map.Entry<Integer, BigDecimal> entry : map.entrySet()) {
+            if (entry.getValue().compareTo(max) > 0) {
+                max = entry.getValue();
+            }
+        }
+
         List<ITotalByYear> totals = new ArrayList<>();
         for (Map.Entry<Integer, BigDecimal> entry : map.entrySet()) {
-            totals.add(factory.get(ITotalByYear.class).setYear(entry.getKey()).setTotal(distanceService.mileage(entry.getValue().floatValue())));
+            totals.add(factory.get(ITotalByYear.class)
+                    .setYear(entry.getKey())
+                    .setTotal(distanceService.mileage(entry.getValue().floatValue()))
+                    .setPercentage(entry.getValue().multiply(new BigDecimal(100)).divide(max, BigDecimal.ROUND_FLOOR).intValue()));
         }
 
         statistics.setYears(totals);

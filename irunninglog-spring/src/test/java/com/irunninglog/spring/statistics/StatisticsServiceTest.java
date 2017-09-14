@@ -80,10 +80,12 @@ public class StatisticsServiceTest extends AbstractTest {
         ITotalByYear thisYearTotal = totals.next();
         assertEquals(thisYear.getYear(), thisYearTotal.getYear());
         assertEquals("50 mi", thisYearTotal.getTotal());
+        assertEquals(100, thisYearTotal.getPercentage());
 
         ITotalByYear lastYearTotal = totals.next();
         assertEquals(thisYear.getYear() - 1, lastYearTotal.getYear());
         assertEquals("40 mi", lastYearTotal.getTotal());
+        assertEquals(80, lastYearTotal.getPercentage());
     }
 
 }

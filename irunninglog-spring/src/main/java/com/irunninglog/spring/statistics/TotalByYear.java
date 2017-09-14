@@ -10,6 +10,7 @@ final class TotalByYear implements ITotalByYear {
 
     private int year;
     private String total;
+    private int percentage;
 
     @Override
     public int getYear() {
@@ -22,6 +23,11 @@ final class TotalByYear implements ITotalByYear {
     }
 
     @Override
+    public int getPercentage() {
+        return percentage;
+    }
+
+    @Override
     public ITotalByYear setYear(int year) {
         this.year = year;
         return this;
@@ -30,6 +36,12 @@ final class TotalByYear implements ITotalByYear {
     @Override
     public ITotalByYear setTotal(String total) {
         this.total = total;
+        return this;
+    }
+
+    @Override
+    public ITotalByYear setPercentage(int percentage) {
+        this.percentage = percentage;
         return this;
     }
 
