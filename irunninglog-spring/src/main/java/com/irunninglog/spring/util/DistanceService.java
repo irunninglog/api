@@ -36,9 +36,21 @@ public final class DistanceService {
     }
 
     public String mileage(float distance) {
-        return DecimalFormat.getInstance()
+        return mileage(distance, Boolean.TRUE);
+    }
+
+    public String mileage(float distance, boolean appendMileage) {
+        String string = DecimalFormat.getInstance()
                 .format(BigDecimal.valueOf(distance)
-                        .multiply(BigDecimal.valueOf(0.000621371)).setScale(1, RoundingMode.HALF_UP)) + " mi";
+                        .multiply(BigDecimal.valueOf(0.000621371)).setScale(1, RoundingMode.HALF_UP));
+
+        if (appendMileage) {
+            string += " mi";
+        } else {
+            string = string.replace(",", "");
+        }
+
+        return string;
     }
 
 }

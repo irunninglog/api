@@ -2,10 +2,7 @@ package com.irunninglog.spring.statistics;
 
 import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.security.IUser;
-import com.irunninglog.api.statistics.IStatistics;
-import com.irunninglog.api.statistics.IStatisticsService;
-import com.irunninglog.api.statistics.ISummary;
-import com.irunninglog.api.statistics.ITotalByYear;
+import com.irunninglog.api.statistics.*;
 import com.irunninglog.spring.util.DateService;
 import com.irunninglog.spring.util.DistanceService;
 import com.irunninglog.strava.IStravaRun;
@@ -14,11 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 @Service
 final class StatisticsService implements IStatisticsService {
@@ -45,7 +41,42 @@ final class StatisticsService implements IStatisticsService {
 
         years(statistics, runs);
 
+        dataSets(statistics, runs, offset);
+
         return statistics;
+    }
+
+    private void dataSets(IStatistics statistics, List<IStravaRun> runs, int offset) {
+        Map<String, BigDecimal> map = new TreeMap<>();
+
+        for (IStravaRun run : runs) {
+            if (!run.getStartTimeLocal().toLocalDate().isBefore(dateService.yearStart(offset))) {
+                LocalDate date = dateService.monthStart(run.getStartTimeLocal());
+                BigDecimal bigDecimal = map.get(date.toString());
+                if (bigDecimal == null) {
+                    bigDecimal = new BigDecimal(BigInteger.ZERO);
+                }
+                map.put(date.toString(), bigDecimal.add(BigDecimal.valueOf(run.getDistance())));
+            }
+        }
+
+        Map<String, IDataSet> dataSetMap = new HashMap<>();
+
+        Collection<IDataPoint> points = new ArrayList<>();
+        for (Map.Entry<String, BigDecimal> entry : map.entrySet()) {
+            LocalDate date = LocalDate.parse(entry.getKey());
+
+            points.add(factory.get(IDataPoint.class)
+                    .setDate(date.format(DateTimeFormatter.ofPattern("yyyy-MM")))
+                    .setLabel(date.format(DateTimeFormatter.ofPattern("MMM yyyy")))
+                    .setValue(distanceService.mileage(entry.getValue().floatValue(), Boolean.FALSE))
+                    .setValueFormatted(distanceService.mileage(entry.getValue().floatValue())));
+        }
+
+        dataSetMap.put("points", factory.get(IDataSet.class).setPoints(points));
+        dataSetMap.put("totals", factory.get(IDataSet.class).setPoints(Collections.singletonList(factory.get(IDataPoint.class))));
+
+        statistics.setDataSets(dataSetMap);
     }
 
     private void years(IStatistics statistics, List<IStravaRun> runs) {

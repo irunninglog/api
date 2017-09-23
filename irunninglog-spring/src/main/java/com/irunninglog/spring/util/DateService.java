@@ -2,10 +2,7 @@ package com.irunninglog.spring.util;
 
 import org.springframework.stereotype.Service;
 
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
+import java.time.*;
 import java.time.temporal.TemporalAdjusters;
 
 @Service
@@ -30,6 +27,10 @@ public final class DateService {
     private ZonedDateTime clientTimeFromServerTime(ZonedDateTime time, int minutes) {
         ZonedDateTime utc = time.withZoneSameInstant(ZoneOffset.UTC);
         return utc.withZoneSameInstant(ZoneOffset.ofTotalSeconds(minutes * 60 * -1));
+    }
+
+    public LocalDate monthStart(LocalDateTime localDateTime) {
+        return localDateTime.toLocalDate().with(TemporalAdjusters.firstDayOfMonth());
     }
 
 }
