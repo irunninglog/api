@@ -74,6 +74,19 @@ public class DataSetsTest extends AbstractTest {
         IDataSet totals = statistics.getDataSets().get("totals");
         assertNotNull(totals);
         assertEquals(2, totals.getPoints().size());
+
+        Iterator<IDataPoint> totalsIterator = statistics.getDataSets().get("totals").getPoints().iterator();
+        IDataPoint total1 = totalsIterator.next();
+        assertEquals(year + "-08", total1.getDate());
+        assertEquals("Aug " + year, total1.getLabel());
+        assertEquals("30", total1.getValue());
+        assertEquals("30 mi", total1.getValueFormatted());
+
+        IDataPoint total2 = totalsIterator.next();
+        assertEquals(year + "-09", total2.getDate());
+        assertEquals("Sep " + year, total2.getLabel());
+        assertEquals("50", total2.getValue());
+        assertEquals("50 mi", total2.getValueFormatted());
     }
 
 }

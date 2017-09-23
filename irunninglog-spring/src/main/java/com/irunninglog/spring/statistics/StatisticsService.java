@@ -73,8 +73,22 @@ final class StatisticsService implements IStatisticsService {
                     .setValueFormatted(distanceService.mileage(entry.getValue().floatValue())));
         }
 
+        Collection<IDataPoint> totals = new ArrayList<>();
+        BigDecimal total = BigDecimal.ZERO;
+        for (Map.Entry<String, BigDecimal> entry : map.entrySet()) {
+            LocalDate date = LocalDate.parse(entry.getKey());
+
+            total = total.add(entry.getValue());
+
+            totals.add(factory.get(IDataPoint.class)
+                    .setDate(date.format(DateTimeFormatter.ofPattern("yyyy-MM")))
+                    .setLabel(date.format(DateTimeFormatter.ofPattern("MMM yyyy")))
+                    .setValue(distanceService.mileage(total.floatValue(), Boolean.FALSE))
+                    .setValueFormatted(distanceService.mileage(total.floatValue())));
+        }
+
         dataSetMap.put("points", factory.get(IDataSet.class).setPoints(points));
-        dataSetMap.put("totals", factory.get(IDataSet.class).setPoints(Collections.singletonList(factory.get(IDataPoint.class))));
+        dataSetMap.put("totals", factory.get(IDataSet.class).setPoints(totals));
 
         statistics.setDataSets(dataSetMap);
     }
