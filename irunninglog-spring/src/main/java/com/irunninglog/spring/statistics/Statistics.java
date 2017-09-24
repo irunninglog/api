@@ -19,6 +19,7 @@ final class Statistics implements IStatistics {
     private ISummary summary;
     @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, defaultImpl = TotalByYear.class)
     private Collection<ITotalByYear> years;
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, defaultImpl = DataSet.class)
     private Map<String, IDataSet> dataSets;
 
     @Override

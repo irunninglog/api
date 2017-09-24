@@ -1,5 +1,6 @@
 package com.irunninglog.spring.statistics;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.irunninglog.api.statistics.IDataPoint;
 import com.irunninglog.api.statistics.IDataSet;
 import org.springframework.context.annotation.Scope;
@@ -11,6 +12,7 @@ import java.util.Collection;
 @Scope("prototype")
 final class DataSet implements IDataSet {
 
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, defaultImpl = DataPoint.class)
     private Collection<IDataPoint> points;
 
     @Override
