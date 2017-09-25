@@ -11,13 +11,10 @@ import javastrava.api.v3.model.StravaGear;
 import javastrava.api.v3.model.reference.StravaActivityType;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.Collections;
 import java.util.List;
@@ -26,9 +23,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.any;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {Config.class})
-public class StravaServiceTest implements ApplicationContextAware {
+public class StravaServiceTest extends AbstractStravaTest implements ApplicationContextAware {
 
     private ApplicationContext context;
     private IStravaService service;
@@ -176,7 +171,7 @@ public class StravaServiceTest implements ApplicationContextAware {
         assertEquals("Mizuno", one.getBrand());
         assertEquals("Wave Inspire 13", one.getModel());
         assertEquals("foo", one.getDescription());
-        assertEquals(100, one.getDistance(), 1E-9);
+        assertEquals(100, one.getDistance(), getMargin());
         assertEquals(true, one.isPrimary());
     }
 

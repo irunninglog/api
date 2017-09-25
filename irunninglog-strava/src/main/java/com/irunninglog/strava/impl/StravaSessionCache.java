@@ -20,15 +20,11 @@ final class StravaSessionCache {
     }
 
     IStravaSession create(String token) {
-        IStravaSession session = map.get(token);
-
-        if (session == null) {
-            session = factory.get(IStravaSession.class);
+        return map.computeIfAbsent(token, s ->  {
+            IStravaSession session = factory.get(IStravaSession.class);
             session.load(token);
-            map.put(token, session);
-        }
-
-        return session;
+            return session;
+        });
     }
 
     IStravaSession get(String token) {
