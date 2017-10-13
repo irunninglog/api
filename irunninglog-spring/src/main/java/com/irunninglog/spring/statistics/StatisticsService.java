@@ -41,23 +41,21 @@ final class StatisticsService implements IStatisticsService {
 
         years(statistics, runs);
 
-        dataSets(statistics, runs, offset);
+        dataSets(statistics, runs);
 
         return statistics;
     }
 
-    private void dataSets(IStatistics statistics, List<IStravaRun> runs, int offset) {
+    private void dataSets(IStatistics statistics, List<IStravaRun> runs) {
         Map<String, BigDecimal> map = new TreeMap<>();
 
         for (IStravaRun run : runs) {
-            if (!run.getStartTimeLocal().toLocalDate().isBefore(dateService.yearStart(offset))) {
-                LocalDate date = dateService.monthStart(run.getStartTimeLocal());
-                BigDecimal bigDecimal = map.get(date.toString());
-                if (bigDecimal == null) {
-                    bigDecimal = new BigDecimal(BigInteger.ZERO);
-                }
-                map.put(date.toString(), bigDecimal.add(BigDecimal.valueOf(run.getDistance())));
+            LocalDate date = dateService.monthStart(run.getStartTimeLocal());
+            BigDecimal bigDecimal = map.get(date.toString());
+            if (bigDecimal == null) {
+                bigDecimal = new BigDecimal(BigInteger.ZERO);
             }
+            map.put(date.toString(), bigDecimal.add(BigDecimal.valueOf(run.getDistance())));
         }
 
         Map<String, IDataSet> dataSetMap = new HashMap<>();
