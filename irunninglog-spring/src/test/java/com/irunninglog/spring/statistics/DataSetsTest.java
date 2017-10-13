@@ -56,37 +56,37 @@ public class DataSetsTest extends AbstractTest {
 
         IDataSet points = statistics.getDataSets().get("points");
         assertNotNull(points);
-        assertEquals(2, points.getPoints().size());
+        assertEquals(3, points.getPoints().size());
 
         Iterator<IDataPoint> pointIterator = statistics.getDataSets().get("points").getPoints().iterator();
         IDataPoint point1 = pointIterator.next();
-        assertEquals(year + "-08", point1.getDate());
-        assertEquals("Aug " + year, point1.getLabel());
-        assertEquals("30", point1.getValue());
-        assertEquals("30 mi", point1.getValueFormatted());
+        assertEquals((year-1) + "-09", point1.getDate());
+        assertEquals("Sep " + (year - 1), point1.getLabel());
+        assertEquals("10", point1.getValue());
+        assertEquals("10 mi", point1.getValueFormatted());
 
         IDataPoint point2 = pointIterator.next();
-        assertEquals(year + "-09", point2.getDate());
-        assertEquals("Sep " + year, point2.getLabel());
-        assertEquals("20", point2.getValue());
-        assertEquals("20 mi", point2.getValueFormatted());
+        assertEquals(year + "-08", point2.getDate());
+        assertEquals("Aug " + year, point2.getLabel());
+        assertEquals("30", point2.getValue());
+        assertEquals("30 mi", point2.getValueFormatted());
 
         IDataSet totals = statistics.getDataSets().get("totals");
         assertNotNull(totals);
-        assertEquals(2, totals.getPoints().size());
+        assertEquals(3, totals.getPoints().size());
 
         Iterator<IDataPoint> totalsIterator = statistics.getDataSets().get("totals").getPoints().iterator();
         IDataPoint total1 = totalsIterator.next();
-        assertEquals(year + "-08", total1.getDate());
-        assertEquals("Aug " + year, total1.getLabel());
-        assertEquals("30", total1.getValue());
-        assertEquals("30 mi", total1.getValueFormatted());
+        assertEquals((year - 1) + "-09", total1.getDate());
+        assertEquals("Sep " + (year - 1), total1.getLabel());
+        assertEquals("10", total1.getValue());
+        assertEquals("10 mi", total1.getValueFormatted());
 
         IDataPoint total2 = totalsIterator.next();
-        assertEquals(year + "-09", total2.getDate());
-        assertEquals("Sep " + year, total2.getLabel());
-        assertEquals("50", total2.getValue());
-        assertEquals("50 mi", total2.getValueFormatted());
+        assertEquals(year + "-08", total2.getDate());
+        assertEquals("Aug " + year, total2.getLabel());
+        assertEquals("40", total2.getValue());
+        assertEquals("40 mi", total2.getValueFormatted());
     }
 
 }
