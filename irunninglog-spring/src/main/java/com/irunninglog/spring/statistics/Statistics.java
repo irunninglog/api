@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
-import java.util.Map;
 
 @Component
 @Scope("prototype")
@@ -20,7 +19,7 @@ final class Statistics implements IStatistics {
     @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, defaultImpl = TotalByYear.class)
     private Collection<ITotalByYear> years;
     @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, defaultImpl = DataSet.class)
-    private Map<String, IDataSet> dataSets;
+    private IDataSet dataSet;
 
     @Override
     public ISummary getSummary() {
@@ -45,13 +44,13 @@ final class Statistics implements IStatistics {
     }
 
     @Override
-    public Map<String, IDataSet> getDataSets() {
-        return dataSets;
+    public IDataSet getDataSet() {
+        return dataSet;
     }
 
     @Override
-    public IStatistics setDataSets(Map<String, IDataSet> dataSets) {
-        this.dataSets = dataSets;
+    public IStatistics setDataSet(IDataSet dataSet) {
+        this.dataSet = dataSet;
         return this;
     }
 

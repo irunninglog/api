@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
@@ -58,37 +57,25 @@ final class StatisticsService implements IStatisticsService {
             map.put(date.toString(), bigDecimal.add(BigDecimal.valueOf(run.getDistance())));
         }
 
-        Map<String, IDataSet> dataSetMap = new HashMap<>();
-
         Collection<IDataPoint> points = new ArrayList<>();
-        for (Map.Entry<String, BigDecimal> entry : map.entrySet()) {
-            LocalDate date = LocalDate.parse(entry.getKey());
-
-            points.add(factory.get(IDataPoint.class)
-                    .setDate(date.format(DateTimeFormatter.ofPattern("yyyy-MM")))
-                    .setLabel(date.format(DateTimeFormatter.ofPattern("MMM yyyy")))
-                    .setValue(distanceService.mileage(entry.getValue().floatValue(), Boolean.FALSE))
-                    .setValueFormatted(distanceService.mileage(entry.getValue().floatValue())));
-        }
-
-        Collection<IDataPoint> totals = new ArrayList<>();
         BigDecimal total = BigDecimal.ZERO;
         for (Map.Entry<String, BigDecimal> entry : map.entrySet()) {
             LocalDate date = LocalDate.parse(entry.getKey());
 
             total = total.add(entry.getValue());
 
-            totals.add(factory.get(IDataPoint.class)
-                    .setDate(date.format(DateTimeFormatter.ofPattern("yyyy-MM")))
-                    .setLabel(date.format(DateTimeFormatter.ofPattern("MMM yyyy")))
-                    .setValue(distanceService.mileage(total.floatValue(), Boolean.FALSE))
-                    .setValueFormatted(distanceService.mileage(total.floatValue())));
+            Map<String, String> values = new HashMap<>();
+            values.put("monthly", distanceService.mileage(entry.getValue().floatValue(), Boolean.FALSE));
+            values.put("monthlyFormatted", distanceService.mileage(entry.getValue().floatValue()));
+            values.put("cumulative", distanceService.mileage(total.floatValue(), Boolean.FALSE));
+            values.put("cumulativeFormatted", distanceService.mileage(total.floatValue()));
+
+            points.add(factory.get(IDataPoint.class)
+                    .setDate(dateService.format(date))
+                    .setValues(values));
         }
 
-        dataSetMap.put("points", factory.get(IDataSet.class).setPoints(points));
-        dataSetMap.put("totals", factory.get(IDataSet.class).setPoints(totals));
-
-        statistics.setDataSets(dataSetMap);
+        statistics.setDataSet(factory.get(IDataSet.class).setPoints(points));
     }
 
     private void years(IStatistics statistics, List<IStravaRun> runs) {

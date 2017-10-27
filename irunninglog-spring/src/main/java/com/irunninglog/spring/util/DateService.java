@@ -3,10 +3,13 @@ package com.irunninglog.spring.util;
 import org.springframework.stereotype.Service;
 
 import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 
 @Service
 public final class DateService {
+
+    private static final String WIRE_FORMAT = "MM-dd-yyyy";
 
     public LocalDate current(int minutes) {
         return clientTimeFromServerTime(ZonedDateTime.now(), minutes).toLocalDate();
@@ -31,6 +34,10 @@ public final class DateService {
 
     public LocalDate monthStart(LocalDateTime localDateTime) {
         return localDateTime.toLocalDate().with(TemporalAdjusters.firstDayOfMonth());
+    }
+
+    public String format(LocalDate date) {
+        return DateTimeFormatter.ofPattern(WIRE_FORMAT).format(date);
     }
 
 }

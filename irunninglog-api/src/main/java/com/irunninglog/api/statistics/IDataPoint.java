@@ -1,21 +1,15 @@
 package com.irunninglog.api.statistics;
 
+import java.util.Map;
+
 public interface IDataPoint {
 
     String getDate();
 
-    String getLabel();
-
-    String getValueFormatted();
-
-    String getValue();
+    Map<String, String> getValues();
 
     IDataPoint setDate(String date);
 
-    IDataPoint setLabel(String label);
-
-    IDataPoint setValueFormatted(String value);
-
-    IDataPoint setValue(String value);
+    IDataPoint setValues(Map<String, String> values);
 
 }

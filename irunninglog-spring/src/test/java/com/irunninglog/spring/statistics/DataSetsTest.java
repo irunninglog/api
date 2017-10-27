@@ -2,7 +2,6 @@ package com.irunninglog.spring.statistics;
 
 import com.irunninglog.api.security.IUser;
 import com.irunninglog.api.statistics.IDataPoint;
-import com.irunninglog.api.statistics.IDataSet;
 import com.irunninglog.api.statistics.IStatistics;
 import com.irunninglog.api.statistics.IStatisticsService;
 import com.irunninglog.spring.AbstractTest;
@@ -16,6 +15,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -51,42 +51,33 @@ public class DataSetsTest extends AbstractTest {
 
         IStatistics statistics = statisticsService.get(null, ZonedDateTime.now().getOffset().getTotalSeconds() / 60 * -1);
 
-        assertNotNull(statistics.getDataSets());
-        assertEquals(2, statistics.getDataSets().size());
+        assertNotNull(statistics.getDataSet());
 
-        IDataSet points = statistics.getDataSets().get("points");
+        Collection<IDataPoint> points = statistics.getDataSet().getPoints();
         assertNotNull(points);
-        assertEquals(3, points.getPoints().size());
+        assertEquals(3, points.size());
 
-        Iterator<IDataPoint> pointIterator = statistics.getDataSets().get("points").getPoints().iterator();
+        Iterator<IDataPoint> pointIterator = points.iterator();
         IDataPoint point1 = pointIterator.next();
-        assertEquals((year-1) + "-09", point1.getDate());
-        assertEquals("Sep " + (year - 1), point1.getLabel());
-        assertEquals("10", point1.getValue());
-        assertEquals("10 mi", point1.getValueFormatted());
+        assertEquals("09-01-" + (year - 1), point1.getDate());
+        assertEquals("10", point1.getValues().get("monthly"));
+        assertEquals("10 mi", point1.getValues().get("monthlyFormatted"));
+        assertEquals("10", point1.getValues().get("cumulative"));
+        assertEquals("10 mi", point1.getValues().get("cumulativeFormatted"));
 
         IDataPoint point2 = pointIterator.next();
-        assertEquals(year + "-08", point2.getDate());
-        assertEquals("Aug " + year, point2.getLabel());
-        assertEquals("30", point2.getValue());
-        assertEquals("30 mi", point2.getValueFormatted());
+        assertEquals("08-01-" + year, point2.getDate());
+        assertEquals("30", point2.getValues().get("monthly"));
+        assertEquals("30 mi", point2.getValues().get("monthlyFormatted"));
+        assertEquals("40", point2.getValues().get("cumulative"));
+        assertEquals("40 mi", point2.getValues().get("cumulativeFormatted"));
 
-        IDataSet totals = statistics.getDataSets().get("totals");
-        assertNotNull(totals);
-        assertEquals(3, totals.getPoints().size());
-
-        Iterator<IDataPoint> totalsIterator = statistics.getDataSets().get("totals").getPoints().iterator();
-        IDataPoint total1 = totalsIterator.next();
-        assertEquals((year - 1) + "-09", total1.getDate());
-        assertEquals("Sep " + (year - 1), total1.getLabel());
-        assertEquals("10", total1.getValue());
-        assertEquals("10 mi", total1.getValueFormatted());
-
-        IDataPoint total2 = totalsIterator.next();
-        assertEquals(year + "-08", total2.getDate());
-        assertEquals("Aug " + year, total2.getLabel());
-        assertEquals("40", total2.getValue());
-        assertEquals("40 mi", total2.getValueFormatted());
+        IDataPoint point3 = pointIterator.next();
+        assertEquals("09-01-" + year, point3.getDate());
+        assertEquals("20", point3.getValues().get("monthly"));
+        assertEquals("20 mi", point3.getValues().get("monthlyFormatted"));
+        assertEquals("60", point3.getValues().get("cumulative"));
+        assertEquals("60 mi", point3.getValues().get("cumulativeFormatted"));
     }
 
 }

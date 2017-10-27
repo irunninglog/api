@@ -1,7 +1,6 @@
 package com.irunninglog.api.statistics;
 
 import java.util.Collection;
-import java.util.Map;
 
 public interface IStatistics {
 
@@ -13,8 +12,8 @@ public interface IStatistics {
 
     IStatistics setYears(Collection<ITotalByYear> years);
 
-    Map<String, IDataSet> getDataSets();
+    IDataSet getDataSet();
 
-    IStatistics setDataSets(Map<String, IDataSet> dataSets);
+    IStatistics setDataSet(IDataSet dataSet);
 
 }
