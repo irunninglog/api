@@ -48,6 +48,7 @@ final class ChallengesService implements IChallengesService {
                 .setDescription(definition.getDesctiption())
                 .setDistanceTotal(distanceService.mileage(definition.getDistance()))
                 .setDistanceDone(distanceService.mileage(Math.min(definition.getDistance(), done.floatValue())))
+                .setDistanceInt(distanceService.getDistanceFloored(definition.getDistance()))
                 .setPercentage(distanceService.percentage(definition.getDistance(), done.floatValue()))
                 .setProgress(distanceService.progressWhereLowIsBad(distanceService.percentage(definition.getDistance(), done.floatValue()))))
                 .collect(Collectors.toList());

@@ -10,6 +10,10 @@ import java.text.DecimalFormat;
 @Service
 public final class DistanceService {
 
+    public int getDistanceFloored(float distance) {
+        return new BigDecimal(mileage(distance, Boolean.FALSE)).intValue();
+    }
+
     public Progress progressWhereLowIsBad(int percentage) {
         if (percentage < 20) {
             return Progress.BAD;

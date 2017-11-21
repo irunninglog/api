@@ -16,6 +16,8 @@ public interface IChallenge {
 
     Progress getProgress();
 
+    int getDistanceInt();
+
     IChallenge setName(String name);
 
     IChallenge setDescription(String description);
@@ -27,5 +29,7 @@ public interface IChallenge {
     IChallenge setPercentage(int percentage);
 
     IChallenge setProgress(Progress progress);
+
+    IChallenge setDistanceInt(int distance);
 
 }

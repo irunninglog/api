@@ -13,6 +13,7 @@ final class Challenge implements IChallenge {
     private String description;
     private String distanceTotal;
     private String distanceDone;
+    private int distanceInt;
     private int percentage;
     private Progress progress;
 
@@ -44,6 +45,17 @@ final class Challenge implements IChallenge {
     @Override
     public Progress getProgress() {
         return progress;
+    }
+
+    @Override
+    public int getDistanceInt() {
+        return distanceInt;
+    }
+
+    @Override
+    public IChallenge setDistanceInt(int distanceInt) {
+        this.distanceInt = distanceInt;
+        return this;
     }
 
     @Override
