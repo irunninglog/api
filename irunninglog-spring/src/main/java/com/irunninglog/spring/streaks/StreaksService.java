@@ -78,7 +78,7 @@ final class StreaksService implements IStreaksService {
         }
 
         for (IStreak value : streaksList) {
-            if (!LocalDate.parse(value.getEndDate(), FORMATTER).isBefore(yearStart(minutes))) {
+            if (!LocalDate.parse(value.getStartDate(), FORMATTER).isBefore(yearStart(minutes))) {
                 return copyOf(value, longest);
             }
         }
