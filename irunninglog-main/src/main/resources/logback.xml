@@ -5,6 +5,9 @@
         </encoder>
     </appender>
 
+    <!-- Ensure that we don't log access tokens -->
+    <logger name="retrofit.Platform" level="OFF" />
+
     <root level="info">
         <appender-ref ref="STDOUT" />
     </root>
