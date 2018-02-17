@@ -46,7 +46,7 @@ public final class DistanceService {
     public String mileage(float distance, boolean appendMileage) {
         String string = DecimalFormat.getInstance()
                 .format(BigDecimal.valueOf(distance)
-                        .multiply(BigDecimal.valueOf(0.000621371)).setScale(1, RoundingMode.HALF_UP));
+                        .multiply(BigDecimal.valueOf(0.00062137119223733)).setScale(1, RoundingMode.DOWN));
 
         if (appendMileage) {
             string += " mi";

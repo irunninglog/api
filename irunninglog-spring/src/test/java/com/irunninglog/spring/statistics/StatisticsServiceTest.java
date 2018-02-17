@@ -41,8 +41,8 @@ public class StatisticsServiceTest extends AbstractTest {
     @Test
     public void summary() {
         List<IStravaRun> runs = new ArrayList<>();
-        runs.add(run(LocalDateTime.now(), 16093.4F));
-        runs.add(run(LocalDateTime.now().minusYears(1), 16093.4F));
+        runs.add(run(LocalDateTime.now(), 16093.44F));
+        runs.add(run(LocalDateTime.now().minusYears(1), 16093.44F));
         Mockito.when(stravaService.runs(any(IUser.class))).thenReturn(runs);
 
         IStatistics statistics = statisticsService.get(null, ZonedDateTime.now().getOffset().getTotalSeconds() / 60 * -1);
@@ -59,15 +59,15 @@ public class StatisticsServiceTest extends AbstractTest {
         LocalDate thisYear = dateService.yearStart(ZonedDateTime.now().getOffset().getTotalSeconds() / 60 * -1);
 
         List<IStravaRun> runs = new ArrayList<>();
-        runs.add(run(LocalDateTime.now(), 16093.4F));
-        runs.add(run(LocalDateTime.now(), 16093.4F));
-        runs.add(run(LocalDateTime.now(), 16093.4F));
-        runs.add(run(LocalDateTime.now(), 16093.4F));
-        runs.add(run(LocalDateTime.now(), 16093.4F));
-        runs.add(run(LocalDateTime.now().minusYears(1), 16093.4F));
-        runs.add(run(LocalDateTime.now().minusYears(1), 16093.4F));
-        runs.add(run(LocalDateTime.now().minusYears(1), 16093.4F));
-        runs.add(run(LocalDateTime.now().minusYears(1), 16093.4F));
+        runs.add(run(LocalDateTime.now(), 16093.44F));
+        runs.add(run(LocalDateTime.now(), 16093.44F));
+        runs.add(run(LocalDateTime.now(), 16093.44F));
+        runs.add(run(LocalDateTime.now(), 16093.44F));
+        runs.add(run(LocalDateTime.now(), 16093.44F));
+        runs.add(run(LocalDateTime.now().minusYears(1), 16093.44F));
+        runs.add(run(LocalDateTime.now().minusYears(1), 16093.44F));
+        runs.add(run(LocalDateTime.now().minusYears(1), 16093.44F));
+        runs.add(run(LocalDateTime.now().minusYears(1), 16093.44F));
         Mockito.when(stravaService.runs(any(IUser.class))).thenReturn(runs);
 
         IStatistics statistics = statisticsService.get(null, ZonedDateTime.now().getOffset().getTotalSeconds() / 60 * -1);

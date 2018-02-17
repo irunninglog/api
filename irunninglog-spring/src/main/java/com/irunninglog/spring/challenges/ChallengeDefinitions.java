@@ -17,7 +17,7 @@ final class ChallengeDefinitions {
         definitions.add(new ChallengeDefinition()
                 .setName("New York to Boston")
                 .setDesctiption(DRIVING_DISTANCE)
-                .setDistance(346160));
+                .setDistance(346170));
 
         definitions.add(new ChallengeDefinition()
                 .setName("London to Rome")
@@ -27,7 +27,7 @@ final class ChallengeDefinitions {
         definitions.add(new ChallengeDefinition()
                 .setName("Appalachain Trail")
                 .setDesctiption("Official website distance")
-                .setDistance(3524463));
+                .setDistance(3524464));
 
         definitions.add(new ChallengeDefinition()
                 .setName("New York to Los Angeles")
@@ -42,32 +42,32 @@ final class ChallengeDefinitions {
         definitions.add(new ChallengeDefinition()
                 .setName("Around the Moon")
                 .setDesctiption(EQUATORIAL_DISTANCE)
-                .setDistance(10921008));
+                .setDistance(10921009));
 
         definitions.add(new ChallengeDefinition()
                 .setName("London to Cape Town")
                 .setDesctiption(DRIVING_DISTANCE)
-                .setDistance(13271777.2F));
+                .setDistance(13271778F));
 
         definitions.add(new ChallengeDefinition()
                 .setName("Lisbon to Magadan")
                 .setDesctiption(DRIVING_DISTANCE)
-                .setDistance(15145000));
+                .setDistance(15145060));
 
         definitions.add(new ChallengeDefinition()
                 .setName("Around Mars")
                 .setDesctiption(EQUATORIAL_DISTANCE)
-                .setDistance(21344729));
+                .setDistance(21344730));
 
         definitions.add(new ChallengeDefinition()
                 .setName("Prudhoe Bay to Ushuaia")
                 .setDesctiption(DRIVING_DISTANCE)
-                .setDistance(24222236.5F));
+                .setDistance(24222238));
 
         definitions.add(new ChallengeDefinition()
                 .setName("Around the World")
                 .setDesctiption(EQUATORIAL_DISTANCE)
-                .setDistance(40030000));
+                .setDistance(40030020));
 
         definitions.add(new ChallengeDefinition()
                 .setName("From the Earth to the Moon")

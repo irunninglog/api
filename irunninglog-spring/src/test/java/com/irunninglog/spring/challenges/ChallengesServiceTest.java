@@ -34,7 +34,7 @@ public class ChallengesServiceTest extends AbstractTest {
     @Test
     public void get() {
         IStravaRun run = Mockito.mock(IStravaRun.class);
-        Mockito.when(run.getDistance()).thenReturn(1.60934F * 1000000);
+        Mockito.when(run.getDistance()).thenReturn(1.6093441F * 1000000);
         Mockito.when(stravaService.runs(any(IUser.class))).thenReturn(Collections.singletonList(run));
 
         List<IChallenge> challenges = service.getChallenges(null);

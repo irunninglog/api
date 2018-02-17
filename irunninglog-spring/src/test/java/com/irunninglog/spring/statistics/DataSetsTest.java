@@ -41,12 +41,12 @@ public class DataSetsTest extends AbstractTest {
         int year = LocalDate.now().getYear();
 
         List<IStravaRun> runs = new ArrayList<>();
-        runs.add(run(LocalDateTime.parse((year - 1) + "-09-22T00:00:00"), 16093.4F));
-        runs.add(run(LocalDateTime.parse(year + "-09-22T00:00:00"), 16093.4F));
-        runs.add(run(LocalDateTime.parse(year + "-09-21T00:00:00"), 16093.4F));
-        runs.add(run(LocalDateTime.parse(year + "-08-03T00:00:00"), 16093.4F));
-        runs.add(run(LocalDateTime.parse(year + "-08-02T00:00:00"), 16093.4F));
-        runs.add(run(LocalDateTime.parse(year + "-08-01T00:00:00"), 16093.4F));
+        runs.add(run(LocalDateTime.parse((year - 1) + "-09-22T00:00:00"), 16093.44F));
+        runs.add(run(LocalDateTime.parse(year + "-09-22T00:00:00"), 16093.44F));
+        runs.add(run(LocalDateTime.parse(year + "-09-21T00:00:00"), 16093.44F));
+        runs.add(run(LocalDateTime.parse(year + "-08-03T00:00:00"), 16093.44F));
+        runs.add(run(LocalDateTime.parse(year + "-08-02T00:00:00"), 16093.44F));
+        runs.add(run(LocalDateTime.parse(year + "-08-01T00:00:00"), 16093.44F));
         Mockito.when(stravaService.runs(any(IUser.class))).thenReturn(runs);
 
         IStatistics statistics = statisticsService.get(null, ZonedDateTime.now().getOffset().getTotalSeconds() / 60 * -1);
