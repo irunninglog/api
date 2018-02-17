@@ -78,7 +78,7 @@ public abstract class AbstractRouteHandler implements Handler<RoutingContext> {
                 String resultString = result.result().body();
 
                 if (logger.isDebugEnabled()) {
-                    logger.debug("handle:{}:{}", endpoint.getAddress(), resultString);
+                    logger.debug(LOG_STMT, endpoint.getAddress(), resultString);
                 }
 
                 IResponse response = mapper.decode(resultString, IResponse.class);
