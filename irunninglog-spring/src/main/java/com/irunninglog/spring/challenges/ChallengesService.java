@@ -3,9 +3,9 @@ package com.irunninglog.spring.challenges;
 import com.irunninglog.api.challenges.IChallenge;
 import com.irunninglog.api.challenges.IChallengesService;
 import com.irunninglog.api.factory.IFactory;
+import com.irunninglog.api.runs.IRun;
 import com.irunninglog.api.security.IUser;
 import com.irunninglog.spring.util.DistanceService;
-import com.irunninglog.strava.IStravaRun;
 import com.irunninglog.strava.IStravaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,9 +36,9 @@ final class ChallengesService implements IChallengesService {
 
     @Override
     public List<IChallenge> getChallenges(IUser user) {
-        List<IStravaRun> runs = stravaService.runs(user);
+        List<IRun> runs = stravaService.runs(user);
         BigDecimal total = BigDecimal.ZERO;
-        for (IStravaRun run : runs) {
+        for (IRun run : runs) {
             total = total.add(BigDecimal.valueOf(run.getDistance()));
         }
 

@@ -1,13 +1,13 @@
 package com.irunninglog.spring.streaks;
 
 import com.irunninglog.api.factory.IFactory;
+import com.irunninglog.api.runs.IRun;
 import com.irunninglog.api.security.IUser;
 import com.irunninglog.api.streaks.IStreak;
 import com.irunninglog.api.streaks.IStreaks;
 import com.irunninglog.api.streaks.IStreaksService;
 import com.irunninglog.spring.util.DateService;
 import com.irunninglog.spring.util.DistanceService;
-import com.irunninglog.strava.IStravaRun;
 import com.irunninglog.strava.IStravaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,13 +43,13 @@ final class StreaksService implements IStreaksService {
 
     @Override
     public IStreaks getStreaks(IUser user, int offset) {
-        List<IStravaRun> activities = stravaService.runs(user);
+        List<IRun> activities = stravaService.runs(user);
         activities.sort((o1, o2) -> o2.getStartTimeLocal().compareTo(o1.getStartTimeLocal()));
 
         List<IStreak> streaksList = new ArrayList<>();
 
         IStreak streak = null;
-        for (IStravaRun run : activities) {
+        for (IRun run : activities) {
             LocalDate runDate = run.getStartTimeLocal().toLocalDate();
             if (streak == null || !runDate.isAfter(toLocalDate(streak.getStartDate()).minusDays(2))) {
                 streak = newStreak(runDate);

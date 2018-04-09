@@ -52,6 +52,7 @@ public abstract class AbstractRouteHandler implements Handler<RoutingContext> {
             IRequest request = factory.get(IRequest.class);
             request.setMap(new HashMap<>());
             request.setUser(routingContext.get("user"));
+            request.setBody(routingContext.getBodyAsString());
 
             String offset = routingContext.request().getHeader("IRL-TimeZone-Offset");
             request.setOffset(offset == null ? 0 : Integer.parseInt(offset));
@@ -116,6 +117,10 @@ public abstract class AbstractRouteHandler implements Handler<RoutingContext> {
     private void fail(RoutingContext routingContext, ResponseStatus error) {
         if (logger.isErrorEnabled()) {
             logger.error("fail:{}:{}", routingContext.normalisedPath(), error);
+        }
+
+        if (error == null) {
+            error = ResponseStatus.ERROR;
         }
 
         routingContext.request().response().setChunked(true)

@@ -1,6 +1,7 @@
 package com.irunninglog.strava.impl;
 
 import com.irunninglog.api.factory.IFactory;
+import com.irunninglog.api.runs.IRun;
 import com.irunninglog.strava.*;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
@@ -38,8 +39,8 @@ public class Config {
 
     @Bean
     @Scope("prototype")
-    public IStravaRun run() {
-        return new StravaRunImpl();
+    public IRun run() {
+        return new TestRun();
     }
 
     @Bean
@@ -47,6 +48,7 @@ public class Config {
     public IStravaSession session() {
         return new StravaSessionImpl(factory());
     }
+
     @Bean
     @Scope("prototype")
     public IStravaRemoteApi api() {

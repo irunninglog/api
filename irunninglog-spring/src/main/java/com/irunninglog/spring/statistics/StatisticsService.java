@@ -1,11 +1,11 @@
 package com.irunninglog.spring.statistics;
 
 import com.irunninglog.api.factory.IFactory;
+import com.irunninglog.api.runs.IRun;
 import com.irunninglog.api.security.IUser;
 import com.irunninglog.api.statistics.*;
 import com.irunninglog.spring.util.DateService;
 import com.irunninglog.spring.util.DistanceService;
-import com.irunninglog.strava.IStravaRun;
 import com.irunninglog.strava.IStravaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,7 +34,7 @@ final class StatisticsService implements IStatisticsService {
     @Override
     public IStatistics get(IUser user, int offset) {
         IStatistics statistics = factory.get(IStatistics.class);
-        List<IStravaRun> runs = stravaService.runs(user);
+        List<IRun> runs = stravaService.runs(user);
 
         summary(statistics, runs, offset);
 
@@ -45,10 +45,10 @@ final class StatisticsService implements IStatisticsService {
         return statistics;
     }
 
-    private void dataSets(IStatistics statistics, List<IStravaRun> runs) {
+    private void dataSets(IStatistics statistics, List<IRun> runs) {
         Map<String, BigDecimal> map = new TreeMap<>();
 
-        for (IStravaRun run : runs) {
+        for (IRun run : runs) {
             LocalDate date = dateService.monthStart(run.getStartTimeLocal());
             BigDecimal bigDecimal = map.get(date.toString());
             if (bigDecimal == null) {
@@ -78,10 +78,10 @@ final class StatisticsService implements IStatisticsService {
         statistics.setDataSet(factory.get(IDataSet.class).setPoints(points));
     }
 
-    private void years(IStatistics statistics, List<IStravaRun> runs) {
+    private void years(IStatistics statistics, List<IRun> runs) {
         Map<Integer, BigDecimal> map = new TreeMap<>((o1, o2) -> o2.compareTo(o1));
 
-        for (IStravaRun run : runs) {
+        for (IRun run : runs) {
             int year = run.getStartTimeLocal().getYear();
 
             BigDecimal bigDecimal = map.get(year);
@@ -110,13 +110,13 @@ final class StatisticsService implements IStatisticsService {
         statistics.setYears(totals);
     }
 
-    private void summary(IStatistics statistics, List<IStravaRun> runs, int offset) {
+    private void summary(IStatistics statistics, List<IRun> runs, int offset) {
         BigDecimal thisWeek = BigDecimal.ZERO;
         BigDecimal thisMonth = BigDecimal.ZERO;
         BigDecimal thisYear = BigDecimal.ZERO;
         BigDecimal allTime = BigDecimal.ZERO;
 
-        for (IStravaRun run : runs) {
+        for (IRun run : runs) {
             allTime = allTime.add(BigDecimal.valueOf(run.getDistance()));
 
             LocalDate yearStart = dateService.yearStart(offset);

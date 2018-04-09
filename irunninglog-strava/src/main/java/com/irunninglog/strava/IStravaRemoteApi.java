@@ -1,9 +1,6 @@
 package com.irunninglog.strava;
 
-import javastrava.api.v3.model.StravaActivity;
-import javastrava.api.v3.model.StravaAthlete;
-import javastrava.api.v3.model.StravaGear;
-import javastrava.api.v3.model.StravaStatistics;
+import javastrava.api.v3.model.*;
 
 public interface IStravaRemoteApi {
 
@@ -14,6 +11,10 @@ public interface IStravaRemoteApi {
     StravaAthlete getAuthenticatedAthlete();
 
     StravaStatistics statistics(Integer id);
+
+    StravaActivity create(StravaActivity activity);
+
+    StravaActivity update(int id, StravaActivityUpdate update);
 
     void setToken(String token);
 

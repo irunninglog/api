@@ -12,6 +12,7 @@ public class MockRequest implements IRequest {
     @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, defaultImpl = MockUser.class)
     private IUser user;
     private int offset;
+    private String body;
 
     @Override
     public IRequest setMap(Map<String, String> map) {
@@ -46,4 +47,14 @@ public class MockRequest implements IRequest {
         return this;
     }
 
+    @Override
+    public String getBody() {
+        return body;
+    }
+
+    @Override
+    public IRequest setBody(String body) {
+        this.body = body;
+        return this;
+    }
 }

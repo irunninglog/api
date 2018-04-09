@@ -3,10 +3,7 @@ package com.irunninglog.strava.impl;
 import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.strava.IStravaRemoteApi;
 import com.irunninglog.strava.IStravaSession;
-import javastrava.api.v3.model.StravaActivity;
-import javastrava.api.v3.model.StravaAthlete;
-import javastrava.api.v3.model.StravaGear;
-import javastrava.api.v3.model.StravaStatistics;
+import javastrava.api.v3.model.*;
 import javastrava.api.v3.model.reference.StravaActivityType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -219,6 +216,16 @@ final class StravaSessionImpl implements IStravaSession {
         IStravaRemoteApi api = factory.get(IStravaRemoteApi.class);
         api.setToken(token);
         return api;
+    }
+
+    @Override
+    public StravaActivity create(StravaActivity activity) {
+        return api(token).create(activity);
+    }
+
+    @Override
+    public StravaActivity update(int id, StravaActivityUpdate update) {
+        return api(token).update(id, update);
     }
 
 }

@@ -1,12 +1,12 @@
 package com.irunninglog.spring.streaks;
 
 import com.irunninglog.api.Progress;
+import com.irunninglog.api.runs.IRun;
 import com.irunninglog.api.security.IUser;
 import com.irunninglog.api.streaks.IStreak;
 import com.irunninglog.api.streaks.IStreaks;
 import com.irunninglog.api.streaks.IStreaksService;
 import com.irunninglog.spring.AbstractTest;
-import com.irunninglog.strava.IStravaRun;
 import com.irunninglog.strava.IStravaService;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -36,7 +36,7 @@ public class StreaksServiceTest extends AbstractTest {
 
     @Test
     public void current() {
-        List<IStravaRun> runs = new ArrayList<>();
+        List<IRun> runs = new ArrayList<>();
         runs.add(run(LocalDateTime.now()));
         runs.add(run(LocalDateTime.now().minusDays(1)));
         Mockito.when(stravaService.runs(any(IUser.class))).thenReturn(runs);
@@ -49,7 +49,7 @@ public class StreaksServiceTest extends AbstractTest {
 
     @Test
     public void none() {
-        List<IStravaRun> runs = new ArrayList<>();
+        List<IRun> runs = new ArrayList<>();
         runs.add(run(LocalDateTime.now()));
         Mockito.when(stravaService.runs(any(IUser.class))).thenReturn(runs);
 
@@ -61,7 +61,7 @@ public class StreaksServiceTest extends AbstractTest {
 
     @Test
     public void noCurrentStreak() {
-        List<IStravaRun> runs = new ArrayList<>();
+        List<IRun> runs = new ArrayList<>();
         runs.add(run(LocalDateTime.now()));
         runs.add(run(LocalDateTime.now().minusYears(1)));
         runs.add(run(LocalDateTime.now().minusYears(1).minusDays(1)));
@@ -75,7 +75,7 @@ public class StreaksServiceTest extends AbstractTest {
 
     @Test
     public void currentStreakMustStartTodayOrYesteday() {
-        List<IStravaRun> runs = new ArrayList<>();
+        List<IRun> runs = new ArrayList<>();
         runs.add(run(LocalDateTime.now().minusDays(2)));
         runs.add(run(LocalDateTime.now().minusDays(3)));
         Mockito.when(stravaService.runs(any(IUser.class))).thenReturn(runs);
@@ -86,7 +86,7 @@ public class StreaksServiceTest extends AbstractTest {
 
     @Test
     public void veryOld() {
-        List<IStravaRun> runs = new ArrayList<>();
+        List<IRun> runs = new ArrayList<>();
         runs.add(run(LocalDateTime.now().minusYears(2)));
         runs.add(run(LocalDateTime.now().minusYears(2).minusDays(1)));
         Mockito.when(stravaService.runs(any(IUser.class))).thenReturn(runs);
@@ -99,7 +99,7 @@ public class StreaksServiceTest extends AbstractTest {
 
     @Test
     public void ok() {
-        List<IStravaRun> runs = new ArrayList<>();
+        List<IRun> runs = new ArrayList<>();
         runs.add(run(LocalDateTime.now().minusDays(1)));
         runs.add(run(LocalDateTime.now().minusDays(2)));
         runs.add(run(LocalDateTime.now().minusYears(1).minusDays(1)));
@@ -115,7 +115,7 @@ public class StreaksServiceTest extends AbstractTest {
 
     @Test
     public void bad() {
-        List<IStravaRun> runs = new ArrayList<>();
+        List<IRun> runs = new ArrayList<>();
         runs.add(run(LocalDateTime.now().minusDays(1)));
         runs.add(run(LocalDateTime.now().minusDays(2)));
         runs.add(run(LocalDateTime.now().minusYears(1).minusDays(1)));

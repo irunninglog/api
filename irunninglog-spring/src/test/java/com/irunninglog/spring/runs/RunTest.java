@@ -1,28 +1,36 @@
-package com.irunninglog.strava.impl;
+package com.irunninglog.spring.runs;
 
-import com.irunninglog.strava.IStravaRun;
+import com.irunninglog.api.runs.IRun;
+import com.irunninglog.spring.AbstractTest;
+import org.junit.Assert;
 import org.junit.Test;
-import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
 import static org.junit.Assert.*;
 
-public class StravaRunTest extends AbstractStravaTest implements ApplicationContextAware {
+public class RunTest extends AbstractTest implements ApplicationContextAware {
 
     private ApplicationContext context;
 
+    @Override
+    protected void afterBefore(ApplicationContext applicationContext) {
+        super.afterBefore(applicationContext);
+
+        this.context = applicationContext;
+    }
+
     @Test
     public void testPrototype() {
-        IStravaRun run1 = context.getBean(IStravaRun.class);
-        IStravaRun run2 = context.getBean(IStravaRun.class);
+        IRun run1 = context.getBean(IRun.class);
+        IRun run2 = context.getBean(IRun.class);
 
         assertFalse(run1 == run2);
     }
 
     @Test
     public void testGettersSetters() {
-        IStravaRun run = context.getBean(IStravaRun.class)
+        IRun run = context.getBean(IRun.class)
                 .setId(1)
                 .setDistance(1)
                 .setShoes("shoes")
@@ -31,16 +39,11 @@ public class StravaRunTest extends AbstractStravaTest implements ApplicationCont
                 .setTimezone(null);
 
         assertEquals(1, run.getId());
-        assertEquals(1, run.getDistance(), getMargin());
+        Assert.assertEquals(1, run.getDistance(), 1E-9);
         assertEquals("shoes", run.getShoes());
         assertNull(run.getStartTime());
         assertNull(run.getStartTimeLocal());
         assertNull(run.getTimezone());
-    }
-
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        context = applicationContext;
     }
 
 }

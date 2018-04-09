@@ -31,7 +31,15 @@ public enum Endpoint {
     PING("6678d445-030f-4aad-b360-6304588c07b6",
             "/api/ping",
             AccessControl.ALL,
-            EndpointMethod.GET);
+            EndpointMethod.GET),
+    POST_RUN("531da675-01b0-478c-affb-9c9325666081",
+            "/api/runs",
+            AccessControl.AUTHENTICATED,
+            EndpointMethod.POST),
+    PUT_RUN("9216c590-8927-4828-bc39-ddef71f3bb54",
+            "/api/runs/:id",
+            AccessControl.AUTHENTICATED,
+            EndpointMethod.PUT);
 
     private final String address;
     private final String path;

@@ -1,6 +1,6 @@
 package com.irunninglog.spring;
 
-import com.irunninglog.strava.IStravaRun;
+import com.irunninglog.api.runs.IRun;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -38,19 +38,19 @@ public abstract class AbstractTest implements ApplicationContextAware {
         this.applicationContext = applicationContext;
     }
 
-    protected final IStravaRun run(LocalDateTime localDateTime) {
+    protected final IRun run(LocalDateTime localDateTime) {
         return run(localDateTime, 0);
     }
 
-    protected final IStravaRun run(LocalDateTime localDateTime, float distance) {
-        return new IStravaRun() {
+    protected final IRun run(LocalDateTime localDateTime, float distance) {
+        return new IRun() {
             @Override
-            public long getId() {
+            public int getId() {
                 return 0;
             }
 
             @Override
-            public IStravaRun setId(long id) {
+            public IRun setId(int id) {
                 return null;
             }
 
@@ -60,7 +60,7 @@ public abstract class AbstractTest implements ApplicationContextAware {
             }
 
             @Override
-            public IStravaRun setStartTime(ZonedDateTime startTime) {
+            public IRun setStartTime(ZonedDateTime startTime) {
                 return null;
             }
 
@@ -70,7 +70,7 @@ public abstract class AbstractTest implements ApplicationContextAware {
             }
 
             @Override
-            public IStravaRun setStartTimeLocal(LocalDateTime startTimeLocal) {
+            public IRun setStartTimeLocal(LocalDateTime startTimeLocal) {
                 return null;
             }
 
@@ -80,7 +80,7 @@ public abstract class AbstractTest implements ApplicationContextAware {
             }
 
             @Override
-            public IStravaRun setTimezone(String timezone) {
+            public IRun setTimezone(String timezone) {
                 return null;
             }
 
@@ -90,7 +90,7 @@ public abstract class AbstractTest implements ApplicationContextAware {
             }
 
             @Override
-            public IStravaRun setDistance(float distance) {
+            public IRun setDistance(float distance) {
                 return null;
             }
 
@@ -100,7 +100,7 @@ public abstract class AbstractTest implements ApplicationContextAware {
             }
 
             @Override
-            public IStravaRun setShoes(String gear) {
+            public IRun setShoes(String gear) {
                 return null;
             }
         };

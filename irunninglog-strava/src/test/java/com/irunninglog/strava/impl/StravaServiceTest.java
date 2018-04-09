@@ -1,6 +1,7 @@
 package com.irunninglog.strava.impl;
 
 import com.irunninglog.api.factory.IFactory;
+import com.irunninglog.api.runs.IRun;
 import com.irunninglog.api.security.AuthnException;
 import com.irunninglog.api.security.IUser;
 import com.irunninglog.strava.*;
@@ -81,8 +82,8 @@ public class StravaServiceTest extends AbstractStravaTest implements Application
         });
 
         Mockito.when(factory.get(IStravaAthlete.class)).thenReturn(new StravaAthleteImpl());
-        Mockito.when(factory.get(IStravaRun.class)).thenReturn(new StravaRunImpl());
         Mockito.when(factory.get(IStravaShoe.class)).thenReturn(new StravaShoeImpl());
+        Mockito.when(factory.get(IRun.class)).thenReturn(new TestRun());
         Mockito.when(factory.get(IStravaSession.class)).thenReturn(session);
         Mockito.when(factory.get(IStravaRemoteApi.class)).thenReturn(api);
 
@@ -152,7 +153,7 @@ public class StravaServiceTest extends AbstractStravaTest implements Application
         Mockito.when(api.listAuthenticatedAthleteActivities(1, 200)).thenReturn(new StravaActivity[] {activity});
         Mockito.when(api.listAuthenticatedAthleteActivities(2, 200)).thenReturn(new StravaActivity[] {});
 
-        List<IStravaRun> runs = service.runs(user);
+        List<IRun> runs = service.runs(user);
         assertNotNull(runs);
         assertEquals(1, runs.size());
     }

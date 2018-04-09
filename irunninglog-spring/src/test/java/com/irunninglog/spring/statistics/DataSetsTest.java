@@ -1,11 +1,11 @@
 package com.irunninglog.spring.statistics;
 
+import com.irunninglog.api.runs.IRun;
 import com.irunninglog.api.security.IUser;
 import com.irunninglog.api.statistics.IDataPoint;
 import com.irunninglog.api.statistics.IStatistics;
 import com.irunninglog.api.statistics.IStatisticsService;
 import com.irunninglog.spring.AbstractTest;
-import com.irunninglog.strava.IStravaRun;
 import com.irunninglog.strava.IStravaService;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -40,7 +40,7 @@ public class DataSetsTest extends AbstractTest {
     public void getDataSet() {
         int year = LocalDate.now().getYear();
 
-        List<IStravaRun> runs = new ArrayList<>();
+        List<IRun> runs = new ArrayList<>();
         runs.add(run(LocalDateTime.parse((year - 1) + "-09-22T00:00:00"), 16093.44F));
         runs.add(run(LocalDateTime.parse(year + "-09-22T00:00:00"), 16093.44F));
         runs.add(run(LocalDateTime.parse(year + "-09-21T00:00:00"), 16093.44F));

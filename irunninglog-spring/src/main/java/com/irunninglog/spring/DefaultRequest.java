@@ -13,6 +13,7 @@ final class DefaultRequest implements IRequest {
     @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS)
     private IUser user;
     private int offset;
+    private String body;
 
     @Override
     public IRequest setMap(Map<String, String> map) {
@@ -48,11 +49,23 @@ final class DefaultRequest implements IRequest {
     }
 
     @Override
+    public IRequest setBody(String body) {
+        this.body = body;
+        return this;
+    }
+
+    @Override
+    public String getBody() {
+        return body;
+    }
+
+    @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
                 .add("map", map)
                 .add("user", user)
                 .add("offset", offset)
+                .add("body", body == null ? 0 : body.length())
                 .toString();
     }
 

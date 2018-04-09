@@ -1,5 +1,6 @@
 package com.irunninglog.strava;
 
+import com.irunninglog.api.runs.IRun;
 import com.irunninglog.api.security.AuthnException;
 import com.irunninglog.api.security.IUser;
 
@@ -13,8 +14,12 @@ public interface IStravaService {
 
     IStravaAthlete athlete(IUser user);
 
-    List<IStravaRun> runs(IUser user);
+    List<IRun> runs(IUser user);
 
     List<IStravaShoe> shoes(IUser user);
+
+    IRun create(IUser user, IRun run);
+
+    IRun update(IUser user, IRun run);
 
 }

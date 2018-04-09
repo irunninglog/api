@@ -12,10 +12,14 @@ public interface IRequest {
 
     IRequest setOffset(int offset);
 
+    IRequest setBody(String body);
+
     Map<String, String> getMap();
 
     IUser getUser();
 
     int getOffset();
+
+    String getBody();
 
 }

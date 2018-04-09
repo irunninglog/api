@@ -1,12 +1,12 @@
 package com.irunninglog.spring.statistics;
 
+import com.irunninglog.api.runs.IRun;
 import com.irunninglog.api.security.IUser;
 import com.irunninglog.api.statistics.IStatistics;
 import com.irunninglog.api.statistics.IStatisticsService;
 import com.irunninglog.api.statistics.ITotalByYear;
 import com.irunninglog.spring.AbstractTest;
 import com.irunninglog.spring.util.DateService;
-import com.irunninglog.strava.IStravaRun;
 import com.irunninglog.strava.IStravaService;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -40,7 +40,7 @@ public class StatisticsServiceTest extends AbstractTest {
 
     @Test
     public void summary() {
-        List<IStravaRun> runs = new ArrayList<>();
+        List<IRun> runs = new ArrayList<>();
         runs.add(run(LocalDateTime.now(), 16093.44F));
         runs.add(run(LocalDateTime.now().minusYears(1), 16093.44F));
         Mockito.when(stravaService.runs(any(IUser.class))).thenReturn(runs);
@@ -58,7 +58,7 @@ public class StatisticsServiceTest extends AbstractTest {
     public void yearly() {
         LocalDate thisYear = dateService.yearStart(ZonedDateTime.now().getOffset().getTotalSeconds() / 60 * -1);
 
-        List<IStravaRun> runs = new ArrayList<>();
+        List<IRun> runs = new ArrayList<>();
         runs.add(run(LocalDateTime.now(), 16093.44F));
         runs.add(run(LocalDateTime.now(), 16093.44F));
         runs.add(run(LocalDateTime.now(), 16093.44F));

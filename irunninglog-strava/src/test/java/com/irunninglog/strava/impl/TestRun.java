@@ -1,17 +1,13 @@
 package com.irunninglog.strava.impl;
 
-import com.irunninglog.strava.IStravaRun;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
+import com.irunninglog.api.runs.IRun;
 
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 
-@Component
-@Scope("prototype")
-final class StravaRunImpl implements IStravaRun {
+final class TestRun implements IRun {
 
-    private long id;
+    private int id;
     private ZonedDateTime startTime;
     private LocalDateTime startTimeLocal;
     private String timezone;
@@ -19,12 +15,12 @@ final class StravaRunImpl implements IStravaRun {
     private String shoes;
 
     @Override
-    public long getId() {
+    public int getId() {
         return id;
     }
 
     @Override
-    public IStravaRun setId(long id) {
+    public IRun setId(int id) {
         this.id = id;
         return this;
     }
@@ -35,7 +31,7 @@ final class StravaRunImpl implements IStravaRun {
     }
 
     @Override
-    public IStravaRun setStartTime(ZonedDateTime startTime) {
+    public IRun setStartTime(ZonedDateTime startTime) {
         this.startTime = startTime;
         return this;
     }
@@ -45,7 +41,7 @@ final class StravaRunImpl implements IStravaRun {
     }
 
     @Override
-    public IStravaRun setStartTimeLocal(LocalDateTime startTimeLocal) {
+    public IRun setStartTimeLocal(LocalDateTime startTimeLocal) {
         this.startTimeLocal = startTimeLocal;
         return this;
     }
@@ -56,7 +52,7 @@ final class StravaRunImpl implements IStravaRun {
     }
 
     @Override
-    public IStravaRun setTimezone(String timezone) {
+    public IRun setTimezone(String timezone) {
         this.timezone = timezone;
         return this;
     }
@@ -67,7 +63,7 @@ final class StravaRunImpl implements IStravaRun {
     }
 
     @Override
-    public IStravaRun setDistance(float distance) {
+    public IRun setDistance(float distance) {
         this.distance = distance;
         return this;
     }
@@ -77,9 +73,10 @@ final class StravaRunImpl implements IStravaRun {
     }
 
     @Override
-    public IStravaRun setShoes(String shoes) {
+    public IRun setShoes(String shoes) {
         this.shoes = shoes;
         return this;
     }
+
 
 }

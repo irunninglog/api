@@ -3,9 +3,9 @@ package com.irunninglog.spring.challenges;
 import com.irunninglog.api.Progress;
 import com.irunninglog.api.challenges.IChallenge;
 import com.irunninglog.api.challenges.IChallengesService;
+import com.irunninglog.api.runs.IRun;
 import com.irunninglog.api.security.IUser;
 import com.irunninglog.spring.AbstractTest;
-import com.irunninglog.strava.IStravaRun;
 import com.irunninglog.strava.IStravaService;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -33,7 +33,7 @@ public class ChallengesServiceTest extends AbstractTest {
 
     @Test
     public void get() {
-        IStravaRun run = Mockito.mock(IStravaRun.class);
+        IRun run = Mockito.mock(IRun.class);
         Mockito.when(run.getDistance()).thenReturn(1.6093441F * 1000000);
         Mockito.when(stravaService.runs(any(IUser.class))).thenReturn(Collections.singletonList(run));
 

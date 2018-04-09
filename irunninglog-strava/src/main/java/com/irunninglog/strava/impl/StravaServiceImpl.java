@@ -1,11 +1,16 @@
 package com.irunninglog.strava.impl;
 
 import com.irunninglog.api.factory.IFactory;
+import com.irunninglog.api.runs.IRun;
 import com.irunninglog.api.security.AuthnException;
 import com.irunninglog.api.security.IUser;
-import com.irunninglog.strava.*;
+import com.irunninglog.strava.IStravaAthlete;
+import com.irunninglog.strava.IStravaService;
+import com.irunninglog.strava.IStravaShoe;
+import com.irunninglog.strava.IStravaTokenExchange;
 import javastrava.api.v3.auth.model.Token;
 import javastrava.api.v3.model.StravaActivity;
+import javastrava.api.v3.model.StravaActivityUpdate;
 import javastrava.api.v3.model.StravaAthlete;
 import javastrava.api.v3.model.StravaGear;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,12 +67,12 @@ final class StravaServiceImpl implements IStravaService {
     }
 
     @Override
-    public List<IStravaRun> runs(IUser user) {
+    public List<IRun> runs(IUser user) {
         return cache.get(user.getToken()).activities().stream().map(this::fromStravaActivity).collect(Collectors.toList());
     }
 
-    private IStravaRun fromStravaActivity(StravaActivity stravaActivity) {
-        return factory.get(IStravaRun.class)
+    private IRun fromStravaActivity(StravaActivity stravaActivity) {
+        return factory.get(IRun.class)
                 .setId(stravaActivity.getId())
                 .setStartTime(stravaActivity.getStartDate())
                 .setStartTimeLocal(stravaActivity.getStartDateLocal())
@@ -97,6 +102,28 @@ final class StravaServiceImpl implements IStravaService {
         }
 
         return shoes;
+    }
+
+    @Override
+    public IRun create(IUser user, IRun run) {
+        return activityToRun(cache.get(user.getToken()).create(runToActivity(run)));
+    }
+
+    @Override
+    public IRun update(IUser user, IRun run) {
+        return activityToRun(cache.get(user.getToken()).update(run.getId(), runToActivityUpdate(run)));
+    }
+
+    private StravaActivityUpdate runToActivityUpdate(IRun run) {
+        throw new UnsupportedOperationException("runToActivityUpdate");
+    }
+
+    private StravaActivity runToActivity(IRun run) {
+        throw new UnsupportedOperationException("runToActivity");
+    }
+
+    private IRun activityToRun(StravaActivity run) {
+        throw new UnsupportedOperationException("activityToRun");
     }
 
 }
