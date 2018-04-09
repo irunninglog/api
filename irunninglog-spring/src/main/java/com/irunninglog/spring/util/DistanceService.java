@@ -25,7 +25,7 @@ public final class DistanceService {
     }
 
     public Progress progressWhereLowIsGood(int percentage) {
-        if (percentage < 20) {
+        if (percentage < 40) {
             return Progress.GOOD;
         } else if (percentage < 80) {
             return Progress.OK;
