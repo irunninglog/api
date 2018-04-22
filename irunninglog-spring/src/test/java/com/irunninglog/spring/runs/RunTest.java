@@ -32,18 +32,14 @@ public class RunTest extends AbstractTest implements ApplicationContextAware {
     public void testGettersSetters() {
         IRun run = context.getBean(IRun.class)
                 .setId(1)
-                .setDistance(1)
+                .setDistance("1")
                 .setShoes("shoes")
-                .setStartTime(null)
-                .setStartTimeLocal(null)
-                .setTimezone(null);
+                .setStartTime(null);
 
         assertEquals(1, run.getId());
-        Assert.assertEquals(1, run.getDistance(), 1E-9);
+        Assert.assertEquals("1", run.getDistance());
         assertEquals("shoes", run.getShoes());
         assertNull(run.getStartTime());
-        assertNull(run.getStartTimeLocal());
-        assertNull(run.getTimezone());
     }
 
 }

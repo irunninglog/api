@@ -25,9 +25,7 @@ public class PostRunVerticle extends AbstractRequestResponseVerticle {
 
     @Override
     protected void handle(IRequest request, IResponse response) throws AuthnException {
-        IRun run = mapper.decode(request.getBody(), IRun.class);
-
-        System.out.println();
+        runsService.create(request.getUser(), mapper.decode(request.getBody(), IRun.class));
     }
 
 }

@@ -17,6 +17,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
+import java.time.ZonedDateTime;
 import java.util.Collections;
 import java.util.List;
 
@@ -148,6 +149,8 @@ public class StravaServiceTest extends AbstractStravaTest implements Application
         StravaActivity activity = new StravaActivity();
         activity.setType(StravaActivityType.RUN);
         activity.setId(3);
+        activity.setStartDate(ZonedDateTime.now());
+        activity.setMovingTime(0);
         activity.setDistance(1F);
 
         Mockito.when(api.listAuthenticatedAthleteActivities(1, 200)).thenReturn(new StravaActivity[] {activity});

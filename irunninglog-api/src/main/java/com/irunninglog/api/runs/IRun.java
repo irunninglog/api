@@ -1,31 +1,29 @@
 package com.irunninglog.api.runs;
 
-import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
-
 public interface IRun {
 
     int getId();
 
     IRun setId(int id);
 
-    ZonedDateTime getStartTime();
+    String getName();
 
-    IRun setStartTime(ZonedDateTime startTime);
+    IRun setName(String name);
 
-    LocalDateTime getStartTimeLocal();
+    String getStartTime();
 
-    IRun setStartTimeLocal(LocalDateTime startTimeLocal);
+    IRun setStartTime(String time);
 
-    String getTimezone();
+    String getDistance();
 
-    IRun setTimezone(String timezone);
+    IRun setDistance(String distance);
 
-    float getDistance();
+    int getDuration();
 
-    IRun setDistance(float distance);
+    IRun setDuration(int duration);
 
     String getShoes();
 
     IRun setShoes(String gear);
+
 }

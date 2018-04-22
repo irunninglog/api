@@ -5,6 +5,7 @@ import com.irunninglog.api.IRequest;
 import com.irunninglog.api.IResponse;
 import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.mapping.IMapper;
+import com.irunninglog.api.runs.IRun;
 import com.irunninglog.api.runs.IRunsService;
 import com.irunninglog.api.security.AuthnException;
 import com.irunninglog.vertx.AbstractRequestResponseVerticle;
@@ -14,14 +15,17 @@ import com.irunninglog.vertx.EndpointVerticle;
 public class PutRunVerticle extends AbstractRequestResponseVerticle {
 
     private final IRunsService runsService;
+    private final IMapper mapper;
 
-    public PutRunVerticle(IFactory factory, IMapper mapper, IRunsService runsService) {
+    public PutRunVerticle(IFactory factory, IMapper mapper, IRunsService runsService, IMapper mapper1) {
         super(factory, mapper);
         this.runsService = runsService;
+        this.mapper = mapper1;
     }
 
     @Override
     protected void handle(IRequest request, IResponse response) throws AuthnException {
-        System.out.println();
+        runsService.update(request.getUser(), mapper.decode(request.getBody(), IRun.class));
     }
+
 }

@@ -49,12 +49,12 @@ final class StatisticsService implements IStatisticsService {
         Map<String, BigDecimal> map = new TreeMap<>();
 
         for (IRun run : runs) {
-            LocalDate date = dateService.monthStart(run.getStartTimeLocal());
+            LocalDate date = dateService.monthStart(dateService.toLocalDate(run.getStartTime()));
             BigDecimal bigDecimal = map.get(date.toString());
             if (bigDecimal == null) {
                 bigDecimal = new BigDecimal(BigInteger.ZERO);
             }
-            map.put(date.toString(), bigDecimal.add(BigDecimal.valueOf(run.getDistance())));
+            map.put(date.toString(), bigDecimal.add(new BigDecimal(run.getDistance())));
         }
 
         Collection<IDataPoint> points = new ArrayList<>();
@@ -82,14 +82,14 @@ final class StatisticsService implements IStatisticsService {
         Map<Integer, BigDecimal> map = new TreeMap<>((o1, o2) -> o2.compareTo(o1));
 
         for (IRun run : runs) {
-            int year = run.getStartTimeLocal().getYear();
+            int year = dateService.toLocalDate(run.getStartTime()).getYear();
 
             BigDecimal bigDecimal = map.get(year);
             if (bigDecimal == null) {
                 bigDecimal = BigDecimal.ZERO;
             }
 
-            map.put(year, bigDecimal.add(BigDecimal.valueOf(run.getDistance())));
+            map.put(year, bigDecimal.add(new BigDecimal(run.getDistance())));
         }
 
         BigDecimal max = BigDecimal.ZERO;
@@ -117,22 +117,23 @@ final class StatisticsService implements IStatisticsService {
         BigDecimal allTime = BigDecimal.ZERO;
 
         for (IRun run : runs) {
-            allTime = allTime.add(BigDecimal.valueOf(run.getDistance()));
+            allTime = allTime.add(new BigDecimal(run.getDistance()));
 
             LocalDate yearStart = dateService.yearStart(offset);
-            if (run.getStartTimeLocal().getYear() == yearStart.getYear()) {
-                thisYear = thisYear.add(BigDecimal.valueOf(run.getDistance()));
+            LocalDate localDate = dateService.toLocalDate(run.getStartTime());
+            if (localDate.getYear() == yearStart.getYear()) {
+                thisYear = thisYear.add(new BigDecimal(run.getDistance()));
             }
 
             LocalDate monthStart = dateService.monthStart(offset);
-            if (run.getStartTimeLocal().getYear() == monthStart.getYear() && run.getStartTimeLocal().getMonth() == monthStart.getMonth()) {
-                thisMonth = thisMonth.add(BigDecimal.valueOf(run.getDistance()));
+            if (localDate.getYear() == monthStart.getYear() && localDate.getMonth() == monthStart.getMonth()) {
+                thisMonth = thisMonth.add(new BigDecimal(run.getDistance()));
             }
 
             LocalDate weekStart = dateService.weekStart(offset);
             LocalDate nextWeekStart = weekStart.plusDays(7);
-            if (!run.getStartTimeLocal().toLocalDate().isBefore(weekStart) && run.getStartTimeLocal().toLocalDate().isBefore(nextWeekStart)) {
-                thisWeek = thisWeek.add(BigDecimal.valueOf(run.getDistance()));
+            if (!localDate.isBefore(weekStart) && localDate.isBefore(nextWeekStart)) {
+                thisWeek = thisWeek.add(new BigDecimal(run.getDistance()));
             }
         }
 

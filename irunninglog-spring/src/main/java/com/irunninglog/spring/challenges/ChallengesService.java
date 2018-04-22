@@ -39,7 +39,7 @@ final class ChallengesService implements IChallengesService {
         List<IRun> runs = stravaService.runs(user);
         BigDecimal total = BigDecimal.ZERO;
         for (IRun run : runs) {
-            total = total.add(BigDecimal.valueOf(run.getDistance()));
+            total = total.add(new BigDecimal(run.getDistance()));
         }
 
         final BigDecimal done = total;

@@ -13,9 +13,14 @@ import javastrava.api.v3.model.StravaActivity;
 import javastrava.api.v3.model.StravaActivityUpdate;
 import javastrava.api.v3.model.StravaAthlete;
 import javastrava.api.v3.model.StravaGear;
+import javastrava.api.v3.model.reference.StravaActivityType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -71,13 +76,13 @@ final class StravaServiceImpl implements IStravaService {
         return cache.get(user.getToken()).activities().stream().map(this::fromStravaActivity).collect(Collectors.toList());
     }
 
+    // TODO - Date and time functions should move to API package
     private IRun fromStravaActivity(StravaActivity stravaActivity) {
         return factory.get(IRun.class)
                 .setId(stravaActivity.getId())
-                .setStartTime(stravaActivity.getStartDate())
-                .setStartTimeLocal(stravaActivity.getStartDateLocal())
-                .setTimezone(stravaActivity.getTimezone())
-                .setDistance(stravaActivity.getDistance())
+                .setStartTime(stravaActivity.getStartDate().format(DateTimeFormatter.ISO_OFFSET_DATE_TIME))
+                .setDistance(DecimalFormat.getInstance().format(BigDecimal.valueOf(stravaActivity.getDistance()).setScale(1, RoundingMode.DOWN)))
+                .setDuration(stravaActivity.getMovingTime())
                 .setShoes(stravaActivity.getGearId());
     }
 
@@ -106,7 +111,7 @@ final class StravaServiceImpl implements IStravaService {
 
     @Override
     public IRun create(IUser user, IRun run) {
-        return activityToRun(cache.get(user.getToken()).create(runToActivity(run)));
+        return activityToRun(cache.get(user.getToken()).create(runToActivity(user, run)));
     }
 
     @Override
@@ -115,15 +120,23 @@ final class StravaServiceImpl implements IStravaService {
     }
 
     private StravaActivityUpdate runToActivityUpdate(IRun run) {
-        throw new UnsupportedOperationException("runToActivityUpdate");
+        throw new UnsupportedOperationException("runToActivityUpdate: " + run);
     }
 
-    private StravaActivity runToActivity(IRun run) {
-        throw new UnsupportedOperationException("runToActivity");
+    private StravaActivity runToActivity(IUser user, IRun run) {
+        StravaActivity activity = new StravaActivity();
+        activity.setType(StravaActivityType.RUN);
+        activity.setAthlete(cache.get(user.getToken()).athlete());
+        activity.setName(run.getName());
+        if (run.getShoes() != null && !run.getShoes().isEmpty()) {
+            activity.setGear(cache.get(user.getToken()).gear(run.getShoes()));
+        }
+
+        return activity;
     }
 
     private IRun activityToRun(StravaActivity run) {
-        throw new UnsupportedOperationException("activityToRun");
+        throw new UnsupportedOperationException("activityToRun: " + run);
     }
 
 }

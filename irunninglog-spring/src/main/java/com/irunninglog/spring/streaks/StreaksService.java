@@ -44,13 +44,13 @@ final class StreaksService implements IStreaksService {
     @Override
     public IStreaks getStreaks(IUser user, int offset) {
         List<IRun> activities = stravaService.runs(user);
-        activities.sort((o1, o2) -> o2.getStartTimeLocal().compareTo(o1.getStartTimeLocal()));
+        activities.sort((o1, o2) -> dateService.toLocalDate(o2.getStartTime()).compareTo(dateService.toLocalDate(o1.getStartTime())));
 
         List<IStreak> streaksList = new ArrayList<>();
 
         IStreak streak = null;
         for (IRun run : activities) {
-            LocalDate runDate = run.getStartTimeLocal().toLocalDate();
+            LocalDate runDate = dateService.toLocalDate(run.getStartTime());
             if (streak == null || !runDate.isAfter(toLocalDate(streak.getStartDate()).minusDays(2))) {
                 streak = newStreak(runDate);
                 streaksList.add(streak);

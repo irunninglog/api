@@ -10,8 +10,10 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {SpringConfig.class, TestConfig.class})
@@ -43,67 +45,7 @@ public abstract class AbstractTest implements ApplicationContextAware {
     }
 
     protected final IRun run(LocalDateTime localDateTime, float distance) {
-        return new IRun() {
-            @Override
-            public int getId() {
-                return 0;
-            }
-
-            @Override
-            public IRun setId(int id) {
-                return null;
-            }
-
-            @Override
-            public ZonedDateTime getStartTime() {
-                return null;
-            }
-
-            @Override
-            public IRun setStartTime(ZonedDateTime startTime) {
-                return null;
-            }
-
-            @Override
-            public LocalDateTime getStartTimeLocal() {
-                return localDateTime;
-            }
-
-            @Override
-            public IRun setStartTimeLocal(LocalDateTime startTimeLocal) {
-                return null;
-            }
-
-            @Override
-            public String getTimezone() {
-                return null;
-            }
-
-            @Override
-            public IRun setTimezone(String timezone) {
-                return null;
-            }
-
-            @Override
-            public float getDistance() {
-                return distance;
-            }
-
-            @Override
-            public IRun setDistance(float distance) {
-                return null;
-            }
-
-            @Override
-            public String getShoes() {
-                return null;
-            }
-
-            @Override
-            public IRun setShoes(String gear) {
-                return null;
-            }
-        };
+        return applicationContext.getBean(IRun.class).setDistance(BigDecimal.valueOf(distance).toPlainString()).setStartTime(localDateTime.atZone(ZoneId.systemDefault()).format(DateTimeFormatter.ISO_OFFSET_DATE_TIME));
     }
 
 }
