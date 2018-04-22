@@ -18,13 +18,13 @@ final class RunsService implements IRunsService {
     }
 
     @Override
-    public void create(IUser user, IRun run) {
-        stravaService.create(user, run);
+    public IRun create(IUser user, IRun run) {
+        return stravaService.create(user, run);
     }
 
     @Override
-    public void update(IUser user, IRun run) {
-        stravaService.update(user, run);
+    public IRun update(IUser user, IRun run) {
+        return stravaService.update(user, run);
     }
 
 }

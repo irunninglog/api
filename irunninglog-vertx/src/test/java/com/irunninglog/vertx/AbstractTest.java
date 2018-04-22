@@ -45,15 +45,6 @@ public abstract class AbstractTest {
         Mockito.when(factory.get(IRequest.class)).thenReturn(new MockRequest());
         Mockito.when(factory.get(IResponse.class)).thenReturn(new MockResponse());
 
-//        Mockito.when(mapper.encode(null)).thenReturn("");
-//
-//        IRequest request = Mockito.mock(IRequest.class);
-//        Mockito.when(request.getMap()).thenReturn(new HashMap<>());
-//        Mockito.when(factory.get(IRequest.class)).thenReturn(request);
-//        Mockito.when(mapper.decode(null, IRequest.class)).thenReturn(request);
-//
-//        Mockito.when(factory.get(IResponse.class)).thenReturn(Mockito.mock(IResponse.class));
-
         Async async = context.async();
 
         ServerVerticle verticle = new ServerVerticle(PORT, context.asyncAssertSuccess(event -> async.complete()), factory, mapper, authenticationService);
@@ -83,7 +74,13 @@ public abstract class AbstractTest {
         return makeRequest(null, client::get, path, context);
     }
 
-    int put(TestContext context, String path, String body) {
+    protected final int post(TestContext context, String path, String body) {
+        HttpClient client = vertx.createHttpClient();
+
+        return makeRequest(body, client::post, path, context);
+    }
+
+    protected final int put(TestContext context, String path, String body) {
         HttpClient client = vertx.createHttpClient();
 
         return makeRequest(body, client::put, path, context);

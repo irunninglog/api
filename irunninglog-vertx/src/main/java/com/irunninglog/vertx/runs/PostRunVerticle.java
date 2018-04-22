@@ -3,6 +3,7 @@ package com.irunninglog.vertx.runs;
 import com.irunninglog.api.Endpoint;
 import com.irunninglog.api.IRequest;
 import com.irunninglog.api.IResponse;
+import com.irunninglog.api.ResponseStatus;
 import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.mapping.IMapper;
 import com.irunninglog.api.runs.IRun;
@@ -25,7 +26,7 @@ public class PostRunVerticle extends AbstractRequestResponseVerticle {
 
     @Override
     protected void handle(IRequest request, IResponse response) throws AuthnException {
-        runsService.create(request.getUser(), mapper.decode(request.getBody(), IRun.class));
+        response.setStatus(ResponseStatus.OK).setBody(runsService.create(request.getUser(), mapper.decode(request.getBody(), IRun.class)));
     }
 
 }

@@ -4,8 +4,8 @@ import com.irunninglog.api.security.IUser;
 
 public interface IRunsService {
 
-    void create(IUser user, IRun run);
+    IRun create(IUser user, IRun run);
 
-    void update(IUser user, IRun run);
+    IRun update(IUser user, IRun run);
 
 }
