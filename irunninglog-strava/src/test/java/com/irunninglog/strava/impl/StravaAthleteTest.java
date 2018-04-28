@@ -29,7 +29,7 @@ public class StravaAthleteTest implements ApplicationContextAware {
     @Test
     public void testGettersAndSetters() {
         IStravaAthlete athlete = context.getBean(IStravaAthlete.class);
-        athlete.setId(1L);
+        athlete.setId(1);
         athlete.setEmail("allan@irunninglog.com");
         athlete.setFirstname("Allan");
         athlete.setLastname("Lewis");

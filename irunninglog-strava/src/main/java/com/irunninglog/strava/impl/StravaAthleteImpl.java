@@ -8,14 +8,14 @@ import org.springframework.stereotype.Component;
 @Scope("prototype")
 final class StravaAthleteImpl implements IStravaAthlete {
 
-    private long id;
+    private int id;
     private String email;
     private String firstname;
     private String lastname;
     private String avatar;
 
     @Override
-    public long getId() {
+    public int getId() {
         return id;
     }
 
@@ -40,7 +40,7 @@ final class StravaAthleteImpl implements IStravaAthlete {
     }
 
     @Override
-    public IStravaAthlete setId(long id) {
+    public IStravaAthlete setId(int id) {
         this.id = id;
         return this;
     }

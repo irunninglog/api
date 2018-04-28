@@ -4,10 +4,7 @@ import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.runs.IRun;
 import com.irunninglog.api.security.AuthnException;
 import com.irunninglog.api.security.IUser;
-import com.irunninglog.strava.IStravaAthlete;
-import com.irunninglog.strava.IStravaService;
-import com.irunninglog.strava.IStravaShoe;
-import com.irunninglog.strava.IStravaTokenExchange;
+import com.irunninglog.strava.*;
 import javastrava.api.v3.auth.model.Token;
 import javastrava.api.v3.model.StravaActivity;
 import javastrava.api.v3.model.StravaActivityUpdate;
@@ -20,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,10 +28,10 @@ final class StravaServiceImpl implements IStravaService {
 
     private final IFactory factory;
     private final IStravaTokenExchange exchange;
-    private final StravaSessionCache cache;
+    private final IStravaSessionCache cache;
 
     @Autowired
-    StravaServiceImpl(IFactory factory, IStravaTokenExchange exchange, StravaSessionCache cache) {
+    StravaServiceImpl(IFactory factory, IStravaTokenExchange exchange, IStravaSessionCache cache) {
         this.factory = factory;
         this.exchange = exchange;
         this.cache = cache;
@@ -111,7 +109,11 @@ final class StravaServiceImpl implements IStravaService {
 
     @Override
     public IRun create(IUser user, IRun run) {
-        return activityToRun(cache.get(user.getToken()).create(runToActivity(user, run)));
+        StravaActivity before = runToActivity(user, run);
+
+        StravaActivity after = cache.get(user.getToken()).create(before);
+
+        return activityToRun(after);
     }
 
     @Override
@@ -120,23 +122,36 @@ final class StravaServiceImpl implements IStravaService {
     }
 
     private StravaActivityUpdate runToActivityUpdate(IRun run) {
-        throw new UnsupportedOperationException("runToActivityUpdate: " + run);
+        StravaActivityUpdate update = new StravaActivityUpdate();
+        update.setName(run.getName());
+        update.setGearId(run.getShoes());
+        update.setType(StravaActivityType.RUN);
+        return update;
     }
 
     private StravaActivity runToActivity(IUser user, IRun run) {
         StravaActivity activity = new StravaActivity();
+        activity.setDistance(new BigDecimal(run.getDistance()).floatValue());
+        activity.setMovingTime(run.getDuration());
+        activity.setStartDate(ZonedDateTime.parse(run.getStartTime(), DateTimeFormatter.ISO_OFFSET_DATE_TIME));
         activity.setType(StravaActivityType.RUN);
         activity.setAthlete(cache.get(user.getToken()).athlete());
         activity.setName(run.getName());
         if (run.getShoes() != null && !run.getShoes().isEmpty()) {
             activity.setGear(cache.get(user.getToken()).gear(run.getShoes()));
         }
-
         return activity;
     }
 
-    private IRun activityToRun(StravaActivity run) {
-        throw new UnsupportedOperationException("activityToRun: " + run);
+    private IRun activityToRun(StravaActivity activity) {
+        IRun run = factory.get(IRun.class);
+        run.setId(activity.getId());
+        run.setName(activity.getName());
+        run.setShoes(activity.getGear() == null ? null : activity.getGear().getId());
+        run.setDistance(DecimalFormat.getInstance().format(BigDecimal.valueOf(activity.getDistance()).setScale(1, RoundingMode.DOWN)));
+        run.setDuration(activity.getMovingTime() == null ? 0 : activity.getMovingTime());
+        run.setStartTime(activity.getStartDate().format(DateTimeFormatter.ISO_OFFSET_DATE_TIME));
+        return run;
     }
 
 }

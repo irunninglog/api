@@ -7,6 +7,7 @@ import com.irunninglog.api.security.IUser;
 import com.irunninglog.strava.*;
 import javastrava.api.v3.auth.model.Token;
 import javastrava.api.v3.model.StravaActivity;
+import javastrava.api.v3.model.StravaActivityUpdate;
 import javastrava.api.v3.model.StravaAthlete;
 import javastrava.api.v3.model.StravaGear;
 import javastrava.api.v3.model.reference.StravaActivityType;
@@ -18,11 +19,11 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
 
 public class StravaServiceTest extends AbstractStravaTest implements ApplicationContextAware {
@@ -177,6 +178,77 @@ public class StravaServiceTest extends AbstractStravaTest implements Application
         assertEquals("foo", one.getDescription());
         assertEquals(100, one.getDistance(), getMargin());
         assertEquals(true, one.isPrimary());
+    }
+
+    @Test
+    public void create() throws AuthnException {
+        IUser user = service.userFromToken("foo");
+
+        ZonedDateTime time = ZonedDateTime.now();
+
+        IRun before = new TestRun();
+        before.setId(-1);
+        before.setName("name");
+        before.setDuration(3600);
+        before.setDistance("8");
+        before.setShoes("shoes");
+        before.setStartTime(time.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME));
+
+        StravaGear gear = new StravaGear();
+        gear.setId("shoes");
+
+        StravaActivity activity = new StravaActivity();
+        activity.setId(1);
+        activity.setName("name");
+        activity.setMovingTime(3600);
+        activity.setDistance(8F);
+        activity.setGear(gear);
+        activity.setStartDate(time);
+
+        Mockito.when(api.create(any(StravaActivity.class))).thenReturn(activity);
+
+        IRun after = service.create(user, before);
+        assertNotEquals(before.getId(), after.getId());
+        assertEquals(before.getName(), after.getName());
+        assertEquals(before.getShoes(), after.getShoes());
+        assertEquals(before.getDuration(), after.getDuration());
+        assertEquals(before.getDistance(), after.getDistance());
+        assertEquals(before.getStartTime(), after.getStartTime());
+    }
+
+    @Test
+    public void update() throws AuthnException {
+        IUser user = service.userFromToken("foo");
+
+        ZonedDateTime time = ZonedDateTime.now();
+
+        IRun before = new TestRun();
+        before.setId(1);
+        before.setName("name");
+        before.setDuration(3600);
+        before.setDistance("8");
+        before.setShoes("shoes");
+        before.setStartTime(time.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME));
+
+        StravaGear gear = new StravaGear();
+        gear.setId("shoes");
+
+        StravaActivity activity = new StravaActivity();
+        activity.setId(1);
+        activity.setName("name");
+        activity.setMovingTime(3600);
+        activity.setDistance(8F);
+        activity.setGear(gear);
+        activity.setStartDate(time);
+        Mockito.when(api.update(any(Integer.class), any(StravaActivityUpdate.class))).thenReturn(activity);
+
+        IRun after = service.update(user, before);
+        assertEquals(before.getId(), after.getId());
+        assertEquals(before.getName(), after.getName());
+        assertEquals(before.getShoes(), after.getShoes());
+        assertEquals(before.getDuration(), after.getDuration());
+        assertEquals(before.getDistance(), after.getDistance());
+        assertEquals(before.getStartTime(), after.getStartTime());
     }
 
     @Override

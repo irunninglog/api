@@ -2,6 +2,7 @@ package com.irunninglog.strava.impl;
 
 import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.strava.IStravaSession;
+import com.irunninglog.strava.IStravaSessionCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -9,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
-final class StravaSessionCache {
+final class StravaSessionCache implements IStravaSessionCache {
 
     private final IFactory factory;
     private final Map<String, IStravaSession> map = new HashMap<>();
@@ -19,7 +20,8 @@ final class StravaSessionCache {
         this.factory = factory;
     }
 
-    IStravaSession create(String token) {
+    @Override
+    public IStravaSession create(String token) {
         return map.computeIfAbsent(token, s ->  {
             IStravaSession session = factory.get(IStravaSession.class);
             session.load(token);
@@ -27,7 +29,8 @@ final class StravaSessionCache {
         });
     }
 
-    IStravaSession get(String token) {
+    @Override
+    public IStravaSession get(String token) {
         return map.get(token);
     }
 

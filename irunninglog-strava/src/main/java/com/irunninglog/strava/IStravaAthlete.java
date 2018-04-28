@@ -2,9 +2,9 @@ package com.irunninglog.strava;
 
 public interface IStravaAthlete {
 
-    long getId();
+    int getId();
 
-    IStravaAthlete setId(long id);
+    IStravaAthlete setId(int id);
 
     String getEmail();
 

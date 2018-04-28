@@ -33,7 +33,7 @@ public class GetProfileTest extends AbstractTest {
         Mockito.when(athlete.getFirstname()).thenReturn("Allan");
         Mockito.when(athlete.getLastname()).thenReturn("Lewis");
         Mockito.when(athlete.getEmail()).thenReturn("allan@irunninglog.com");
-        Mockito.when(athlete.getId()).thenReturn(1L);
+        Mockito.when(athlete.getId()).thenReturn(1);
         Mockito.when(athlete.getAvatar()).thenReturn("image.png");
 
         Mockito.when(stravaService.athlete(any(IUser.class))).thenReturn(athlete);
