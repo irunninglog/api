@@ -190,7 +190,7 @@ public class StravaServiceTest extends AbstractStravaTest implements Application
         before.setId(-1);
         before.setName("name");
         before.setDuration(3600);
-        before.setDistance("8");
+        before.setDistance("8.0");
         before.setShoes("shoes");
         before.setStartTime(time.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME));
 
@@ -226,7 +226,7 @@ public class StravaServiceTest extends AbstractStravaTest implements Application
         before.setId(1);
         before.setName("name");
         before.setDuration(3600);
-        before.setDistance("8");
+        before.setDistance("8.0");
         before.setShoes("shoes");
         before.setStartTime(time.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME));
 
