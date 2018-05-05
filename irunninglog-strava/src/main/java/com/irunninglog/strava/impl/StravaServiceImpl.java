@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.text.DecimalFormat;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -79,7 +78,7 @@ final class StravaServiceImpl implements IStravaService {
         return factory.get(IRun.class)
                 .setId(stravaActivity.getId())
                 .setStartTime(stravaActivity.getStartDate().format(DateTimeFormatter.ISO_OFFSET_DATE_TIME))
-                .setDistance(DecimalFormat.getInstance().format(BigDecimal.valueOf(stravaActivity.getDistance()).setScale(1, RoundingMode.DOWN)))
+                .setDistance(BigDecimal.valueOf(stravaActivity.getDistance()).setScale(1, RoundingMode.DOWN).toPlainString())
                 .setDuration(stravaActivity.getMovingTime())
                 .setShoes(stravaActivity.getGearId());
     }
@@ -148,7 +147,7 @@ final class StravaServiceImpl implements IStravaService {
         run.setId(activity.getId());
         run.setName(activity.getName());
         run.setShoes(activity.getGear() == null ? null : activity.getGear().getId());
-        run.setDistance(DecimalFormat.getInstance().format(BigDecimal.valueOf(activity.getDistance()).setScale(1, RoundingMode.DOWN)));
+        run.setDistance(BigDecimal.valueOf(activity.getDistance()).setScale(1, RoundingMode.DOWN).toPlainString());
         run.setDuration(activity.getMovingTime() == null ? 0 : activity.getMovingTime());
         run.setStartTime(activity.getStartDate().format(DateTimeFormatter.ISO_OFFSET_DATE_TIME));
         return run;
