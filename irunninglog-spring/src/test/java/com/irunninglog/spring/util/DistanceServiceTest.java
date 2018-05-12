@@ -19,7 +19,7 @@ public class DistanceServiceTest extends AbstractTest {
 
     @Test
     public void testRounding() {
-        assertEquals("144.9 mi", distanceService.mileage(233336.600341796875F));
+        assertEquals("145 mi", distanceService.mileage(233336.600341796875F));
         assertEquals("1,000 mi", distanceService.mileage(1609344.1F));
     }
 

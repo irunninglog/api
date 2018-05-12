@@ -1,10 +1,10 @@
 package com.irunninglog.spring.util;
 
 import com.irunninglog.api.Progress;
+import com.irunninglog.math.ApiMath;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
 @Service
@@ -44,9 +44,7 @@ public final class DistanceService {
     }
 
     public String mileage(float distance, boolean appendMileage) {
-        String string = DecimalFormat.getInstance()
-                .format(BigDecimal.valueOf(distance)
-                        .multiply(BigDecimal.valueOf(0.00062137119223733)).setScale(1, RoundingMode.DOWN));
+        String string = DecimalFormat.getInstance().format(ApiMath.metersToMiles(BigDecimal.valueOf(distance)));
 
         if (appendMileage) {
             string += " mi";
