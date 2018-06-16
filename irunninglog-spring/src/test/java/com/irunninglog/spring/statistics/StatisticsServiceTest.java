@@ -5,8 +5,8 @@ import com.irunninglog.api.security.IUser;
 import com.irunninglog.api.statistics.IStatistics;
 import com.irunninglog.api.statistics.IStatisticsService;
 import com.irunninglog.api.statistics.ITotalByYear;
+import com.irunninglog.date.ApiDate;
 import com.irunninglog.spring.AbstractTest;
-import com.irunninglog.spring.util.DateService;
 import com.irunninglog.strava.IStravaService;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -27,7 +27,6 @@ public class StatisticsServiceTest extends AbstractTest {
 
     private IStatisticsService statisticsService;
     private IStravaService stravaService;
-    private DateService dateService;
 
     @Override
     protected void afterBefore(ApplicationContext applicationContext) {
@@ -35,7 +34,6 @@ public class StatisticsServiceTest extends AbstractTest {
 
         statisticsService = applicationContext.getBean(IStatisticsService.class);
         stravaService = applicationContext.getBean(IStravaService.class);
-        dateService = applicationContext.getBean(DateService.class);
     }
 
     @Test
@@ -56,7 +54,7 @@ public class StatisticsServiceTest extends AbstractTest {
 
     @Test
     public void yearly() {
-        LocalDate thisYear = dateService.yearStart(ZonedDateTime.now().getOffset().getTotalSeconds() / 60 * -1);
+        LocalDate thisYear = ApiDate.yearStart(ZonedDateTime.now().getOffset().getTotalSeconds() / 60 * -1);
 
         List<IRun> runs = new ArrayList<>();
         runs.add(run(LocalDateTime.now(), 16093.44F));

@@ -6,7 +6,7 @@ import com.irunninglog.api.security.IUser;
 import com.irunninglog.api.streaks.IStreak;
 import com.irunninglog.api.streaks.IStreaks;
 import com.irunninglog.api.streaks.IStreaksService;
-import com.irunninglog.spring.util.DateService;
+import com.irunninglog.date.ApiDate;
 import com.irunninglog.spring.util.DistanceService;
 import com.irunninglog.strava.IStravaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,31 +26,28 @@ final class StreaksService implements IStreaksService {
     private final IFactory factory;
     private final IStravaService stravaService;
     private final DistanceService distanceService;
-    private final DateService dateService;
 
     @Autowired
     public StreaksService(IFactory factory,
                           IStravaService stravaService,
-                          DistanceService distanceService,
-                          DateService dateService) {
+                          DistanceService distanceService) {
         super();
 
         this.factory = factory;
         this.stravaService = stravaService;
         this.distanceService = distanceService;
-        this.dateService = dateService;
     }
 
     @Override
     public IStreaks getStreaks(IUser user, int offset) {
         List<IRun> activities = stravaService.runs(user);
-        activities.sort((o1, o2) -> dateService.toLocalDate(o2.getStartTime()).compareTo(dateService.toLocalDate(o1.getStartTime())));
+        activities.sort((o1, o2) -> ApiDate.parseAsLocalDate(o2.getStartTime()).compareTo(ApiDate.parseAsLocalDate(o1.getStartTime())));
 
         List<IStreak> streaksList = new ArrayList<>();
 
         IStreak streak = null;
         for (IRun run : activities) {
-            LocalDate runDate = dateService.toLocalDate(run.getStartTime());
+            LocalDate runDate = ApiDate.parseAsLocalDate(run.getStartTime());
             if (streak == null || !runDate.isAfter(toLocalDate(streak.getStartDate()).minusDays(2))) {
                 streak = newStreak(runDate);
                 streaksList.add(streak);
@@ -144,11 +141,11 @@ final class StreaksService implements IStreaksService {
     }
 
     private LocalDate current(int minutes) {
-        return dateService.current(minutes).minusDays(1);
+        return ApiDate.current(minutes).minusDays(1);
     }
 
     private LocalDate yearStart(int minutes) {
-        return dateService.yearStart(minutes);
+        return ApiDate.yearStart(minutes);
     }
 
 }

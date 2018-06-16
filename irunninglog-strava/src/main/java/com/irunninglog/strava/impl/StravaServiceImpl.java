@@ -4,6 +4,7 @@ import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.runs.IRun;
 import com.irunninglog.api.security.AuthnException;
 import com.irunninglog.api.security.IUser;
+import com.irunninglog.math.ApiMath;
 import com.irunninglog.strava.*;
 import javastrava.api.v3.auth.model.Token;
 import javastrava.api.v3.model.StravaActivity;
@@ -78,7 +79,7 @@ final class StravaServiceImpl implements IStravaService {
         return factory.get(IRun.class)
                 .setId(stravaActivity.getId())
                 .setStartTime(stravaActivity.getStartDate().format(DateTimeFormatter.ISO_OFFSET_DATE_TIME))
-                .setDistance(BigDecimal.valueOf(stravaActivity.getDistance()).setScale(1, RoundingMode.DOWN).toPlainString())
+                .setDistance(ApiMath.format(ApiMath.round(BigDecimal.valueOf(stravaActivity.getDistance())), ApiMath.Style.Plain))
                 .setDuration(stravaActivity.getMovingTime())
                 .setShoes(stravaActivity.getGearId());
     }

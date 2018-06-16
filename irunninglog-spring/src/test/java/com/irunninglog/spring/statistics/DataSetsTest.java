@@ -59,21 +59,21 @@ public class DataSetsTest extends AbstractTest {
 
         Iterator<IDataPoint> pointIterator = points.iterator();
         IDataPoint point1 = pointIterator.next();
-        assertEquals("09-01-" + (year - 1), point1.getDate());
+        assertEquals((year - 1) + "-09-01", point1.getDate());
         assertEquals("10", point1.getValues().get("monthly"));
         assertEquals("10 mi", point1.getValues().get("monthlyFormatted"));
         assertEquals("10", point1.getValues().get("cumulative"));
         assertEquals("10 mi", point1.getValues().get("cumulativeFormatted"));
 
         IDataPoint point2 = pointIterator.next();
-        assertEquals("08-01-" + year, point2.getDate());
+        assertEquals(year + "-08-01", point2.getDate());
         assertEquals("30", point2.getValues().get("monthly"));
         assertEquals("30 mi", point2.getValues().get("monthlyFormatted"));
         assertEquals("40", point2.getValues().get("cumulative"));
         assertEquals("40 mi", point2.getValues().get("cumulativeFormatted"));
 
         IDataPoint point3 = pointIterator.next();
-        assertEquals("09-01-" + year, point3.getDate());
+        assertEquals(year + "-09-01", point3.getDate());
         assertEquals("20", point3.getValues().get("monthly"));
         assertEquals("20 mi", point3.getValues().get("monthlyFormatted"));
         assertEquals("60", point3.getValues().get("cumulative"));

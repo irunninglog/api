@@ -5,14 +5,9 @@ import com.irunninglog.math.ApiMath;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 
 @Service
 public final class DistanceService {
-
-    public int getDistanceFloored(float distance) {
-        return new BigDecimal(mileage(distance, Boolean.FALSE)).intValue();
-    }
 
     public Progress progressWhereLowIsBad(int percentage) {
         if (percentage < 20) {
@@ -44,15 +39,13 @@ public final class DistanceService {
     }
 
     public String mileage(float distance, boolean appendMileage) {
-        String string = DecimalFormat.getInstance().format(ApiMath.metersToMiles(BigDecimal.valueOf(distance)));
+        BigDecimal bigDecimal = ApiMath.round(ApiMath.miles(BigDecimal.valueOf(distance)));
 
         if (appendMileage) {
-            string += " mi";
+            return ApiMath.format(bigDecimal, ApiMath.Style.Formatted) + " mi";
         } else {
-            string = string.replace(",", "");
+            return ApiMath.format(bigDecimal, ApiMath.Style.Plain);
         }
-
-        return string;
     }
 
 }

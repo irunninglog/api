@@ -5,6 +5,7 @@ import com.irunninglog.api.challenges.IChallengesService;
 import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.runs.IRun;
 import com.irunninglog.api.security.IUser;
+import com.irunninglog.math.ApiMath;
 import com.irunninglog.spring.util.DistanceService;
 import com.irunninglog.strava.IStravaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +49,7 @@ final class ChallengesService implements IChallengesService {
                 .setDescription(definition.getDesctiption())
                 .setDistanceTotal(distanceService.mileage(definition.getDistance()))
                 .setDistanceDone(distanceService.mileage(Math.min(definition.getDistance(), done.floatValue())))
-                .setDistanceInt(distanceService.getDistanceFloored(definition.getDistance()))
+                .setDistanceInt(ApiMath.floor(ApiMath.round(ApiMath.miles(BigDecimal.valueOf(definition.getDistance())))).intValue())
                 .setPercentage(distanceService.percentage(definition.getDistance(), done.floatValue()))
                 .setProgress(distanceService.progressWhereLowIsBad(distanceService.percentage(definition.getDistance(), done.floatValue()))))
                 .collect(Collectors.toList());

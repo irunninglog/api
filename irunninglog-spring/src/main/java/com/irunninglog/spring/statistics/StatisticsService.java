@@ -4,7 +4,7 @@ import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.runs.IRun;
 import com.irunninglog.api.security.IUser;
 import com.irunninglog.api.statistics.*;
-import com.irunninglog.spring.util.DateService;
+import com.irunninglog.date.ApiDate;
 import com.irunninglog.spring.util.DistanceService;
 import com.irunninglog.strava.IStravaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,14 +21,12 @@ final class StatisticsService implements IStatisticsService {
     private final IFactory factory;
     private final IStravaService stravaService;
     private final DistanceService distanceService;
-    private final DateService dateService;
 
     @Autowired
-    StatisticsService(IFactory factory, IStravaService service, DistanceService distanceService, DateService dateService) {
+    StatisticsService(IFactory factory, IStravaService service, DistanceService distanceService) {
         this.factory = factory;
         this.stravaService = service;
         this.distanceService = distanceService;
-        this.dateService = dateService;
     }
 
     @Override
@@ -49,11 +47,14 @@ final class StatisticsService implements IStatisticsService {
         Map<String, BigDecimal> map = new TreeMap<>();
 
         for (IRun run : runs) {
-            LocalDate date = dateService.monthStart(dateService.toLocalDate(run.getStartTime()));
+            // Run start time is a zoned date time
+            LocalDate date = ApiDate.monthStart(ApiDate.parseAsLocalDate(run.getStartTime()));
+
             BigDecimal bigDecimal = map.get(date.toString());
             if (bigDecimal == null) {
                 bigDecimal = new BigDecimal(BigInteger.ZERO);
             }
+
             map.put(date.toString(), bigDecimal.add(new BigDecimal(run.getDistance())));
         }
 
@@ -71,7 +72,7 @@ final class StatisticsService implements IStatisticsService {
             values.put("cumulativeFormatted", distanceService.mileage(total.floatValue()));
 
             points.add(factory.get(IDataPoint.class)
-                    .setDate(dateService.format(date))
+                    .setDate(ApiDate.format(date))
                     .setValues(values));
         }
 
@@ -82,7 +83,7 @@ final class StatisticsService implements IStatisticsService {
         Map<Integer, BigDecimal> map = new TreeMap<>((o1, o2) -> o2.compareTo(o1));
 
         for (IRun run : runs) {
-            int year = dateService.toLocalDate(run.getStartTime()).getYear();
+            int year = ApiDate.parseAsLocalDate(run.getStartTime()).getYear();
 
             BigDecimal bigDecimal = map.get(year);
             if (bigDecimal == null) {
@@ -119,18 +120,18 @@ final class StatisticsService implements IStatisticsService {
         for (IRun run : runs) {
             allTime = allTime.add(new BigDecimal(run.getDistance()));
 
-            LocalDate yearStart = dateService.yearStart(offset);
-            LocalDate localDate = dateService.toLocalDate(run.getStartTime());
+            LocalDate yearStart = ApiDate.yearStart(offset);
+            LocalDate localDate = ApiDate.parseAsLocalDate(run.getStartTime());
             if (localDate.getYear() == yearStart.getYear()) {
                 thisYear = thisYear.add(new BigDecimal(run.getDistance()));
             }
 
-            LocalDate monthStart = dateService.monthStart(offset);
+            LocalDate monthStart = ApiDate.monthStart(offset);
             if (localDate.getYear() == monthStart.getYear() && localDate.getMonth() == monthStart.getMonth()) {
                 thisMonth = thisMonth.add(new BigDecimal(run.getDistance()));
             }
 
-            LocalDate weekStart = dateService.weekStart(offset);
+            LocalDate weekStart = ApiDate.weekStart(offset);
             LocalDate nextWeekStart = weekStart.plusDays(7);
             if (!localDate.isBefore(weekStart) && localDate.isBefore(nextWeekStart)) {
                 thisWeek = thisWeek.add(new BigDecimal(run.getDistance()));
