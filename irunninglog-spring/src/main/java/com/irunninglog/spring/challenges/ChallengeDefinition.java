@@ -1,10 +1,12 @@
 package com.irunninglog.spring.challenges;
 
+import java.math.BigDecimal;
+
 final class ChallengeDefinition {
 
     private String name;
     private String desctiption;
-    private float distance;
+    private BigDecimal distance;
 
     String getName() {
         return name;
@@ -24,12 +26,18 @@ final class ChallengeDefinition {
         return this;
     }
 
-    float getDistance() {
+    BigDecimal getDistance() {
         return distance;
     }
 
-    ChallengeDefinition setDistance(float distance) {
+    ChallengeDefinition setDistance(BigDecimal distance) {
         this.distance = distance;
+        return this;
+    }
+
+    @Deprecated
+    ChallengeDefinition setDistance(float distance) {
+        this.distance = BigDecimal.valueOf(distance);
         return this;
     }
 

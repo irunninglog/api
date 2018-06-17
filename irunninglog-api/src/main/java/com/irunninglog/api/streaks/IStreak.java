@@ -1,6 +1,6 @@
 package com.irunninglog.api.streaks;
 
-import com.irunninglog.api.Progress;
+import com.irunninglog.api.progress.Progress;
 
 public interface IStreak {
 

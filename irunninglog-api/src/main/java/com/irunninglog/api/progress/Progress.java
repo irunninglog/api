@@ -1,4 +1,4 @@
-package com.irunninglog.api;
+package com.irunninglog.api.progress;
 
 public enum Progress {
 

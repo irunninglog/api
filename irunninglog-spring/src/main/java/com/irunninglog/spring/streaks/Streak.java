@@ -1,6 +1,6 @@
 package com.irunninglog.spring.streaks;
 
-import com.irunninglog.api.Progress;
+import com.irunninglog.api.progress.Progress;
 import com.irunninglog.api.streaks.IStreak;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;

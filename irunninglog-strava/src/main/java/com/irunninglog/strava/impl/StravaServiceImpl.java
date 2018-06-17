@@ -79,7 +79,7 @@ final class StravaServiceImpl implements IStravaService {
         return factory.get(IRun.class)
                 .setId(stravaActivity.getId())
                 .setStartTime(stravaActivity.getStartDate().format(DateTimeFormatter.ISO_OFFSET_DATE_TIME))
-                .setDistance(ApiMath.format(ApiMath.round(BigDecimal.valueOf(stravaActivity.getDistance())), ApiMath.Style.Plain))
+                .setDistance(ApiMath.format(ApiMath.round(BigDecimal.valueOf(stravaActivity.getDistance())), ApiMath.FORMAT_PLAIN))
                 .setDuration(stravaActivity.getMovingTime())
                 .setShoes(stravaActivity.getGearId());
     }

@@ -1,5 +1,6 @@
 package com.irunninglog.api;
 
+import com.irunninglog.api.progress.Progress;
 import org.junit.Test;
 
 import static org.junit.Assert.assertNotNull;

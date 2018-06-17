@@ -1,17 +1,19 @@
 package com.irunninglog.spring.streaks;
 
 import com.irunninglog.api.factory.IFactory;
+import com.irunninglog.api.progress.ProgressThresholds;
 import com.irunninglog.api.runs.IRun;
 import com.irunninglog.api.security.IUser;
 import com.irunninglog.api.streaks.IStreak;
 import com.irunninglog.api.streaks.IStreaks;
 import com.irunninglog.api.streaks.IStreaksService;
 import com.irunninglog.date.ApiDate;
-import com.irunninglog.spring.util.DistanceService;
+import com.irunninglog.math.ApiMath;
 import com.irunninglog.strava.IStravaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -25,17 +27,14 @@ final class StreaksService implements IStreaksService {
 
     private final IFactory factory;
     private final IStravaService stravaService;
-    private final DistanceService distanceService;
 
     @Autowired
     public StreaksService(IFactory factory,
-                          IStravaService stravaService,
-                          DistanceService distanceService) {
+                          IStravaService stravaService) {
         super();
 
         this.factory = factory;
         this.stravaService = stravaService;
-        this.distanceService = distanceService;
     }
 
     @Override
@@ -98,7 +97,7 @@ final class StreaksService implements IStreaksService {
     }
 
     private IStreak copyOf(IStreak value, IStreak longest) {
-        int percentage = distanceService.percentage(longest.getDays(), value.getDays());
+        int percentage = ApiMath.percentage(BigDecimal.valueOf(longest.getDays()), BigDecimal.valueOf(value.getDays()));
 
         return factory.get(IStreak.class)
                 .setStartDate(value.getStartDate())
@@ -106,7 +105,7 @@ final class StreaksService implements IStreaksService {
                 .setDays(value.getDays())
                 .setRuns(value.getRuns())
                 .setPercentage(percentage)
-                .setProgress(distanceService.progressWhereLowIsBad(percentage));
+                .setProgress(ApiMath.progress(BigDecimal.valueOf(percentage), new ProgressThresholds(20, 80, ProgressThresholds.ProgressMode.LOW_BAD)));
     }
 
     private IStreak findLongest(List<IStreak> streaksList) {

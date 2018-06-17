@@ -1,15 +1,17 @@
 package com.irunninglog.spring.shoes;
 
 import com.irunninglog.api.factory.IFactory;
+import com.irunninglog.api.progress.ProgressThresholds;
 import com.irunninglog.api.security.IUser;
 import com.irunninglog.api.shoes.IShoe;
 import com.irunninglog.api.shoes.IShoesService;
-import com.irunninglog.spring.util.DistanceService;
+import com.irunninglog.math.ApiMath;
 import com.irunninglog.strava.IStravaService;
 import com.irunninglog.strava.IStravaShoe;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,18 +20,15 @@ final class ShoesService implements IShoesService {
 
     private final IStravaService stravaService;
     private final IFactory factory;
-    private final DistanceService distanceService;
 
     @Autowired
     ShoesService(IStravaService stravaService,
-                 IFactory factory,
-                 DistanceService distanceService) {
+                 IFactory factory) {
 
         super();
 
         this.stravaService = stravaService;
         this.factory = factory;
-        this.distanceService = distanceService;
     }
 
     @Override
@@ -45,9 +44,9 @@ final class ShoesService implements IShoesService {
                 .setModel(stravaShoe.getModel())
                 .setDescription(stravaShoe.getDescription())
                 .setPrimary(stravaShoe.isPrimary())
-                .setPercentage(distanceService.percentage(804672.0F, stravaShoe.getDistance()))
-                .setProgress(distanceService.progressWhereLowIsGood(distanceService.percentage(804672.0F, stravaShoe.getDistance())))
-                .setDistance(distanceService.mileage(stravaShoe.getDistance()))).collect(Collectors.toList());
+                .setPercentage(ApiMath.percentage(BigDecimal.valueOf(804672.0F), BigDecimal.valueOf(stravaShoe.getDistance())))
+                .setProgress(ApiMath.progress(BigDecimal.valueOf(ApiMath.percentage(BigDecimal.valueOf(804672.0F), BigDecimal.valueOf(stravaShoe.getDistance()))), new ProgressThresholds(40, 80, ProgressThresholds.ProgressMode.LOW_GOOD)))
+                .setDistance(ApiMath.format(ApiMath.round(ApiMath.miles(BigDecimal.valueOf(stravaShoe.getDistance()))), ApiMath.FORMAT_FORMATTED_MILEAGE))).collect(Collectors.toList());
     }
 
 }

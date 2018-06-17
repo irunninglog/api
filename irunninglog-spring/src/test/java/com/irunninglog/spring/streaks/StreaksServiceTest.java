@@ -1,6 +1,6 @@
 package com.irunninglog.spring.streaks;
 
-import com.irunninglog.api.Progress;
+import com.irunninglog.api.progress.Progress;
 import com.irunninglog.api.runs.IRun;
 import com.irunninglog.api.security.IUser;
 import com.irunninglog.api.streaks.IStreak;

@@ -5,7 +5,7 @@ import com.irunninglog.api.runs.IRun;
 import com.irunninglog.api.security.IUser;
 import com.irunninglog.api.statistics.*;
 import com.irunninglog.date.ApiDate;
-import com.irunninglog.spring.util.DistanceService;
+import com.irunninglog.math.ApiMath;
 import com.irunninglog.strava.IStravaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,13 +20,11 @@ final class StatisticsService implements IStatisticsService {
 
     private final IFactory factory;
     private final IStravaService stravaService;
-    private final DistanceService distanceService;
 
     @Autowired
-    StatisticsService(IFactory factory, IStravaService service, DistanceService distanceService) {
+    StatisticsService(IFactory factory, IStravaService service) {
         this.factory = factory;
         this.stravaService = service;
-        this.distanceService = distanceService;
     }
 
     @Override
@@ -66,10 +64,10 @@ final class StatisticsService implements IStatisticsService {
             total = total.add(entry.getValue());
 
             Map<String, String> values = new HashMap<>();
-            values.put("monthly", distanceService.mileage(entry.getValue().floatValue(), Boolean.FALSE));
-            values.put("monthlyFormatted", distanceService.mileage(entry.getValue().floatValue()));
-            values.put("cumulative", distanceService.mileage(total.floatValue(), Boolean.FALSE));
-            values.put("cumulativeFormatted", distanceService.mileage(total.floatValue()));
+            values.put("monthly", ApiMath.format(ApiMath.round(ApiMath.miles(entry.getValue())), ApiMath.FORMAT_PLAIN));
+            values.put("monthlyFormatted", ApiMath.format(ApiMath.round(ApiMath.miles(entry.getValue())), ApiMath.FORMAT_FORMATTED_MILEAGE));
+            values.put("cumulative", ApiMath.format(ApiMath.round(ApiMath.miles(total)), ApiMath.FORMAT_PLAIN));
+            values.put("cumulativeFormatted", ApiMath.format(ApiMath.round(ApiMath.miles(total)), ApiMath.FORMAT_FORMATTED_MILEAGE));
 
             points.add(factory.get(IDataPoint.class)
                     .setDate(ApiDate.format(date))
@@ -104,7 +102,7 @@ final class StatisticsService implements IStatisticsService {
         for (Map.Entry<Integer, BigDecimal> entry : map.entrySet()) {
             totals.add(factory.get(ITotalByYear.class)
                     .setYear(entry.getKey())
-                    .setTotal(distanceService.mileage(entry.getValue().floatValue()))
+                    .setTotal(ApiMath.format(ApiMath.round(ApiMath.miles(entry.getValue())), ApiMath.FORMAT_FORMATTED_MILEAGE))
                     .setPercentage(entry.getValue().multiply(new BigDecimal(100)).divide(max, BigDecimal.ROUND_FLOOR).intValue()));
         }
 
@@ -139,10 +137,10 @@ final class StatisticsService implements IStatisticsService {
         }
 
         statistics.setSummary(factory.get(ISummary.class)
-                        .setThisWeek(distanceService.mileage(thisWeek.floatValue()))
-                        .setThisMonth(distanceService.mileage(thisMonth.floatValue()))
-                        .setThisYear(distanceService.mileage(thisYear.floatValue()))
-                        .setAllTime(distanceService.mileage(allTime.floatValue())));
+                        .setThisWeek(ApiMath.format(ApiMath.round(ApiMath.miles(thisWeek)), ApiMath.FORMAT_FORMATTED_MILEAGE))
+                        .setThisMonth(ApiMath.format(ApiMath.round(ApiMath.miles(thisMonth)), ApiMath.FORMAT_FORMATTED_MILEAGE))
+                        .setThisYear(ApiMath.format(ApiMath.round(ApiMath.miles(thisYear)), ApiMath.FORMAT_FORMATTED_MILEAGE))
+                        .setAllTime(ApiMath.format(ApiMath.round(ApiMath.miles(allTime)), ApiMath.FORMAT_FORMATTED_MILEAGE)));
     }
 
 }

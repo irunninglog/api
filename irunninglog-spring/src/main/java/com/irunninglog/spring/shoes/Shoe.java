@@ -1,6 +1,6 @@
 package com.irunninglog.spring.shoes;
 
-import com.irunninglog.api.Progress;
+import com.irunninglog.api.progress.Progress;
 import com.irunninglog.api.shoes.IShoe;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;

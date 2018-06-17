@@ -1,7 +1,7 @@
 package com.irunninglog.spring.shoes;
 
-import com.irunninglog.api.Progress;
 import com.irunninglog.api.factory.IFactory;
+import com.irunninglog.api.progress.Progress;
 import com.irunninglog.api.security.IUser;
 import com.irunninglog.api.shoes.IShoe;
 import com.irunninglog.api.shoes.IShoesService;

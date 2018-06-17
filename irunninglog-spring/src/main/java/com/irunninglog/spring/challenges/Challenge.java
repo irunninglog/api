@@ -1,7 +1,7 @@
 package com.irunninglog.spring.challenges;
 
-import com.irunninglog.api.Progress;
 import com.irunninglog.api.challenges.IChallenge;
+import com.irunninglog.api.progress.Progress;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 

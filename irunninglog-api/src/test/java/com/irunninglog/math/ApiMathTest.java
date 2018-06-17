@@ -39,8 +39,9 @@ public class ApiMathTest {
 
     @Test
     public void format() {
-        assertEquals("1,000", ApiMath.format(BigDecimal.valueOf(1000), ApiMath.Style.Formatted));
-        assertEquals("1000", ApiMath.format(BigDecimal.valueOf(1000), ApiMath.Style.Plain));
+        assertEquals("1,000", ApiMath.format(BigDecimal.valueOf(1000), ApiMath.FORMAT_FORMATTED));
+        assertEquals("1000", ApiMath.format(BigDecimal.valueOf(1000), ApiMath.FORMAT_PLAIN));
+        assertEquals("1,000 mi", ApiMath.format(BigDecimal.valueOf(1000), ApiMath.FORMAT_FORMATTED_MILEAGE));
     }
 
 }

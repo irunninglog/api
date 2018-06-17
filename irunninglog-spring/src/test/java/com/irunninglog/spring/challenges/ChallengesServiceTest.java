@@ -1,8 +1,8 @@
 package com.irunninglog.spring.challenges;
 
-import com.irunninglog.api.Progress;
 import com.irunninglog.api.challenges.IChallenge;
 import com.irunninglog.api.challenges.IChallengesService;
+import com.irunninglog.api.progress.Progress;
 import com.irunninglog.api.runs.IRun;
 import com.irunninglog.api.security.IUser;
 import com.irunninglog.spring.AbstractTest;
