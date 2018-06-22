@@ -21,16 +21,19 @@ final class ChallengesService implements IChallengesService {
     private final ChallengeDefinitions definitions;
     private final IFactory factory;
     private final IStravaService stravaService;
+    private final ApiMath apiMath;
 
     @Autowired
     ChallengesService(ChallengeDefinitions definitions,
                       IFactory factory,
-                      IStravaService stravaService) {
+                      IStravaService stravaService,
+                      ApiMath apiMath) {
         super();
 
         this.definitions = definitions;
         this.factory = factory;
         this.stravaService = stravaService;
+        this.apiMath = apiMath;
     }
 
     @Override
@@ -45,11 +48,11 @@ final class ChallengesService implements IChallengesService {
         return definitions.definitions().stream().map(definition -> factory.get(IChallenge.class)
                 .setName(definition.getName())
                 .setDescription(definition.getDesctiption())
-                .setDistanceTotal(ApiMath.format(ApiMath.round(ApiMath.miles(definition.getDistance())), ApiMath.FORMAT_FORMATTED_MILEAGE))
-                .setDistanceDone(ApiMath.format(ApiMath.round(ApiMath.miles(BigDecimal.valueOf(Math.min(definition.getDistance().floatValue(), done.floatValue())))), ApiMath.FORMAT_FORMATTED_MILEAGE))
-                .setDistanceInt(ApiMath.floor(ApiMath.round(ApiMath.miles(definition.getDistance()))).intValue())
-                .setPercentage(ApiMath.percentage(definition.getDistance(), done))
-                .setProgress(ApiMath.progress(BigDecimal.valueOf(ApiMath.percentage(definition.getDistance(), done)), new ProgressThresholds(20, 80, ProgressThresholds.ProgressMode.LOW_BAD))))
+                .setDistanceTotal(apiMath.format(apiMath.round(apiMath.miles(definition.getDistance())), ApiMath.FORMAT_FORMATTED_MILEAGE))
+                .setDistanceDone(apiMath.format(apiMath.round(apiMath.miles(BigDecimal.valueOf(Math.min(definition.getDistance().floatValue(), done.floatValue())))), ApiMath.FORMAT_FORMATTED_MILEAGE))
+                .setDistanceInt(apiMath.floor(apiMath.round(apiMath.miles(definition.getDistance()))).intValue())
+                .setPercentage(apiMath.percentage(definition.getDistance(), done).intValue())
+                .setProgress(apiMath.progress(apiMath.percentage(definition.getDistance(), done), new ProgressThresholds(20, 80, ProgressThresholds.ProgressMode.LOW_BAD))))
                 .collect(Collectors.toList());
     }
 

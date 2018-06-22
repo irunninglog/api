@@ -27,26 +27,29 @@ final class StreaksService implements IStreaksService {
 
     private final IFactory factory;
     private final IStravaService stravaService;
+    private final ApiMath apiMath;
+    private final ApiDate apiDate;
 
     @Autowired
-    public StreaksService(IFactory factory,
-                          IStravaService stravaService) {
+    public StreaksService(IFactory factory, IStravaService stravaService, ApiMath apiMath, ApiDate apiDate) {
         super();
 
         this.factory = factory;
         this.stravaService = stravaService;
+        this.apiMath = apiMath;
+        this.apiDate = apiDate;
     }
 
     @Override
     public IStreaks getStreaks(IUser user, int offset) {
         List<IRun> activities = stravaService.runs(user);
-        activities.sort((o1, o2) -> ApiDate.parseAsLocalDate(o2.getStartTime()).compareTo(ApiDate.parseAsLocalDate(o1.getStartTime())));
+        activities.sort((o1, o2) -> apiDate.parseZonedDate(o2.getStartTime()).compareTo(apiDate.parseZonedDate(o1.getStartTime())));
 
         List<IStreak> streaksList = new ArrayList<>();
 
         IStreak streak = null;
         for (IRun run : activities) {
-            LocalDate runDate = ApiDate.parseAsLocalDate(run.getStartTime());
+            LocalDate runDate = apiDate.parseZonedDate(run.getStartTime());
             if (streak == null || !runDate.isAfter(toLocalDate(streak.getStartDate()).minusDays(2))) {
                 streak = newStreak(runDate);
                 streaksList.add(streak);
@@ -97,7 +100,7 @@ final class StreaksService implements IStreaksService {
     }
 
     private IStreak copyOf(IStreak value, IStreak longest) {
-        int percentage = ApiMath.percentage(BigDecimal.valueOf(longest.getDays()), BigDecimal.valueOf(value.getDays()));
+        int percentage = apiMath.percentage(BigDecimal.valueOf(longest.getDays()), BigDecimal.valueOf(value.getDays())).intValue();
 
         return factory.get(IStreak.class)
                 .setStartDate(value.getStartDate())
@@ -105,7 +108,7 @@ final class StreaksService implements IStreaksService {
                 .setDays(value.getDays())
                 .setRuns(value.getRuns())
                 .setPercentage(percentage)
-                .setProgress(ApiMath.progress(BigDecimal.valueOf(percentage), new ProgressThresholds(20, 80, ProgressThresholds.ProgressMode.LOW_BAD)));
+                .setProgress(apiMath.progress(BigDecimal.valueOf(percentage), new ProgressThresholds(20, 80, ProgressThresholds.ProgressMode.LOW_BAD)));
     }
 
     private IStreak findLongest(List<IStreak> streaksList) {
@@ -140,11 +143,11 @@ final class StreaksService implements IStreaksService {
     }
 
     private LocalDate current(int minutes) {
-        return ApiDate.current(minutes).minusDays(1);
+        return apiDate.current(minutes).minusDays(1);
     }
 
     private LocalDate yearStart(int minutes) {
-        return ApiDate.yearStart(minutes);
+        return apiDate.yearStart(minutes);
     }
 
 }

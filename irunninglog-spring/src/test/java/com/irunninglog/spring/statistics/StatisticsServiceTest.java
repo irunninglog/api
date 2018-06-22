@@ -27,6 +27,7 @@ public class StatisticsServiceTest extends AbstractTest {
 
     private IStatisticsService statisticsService;
     private IStravaService stravaService;
+    private ApiDate apiDate;
 
     @Override
     protected void afterBefore(ApplicationContext applicationContext) {
@@ -34,6 +35,7 @@ public class StatisticsServiceTest extends AbstractTest {
 
         statisticsService = applicationContext.getBean(IStatisticsService.class);
         stravaService = applicationContext.getBean(IStravaService.class);
+        apiDate = applicationContext.getBean(ApiDate.class);
     }
 
     @Test
@@ -54,7 +56,7 @@ public class StatisticsServiceTest extends AbstractTest {
 
     @Test
     public void yearly() {
-        LocalDate thisYear = ApiDate.yearStart(ZonedDateTime.now().getOffset().getTotalSeconds() / 60 * -1);
+        LocalDate thisYear = apiDate.yearStart(ZonedDateTime.now().getOffset().getTotalSeconds() / 60 * -1);
 
         List<IRun> runs = new ArrayList<>();
         runs.add(run(LocalDateTime.now(), 16093.44F));

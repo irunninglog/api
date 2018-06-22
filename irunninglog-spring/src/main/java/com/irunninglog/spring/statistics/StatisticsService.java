@@ -20,11 +20,15 @@ final class StatisticsService implements IStatisticsService {
 
     private final IFactory factory;
     private final IStravaService stravaService;
+    private final ApiMath apiMath;
+    private final ApiDate apiDate;
 
     @Autowired
-    StatisticsService(IFactory factory, IStravaService service) {
+    StatisticsService(IFactory factory, IStravaService service, ApiMath apiMath, ApiDate apiDate) {
         this.factory = factory;
         this.stravaService = service;
+        this.apiMath = apiMath;
+        this.apiDate = apiDate;
     }
 
     @Override
@@ -46,7 +50,7 @@ final class StatisticsService implements IStatisticsService {
 
         for (IRun run : runs) {
             // Run start time is a zoned date time
-            LocalDate date = ApiDate.monthStart(ApiDate.parseAsLocalDate(run.getStartTime()));
+            LocalDate date = apiDate.monthStart(apiDate.parseZonedDate(run.getStartTime()));
 
             BigDecimal bigDecimal = map.get(date.toString());
             if (bigDecimal == null) {
@@ -64,13 +68,13 @@ final class StatisticsService implements IStatisticsService {
             total = total.add(entry.getValue());
 
             Map<String, String> values = new HashMap<>();
-            values.put("monthly", ApiMath.format(ApiMath.round(ApiMath.miles(entry.getValue())), ApiMath.FORMAT_PLAIN));
-            values.put("monthlyFormatted", ApiMath.format(ApiMath.round(ApiMath.miles(entry.getValue())), ApiMath.FORMAT_FORMATTED_MILEAGE));
-            values.put("cumulative", ApiMath.format(ApiMath.round(ApiMath.miles(total)), ApiMath.FORMAT_PLAIN));
-            values.put("cumulativeFormatted", ApiMath.format(ApiMath.round(ApiMath.miles(total)), ApiMath.FORMAT_FORMATTED_MILEAGE));
+            values.put("monthly", apiMath.format(apiMath.round(apiMath.miles(entry.getValue())), ApiMath.FORMAT_PLAIN));
+            values.put("monthlyFormatted", apiMath.format(apiMath.round(apiMath.miles(entry.getValue())), ApiMath.FORMAT_FORMATTED_MILEAGE));
+            values.put("cumulative", apiMath.format(apiMath.round(apiMath.miles(total)), ApiMath.FORMAT_PLAIN));
+            values.put("cumulativeFormatted", apiMath.format(apiMath.round(apiMath.miles(total)), ApiMath.FORMAT_FORMATTED_MILEAGE));
 
             points.add(factory.get(IDataPoint.class)
-                    .setDate(ApiDate.format(date))
+                    .setDate(apiDate.format(date))
                     .setValues(values));
         }
 
@@ -81,7 +85,7 @@ final class StatisticsService implements IStatisticsService {
         Map<Integer, BigDecimal> map = new TreeMap<>((o1, o2) -> o2.compareTo(o1));
 
         for (IRun run : runs) {
-            int year = ApiDate.parseAsLocalDate(run.getStartTime()).getYear();
+            int year = apiDate.parseZonedDate(run.getStartTime()).getYear();
 
             BigDecimal bigDecimal = map.get(year);
             if (bigDecimal == null) {
@@ -102,7 +106,7 @@ final class StatisticsService implements IStatisticsService {
         for (Map.Entry<Integer, BigDecimal> entry : map.entrySet()) {
             totals.add(factory.get(ITotalByYear.class)
                     .setYear(entry.getKey())
-                    .setTotal(ApiMath.format(ApiMath.round(ApiMath.miles(entry.getValue())), ApiMath.FORMAT_FORMATTED_MILEAGE))
+                    .setTotal(apiMath.format(apiMath.round(apiMath.miles(entry.getValue())), ApiMath.FORMAT_FORMATTED_MILEAGE))
                     .setPercentage(entry.getValue().multiply(new BigDecimal(100)).divide(max, BigDecimal.ROUND_FLOOR).intValue()));
         }
 
@@ -118,18 +122,18 @@ final class StatisticsService implements IStatisticsService {
         for (IRun run : runs) {
             allTime = allTime.add(new BigDecimal(run.getDistance()));
 
-            LocalDate yearStart = ApiDate.yearStart(offset);
-            LocalDate localDate = ApiDate.parseAsLocalDate(run.getStartTime());
+            LocalDate yearStart = apiDate.yearStart(offset);
+            LocalDate localDate = apiDate.parseZonedDate(run.getStartTime());
             if (localDate.getYear() == yearStart.getYear()) {
                 thisYear = thisYear.add(new BigDecimal(run.getDistance()));
             }
 
-            LocalDate monthStart = ApiDate.monthStart(offset);
+            LocalDate monthStart = apiDate.monthStart(offset);
             if (localDate.getYear() == monthStart.getYear() && localDate.getMonth() == monthStart.getMonth()) {
                 thisMonth = thisMonth.add(new BigDecimal(run.getDistance()));
             }
 
-            LocalDate weekStart = ApiDate.weekStart(offset);
+            LocalDate weekStart = apiDate.weekStart(offset);
             LocalDate nextWeekStart = weekStart.plusDays(7);
             if (!localDate.isBefore(weekStart) && localDate.isBefore(nextWeekStart)) {
                 thisWeek = thisWeek.add(new BigDecimal(run.getDistance()));
@@ -137,10 +141,10 @@ final class StatisticsService implements IStatisticsService {
         }
 
         statistics.setSummary(factory.get(ISummary.class)
-                        .setThisWeek(ApiMath.format(ApiMath.round(ApiMath.miles(thisWeek)), ApiMath.FORMAT_FORMATTED_MILEAGE))
-                        .setThisMonth(ApiMath.format(ApiMath.round(ApiMath.miles(thisMonth)), ApiMath.FORMAT_FORMATTED_MILEAGE))
-                        .setThisYear(ApiMath.format(ApiMath.round(ApiMath.miles(thisYear)), ApiMath.FORMAT_FORMATTED_MILEAGE))
-                        .setAllTime(ApiMath.format(ApiMath.round(ApiMath.miles(allTime)), ApiMath.FORMAT_FORMATTED_MILEAGE)));
+                        .setThisWeek(apiMath.format(apiMath.round(apiMath.miles(thisWeek)), ApiMath.FORMAT_FORMATTED_MILEAGE))
+                        .setThisMonth(apiMath.format(apiMath.round(apiMath.miles(thisMonth)), ApiMath.FORMAT_FORMATTED_MILEAGE))
+                        .setThisYear(apiMath.format(apiMath.round(apiMath.miles(thisYear)), ApiMath.FORMAT_FORMATTED_MILEAGE))
+                        .setAllTime(apiMath.format(apiMath.round(apiMath.miles(allTime)), ApiMath.FORMAT_FORMATTED_MILEAGE)));
     }
 
 }

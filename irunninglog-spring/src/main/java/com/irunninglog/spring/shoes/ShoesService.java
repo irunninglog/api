@@ -20,15 +20,17 @@ final class ShoesService implements IShoesService {
 
     private final IStravaService stravaService;
     private final IFactory factory;
+    private final ApiMath apiMath;
 
     @Autowired
     ShoesService(IStravaService stravaService,
-                 IFactory factory) {
+                 IFactory factory, ApiMath apiMath) {
 
         super();
 
         this.stravaService = stravaService;
         this.factory = factory;
+        this.apiMath = apiMath;
     }
 
     @Override
@@ -44,9 +46,9 @@ final class ShoesService implements IShoesService {
                 .setModel(stravaShoe.getModel())
                 .setDescription(stravaShoe.getDescription())
                 .setPrimary(stravaShoe.isPrimary())
-                .setPercentage(ApiMath.percentage(BigDecimal.valueOf(804672.0F), BigDecimal.valueOf(stravaShoe.getDistance())))
-                .setProgress(ApiMath.progress(BigDecimal.valueOf(ApiMath.percentage(BigDecimal.valueOf(804672.0F), BigDecimal.valueOf(stravaShoe.getDistance()))), new ProgressThresholds(40, 80, ProgressThresholds.ProgressMode.LOW_GOOD)))
-                .setDistance(ApiMath.format(ApiMath.round(ApiMath.miles(BigDecimal.valueOf(stravaShoe.getDistance()))), ApiMath.FORMAT_FORMATTED_MILEAGE))).collect(Collectors.toList());
+                .setPercentage(apiMath.percentage(BigDecimal.valueOf(804672.0F), BigDecimal.valueOf(stravaShoe.getDistance())).intValue())
+                .setProgress(apiMath.progress(apiMath.percentage(BigDecimal.valueOf(804672.0F), BigDecimal.valueOf(stravaShoe.getDistance())), new ProgressThresholds(40, 80, ProgressThresholds.ProgressMode.LOW_GOOD)))
+                .setDistance(apiMath.format(apiMath.round(apiMath.miles(BigDecimal.valueOf(stravaShoe.getDistance()))), ApiMath.FORMAT_FORMATTED_MILEAGE))).collect(Collectors.toList());
     }
 
 }

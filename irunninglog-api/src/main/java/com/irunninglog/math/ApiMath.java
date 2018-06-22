@@ -15,30 +15,28 @@ public final class ApiMath {
 
     private static final BigDecimal METERS_TO_MILES = BigDecimal.valueOf(0.000621371);
 
-    private ApiMath() { }
-
-    public static BigDecimal miles(BigDecimal meters) {
+    public BigDecimal miles(BigDecimal meters) {
         return meters.multiply(METERS_TO_MILES);
     }
 
-    public static BigDecimal round(BigDecimal number) {
+    public BigDecimal round(BigDecimal number) {
         return number.setScale(1, RoundingMode.HALF_UP);
     }
 
-    public static BigDecimal floor(BigDecimal number) {
+    public BigDecimal floor(BigDecimal number) {
         return number.setScale(0, RoundingMode.FLOOR);
     }
 
-    public static String format(BigDecimal number, String format) {
+    public String format(BigDecimal number, String format) {
         return MessageFormat.format(format, number);
     }
 
-    public static int percentage(BigDecimal total, BigDecimal done) {
+    public BigDecimal percentage(BigDecimal total, BigDecimal done) {
         BigDecimal result = done.multiply(BigDecimal.valueOf(100)).divide(total, 1, RoundingMode.HALF_UP);
-        return Math.min(100, result.intValue());
+        return BigDecimal.valueOf(Math.min(100, result.intValue()));
     }
 
-    public static Progress progress(BigDecimal value, ProgressThresholds thresholds) {
+    public Progress progress(BigDecimal value, ProgressThresholds thresholds) {
         if (value.intValue() < thresholds.getThreshold1()) {
             return thresholds.getMode() == ProgressThresholds.ProgressMode.LOW_GOOD ? Progress.GOOD : Progress.BAD;
         } else if (value.intValue() < thresholds.getThreshold2()) {

@@ -29,12 +29,14 @@ final class StravaServiceImpl implements IStravaService {
     private final IFactory factory;
     private final IStravaTokenExchange exchange;
     private final IStravaSessionCache cache;
+    private final ApiMath apiMath;
 
     @Autowired
-    StravaServiceImpl(IFactory factory, IStravaTokenExchange exchange, IStravaSessionCache cache) {
+    StravaServiceImpl(IFactory factory, IStravaTokenExchange exchange, IStravaSessionCache cache, ApiMath apiMath) {
         this.factory = factory;
         this.exchange = exchange;
         this.cache = cache;
+        this.apiMath = apiMath;
     }
 
     @Override
@@ -79,7 +81,7 @@ final class StravaServiceImpl implements IStravaService {
         return factory.get(IRun.class)
                 .setId(stravaActivity.getId())
                 .setStartTime(stravaActivity.getStartDate().format(DateTimeFormatter.ISO_OFFSET_DATE_TIME))
-                .setDistance(ApiMath.format(ApiMath.round(BigDecimal.valueOf(stravaActivity.getDistance())), ApiMath.FORMAT_PLAIN))
+                .setDistance(apiMath.format(apiMath.round(BigDecimal.valueOf(stravaActivity.getDistance())), ApiMath.FORMAT_PLAIN))
                 .setDuration(stravaActivity.getMovingTime())
                 .setShoes(stravaActivity.getGearId());
     }

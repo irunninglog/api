@@ -2,6 +2,7 @@ package com.irunninglog.strava.impl;
 
 import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.runs.IRun;
+import com.irunninglog.math.ApiMath;
 import com.irunninglog.strava.*;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
@@ -18,7 +19,12 @@ public class Config {
 
     @Bean
     public IStravaService service() {
-        return new StravaServiceImpl(factory(), exchange(), cache());
+        return new StravaServiceImpl(factory(), exchange(), cache(), apiMath());
+    }
+
+    @Bean
+    public ApiMath apiMath() {
+        return new ApiMath();
     }
 
     @Bean
