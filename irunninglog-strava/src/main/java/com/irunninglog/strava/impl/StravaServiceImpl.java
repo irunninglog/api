@@ -4,6 +4,7 @@ import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.runs.IRun;
 import com.irunninglog.api.security.AuthnException;
 import com.irunninglog.api.security.IUser;
+import com.irunninglog.date.ApiDate;
 import com.irunninglog.math.ApiMath;
 import com.irunninglog.strava.*;
 import javastrava.api.v3.auth.model.Token;
@@ -16,8 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,13 +29,15 @@ final class StravaServiceImpl implements IStravaService {
     private final IStravaTokenExchange exchange;
     private final IStravaSessionCache cache;
     private final ApiMath apiMath;
+    private final ApiDate apiDate;
 
     @Autowired
-    StravaServiceImpl(IFactory factory, IStravaTokenExchange exchange, IStravaSessionCache cache, ApiMath apiMath) {
+    StravaServiceImpl(IFactory factory, IStravaTokenExchange exchange, IStravaSessionCache cache, ApiMath apiMath, ApiDate apiDate) {
         this.factory = factory;
         this.exchange = exchange;
         this.cache = cache;
         this.apiMath = apiMath;
+        this.apiDate = apiDate;
     }
 
     @Override
@@ -133,9 +134,10 @@ final class StravaServiceImpl implements IStravaService {
 
     private StravaActivity runToActivity(IUser user, IRun run) {
         StravaActivity activity = new StravaActivity();
-        activity.setDistance(new BigDecimal(run.getDistance()).floatValue());
+        activity.setDistance(apiMath.meters(new BigDecimal(run.getDistance())).floatValue());
         activity.setMovingTime(run.getDuration());
-        activity.setStartDate(ZonedDateTime.parse(run.getStartTime(), DateTimeFormatter.ISO_OFFSET_DATE_TIME));
+        activity.setElapsedTime(run.getDuration());
+        activity.setStartDate(apiDate.parseZonedDate(run.getStartTime()));
         activity.setType(StravaActivityType.RUN);
         activity.setAthlete(cache.get(user.getToken()).athlete());
         activity.setName(run.getName());
@@ -150,9 +152,9 @@ final class StravaServiceImpl implements IStravaService {
         run.setId(activity.getId());
         run.setName(activity.getName());
         run.setShoes(activity.getGear() == null ? null : activity.getGear().getId());
-        run.setDistance(BigDecimal.valueOf(activity.getDistance()).setScale(1, RoundingMode.DOWN).toPlainString());
+        run.setDistance(apiMath.format(BigDecimal.valueOf(activity.getDistance()), ApiMath.FORMAT_PLAIN));
         run.setDuration(activity.getMovingTime() == null ? 0 : activity.getMovingTime());
-        run.setStartTime(activity.getStartDate().format(DateTimeFormatter.ISO_OFFSET_DATE_TIME));
+        run.setStartTime(apiDate.format(activity.getStartDate()));
         return run;
     }
 

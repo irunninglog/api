@@ -24,6 +24,11 @@ public class ApiMathTest {
     }
 
     @Test
+    public void meters() {
+        assertEquals(new BigDecimal("1609.34"), apiMath.meters(BigDecimal.ONE));
+    }
+
+    @Test
     public void round() {
         assertEquals(new BigDecimal("3.5"), apiMath.round(new BigDecimal("3.4999965530615234375")));
         assertEquals(new BigDecimal("530.0"), apiMath.round(new BigDecimal("530.0229386045")));

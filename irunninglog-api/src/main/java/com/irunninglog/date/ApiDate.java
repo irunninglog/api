@@ -9,8 +9,12 @@ import java.time.temporal.TemporalAdjusters;
 
 public final class ApiDate {
 
-    public LocalDate parseZonedDate(String dateTime) {
-        return ZonedDateTime.parse(dateTime, DateTimeFormatter.ISO_OFFSET_DATE_TIME).toLocalDate();
+    public ZonedDateTime parseZonedDate(String dateTime) {
+        return ZonedDateTime.parse(dateTime, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+    }
+
+    public LocalDate parseZonedDateAsLocalDate(String dateTime) {
+        return parseZonedDate(dateTime).toLocalDate();
     }
 
     public String format(LocalDate date) {

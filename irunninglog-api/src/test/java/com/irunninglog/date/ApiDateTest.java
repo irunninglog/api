@@ -27,7 +27,7 @@ public class ApiDateTest {
     public void parseZonedDate() {
         ZonedDateTime dateTime = ZonedDateTime.now();
 
-        assertEquals(dateTime.toLocalDate(), apiDate.parseZonedDate(apiDate.format(dateTime)));
+        assertEquals(dateTime.toLocalDate(), apiDate.parseZonedDateAsLocalDate(apiDate.format(dateTime)));
     }
 
     @Test

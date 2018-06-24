@@ -14,9 +14,14 @@ public final class ApiMath {
     public static final String FORMAT_FORMATTED_MILEAGE = "{0,number} mi";
 
     private static final BigDecimal METERS_TO_MILES = BigDecimal.valueOf(0.000621371);
+    private static final BigDecimal MILES_TO_METERS = BigDecimal.valueOf(1609.34);
 
     public BigDecimal miles(BigDecimal meters) {
         return meters.multiply(METERS_TO_MILES);
+    }
+
+    public BigDecimal meters(BigDecimal miles) {
+        return miles.multiply(MILES_TO_METERS);
     }
 
     public BigDecimal round(BigDecimal number) {

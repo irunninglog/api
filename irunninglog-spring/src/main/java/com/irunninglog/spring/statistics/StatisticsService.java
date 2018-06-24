@@ -50,7 +50,7 @@ final class StatisticsService implements IStatisticsService {
 
         for (IRun run : runs) {
             // Run start time is a zoned date time
-            LocalDate date = apiDate.monthStart(apiDate.parseZonedDate(run.getStartTime()));
+            LocalDate date = apiDate.monthStart(apiDate.parseZonedDateAsLocalDate(run.getStartTime()));
 
             BigDecimal bigDecimal = map.get(date.toString());
             if (bigDecimal == null) {
@@ -85,7 +85,7 @@ final class StatisticsService implements IStatisticsService {
         Map<Integer, BigDecimal> map = new TreeMap<>((o1, o2) -> o2.compareTo(o1));
 
         for (IRun run : runs) {
-            int year = apiDate.parseZonedDate(run.getStartTime()).getYear();
+            int year = apiDate.parseZonedDateAsLocalDate(run.getStartTime()).getYear();
 
             BigDecimal bigDecimal = map.get(year);
             if (bigDecimal == null) {
@@ -123,7 +123,7 @@ final class StatisticsService implements IStatisticsService {
             allTime = allTime.add(new BigDecimal(run.getDistance()));
 
             LocalDate yearStart = apiDate.yearStart(offset);
-            LocalDate localDate = apiDate.parseZonedDate(run.getStartTime());
+            LocalDate localDate = apiDate.parseZonedDateAsLocalDate(run.getStartTime());
             if (localDate.getYear() == yearStart.getYear()) {
                 thisYear = thisYear.add(new BigDecimal(run.getDistance()));
             }
