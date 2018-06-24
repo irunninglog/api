@@ -9,7 +9,7 @@ import java.text.MessageFormat;
 
 public final class ApiMath {
 
-    public static final String FORMAT_PLAIN = "{0,number,#}";
+    public static final String FORMAT_PLAIN = "{0,number,#.#}";
     public static final String FORMAT_FORMATTED = "{0,number}";
     public static final String FORMAT_FORMATTED_MILEAGE = "{0,number} mi";
 

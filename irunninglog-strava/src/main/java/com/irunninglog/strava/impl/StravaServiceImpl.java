@@ -152,7 +152,7 @@ final class StravaServiceImpl implements IStravaService {
         run.setId(activity.getId());
         run.setName(activity.getName());
         run.setShoes(activity.getGear() == null ? null : activity.getGear().getId());
-        run.setDistance(apiMath.format(BigDecimal.valueOf(activity.getDistance()), ApiMath.FORMAT_PLAIN));
+        run.setDistance(apiMath.format(apiMath.round(apiMath.miles(BigDecimal.valueOf(activity.getDistance()))), ApiMath.FORMAT_PLAIN));
         run.setDuration(activity.getMovingTime() == null ? 0 : activity.getMovingTime());
         run.setStartTime(apiDate.format(activity.getStartDate()));
         return run;

@@ -201,7 +201,7 @@ public class StravaServiceTest extends AbstractStravaTest implements Application
         activity.setId(1);
         activity.setName("name");
         activity.setMovingTime(3600);
-        activity.setDistance(8F);
+        activity.setDistance(12874.8F);
         activity.setGear(gear);
         activity.setStartDate(time);
 
@@ -237,7 +237,7 @@ public class StravaServiceTest extends AbstractStravaTest implements Application
         activity.setId(1);
         activity.setName("name");
         activity.setMovingTime(3600);
-        activity.setDistance(8F);
+        activity.setDistance(12874.8F);
         activity.setGear(gear);
         activity.setStartDate(time);
         Mockito.when(api.update(any(Integer.class), any(StravaActivityUpdate.class))).thenReturn(activity);
