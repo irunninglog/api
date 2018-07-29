@@ -32,7 +32,7 @@ final class StatisticsService implements IStatisticsService {
     }
 
     @Override
-    public IStatistics get(IUser user, int offset) {
+    public IStatistics get(IUser user, int offset, LocalDate startDate, LocalDate endDate) {
         IStatistics statistics = factory.get(IStatistics.class);
         List<IRun> runs = stravaService.runs(user);
 
@@ -40,24 +40,30 @@ final class StatisticsService implements IStatisticsService {
 
         years(statistics, runs);
 
-        dataSets(statistics, runs);
+        dataSets(statistics, runs, startDate, endDate);
 
         return statistics;
     }
 
-    private void dataSets(IStatistics statistics, List<IRun> runs) {
+    private void dataSets(IStatistics statistics, List<IRun> runs, LocalDate startDate, LocalDate endDate) {
         Map<String, BigDecimal> map = new TreeMap<>();
 
         for (IRun run : runs) {
             // Run start time is a zoned date time
-            LocalDate date = apiDate.monthStart(apiDate.parseZonedDateAsLocalDate(run.getStartTime()));
+            LocalDate runDate = apiDate.parseZonedDateAsLocalDate(run.getStartTime());
+            LocalDate monthStartDate = apiDate.monthStart(runDate);
 
-            BigDecimal bigDecimal = map.get(date.toString());
-            if (bigDecimal == null) {
-                bigDecimal = new BigDecimal(BigInteger.ZERO);
+            boolean afterStart = startDate == null || !runDate.isBefore(startDate);
+            boolean beforeEnd = endDate == null || !runDate.isAfter(endDate);
+
+            if (afterStart && beforeEnd) {
+                BigDecimal bigDecimal = map.get(monthStartDate.toString());
+                if (bigDecimal == null) {
+                    bigDecimal = new BigDecimal(BigInteger.ZERO);
+                }
+
+                map.put(monthStartDate.toString(), bigDecimal.add(new BigDecimal(run.getDistance())));
             }
-
-            map.put(date.toString(), bigDecimal.add(new BigDecimal(run.getDistance())));
         }
 
         Collection<IDataPoint> points = new ArrayList<>();

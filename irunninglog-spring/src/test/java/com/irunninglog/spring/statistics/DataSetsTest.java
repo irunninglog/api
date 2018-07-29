@@ -49,7 +49,7 @@ public class DataSetsTest extends AbstractTest {
         runs.add(run(LocalDateTime.parse(year + "-08-01T00:00:00"), 16093.44F));
         Mockito.when(stravaService.runs(any(IUser.class))).thenReturn(runs);
 
-        IStatistics statistics = statisticsService.get(null, ZonedDateTime.now().getOffset().getTotalSeconds() / 60 * -1);
+        IStatistics statistics = statisticsService.get(null, ZonedDateTime.now().getOffset().getTotalSeconds() / 60 * -1, null, null);
 
         assertNotNull(statistics.getDataSet());
 

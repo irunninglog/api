@@ -2,6 +2,7 @@ package com.irunninglog.vertx.statistics;
 
 import com.irunninglog.api.security.AuthnException;
 import com.irunninglog.api.statistics.IStatisticsService;
+import com.irunninglog.date.ApiDate;
 import com.irunninglog.mock.MockUser;
 import com.irunninglog.vertx.AbstractTest;
 import io.vertx.ext.unit.TestContext;
@@ -17,7 +18,7 @@ public class GetStatisticsTest extends AbstractTest {
         super.afterBefore(context);
 
         IStatisticsService service = Mockito.mock(IStatisticsService.class);
-        deploy(new GetStatisticsVerticle(factory(), mapper(), service), context);
+        deploy(new GetStatisticsVerticle(factory(), mapper(), service, new ApiDate()), context);
     }
 
     @Test

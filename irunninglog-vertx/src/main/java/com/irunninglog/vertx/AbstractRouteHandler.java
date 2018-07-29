@@ -26,7 +26,7 @@ public abstract class AbstractRouteHandler implements Handler<RoutingContext> {
     private final IMapper mapper;
     private final Endpoint endpoint;
 
-    private final Logger logger = LoggerFactory.getLogger(getClass());
+    protected final Logger logger = LoggerFactory.getLogger(getClass());
 
     public AbstractRouteHandler(Vertx vertx,
                                 IFactory factory,

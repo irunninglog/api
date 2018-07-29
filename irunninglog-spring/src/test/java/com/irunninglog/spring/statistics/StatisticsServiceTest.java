@@ -45,7 +45,7 @@ public class StatisticsServiceTest extends AbstractTest {
         runs.add(run(LocalDateTime.now().minusYears(1), 16093.44F));
         Mockito.when(stravaService.runs(any(IUser.class))).thenReturn(runs);
 
-        IStatistics statistics = statisticsService.get(null, ZonedDateTime.now().getOffset().getTotalSeconds() / 60 * -1);
+        IStatistics statistics = statisticsService.get(null, ZonedDateTime.now().getOffset().getTotalSeconds() / 60 * -1, null, null);
 
         assertNotNull(statistics.getSummary());
         assertEquals("10 mi", statistics.getSummary().getThisWeek());
@@ -70,7 +70,7 @@ public class StatisticsServiceTest extends AbstractTest {
         runs.add(run(LocalDateTime.now().minusYears(1), 16093.44F));
         Mockito.when(stravaService.runs(any(IUser.class))).thenReturn(runs);
 
-        IStatistics statistics = statisticsService.get(null, ZonedDateTime.now().getOffset().getTotalSeconds() / 60 * -1);
+        IStatistics statistics = statisticsService.get(null, ZonedDateTime.now().getOffset().getTotalSeconds() / 60 * -1, null, null);
 
         assertNotNull(statistics.getYears());
         assertEquals(2, statistics.getYears().size());
