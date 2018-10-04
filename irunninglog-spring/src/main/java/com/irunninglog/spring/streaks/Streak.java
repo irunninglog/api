@@ -81,4 +81,16 @@ final class Streak implements IStreak {
         this.percentage = percentage;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "Streak{" + "startDate='" + startDate + '\'' +
+                ", endDate='" + endDate + '\'' +
+                ", progress=" + progress +
+                ", days=" + days +
+                ", runs=" + runs +
+                ", percentage=" + percentage +
+                '}';
+    }
+
 }

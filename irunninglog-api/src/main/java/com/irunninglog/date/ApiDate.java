@@ -17,8 +17,8 @@ public final class ApiDate {
         return ZonedDateTime.parse(dateTime, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
     }
 
-    public LocalDate parseZonedDateAsLocalDate(String dateTime) {
-        return parseZonedDate(dateTime).toLocalDate();
+    public LocalDate parseZonedDateAsLocalDate(String dateTime, int minutes) {
+        return clientTimeFromServerTime(parseZonedDate(dateTime), minutes).toLocalDate();
     }
 
     public String format(LocalDate date) {

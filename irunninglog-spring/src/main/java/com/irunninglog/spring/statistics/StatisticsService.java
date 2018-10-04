@@ -38,19 +38,19 @@ final class StatisticsService implements IStatisticsService {
 
         summary(statistics, runs, offset);
 
-        years(statistics, runs);
+        years(statistics, runs, offset);
 
-        dataSets(statistics, runs, startDate, endDate);
+        dataSets(statistics, runs, startDate, endDate, offset);
 
         return statistics;
     }
 
-    private void dataSets(IStatistics statistics, List<IRun> runs, LocalDate startDate, LocalDate endDate) {
+    private void dataSets(IStatistics statistics, List<IRun> runs, LocalDate startDate, LocalDate endDate, int offset) {
         Map<String, BigDecimal> map = new TreeMap<>();
 
         for (IRun run : runs) {
             // Run start time is a zoned date time
-            LocalDate runDate = apiDate.parseZonedDateAsLocalDate(run.getStartTime());
+            LocalDate runDate = apiDate.parseZonedDateAsLocalDate(run.getStartTime(), offset);
             LocalDate monthStartDate = apiDate.monthStart(runDate);
 
             boolean afterStart = startDate == null || !runDate.isBefore(startDate);
@@ -87,11 +87,11 @@ final class StatisticsService implements IStatisticsService {
         statistics.setDataSet(factory.get(IDataSet.class).setPoints(points));
     }
 
-    private void years(IStatistics statistics, List<IRun> runs) {
+    private void years(IStatistics statistics, List<IRun> runs,int offset) {
         Map<Integer, BigDecimal> map = new TreeMap<>((o1, o2) -> o2.compareTo(o1));
 
         for (IRun run : runs) {
-            int year = apiDate.parseZonedDateAsLocalDate(run.getStartTime()).getYear();
+            int year = apiDate.parseZonedDateAsLocalDate(run.getStartTime(), offset).getYear();
 
             BigDecimal bigDecimal = map.get(year);
             if (bigDecimal == null) {
@@ -129,7 +129,7 @@ final class StatisticsService implements IStatisticsService {
             allTime = allTime.add(new BigDecimal(run.getDistance()));
 
             LocalDate yearStart = apiDate.yearStart(offset);
-            LocalDate localDate = apiDate.parseZonedDateAsLocalDate(run.getStartTime());
+            LocalDate localDate = apiDate.parseZonedDateAsLocalDate(run.getStartTime(), offset);
             if (localDate.getYear() == yearStart.getYear()) {
                 thisYear = thisYear.add(new BigDecimal(run.getDistance()));
             }
