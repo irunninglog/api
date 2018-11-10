@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: irunninglog
+spec:
+  selector:
+    matchLabels:
+      app: metrics
+      department: sales
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: metrics
+        department: sales
+    spec:
+      containers:
+      - name: api
+        image: "gcr.io/google-samples/hello-app:2.0"
