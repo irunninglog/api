@@ -3,17 +3,14 @@ kind: Deployment
 metadata:
   name: irunninglog
 spec:
-  selector:
-    matchLabels:
-      app: metrics
-      department: sales
-  replicas: 1
+  replicas: 3
   template:
     metadata:
       labels:
-        app: metrics
-        department: sales
+        app=irunninglog
     spec:
       containers:
       - name: api
         image: "gcr.io/mimetic-setup-212600/api:latest"
+        ports:
+        - containerPort: 8080
