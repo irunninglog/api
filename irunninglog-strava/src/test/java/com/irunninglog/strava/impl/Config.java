@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 
 @Configuration
-public class Config {
+class Config {
 
     @Bean
     public IFactory factory() {
@@ -58,11 +58,10 @@ public class Config {
     @Bean
     @Scope("prototype")
     public IStravaSession session() {
-        return new StravaSessionImpl(factory());
+        return new StravaSessionImpl(api());
     }
 
     @Bean
-    @Scope("prototype")
     public IStravaRemoteApi api() {
         return Mockito.mock(IStravaRemoteApi.class);
     }

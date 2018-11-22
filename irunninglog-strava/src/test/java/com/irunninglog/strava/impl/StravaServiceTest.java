@@ -20,8 +20,9 @@ import org.springframework.context.ApplicationContextAware;
 
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
@@ -29,8 +30,8 @@ import static org.mockito.Matchers.any;
 public class StravaServiceTest extends AbstractStravaTest implements ApplicationContextAware {
 
     private ApplicationContext context;
-    private IStravaService service;
     private IStravaRemoteApi api;
+    private IStravaService service;
     private IStravaTokenExchange exchange;
 
     @Before
@@ -104,6 +105,17 @@ public class StravaServiceTest extends AbstractStravaTest implements Application
         Mockito.when(api.getAuthenticatedAthlete()).thenReturn(athlete);
 
         Mockito.when(api.getGear("shoe_one")).thenReturn(shoe1);
+
+        StravaActivity activity = new StravaActivity();
+        activity.setType(StravaActivityType.RUN);
+        activity.setId(3);
+        activity.setStartDate(ZonedDateTime.now());
+        activity.setMovingTime(0);
+        activity.setDistance(1F);
+
+        Mockito.when(api.listAuthenticatedAthleteActivities(1, 200)).thenReturn(new StravaActivity[] {activity});
+        Mockito.when(api.listAuthenticatedAthleteActivities(2, 200)).thenReturn(new StravaActivity[] {});
+
     }
 
     @Test
@@ -144,21 +156,27 @@ public class StravaServiceTest extends AbstractStravaTest implements Application
     }
 
     @Test
-    public void runs() throws AuthnException {
+    public void runs() throws AuthnException, InterruptedException {
         IUser user = service.userFromToken("foo");
 
-        StravaActivity activity = new StravaActivity();
-        activity.setType(StravaActivityType.RUN);
-        activity.setId(3);
-        activity.setStartDate(ZonedDateTime.now());
-        activity.setMovingTime(0);
-        activity.setDistance(1F);
+        CountDownLatch latch = new CountDownLatch(1);
 
-        Mockito.when(api.listAuthenticatedAthleteActivities(1, 200)).thenReturn(new StravaActivity[] {activity});
-        Mockito.when(api.listAuthenticatedAthleteActivities(2, 200)).thenReturn(new StravaActivity[] {});
+        final List<IRun> runs = new ArrayList<>();
+        final Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                runs.clear();
+                runs.addAll(service.runs(user));
+                if (!runs.isEmpty()) {
+                    latch.countDown();
+                    timer.cancel();
+                }
+            }
+        }, 10);
 
-        List<IRun> runs = service.runs(user);
-        assertNotNull(runs);
+        latch.await(1, TimeUnit.SECONDS);
+
         assertEquals(1, runs.size());
     }
 

@@ -1,6 +1,5 @@
 package com.irunninglog.strava.impl;
 
-import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.strava.IStravaRemoteApi;
 import com.irunninglog.strava.IStravaSession;
 import javastrava.api.v3.model.*;
@@ -25,49 +24,34 @@ import java.util.concurrent.atomic.AtomicReference;
 final class StravaSessionImpl implements IStravaSession {
 
     private static final Logger LOG = LoggerFactory.getLogger(StravaSessionImpl.class);
-    private static final long DELAY_FULL = 30; // MINUTES
+    private static final long DELAY_FULL = 30;
     private static final long DELAY_POLL = 5;
 
-    private final IFactory factory;
+    private final IStravaRemoteApi api;
 
-    private String token;
     private final AtomicReference<StravaAthlete> athlete = new AtomicReference<>();
     private final AtomicReference<StravaStatistics> statistics = new AtomicReference<>();
     private final AtomicReference<List<StravaActivity>> activities = new AtomicReference<>();
     private final AtomicReference<Map<String, StravaGear>> shoes = new AtomicReference<>();
 
     @Autowired
-    StravaSessionImpl(IFactory factory) {
-        this.factory = factory;
+    StravaSessionImpl(IStravaRemoteApi api) {
+        this.api = api;
     }
 
     @Override
     public StravaAthlete athlete() {
-        synchronized (athlete) {
-            return athlete.get();
-        }
+        return athlete.get();
     }
 
     @Override
     public List<StravaActivity> activities() {
-        synchronized (athlete) {
-            if (activities.get() == null) {
-                loadActivities(api(token));
-            }
-
-            return activities.get();
-        }
+        return new ArrayList<>(activities.get());
     }
 
     @Override
     public StravaGear gear(String id) {
-        synchronized (athlete) {
-            if (shoes.get() == null) {
-                loadShoes(api(token));
-            }
-
-            return shoes.get().get(id);
-        }
+        return shoes.get().get(id);
     }
 
     @Override
@@ -76,17 +60,22 @@ final class StravaSessionImpl implements IStravaSession {
 
         LOG.info("load");
 
-        this.token = token;
+        api.setToken(token);
 
-        loadAthlete(api(token));
+        loadAthlete();
+        activities.set(new ArrayList<>());
+        shoes.set(new HashMap<>());
 
-        ScheduledExecutorService executor = Executors.newScheduledThreadPool(2);
+        ScheduledExecutorService executor = Executors.newScheduledThreadPool(3);
+
+        // Load initial state "immediately"
+        executor.schedule(this::loadAllButAthlete, DELAY_POLL, TimeUnit.MILLISECONDS);
 
         // Poll for modifications every 5 minutes
         executor.scheduleWithFixedDelay(this::poll, DELAY_POLL, DELAY_POLL, TimeUnit.MINUTES);
 
         // Refresh everything each half-hour
-        executor.scheduleWithFixedDelay(this::reloadAll, DELAY_FULL, DELAY_FULL, TimeUnit.MINUTES);
+        executor.scheduleWithFixedDelay(this::loadAll, DELAY_FULL, DELAY_FULL, TimeUnit.MINUTES);
 
         LOG.info("load:{}", System.currentTimeMillis() - start);
     }
@@ -97,22 +86,20 @@ final class StravaSessionImpl implements IStravaSession {
         try {
             boolean update = Boolean.FALSE;
 
-            synchronized (athlete) {
-                StravaStatistics old = statistics.get();
+            StravaStatistics old = statistics.get();
 
-                statistics.set(api(token).statistics(athlete.get().getId()));
+            statistics.set(api.statistics(athlete.get().getId()));
 
-                if (!old.equals(statistics.get())) {
-                    LOG.info("Detected changes; reloading everything");
+            if (!old.equals(statistics.get())) {
+                LOG.info("Detected changes; reloading everything");
 
-                    update = Boolean.TRUE;
-                } else {
-                    LOG.info("No changes detected");
-                }
+                update = Boolean.TRUE;
+            } else {
+                LOG.info("No changes detected");
             }
 
             if (update) {
-                reloadAll();
+                loadAll();
             }
         } catch (Exception ex) {
             LOG.error("Unable to poll for updates", ex);
@@ -121,19 +108,27 @@ final class StravaSessionImpl implements IStravaSession {
         }
     }
 
-    private void reloadAll() {
+    private void loadAll() {
+        load(Boolean.TRUE);
+    }
+
+    private void loadAllButAthlete() {
+        load(Boolean.FALSE);
+    }
+
+    private void load(boolean loadAthlete) {
         long start = System.currentTimeMillis();
 
         try {
             LOG.info("reloadAll");
 
-            IStravaRemoteApi api = api(token);
+            if (loadAthlete) {
+                loadAthlete();
+            }
 
-            loadAthlete(api);
+            loadShoes();
 
-            loadShoes(api);
-
-            loadActivities(api);
+            loadActivities();
         } catch (Exception ex) {
             LOG.error("Unable to reload all", ex);
         } finally {
@@ -141,91 +136,74 @@ final class StravaSessionImpl implements IStravaSession {
         }
     }
 
-    private void loadActivities(IStravaRemoteApi api) {
+    private void loadActivities() {
         long start = System.currentTimeMillis();
 
         LOG.info("loadActivities");
 
-        synchronized (athlete) {
-            if (activities.get() == null) {
-                activities.set(new ArrayList<>());
-            }
+        int page = 1;
+        int count = -1;
 
-            int page = 1;
-            int count = -1;
+        List<StravaActivity> activityList = new ArrayList<>();
+        while (count != 0) {
+            StravaActivity[] array = api.listAuthenticatedAthleteActivities(page, 200);
 
-            List<StravaActivity> activityList = new ArrayList<>();
-            while (count != 0) {
-                StravaActivity[] array = api.listAuthenticatedAthleteActivities(page, 200);
-
-                count = array.length;
-                for (StravaActivity activity : array) {
-                    if (activity.getType() == StravaActivityType.RUN) {
-                        activityList.add(activity);
-                    }
+            count = array.length;
+            for (StravaActivity activity : array) {
+                if (activity.getType() == StravaActivityType.RUN) {
+                    activityList.add(activity);
                 }
-
-                activities.get().clear();
-                activities.get().addAll(activityList);
-
-                page++;
             }
 
-            LOG.info("loadActivities:{}", activities.get().size());
+            page++;
         }
+
+        activities.set(activityList);
+
+        LOG.info("loadActivities:{}", activities.get().size());
 
         LOG.info("loadActivities:{}", System.currentTimeMillis() - start);
     }
 
-    private void loadAthlete(IStravaRemoteApi api) {
+    private void loadAthlete() {
         long start = System.currentTimeMillis();
 
         LOG.info("loadAthlete");
 
-        synchronized (athlete) {
-            athlete.set(api.getAuthenticatedAthlete());
-            statistics.set(api.statistics(athlete.get().getId()));
+        athlete.set(api.getAuthenticatedAthlete());
+        statistics.set(api.statistics(athlete.get().getId()));
 
-            LOG.info("loadAthlete:{}:{}", athlete.get(), statistics.get());
-        }
+        LOG.info("loadAthlete:{}:{}", athlete.get(), statistics.get());
 
         LOG.info("loadAthlete:{}", System.currentTimeMillis() - start);
     }
 
-    private void loadShoes(IStravaRemoteApi api) {
+    private void loadShoes() {
         long start = System.currentTimeMillis();
 
         LOG.info("loadShoes");
 
-        synchronized (athlete) {
-            if (shoes.get() == null) {
-                shoes.set(new HashMap<>());
-            }
+        Map<String, StravaGear> map = new HashMap<>();
 
-            for (StravaGear gear : athlete.get().getShoes()) {
-                shoes.get().put(gear.getId(), api.getGear(gear.getId()));
-            }
-
-            LOG.info("loadShoes:{}", shoes.get().size());
+        for (StravaGear gear : athlete.get().getShoes()) {
+            map.put(gear.getId(), api.getGear(gear.getId()));
         }
+
+        shoes.set(map);
+
+        LOG.info("loadShoes:{}", shoes.get().size());
 
         LOG.info("loadShoes:{}", System.currentTimeMillis() - start);
     }
 
-    private IStravaRemoteApi api(String token) {
-        IStravaRemoteApi api = factory.get(IStravaRemoteApi.class);
-        api.setToken(token);
-        return api;
-    }
-
     @Override
     public StravaActivity create(StravaActivity activity) {
-        return api(token).create(activity);
+        return api.create(activity);
     }
 
     @Override
     public StravaActivity update(int id, StravaActivityUpdate update) {
-        return api(token).update(id, update);
+        return api.update(id, update);
     }
 
 }

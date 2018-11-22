@@ -12,7 +12,6 @@ import org.mockito.Mockito;
 import org.springframework.context.ApplicationContext;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -41,12 +40,12 @@ public class DataSetsTest extends AbstractTest {
         int year = LocalDate.now().getYear();
 
         List<IRun> runs = new ArrayList<>();
-        runs.add(run(LocalDateTime.parse((year - 1) + "-09-22T00:00:00"), 16093.44F));
-        runs.add(run(LocalDateTime.parse(year + "-09-22T00:00:00"), 16093.44F));
-        runs.add(run(LocalDateTime.parse(year + "-09-21T00:00:00"), 16093.44F));
-        runs.add(run(LocalDateTime.parse(year + "-08-03T00:00:00"), 16093.44F));
-        runs.add(run(LocalDateTime.parse(year + "-08-02T00:00:00"), 16093.44F));
-        runs.add(run(LocalDateTime.parse(year + "-08-01T00:00:00"), 16093.44F));
+        runs.add(run((year - 1) + "-09-22T00:00:00Z", 16093.44F));
+        runs.add(run(year + "-09-22T17:00:00Z", 16093.44F));
+        runs.add(run(year + "-09-21T17:00:00Z", 16093.44F));
+        runs.add(run(year + "-08-03T17:00:00Z", 16093.44F));
+        runs.add(run(year + "-08-02T17:00:00Z", 16093.44F));
+        runs.add(run(year + "-08-01T17:00:00Z", 16093.44F));
         Mockito.when(stravaService.runs(any(IUser.class))).thenReturn(runs);
 
         IStatistics statistics = statisticsService.get(null, ZonedDateTime.now().getOffset().getTotalSeconds() / 60 * -1, null, null);

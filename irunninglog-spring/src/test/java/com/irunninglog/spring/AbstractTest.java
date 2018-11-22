@@ -44,6 +44,10 @@ public abstract class AbstractTest implements ApplicationContextAware {
         return run(localDateTime, 0);
     }
 
+    protected final IRun run(String startTime, float distance) {
+        return applicationContext.getBean(IRun.class).setDistance(BigDecimal.valueOf(distance).toPlainString()).setStartTime(startTime);
+    }
+
     protected final IRun run(LocalDateTime localDateTime, float distance) {
         return applicationContext.getBean(IRun.class).setDistance(BigDecimal.valueOf(distance).toPlainString()).setStartTime(localDateTime.atZone(ZoneId.systemDefault()).format(DateTimeFormatter.ISO_OFFSET_DATE_TIME));
     }
