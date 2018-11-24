@@ -19,6 +19,8 @@ gcloud config set project mimetic-setup-212600
 `gcloud container clusters get-credentials irunninglog-api`
 
 #### Create Strava Secret
+Create local text file 'strava' with contents of the Strava secret
+
 `kubectl create secret generic strava-secret --from-file=strava`
 
 #### Create API Load Balancer Service
