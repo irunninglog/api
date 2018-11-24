@@ -2,7 +2,7 @@ steps:
 - name: 'gcr.io/cloud-builders/mvn'
   args: ['install']
 - name: 'gcr.io/cloud-builders/docker'
-  args: ["build", "-t", "gcr.io/$PROJECT_ID/irunninglog-api:$REVISION_ID", "."]
+  args: ["build", "."]
 - name: 'gcr.io/cloud-builders/docker'
   args: ["push", "gcr.io/$PROJECT_ID/irunninglog-api:latest"]
 - name: 'gcr.io/cloud-builders/docker'
@@ -19,3 +19,4 @@ steps:
 #  - 'CLOUDSDK_CONTAINER_CLUSTER=irunninglog-api'
 images:
 - 'gcr.io/$PROJECT_ID/irunninglog-api'
+tags: ["$REVISION_ID", "latest"]
