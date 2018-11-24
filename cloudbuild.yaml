@@ -16,4 +16,4 @@ steps:
   - 'CLOUDSDK_COMPUTE_ZONE=us-central1-b'
   - 'CLOUDSDK_CONTAINER_CLUSTER=irunninglog-api'
 images:
-- ['gcr.io/$PROJECT_ID/irunninglog-api']
+- 'gcr.io/$PROJECT_ID/irunninglog-api'
