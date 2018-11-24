@@ -18,7 +18,7 @@ final class Ping implements IPing {
 
     @Override
     public String getTimestamp() {
-        return "foo" + timestamp;
+        return timestamp;
     }
 
 }
