@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: irunninglog
+  name: irunninglog-api
 spec:
   selector:
     matchLabels:
-      app: irunninglog
+      app: irunninglog-api
   replicas: 1
   template:
     metadata:
       labels:
-        app: irunninglog
+        app: irunninglog-api
     spec:
       containers:
-      - name: api
+      - name: irunninglog-api
         image: "gcr.io/mimetic-setup-212600/api:latest"
         ports:
         - containerPort: 8080

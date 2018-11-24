@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: irunninglog
+  name: irunninglog-api
 spec:
-  type: ClusterIP
+  type: LoadBalancer
   selector:
-    app: irunninglog
+    app: irunninglog-api
   ports:
   - protocol: TCP
     port: 80
