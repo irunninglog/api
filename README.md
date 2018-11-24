@@ -7,8 +7,10 @@
 ### Kubernetes Setup
 
 #### Set Configs 
-`gcloud config set compute/zone us-central1-b`
-`gcloud config set project mimetic-setup-212600`
+```
+gcloud config set compute/zone us-central1-b
+gcloud config set project mimetic-setup-212600
+```
 
 #### Create Cluster
 `gcloud container clusters create irunninglog-api --num-nodes=1`
