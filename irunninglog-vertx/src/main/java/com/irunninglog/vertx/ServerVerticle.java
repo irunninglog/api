@@ -4,7 +4,8 @@ import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.mapping.IMapper;
 import com.irunninglog.api.security.IAuthenticationService;
 import com.irunninglog.vertx.security.SecurityHandler;
-import io.github.lukehutch.fastclasspathscanner.FastClasspathScanner;
+import io.github.classgraph.ClassGraph;
+import io.github.classgraph.ClassInfoList;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
@@ -16,7 +17,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.List;
 
 public final class ServerVerticle extends AbstractVerticle {
 
@@ -68,13 +68,13 @@ public final class ServerVerticle extends AbstractVerticle {
     }
 
     private void install(Router router) throws IllegalAccessException, InvocationTargetException, InstantiationException, ClassNotFoundException {
-        FastClasspathScanner scanner = new FastClasspathScanner("com.irunninglog");
-        List<String> classes = scanner.scan().getNamesOfClassesWithAnnotation(EndpointHandler.class);
+        ClassGraph scanner = new ClassGraph().whitelistPackages("com.irunninglog").enableAllInfo();
+        ClassInfoList classes = scanner.scan().getClassesWithAnnotation(EndpointHandler.class.getName());
 
         router.route().handler(BodyHandler.create().setBodyLimit(1024));
 
         SecurityHandler securityHandler = new SecurityHandler(authenticationService);
-        for (String clazz : classes) {
+        for (String clazz : classes.getNames()) {
             AbstractRouteHandler handler = (AbstractRouteHandler) Class.forName(clazz).getConstructors()[0].newInstance(vertx, factory, mapper);
 
             LOG.info("httpServer:{}:before", handler);

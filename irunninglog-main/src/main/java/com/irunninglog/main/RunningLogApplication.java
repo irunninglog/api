@@ -7,7 +7,8 @@ import com.irunninglog.spring.SpringConfig;
 import com.irunninglog.strava.impl.StravaConfig;
 import com.irunninglog.vertx.EndpointVerticle;
 import com.irunninglog.vertx.ServerVerticle;
-import io.github.lukehutch.fastclasspathscanner.FastClasspathScanner;
+import io.github.classgraph.ClassGraph;
+import io.github.classgraph.ClassInfoList;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
@@ -72,10 +73,10 @@ final class RunningLogApplication {
 
         LOG.info("verticles:before");
 
-        FastClasspathScanner scanner = new FastClasspathScanner("com.irunninglog");
-        List<String> classes = scanner.scan().getNamesOfClassesWithAnnotation(EndpointVerticle.class);
+        ClassGraph scanner = new ClassGraph().enableAllInfo().whitelistPackages("com.irunninglog");
+        ClassInfoList classes = scanner.scan().getClassesWithAnnotation(EndpointVerticle.class.getName());
 
-        for (String className : classes) {
+        for (String className : classes.getNames()) {
             LOG.info("verticles:{}", className);
 
             Class<?> clazz = Class.forName(className);

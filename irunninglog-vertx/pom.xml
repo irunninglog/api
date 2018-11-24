@@ -37,9 +37,9 @@
 
         <!-- other dependencies -->
         <dependency>
-            <groupId>io.github.lukehutch</groupId>
-            <artifactId>fast-classpath-scanner</artifactId>
-            <version>${version.fast-classpath-scanner}</version>
+            <groupId>io.github.classgraph</groupId>
+            <artifactId>classgraph</artifactId>
+            <version>${version.classgraph}</version>
         </dependency>
 
         <!-- test dependencies -->
