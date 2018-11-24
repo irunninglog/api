@@ -9,8 +9,8 @@ images: ['gcr.io/$PROJECT_ID/api']
   - set
   - image
   - deployment
-  - [DEPLOYMENT-NAME]
-  - [CONTAINER]=gcr.io/[PROJECT-ID]/[IMAGE]:[TAG]
+  - irunninglog
+  - [CONTAINER]=gcr.io/mimetic-setup-212600/api:latest
   env:
   - 'CLOUDSDK_COMPUTE_ZONE=us-central1-b'
   - 'CLOUDSDK_CONTAINER_CLUSTER=irunninglog-api'
