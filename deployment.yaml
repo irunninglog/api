@@ -1,16 +1,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: irunninglog
+  name: irunninglog-api
 spec:
-  replicas: 3
+  selector:
+    matchLabels:
+      app: irunninglog-api
+  replicas: 1
   template:
     metadata:
       labels:
-        app=irunninglog
+        app: irunninglog-api
     spec:
       containers:
-      - name: api
-        image: "gcr.io/mimetic-setup-212600/api:latest"
+      - name: irunninglog-api
+        image: "gcr.io/mimetic-setup-212600/irunninglog-api:latest"
         ports:
         - containerPort: 8080
+        env:
+          - name: STRAVA
+            valueFrom:
+              secretKeyRef:
+                name: strava-secret
+                key: strava

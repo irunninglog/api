@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: irunninglog-api
+spec:
+  type: LoadBalancer
+  selector:
+    app: irunninglog-api
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
