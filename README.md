@@ -18,8 +18,11 @@ gcloud config set project mimetic-setup-212600
 #### Get Required Credentials
 `gcloud container clusters get-credentials irunninglog-api`
 
-#### Create API Deployment
-`kubectl apply -f deployment.yaml`
+#### Create Strava Secret
+`kubectl create secret generic strava-secret --from-file=strava`
 
 #### Create API Load Balancer Service
 `kubectl apply -f service.yaml`
+
+#### Create API Deployment
+`kubectl apply -f deployment.yaml`
