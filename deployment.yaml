@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: irunninglog-api
-        image: "gcr.io/mimetic-setup-212600/api:latest"
+        image: "gcr.io/mimetic-setup-212600/irunninglog-api:latest"
         ports:
         - containerPort: 8080
         env:
