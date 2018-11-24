@@ -6,7 +6,7 @@ steps:
 #- name: 'gcr.io/cloud-builders/docker'
 #  args: ["push", "gcr.io/$PROJECT_ID/irunninglog-api:latest"]
 - name: 'gcr.io/cloud-builders/docker'
-  args: ["tag", "irunninglog-api", "gcr.io/$PROJECT_ID/irunninglog-api:$REVISION_ID"]
+  args: ["tag", "gcr.io/$PROJECT_ID/irunninglog-api", "gcr.io/$PROJECT_ID/irunninglog-api:$REVISION_ID"]
 #- name: 'gcr.io/cloud-builders/docker'
 #  args: ["push", "gcr.io/$PROJECT_ID/irunninglog-api:$REVISION_ID"]
 #- name: 'gcr.io/cloud-builders/kubectl'
