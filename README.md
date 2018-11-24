@@ -26,3 +26,10 @@ gcloud config set project mimetic-setup-212600
 
 #### Create API Deployment
 `kubectl apply -f deployment.yaml`
+
+#### Check POD Status
+`kubectl get pods`
+```
+NAME                              READY     STATUS    RESTARTS   AGE
+irunninglog-api-cf54bf6cf-lj7vl   1/1       Running   0          14s
+```
