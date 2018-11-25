@@ -6,7 +6,8 @@ import com.irunninglog.api.ping.IPingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Service
 final class PingService implements IPingService {
@@ -20,7 +21,7 @@ final class PingService implements IPingService {
 
     @Override
     public IPing ping() {
-        return factory.get(IPing.class).setTimestamp(LocalDateTime.now().toString());
+        return factory.get(IPing.class).setTimestamp(DateTimeFormatter.ISO_ZONED_DATE_TIME.format(ZonedDateTime.now()));
     }
 
 }
