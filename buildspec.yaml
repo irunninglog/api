@@ -9,13 +9,8 @@ phases:
     commands:
       - echo Build completed on `date`
       - mvn package
-      - chmod +x *.sh
 
 artifacts:
   files:
-    - ./appspec.yml
-    - ./app_start.sh
-    - ./app_stop.sh
-    - ./app_clean.sh
-    - ./logback.xml
+    - ./Dockerfile
     - ./irunninglog-main/target/irunninglog.jar
