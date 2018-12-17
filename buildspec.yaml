@@ -5,7 +5,7 @@ phases:
     commands:
       - echo Build started on `date`
       - mvn package
-      - docker build -D .
+      - docker build --debug .
 #  post_build:
 #    commands:
 #      - echo Build completed on `date`
