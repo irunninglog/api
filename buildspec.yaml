@@ -4,18 +4,14 @@ phases:
   build:
     commands:
       - echo Build started on `date`
-      - mvn test
-  post_build:
-    commands:
-      - echo Build completed on `date`
       - mvn package
-      - chmod +x *.sh
+      - docker build -t com.irunninglog.api:latest .
+#  post_build:
+#    commands:
+#      - echo Build completed on `date`
+#      - mvn package
 
 artifacts:
   files:
-    - ./appspec.yml
-    - ./app_start.sh
-    - ./app_stop.sh
-    - ./app_clean.sh
-    - ./logback.xml
+    - ./Dockerfile
     - ./irunninglog-main/target/irunninglog.jar
