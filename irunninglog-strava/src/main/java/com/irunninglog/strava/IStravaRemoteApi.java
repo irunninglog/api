@@ -1,7 +1,10 @@
 package com.irunninglog.strava;
 
 import com.irunninglog.api.runs.IRun;
-import javastrava.api.v3.model.*;
+import javastrava.api.v3.model.StravaActivity;
+import javastrava.api.v3.model.StravaActivityUpdate;
+import javastrava.api.v3.model.StravaAthlete;
+import javastrava.api.v3.model.StravaStatistics;
 
 import java.util.List;
 
@@ -9,7 +12,7 @@ public interface IStravaRemoteApi {
 
     List<IRun> activities(int page, int max);
 
-    StravaGear getGear(String id);
+    IStravaShoe gear(String id);
 
     StravaAthlete getAuthenticatedAthlete();
 

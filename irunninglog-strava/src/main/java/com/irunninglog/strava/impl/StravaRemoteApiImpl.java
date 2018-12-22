@@ -4,8 +4,12 @@ import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.runs.IRun;
 import com.irunninglog.math.ApiMath;
 import com.irunninglog.strava.IStravaRemoteApi;
+import com.irunninglog.strava.IStravaShoe;
 import javastrava.api.v3.auth.model.Token;
-import javastrava.api.v3.model.*;
+import javastrava.api.v3.model.StravaActivity;
+import javastrava.api.v3.model.StravaActivityUpdate;
+import javastrava.api.v3.model.StravaAthlete;
+import javastrava.api.v3.model.StravaStatistics;
 import javastrava.api.v3.rest.API;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpEntity;
@@ -24,7 +28,7 @@ import java.util.List;
 class StravaRemoteApiImpl implements IStravaRemoteApi {
 
     private API api;
-    private String token;
+    private final HttpHeaders headers = new HttpHeaders();
 
     private final RestTemplate restTemplate = new RestTemplate();
     private final IFactory factory;
@@ -37,8 +41,6 @@ class StravaRemoteApiImpl implements IStravaRemoteApi {
 
     @Override
     public List<IRun> activities(int page, int max) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", token);
         HttpEntity<String> httpEntity = new HttpEntity<>(null, headers);
 
         ResponseEntity<StravaSummaryActivity[]> responseEntity = restTemplate.exchange("https://www.strava.com/api/v3/athlete/activities?page=" + page + "&per_page=" + max, HttpMethod.GET, httpEntity, StravaSummaryActivity[].class);
@@ -63,8 +65,21 @@ class StravaRemoteApiImpl implements IStravaRemoteApi {
     }
 
     @Override
-    public final StravaGear getGear(String id) {
-        return api.getGear(id);
+    public IStravaShoe gear(String id) {
+        HttpEntity<String> httpEntity = new HttpEntity<>(null, headers);
+
+        ResponseEntity<StravaDetailedGear> responseEntity = restTemplate.exchange("https://www.strava.com/api/v3/gear/" + id, HttpMethod.GET, httpEntity, StravaDetailedGear.class);
+
+        StravaDetailedGear gear = responseEntity.getBody();
+
+        IStravaShoe shoe = null;
+        if (gear != null) {
+            shoe = factory.get(IStravaShoe.class);
+            shoe.setId(gear.getId());
+            shoe.setName(gear.getName());
+        }
+
+        return shoe;
     }
 
     @Override
@@ -93,7 +108,7 @@ class StravaRemoteApiImpl implements IStravaRemoteApi {
         apiToken.setToken(token);
         api = new API(apiToken);
 
-        this.token = token;
+        headers.add("Authorization", token);
     }
 
 }

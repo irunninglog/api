@@ -80,17 +80,10 @@ final class StravaServiceImpl implements IStravaService {
 
         List<IStravaShoe> shoes = new ArrayList<>(stravaAthlete.getShoes().size());
         for (StravaGear gear : stravaAthlete.getShoes()) {
-            StravaGear full = cache.get(user.getToken()).gear(gear.getId());
+            IStravaShoe shoe = cache.get(user.getToken()).gear(gear.getId());
 
-            if (full != null) {
-                shoes.add(factory.get(IStravaShoe.class)
-                        .setId(full.getId())
-                        .setName(full.getName().replace(full.getBrandName() + " ", "").replace(full.getModelName() + " ", ""))
-                        .setBrand(full.getBrandName())
-                        .setModel(full.getModelName())
-                        .setDescription(full.getDescription())
-                        .setDistance(full.getDistance())
-                        .setPrimary(full.getPrimary()));
+            if (shoe != null) {
+                shoes.add(shoe);
             }
         }
 
@@ -128,9 +121,10 @@ final class StravaServiceImpl implements IStravaService {
         activity.setType(StravaActivityType.RUN);
         activity.setAthlete(cache.get(user.getToken()).athlete());
         activity.setName(run.getName());
-        if (run.getShoes() != null && !run.getShoes().isEmpty()) {
-            activity.setGear(cache.get(user.getToken()).gear(run.getShoes()));
-        }
+//        if (run.getShoes() != null && !run.getShoes().isEmpty()) {
+            // TODO - Set shoes on activity
+            //activity.setGear(cache.get(user.getToken()).gear(run.getShoes()));
+//        }
         return activity;
     }
 

@@ -103,7 +103,16 @@ public class StravaServiceTest extends AbstractStravaTest implements Application
         athlete.setShoes(Collections.singletonList(shoe1));
         Mockito.when(api.getAuthenticatedAthlete()).thenReturn(athlete);
 
-        Mockito.when(api.getGear("shoe_one")).thenReturn(shoe1);
+        IStravaShoe shoe = factory.get(IStravaShoe.class);
+        shoe.setId("shoe_one");
+        shoe.setDistance(100F);
+        shoe.setName("Alpha");
+        shoe.setBrand("Mizuno");
+        shoe.setModel("Wave Inspire 13");
+        shoe.setDescription("foo");
+        shoe.setPrimary(Boolean.TRUE);
+
+        Mockito.when(api.gear("shoe_one")).thenReturn(shoe);
 
         StravaActivity activity = new StravaActivity();
         activity.setType(StravaActivityType.RUN);

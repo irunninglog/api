@@ -3,6 +3,7 @@ package com.irunninglog.strava.impl;
 import com.irunninglog.api.runs.IRun;
 import com.irunninglog.strava.IStravaRemoteApi;
 import com.irunninglog.strava.IStravaSession;
+import com.irunninglog.strava.IStravaShoe;
 import javastrava.api.v3.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +33,7 @@ final class StravaSessionImpl implements IStravaSession {
     private final AtomicReference<StravaAthlete> athlete = new AtomicReference<>();
     private final AtomicReference<StravaStatistics> statistics = new AtomicReference<>();
     private final AtomicReference<List<IRun>> activities = new AtomicReference<>();
-    private final AtomicReference<Map<String, StravaGear>> shoes = new AtomicReference<>();
+    private final AtomicReference<Map<String, IStravaShoe>> shoes = new AtomicReference<>();
 
     @Autowired
     StravaSessionImpl(IStravaRemoteApi api) {
@@ -50,7 +51,7 @@ final class StravaSessionImpl implements IStravaSession {
     }
 
     @Override
-    public StravaGear gear(String id) {
+    public IStravaShoe gear(String id) {
         return shoes.get().get(id);
     }
 
@@ -179,10 +180,10 @@ final class StravaSessionImpl implements IStravaSession {
 
         LOG.info("loadShoes");
 
-        Map<String, StravaGear> map = new HashMap<>();
+        Map<String, IStravaShoe> map = new HashMap<>();
 
         for (StravaGear gear : athlete.get().getShoes()) {
-            map.put(gear.getId(), api.getGear(gear.getId()));
+            map.put(gear.getId(), api.gear(gear.getId()));
         }
 
         shoes.set(map);
