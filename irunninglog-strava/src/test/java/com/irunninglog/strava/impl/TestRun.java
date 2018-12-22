@@ -4,7 +4,7 @@ import com.irunninglog.api.runs.IRun;
 
 final class TestRun implements IRun {
 
-    private int id;
+    private long id;
     private String name;
     private String startTime;
     private String distance;
@@ -12,12 +12,12 @@ final class TestRun implements IRun {
     private String shoes;
 
     @Override
-    public int getId() {
+    public long getId() {
         return id;
     }
 
     @Override
-    public IRun setId(int id) {
+    public IRun setId(long id) {
         this.id = id;
         return this;
     }

@@ -1,10 +1,13 @@
 package com.irunninglog.strava;
 
+import com.irunninglog.api.runs.IRun;
 import javastrava.api.v3.model.*;
+
+import java.util.List;
 
 public interface IStravaRemoteApi {
 
-    StravaActivity[] listAuthenticatedAthleteActivities(int page, int max);
+    List<IRun> activities(int page, int max);
 
     StravaGear getGear(String id);
 
@@ -14,7 +17,7 @@ public interface IStravaRemoteApi {
 
     StravaActivity create(StravaActivity activity);
 
-    StravaActivity update(int id, StravaActivityUpdate update);
+    StravaActivity update(long id, StravaActivityUpdate update);
 
     void setToken(String token);
 

@@ -2,9 +2,9 @@ package com.irunninglog.api.runs;
 
 public interface IRun {
 
-    int getId();
+    long getId();
 
-    IRun setId(int id);
+    IRun setId(long id);
 
     String getName();
 

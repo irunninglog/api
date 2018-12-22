@@ -2,7 +2,6 @@ package com.irunninglog.strava.impl;
 
 import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.runs.IRun;
-import com.irunninglog.api.security.AuthnException;
 import com.irunninglog.api.security.IUser;
 import com.irunninglog.strava.*;
 import javastrava.api.v3.auth.model.Token;
@@ -113,13 +112,20 @@ public class StravaServiceTest extends AbstractStravaTest implements Application
         activity.setMovingTime(0);
         activity.setDistance(1F);
 
-        Mockito.when(api.listAuthenticatedAthleteActivities(1, 200)).thenReturn(new StravaActivity[] {activity});
-        Mockito.when(api.listAuthenticatedAthleteActivities(2, 200)).thenReturn(new StravaActivity[] {});
+        IRun run = factory.get(IRun.class);
+        run.setId(3);
+        run.setStartTime(ZonedDateTime.now().format(DateTimeFormatter.ISO_OFFSET_DATE_TIME));
+        run.setDistance("1");
+        run.setDuration(0);
+
+
+        Mockito.when(api.activities(1, 200)).thenReturn(Collections.singletonList(run));
+        Mockito.when(api.activities(2, 200)).thenReturn(Collections.emptyList());
 
     }
 
     @Test
-    public void userFromCode() throws AuthnException {
+    public void userFromCode() {
         StravaAthlete athlete = new StravaAthlete();
         athlete.setId(1);
         athlete.setEmail("allan@irunninglog.com");
@@ -137,7 +143,7 @@ public class StravaServiceTest extends AbstractStravaTest implements Application
     }
 
     @Test
-    public void userFromToken() throws AuthnException {
+    public void userFromToken() {
         IUser user = service.userFromToken("foo");
         assertNotNull(user);
         assertEquals(1, user.getId());
@@ -146,7 +152,7 @@ public class StravaServiceTest extends AbstractStravaTest implements Application
     }
 
     @Test
-    public void athlete() throws AuthnException {
+    public void athlete() {
         IUser user = service.userFromToken("foo");
 
         assertNotNull(user);
@@ -156,7 +162,7 @@ public class StravaServiceTest extends AbstractStravaTest implements Application
     }
 
     @Test
-    public void runs() throws AuthnException, InterruptedException {
+    public void runs() throws InterruptedException {
         IUser user = service.userFromToken("foo");
 
         CountDownLatch latch = new CountDownLatch(1);
@@ -181,7 +187,7 @@ public class StravaServiceTest extends AbstractStravaTest implements Application
     }
 
     @Test
-    public void shoes() throws AuthnException {
+    public void shoes() {
         IUser user = service.userFromToken("foo");
 
         List<IStravaShoe> shoes = service.shoes(user);
@@ -195,11 +201,11 @@ public class StravaServiceTest extends AbstractStravaTest implements Application
         assertEquals("Wave Inspire 13", one.getModel());
         assertEquals("foo", one.getDescription());
         assertEquals(100, one.getDistance(), getMargin());
-        assertEquals(true, one.isPrimary());
+        assertTrue(one.isPrimary());
     }
 
     @Test
-    public void create() throws AuthnException {
+    public void create() {
         IUser user = service.userFromToken("foo");
 
         ZonedDateTime time = ZonedDateTime.now();
@@ -235,7 +241,7 @@ public class StravaServiceTest extends AbstractStravaTest implements Application
     }
 
     @Test
-    public void update() throws AuthnException {
+    public void update() {
         IUser user = service.userFromToken("foo");
 
         ZonedDateTime time = ZonedDateTime.now();

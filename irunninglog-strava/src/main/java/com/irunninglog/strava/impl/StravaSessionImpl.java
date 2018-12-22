@@ -1,9 +1,9 @@
 package com.irunninglog.strava.impl;
 
+import com.irunninglog.api.runs.IRun;
 import com.irunninglog.strava.IStravaRemoteApi;
 import com.irunninglog.strava.IStravaSession;
 import javastrava.api.v3.model.*;
-import javastrava.api.v3.model.reference.StravaActivityType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ final class StravaSessionImpl implements IStravaSession {
 
     private final AtomicReference<StravaAthlete> athlete = new AtomicReference<>();
     private final AtomicReference<StravaStatistics> statistics = new AtomicReference<>();
-    private final AtomicReference<List<StravaActivity>> activities = new AtomicReference<>();
+    private final AtomicReference<List<IRun>> activities = new AtomicReference<>();
     private final AtomicReference<Map<String, StravaGear>> shoes = new AtomicReference<>();
 
     @Autowired
@@ -45,7 +45,7 @@ final class StravaSessionImpl implements IStravaSession {
     }
 
     @Override
-    public List<StravaActivity> activities() {
+    public List<IRun> activities() {
         return new ArrayList<>(activities.get());
     }
 
@@ -144,21 +144,17 @@ final class StravaSessionImpl implements IStravaSession {
         int page = 1;
         int count = -1;
 
-        List<StravaActivity> activityList = new ArrayList<>();
+        List<IRun> runs = new ArrayList<>();
         while (count != 0) {
-            StravaActivity[] array = api.listAuthenticatedAthleteActivities(page, 200);
+            List<IRun>  list = api.activities(page, 200);
 
-            count = array.length;
-            for (StravaActivity activity : array) {
-                if (activity.getType() == StravaActivityType.RUN) {
-                    activityList.add(activity);
-                }
-            }
+            count = list.size();
+            runs.addAll(list);
 
             page++;
         }
 
-        activities.set(activityList);
+        activities.set(runs);
 
         LOG.info("loadActivities:{}", activities.get().size());
 
@@ -202,7 +198,7 @@ final class StravaSessionImpl implements IStravaSession {
     }
 
     @Override
-    public StravaActivity update(int id, StravaActivityUpdate update) {
+    public StravaActivity update(long id, StravaActivityUpdate update) {
         return api.update(id, update);
     }
 

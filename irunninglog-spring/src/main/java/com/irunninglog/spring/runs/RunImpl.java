@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Scope("prototype")
 final class RunImpl implements IRun {
 
-    private int id;
+    private long id;
     private String name;
     private String startTime;
     private String distance;
@@ -16,12 +16,12 @@ final class RunImpl implements IRun {
     private String shoes;
 
     @Override
-    public int getId() {
+    public long getId() {
         return id;
     }
 
     @Override
-    public IRun setId(int id) {
+    public IRun setId(long id) {
         this.id = id;
         return this;
     }

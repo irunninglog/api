@@ -1,5 +1,6 @@
 package com.irunninglog.strava;
 
+import com.irunninglog.api.runs.IRun;
 import javastrava.api.v3.model.StravaActivity;
 import javastrava.api.v3.model.StravaActivityUpdate;
 import javastrava.api.v3.model.StravaAthlete;
@@ -13,12 +14,12 @@ public interface IStravaSession {
 
     StravaAthlete athlete();
 
-    List<StravaActivity> activities();
+    List<IRun> activities();
 
     StravaGear gear(String id);
 
     StravaActivity create(StravaActivity activity);
 
-    StravaActivity update(int id, StravaActivityUpdate activity);
+    StravaActivity update(long id, StravaActivityUpdate activity);
 
 }

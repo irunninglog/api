@@ -88,7 +88,7 @@ final class StatisticsService implements IStatisticsService {
     }
 
     private void years(IStatistics statistics, List<IRun> runs,int offset) {
-        Map<Integer, BigDecimal> map = new TreeMap<>((o1, o2) -> o2.compareTo(o1));
+        Map<Integer, BigDecimal> map = new TreeMap<>(Comparator.reverseOrder());
 
         for (IRun run : runs) {
             int year = apiDate.parseZonedDateAsLocalDate(run.getStartTime(), offset).getYear();

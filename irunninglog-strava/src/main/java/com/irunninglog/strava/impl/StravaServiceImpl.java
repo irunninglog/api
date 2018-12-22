@@ -2,7 +2,6 @@ package com.irunninglog.strava.impl;
 
 import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.runs.IRun;
-import com.irunninglog.api.security.AuthnException;
 import com.irunninglog.api.security.IUser;
 import com.irunninglog.date.ApiDate;
 import com.irunninglog.math.ApiMath;
@@ -17,10 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 final class StravaServiceImpl implements IStravaService {
@@ -41,7 +38,7 @@ final class StravaServiceImpl implements IStravaService {
     }
 
     @Override
-    public IUser userFromCode(String code) throws AuthnException {
+    public IUser userFromCode(String code) {
         Token token = exchange.token(code);
 
         return factory.get(IUser.class)
@@ -51,7 +48,7 @@ final class StravaServiceImpl implements IStravaService {
     }
 
     @Override
-    public IUser userFromToken(String token) throws AuthnException {
+    public IUser userFromToken(String token) {
         StravaAthlete athlete = cache.create(token).athlete();
 
         return factory.get(IUser.class)
@@ -74,17 +71,7 @@ final class StravaServiceImpl implements IStravaService {
 
     @Override
     public List<IRun> runs(IUser user) {
-        return cache.get(user.getToken()).activities().stream().map(this::fromStravaActivity).collect(Collectors.toList());
-    }
-
-    // TODO - Date and time functions should move to API package
-    private IRun fromStravaActivity(StravaActivity stravaActivity) {
-        return factory.get(IRun.class)
-                .setId(stravaActivity.getId())
-                .setStartTime(stravaActivity.getStartDate().format(DateTimeFormatter.ISO_OFFSET_DATE_TIME))
-                .setDistance(apiMath.format(apiMath.round(BigDecimal.valueOf(stravaActivity.getDistance())), ApiMath.FORMAT_PLAIN))
-                .setDuration(stravaActivity.getMovingTime())
-                .setShoes(stravaActivity.getGearId());
+        return cache.get(user.getToken()).activities();
     }
 
     @Override

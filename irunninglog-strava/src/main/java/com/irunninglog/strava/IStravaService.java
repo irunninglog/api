@@ -1,16 +1,15 @@
 package com.irunninglog.strava;
 
 import com.irunninglog.api.runs.IRun;
-import com.irunninglog.api.security.AuthnException;
 import com.irunninglog.api.security.IUser;
 
 import java.util.List;
 
 public interface IStravaService {
 
-    IUser userFromCode(String code) throws AuthnException;
+    IUser userFromCode(String code);
 
-    IUser userFromToken(String token) throws AuthnException;
+    IUser userFromToken(String token);
 
     IStravaAthlete athlete(IUser user);
 
