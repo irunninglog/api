@@ -89,19 +89,21 @@ public class StravaServiceTest extends AbstractStravaTest implements Application
         Mockito.when(factory.get(IStravaSession.class)).thenReturn(session);
         Mockito.when(factory.get(IStravaRemoteApi.class)).thenReturn(api);
 
-        StravaAthlete athlete = new StravaAthlete();
+        IStravaAthlete athlete = factory.get(IStravaAthlete.class);
         athlete.setId(1);
         athlete.setEmail("allan@irunninglog.com");
-        StravaGear shoe1 = new StravaGear();
+
+        IStravaShoe shoe1 = factory.get(IStravaShoe.class);
         shoe1.setId("shoe_one");
         shoe1.setDistance(100F);
         shoe1.setName("Alpha");
-        shoe1.setBrandName("Mizuno");
-        shoe1.setModelName("Wave Inspire 13");
+        shoe1.setBrand("Mizuno");
+        shoe1.setModel("Wave Inspire 13");
         shoe1.setDescription("foo");
         shoe1.setPrimary(Boolean.TRUE);
-        athlete.setShoes(Collections.singletonList(shoe1));
-        Mockito.when(api.getAuthenticatedAthlete()).thenReturn(athlete);
+
+        athlete.getShoes().add(shoe1);
+        Mockito.when(api.athlete()).thenReturn(athlete);
 
         IStravaShoe shoe = factory.get(IStravaShoe.class);
         shoe.setId("shoe_one");
@@ -126,7 +128,6 @@ public class StravaServiceTest extends AbstractStravaTest implements Application
         run.setStartTime(ZonedDateTime.now().format(DateTimeFormatter.ISO_OFFSET_DATE_TIME));
         run.setDistance("1");
         run.setDuration(0);
-
 
         Mockito.when(api.activities(1, 200)).thenReturn(Collections.singletonList(run));
         Mockito.when(api.activities(2, 200)).thenReturn(Collections.emptyList());
@@ -196,11 +197,27 @@ public class StravaServiceTest extends AbstractStravaTest implements Application
     }
 
     @Test
-    public void shoes() {
+    public void shoes() throws InterruptedException {
         IUser user = service.userFromToken("foo");
 
-        List<IStravaShoe> shoes = service.shoes(user);
-        assertNotNull(shoes);
+        CountDownLatch latch = new CountDownLatch(1);
+
+        final List<IStravaShoe> shoes = new ArrayList<>();
+        final Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                shoes.clear();
+                shoes.addAll(service.shoes(user));
+                if (!shoes.isEmpty()) {
+                    latch.countDown();
+                    timer.cancel();
+                }
+            }
+        }, 10);
+
+        latch.await(1, TimeUnit.SECONDS);
+
         assertEquals(1, shoes.size());
 
         IStravaShoe one = shoes.get(0);

@@ -9,8 +9,6 @@ import com.irunninglog.strava.*;
 import javastrava.api.v3.auth.model.Token;
 import javastrava.api.v3.model.StravaActivity;
 import javastrava.api.v3.model.StravaActivityUpdate;
-import javastrava.api.v3.model.StravaAthlete;
-import javastrava.api.v3.model.StravaGear;
 import javastrava.api.v3.model.reference.StravaActivityType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,7 +47,7 @@ final class StravaServiceImpl implements IStravaService {
 
     @Override
     public IUser userFromToken(String token) {
-        StravaAthlete athlete = cache.create(token).athlete();
+        IStravaAthlete athlete = cache.create(token).athlete();
 
         return factory.get(IUser.class)
                 .setId(athlete.getId())
@@ -59,14 +57,14 @@ final class StravaServiceImpl implements IStravaService {
 
     @Override
     public IStravaAthlete athlete(IUser user) {
-        StravaAthlete stravaAthlete = cache.get(user.getToken()).athlete();
+        IStravaAthlete stravaAthlete = cache.get(user.getToken()).athlete();
 
         return factory.get(IStravaAthlete.class)
                 .setId(stravaAthlete.getId())
                 .setFirstname(stravaAthlete.getFirstname())
                 .setLastname(stravaAthlete.getLastname())
                 .setEmail(stravaAthlete.getEmail())
-                .setAvatar(stravaAthlete.getProfileMedium());
+                .setAvatar(stravaAthlete.getAvatar());
     }
 
     @Override
@@ -76,10 +74,10 @@ final class StravaServiceImpl implements IStravaService {
 
     @Override
     public List<IStravaShoe> shoes(IUser user) {
-        StravaAthlete stravaAthlete = cache.get(user.getToken()).athlete();
+        IStravaAthlete stravaAthlete = cache.get(user.getToken()).athlete();
 
         List<IStravaShoe> shoes = new ArrayList<>(stravaAthlete.getShoes().size());
-        for (StravaGear gear : stravaAthlete.getShoes()) {
+        for (IStravaShoe gear : stravaAthlete.getShoes()) {
             IStravaShoe shoe = cache.get(user.getToken()).gear(gear.getId());
 
             if (shoe != null) {
@@ -92,7 +90,7 @@ final class StravaServiceImpl implements IStravaService {
 
     @Override
     public IRun create(IUser user, IRun run) {
-        StravaActivity before = runToActivity(user, run);
+        StravaActivity before = runToActivity(run);
 
         StravaActivity after = cache.get(user.getToken()).create(before);
 
@@ -112,17 +110,17 @@ final class StravaServiceImpl implements IStravaService {
         return update;
     }
 
-    private StravaActivity runToActivity(IUser user, IRun run) {
+    private StravaActivity runToActivity(IRun run) {
         StravaActivity activity = new StravaActivity();
         activity.setDistance(apiMath.meters(new BigDecimal(run.getDistance())).floatValue());
         activity.setMovingTime(run.getDuration());
         activity.setElapsedTime(run.getDuration());
         activity.setStartDate(apiDate.parseZonedDate(run.getStartTime()));
         activity.setType(StravaActivityType.RUN);
-        activity.setAthlete(cache.get(user.getToken()).athlete());
         activity.setName(run.getName());
+        // TODO - Set shoes and athlete on activity
+//        activity.setAthlete(cache.get(user.getToken()).athlete());
 //        if (run.getShoes() != null && !run.getShoes().isEmpty()) {
-            // TODO - Set shoes on activity
             //activity.setGear(cache.get(user.getToken()).gear(run.getShoes()));
 //        }
         return activity;

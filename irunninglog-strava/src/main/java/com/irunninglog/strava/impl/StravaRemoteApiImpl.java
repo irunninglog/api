@@ -3,12 +3,12 @@ package com.irunninglog.strava.impl;
 import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.runs.IRun;
 import com.irunninglog.math.ApiMath;
+import com.irunninglog.strava.IStravaAthlete;
 import com.irunninglog.strava.IStravaRemoteApi;
 import com.irunninglog.strava.IStravaShoe;
 import javastrava.api.v3.auth.model.Token;
 import javastrava.api.v3.model.StravaActivity;
 import javastrava.api.v3.model.StravaActivityUpdate;
-import javastrava.api.v3.model.StravaAthlete;
 import javastrava.api.v3.model.StravaStatistics;
 import javastrava.api.v3.rest.API;
 import org.springframework.context.annotation.Scope;
@@ -37,6 +37,25 @@ class StravaRemoteApiImpl implements IStravaRemoteApi {
     StravaRemoteApiImpl(IFactory factory, ApiMath apiMath) {
         this.factory = factory;
         this.apiMath = apiMath;
+    }
+
+    @Override
+    public IStravaAthlete athlete() {
+        HttpEntity<String> httpEntity = new HttpEntity<>(null, headers);
+
+        ResponseEntity<StravaDetailedAthlete> responseEntity = restTemplate.exchange("https://www.strava.com/api/v3/athlete", HttpMethod.GET, httpEntity, StravaDetailedAthlete.class);
+
+        StravaDetailedAthlete stravaAthlete = responseEntity.getBody();
+        IStravaAthlete athlete = factory.get(IStravaAthlete.class);
+        if (stravaAthlete != null) {
+            athlete.setId(stravaAthlete.getId());
+            athlete.setEmail(stravaAthlete.getEmail());
+            athlete.setFirstname(stravaAthlete.getFirstname());
+            athlete.setLastname(stravaAthlete.getLastname());
+            athlete.setAvatar(stravaAthlete.getProfile_medium());
+        }
+
+        return athlete;
     }
 
     @Override
@@ -83,13 +102,9 @@ class StravaRemoteApiImpl implements IStravaRemoteApi {
     }
 
     @Override
-    public final StravaAthlete getAuthenticatedAthlete() {
-        return api.getAuthenticatedAthlete();
-    }
-
-    @Override
-    public final StravaStatistics statistics(Integer id) {
-        return api.statistics(id);
+    public final StravaStatistics statistics(long id) {
+        // TODO - HANDLE LONG VS INT
+        return api.statistics((int) id);
     }
 
     @Override

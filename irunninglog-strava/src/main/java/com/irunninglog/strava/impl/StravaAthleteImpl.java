@@ -1,21 +1,27 @@
 package com.irunninglog.strava.impl;
 
 import com.irunninglog.strava.IStravaAthlete;
+import com.irunninglog.strava.IStravaShoe;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 @Scope("prototype")
 final class StravaAthleteImpl implements IStravaAthlete {
 
-    private int id;
+    private long id;
     private String email;
     private String firstname;
     private String lastname;
     private String avatar;
 
+    private final List<IStravaShoe> shoes = new ArrayList<>();
+
     @Override
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -40,7 +46,7 @@ final class StravaAthleteImpl implements IStravaAthlete {
     }
 
     @Override
-    public IStravaAthlete setId(int id) {
+    public IStravaAthlete setId(long id) {
         this.id = id;
         return this;
     }
@@ -67,6 +73,11 @@ final class StravaAthleteImpl implements IStravaAthlete {
     public IStravaAthlete setAvatar(String avatar) {
         this.avatar = avatar;
         return this;
+    }
+
+    @Override
+    public List<IStravaShoe> getShoes() {
+        return shoes;
     }
 
 }

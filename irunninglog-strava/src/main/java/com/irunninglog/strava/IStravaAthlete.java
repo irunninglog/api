@@ -1,10 +1,12 @@
 package com.irunninglog.strava;
 
+import java.util.List;
+
 public interface IStravaAthlete {
 
-    int getId();
+    long getId();
 
-    IStravaAthlete setId(int id);
+    IStravaAthlete setId(long id);
 
     String getEmail();
 
@@ -21,5 +23,7 @@ public interface IStravaAthlete {
     String getAvatar();
 
     IStravaAthlete setAvatar(String avatar);
+
+    List<IStravaShoe> getShoes();
 
 }

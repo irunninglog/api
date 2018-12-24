@@ -1,10 +1,13 @@
 package com.irunninglog.strava.impl;
 
 import com.irunninglog.api.runs.IRun;
+import com.irunninglog.strava.IStravaAthlete;
 import com.irunninglog.strava.IStravaRemoteApi;
 import com.irunninglog.strava.IStravaSession;
 import com.irunninglog.strava.IStravaShoe;
-import javastrava.api.v3.model.*;
+import javastrava.api.v3.model.StravaActivity;
+import javastrava.api.v3.model.StravaActivityUpdate;
+import javastrava.api.v3.model.StravaStatistics;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +33,7 @@ final class StravaSessionImpl implements IStravaSession {
 
     private final IStravaRemoteApi api;
 
-    private final AtomicReference<StravaAthlete> athlete = new AtomicReference<>();
+    private final AtomicReference<IStravaAthlete> athlete = new AtomicReference<>();
     private final AtomicReference<StravaStatistics> statistics = new AtomicReference<>();
     private final AtomicReference<List<IRun>> activities = new AtomicReference<>();
     private final AtomicReference<Map<String, IStravaShoe>> shoes = new AtomicReference<>();
@@ -41,7 +44,7 @@ final class StravaSessionImpl implements IStravaSession {
     }
 
     @Override
-    public StravaAthlete athlete() {
+    public IStravaAthlete athlete() {
         return athlete.get();
     }
 
@@ -167,7 +170,7 @@ final class StravaSessionImpl implements IStravaSession {
 
         LOG.info("loadAthlete");
 
-        athlete.set(api.getAuthenticatedAthlete());
+        athlete.set(api.athlete());
         statistics.set(api.statistics(athlete.get().getId()));
 
         LOG.info("loadAthlete:{}:{}", athlete.get(), statistics.get());
@@ -182,7 +185,7 @@ final class StravaSessionImpl implements IStravaSession {
 
         Map<String, IStravaShoe> map = new HashMap<>();
 
-        for (StravaGear gear : athlete.get().getShoes()) {
+        for (IStravaShoe gear : athlete.get().getShoes()) {
             map.put(gear.getId(), api.gear(gear.getId()));
         }
 
