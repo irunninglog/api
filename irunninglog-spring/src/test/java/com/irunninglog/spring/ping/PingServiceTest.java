@@ -13,7 +13,7 @@ public class PingServiceTest extends AbstractTest {
     private IPingService pingService;
 
     @Override
-    protected void afterBefore(ApplicationContext applicationContext) {
+    protected void afterBefore(ApplicationContext applicationContext) throws Exception {
         super.afterBefore(applicationContext);
 
         this.pingService = applicationContext.getBean(IPingService.class);

@@ -14,7 +14,7 @@ public class MapperTest extends AbstractTest {
     private IMapper mapper;
 
     @Override
-    protected void afterBefore(ApplicationContext applicationContext) {
+    protected void afterBefore(ApplicationContext applicationContext) throws Exception {
         super.afterBefore(applicationContext);
 
         mapper = applicationContext.getBean(IMapper.class);

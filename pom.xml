@@ -132,7 +132,6 @@
     <modules>
         <module>irunninglog-api</module>
         <module>irunninglog-vertx</module>
-        <module>irunninglog-strava</module>
         <module>irunninglog-spring</module>
         <module>irunninglog-main</module>
     </modules>

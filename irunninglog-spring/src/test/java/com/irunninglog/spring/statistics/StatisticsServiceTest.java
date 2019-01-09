@@ -1,5 +1,6 @@
 package com.irunninglog.spring.statistics;
 
+import com.irunninglog.api.athletes.IAthlete;
 import com.irunninglog.api.runs.IRun;
 import com.irunninglog.api.security.IUser;
 import com.irunninglog.api.statistics.IStatistics;
@@ -7,9 +8,8 @@ import com.irunninglog.api.statistics.IStatisticsService;
 import com.irunninglog.api.statistics.ITotalByYear;
 import com.irunninglog.date.ApiDate;
 import com.irunninglog.spring.AbstractTest;
-import com.irunninglog.strava.IStravaService;
+import com.irunninglog.spring.strava.StravaApiService;
 import org.junit.Test;
-import org.mockito.Mockito;
 import org.springframework.context.ApplicationContext;
 
 import java.time.LocalDate;
@@ -21,31 +21,41 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.Matchers.any;
 
 public class StatisticsServiceTest extends AbstractTest {
 
     private IStatisticsService statisticsService;
-    private IStravaService stravaService;
+    private StravaApiService stravaApiService;
     private ApiDate apiDate;
 
     @Override
-    protected void afterBefore(ApplicationContext applicationContext) {
+    protected void afterBefore(ApplicationContext applicationContext) throws Exception {
         super.afterBefore(applicationContext);
 
         statisticsService = applicationContext.getBean(IStatisticsService.class);
-        stravaService = applicationContext.getBean(IStravaService.class);
+        stravaApiService = applicationContext.getBean(StravaApiService.class);
         apiDate = applicationContext.getBean(ApiDate.class);
+
+        restTemplate.setAthlete(factory.get(IAthlete.class)
+                .setId(-1)
+                .setEmail("mock@irunninglog.com")
+                .setFirstname("Mock")
+                .setLastname("User")
+                .setAvatar("https://irunninglog.com/profiles/mock"));
     }
 
     @Test
-    public void summary() {
+    public void summary() throws InterruptedException {
         List<IRun> runs = new ArrayList<>();
         runs.add(run(LocalDateTime.now(), 16093.44F));
         runs.add(run(LocalDateTime.now().minusYears(1), 16093.44F));
-        Mockito.when(stravaService.runs(any(IUser.class))).thenReturn(runs);
+        restTemplate.setRuns(runs.toArray(new IRun[2]));
 
-        IStatistics statistics = statisticsService.get(null, ZonedDateTime.now().getOffset().getTotalSeconds() / 60 * -1, null, null);
+        IUser user = stravaApiService.userFromToken("token");
+
+        waitForRuns(user);
+
+        IStatistics statistics = statisticsService.get(user, ZonedDateTime.now().getOffset().getTotalSeconds() / 60 * -1, null, null);
 
         assertNotNull(statistics.getSummary());
         assertEquals("10 mi", statistics.getSummary().getThisWeek());
@@ -55,7 +65,7 @@ public class StatisticsServiceTest extends AbstractTest {
     }
 
     @Test
-    public void yearly() {
+    public void yearly() throws InterruptedException {
         LocalDate thisYear = apiDate.yearStart(ZonedDateTime.now().getOffset().getTotalSeconds() / 60 * -1);
 
         List<IRun> runs = new ArrayList<>();
@@ -68,9 +78,13 @@ public class StatisticsServiceTest extends AbstractTest {
         runs.add(run(LocalDateTime.now().minusYears(1), 16093.44F));
         runs.add(run(LocalDateTime.now().minusYears(1), 16093.44F));
         runs.add(run(LocalDateTime.now().minusYears(1), 16093.44F));
-        Mockito.when(stravaService.runs(any(IUser.class))).thenReturn(runs);
+        restTemplate.setRuns(runs.toArray(new IRun[]{}));
 
-        IStatistics statistics = statisticsService.get(null, ZonedDateTime.now().getOffset().getTotalSeconds() / 60 * -1, null, null);
+        IUser user = stravaApiService.userFromToken("token");
+
+        waitForRuns(user);
+
+        IStatistics statistics = statisticsService.get(user, ZonedDateTime.now().getOffset().getTotalSeconds() / 60 * -1, null, null);
 
         assertNotNull(statistics.getYears());
         assertEquals(2, statistics.getYears().size());

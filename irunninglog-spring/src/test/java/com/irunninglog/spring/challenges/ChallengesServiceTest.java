@@ -1,43 +1,50 @@
 package com.irunninglog.spring.challenges;
 
+import com.irunninglog.api.athletes.IAthlete;
 import com.irunninglog.api.challenges.IChallenge;
 import com.irunninglog.api.challenges.IChallengesService;
 import com.irunninglog.api.progress.Progress;
 import com.irunninglog.api.runs.IRun;
 import com.irunninglog.api.security.IUser;
 import com.irunninglog.spring.AbstractTest;
-import com.irunninglog.strava.IStravaService;
+import com.irunninglog.spring.strava.StravaApiService;
 import org.junit.Test;
-import org.mockito.Mockito;
 import org.springframework.context.ApplicationContext;
 
-import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.Matchers.any;
 
 public class ChallengesServiceTest extends AbstractTest {
 
     private IChallengesService service;
-    private IStravaService stravaService;
+    private IUser user;
 
     @Override
-    protected void afterBefore(ApplicationContext applicationContext) {
+    protected void afterBefore(ApplicationContext applicationContext) throws Exception {
         super.afterBefore(applicationContext);
 
         service = applicationContext.getBean(IChallengesService.class);
-        stravaService = applicationContext.getBean(IStravaService.class);
+        StravaApiService stravaApiService = applicationContext.getBean(StravaApiService.class);
+
+        restTemplate.setAthlete(factory.get(IAthlete.class)
+                .setId(-1)
+                .setEmail("mock@irunninglog.com")
+                .setFirstname("Mock")
+                .setLastname("User")
+                .setAvatar("https://irunninglog.com/profiles/mock"));
+
+        restTemplate.setRuns(factory.get(IRun.class).setDistance("1609344").setId(1).setName("run"));
+
+        user = stravaApiService.userFromToken("token");
     }
 
     @Test
-    public void get() {
-        IRun run = Mockito.mock(IRun.class);
-        Mockito.when(run.getDistance()).thenReturn("" + (1.6093441F * 1000000));
-        Mockito.when(stravaService.runs(any(IUser.class))).thenReturn(Collections.singletonList(run));
+    public void get() throws InterruptedException {
+        waitForRuns(user);
 
-        List<IChallenge> challenges = service.getChallenges(null);
+        List<IChallenge> challenges = service.getChallenges(user);
 
         assertNotNull(challenges);
         assertEquals(12, challenges.size());

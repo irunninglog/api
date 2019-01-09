@@ -1,6 +1,11 @@
 package com.irunninglog.spring;
 
+import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.runs.IRun;
+import com.irunninglog.api.security.IUser;
+import com.irunninglog.spring.strava.StravaApiService;
+import com.irunninglog.spring.strava.StravaApiSessionCache;
+import com.irunninglog.spring.strava.StravaMockRestTemplate;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -9,24 +14,77 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {SpringConfig.class, TestConfig.class})
 public abstract class AbstractTest implements ApplicationContextAware {
 
     private ApplicationContext applicationContext;
+    protected StravaApiService stravaApiService;
+    protected StravaMockRestTemplate restTemplate;
+    protected IFactory factory;
 
     @Before
-    public final void before() {
+    public final void before() throws Exception {
+        restTemplate = (StravaMockRestTemplate) applicationContext.getBean(RestTemplate.class);
+        factory = applicationContext.getBean(IFactory.class);
+        StravaApiSessionCache cache = applicationContext.getBean(StravaApiSessionCache.class);
+
+        cache.clear();
+        restTemplate.clear();
+
+        stravaApiService = applicationContext.getBean(StravaApiService.class);
+
         afterBefore(applicationContext);
     }
 
-    protected void afterBefore(ApplicationContext applicationContext) {
+    protected void waitForRuns(IUser user) throws InterruptedException {
+        CountDownLatch latch = new CountDownLatch(1);
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+
+            @Override
+            public void run() {
+                if (!stravaApiService.runs(user).isEmpty()) {
+                    timer.cancel();
+                    latch.countDown();
+                }
+            }
+
+        }, 10);
+
+        latch.await(1, TimeUnit.SECONDS);
+    }
+
+    protected void waitForShoes(IUser user) throws InterruptedException {
+        CountDownLatch latch = new CountDownLatch(1);
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+
+            @Override
+            public void run() {
+                if (!stravaApiService.shoes(user).isEmpty()) {
+                    timer.cancel();
+                    latch.countDown();
+                }
+            }
+
+        }, 10);
+
+        latch.await(1, TimeUnit.SECONDS);
+    }
+
+    protected void afterBefore(ApplicationContext applicationContext) throws Exception {
         // Empty for subclasses
     }
 
@@ -44,8 +102,8 @@ public abstract class AbstractTest implements ApplicationContextAware {
         return run(localDateTime, 0);
     }
 
-    protected final IRun run(String startTime, float distance) {
-        return applicationContext.getBean(IRun.class).setDistance(BigDecimal.valueOf(distance).toPlainString()).setStartTime(startTime);
+    protected final IRun run(String startTime) {
+        return applicationContext.getBean(IRun.class).setDistance(BigDecimal.valueOf((float) 16093.44).toPlainString()).setStartTime(startTime);
     }
 
     protected final IRun run(LocalDateTime localDateTime, float distance) {

@@ -7,7 +7,7 @@ public class RandomPutTest extends AbstractTest {
 
     @Test
     public void testRandom(TestContext context) {
-        context.assertEquals(404, put(context, "/random", null, ""));
+        context.assertEquals(404, put(context));
     }
 
 }

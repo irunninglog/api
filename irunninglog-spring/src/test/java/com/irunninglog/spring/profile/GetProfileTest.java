@@ -1,50 +1,48 @@
 package com.irunninglog.spring.profile;
 
+import com.irunninglog.api.athletes.IAthlete;
 import com.irunninglog.api.profile.IProfile;
 import com.irunninglog.api.profile.IProfileService;
 import com.irunninglog.api.security.IUser;
 import com.irunninglog.spring.AbstractTest;
-import com.irunninglog.strava.IStravaAthlete;
-import com.irunninglog.strava.IStravaService;
+import com.irunninglog.spring.strava.StravaApiService;
 import org.junit.Test;
-import org.mockito.Mockito;
 import org.springframework.context.ApplicationContext;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.Matchers.any;
 
 public class GetProfileTest extends AbstractTest {
 
     private IProfileService profileService;
-    private IStravaService stravaService;
+    private IUser user;
 
     @Override
-    protected void afterBefore(ApplicationContext applicationContext) {
+    protected void afterBefore(ApplicationContext applicationContext) throws Exception {
         super.afterBefore(applicationContext);
 
         this.profileService = applicationContext.getBean(IProfileService.class);
-        this.stravaService = applicationContext.getBean(IStravaService.class);
+        StravaApiService stravaService = applicationContext.getBean(StravaApiService.class);
+
+        restTemplate.setAthlete(factory.get(IAthlete.class)
+                .setId(-1)
+                .setEmail("mock@irunninglog.com")
+                .setFirstname("Mock")
+                .setLastname("User")
+                .setAvatar("https://irunninglog.com/profiles/mock"));
+
+        user = stravaService.userFromToken("token");
     }
 
     @Test
     public void getProfile() {
-        IStravaAthlete athlete = Mockito.mock(IStravaAthlete.class);
-        Mockito.when(athlete.getFirstname()).thenReturn("Allan");
-        Mockito.when(athlete.getLastname()).thenReturn("Lewis");
-        Mockito.when(athlete.getEmail()).thenReturn("allan@irunninglog.com");
-        Mockito.when(athlete.getId()).thenReturn(1L);
-        Mockito.when(athlete.getAvatar()).thenReturn("image.png");
-
-        Mockito.when(stravaService.athlete(any(IUser.class))).thenReturn(athlete);
-
-        IProfile profile = profileService.get(Mockito.mock(IUser.class));
+        IProfile profile = profileService.get(user);
         assertNotNull(profile);
-        assertEquals("Allan", profile.getFirstName());
-        assertEquals("Lewis", profile.getLastName());
-        assertEquals("allan@irunninglog.com", profile.getUsername());
-        assertEquals(1L, profile.getId());
-        assertEquals("image.png", profile.getAvatar());
+        assertEquals("Mock", profile.getFirstName());
+        assertEquals("User", profile.getLastName());
+        assertEquals("mock@irunninglog.com", profile.getUsername());
+        assertEquals(-1, profile.getId());
+        assertEquals("https://irunninglog.com/profiles/mock", profile.getAvatar());
     }
 
 }

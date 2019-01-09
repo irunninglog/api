@@ -1,56 +1,50 @@
 package com.irunninglog.spring.security;
 
+import com.irunninglog.api.athletes.IAthlete;
 import com.irunninglog.api.security.AuthnException;
 import com.irunninglog.api.security.IAuthenticationService;
 import com.irunninglog.api.security.IUser;
 import com.irunninglog.spring.AbstractTest;
-import com.irunninglog.strava.IStravaService;
 import org.junit.Test;
-import org.mockito.Mockito;
 import org.springframework.context.ApplicationContext;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.Matchers.any;
 
 public class AuthenticationServiceTest extends AbstractTest {
 
     private IAuthenticationService authenticationService;
-    private IStravaService stravaService;
-    private IUser user;
 
     @Override
-    protected void afterBefore(ApplicationContext applicationContext) {
+    protected void afterBefore(ApplicationContext applicationContext) throws Exception {
         super.afterBefore(applicationContext);
 
         authenticationService = applicationContext.getBean(IAuthenticationService.class);
-        stravaService = applicationContext.getBean(IStravaService.class);
-        user = applicationContext.getBean(IUser.class)
-                .setId(1)
-                .setUsername("allan@irunninglog.com")
-                .setToken("TOKEN");
+
+        restTemplate.setAthlete(factory.get(IAthlete.class)
+                .setId(-2)
+                .setEmail("mock@irunninglog.com")
+                .setFirstname("Mock")
+                .setLastname("User")
+                .setAvatar("https://irunninglog.com/profiles/mock"));
     }
 
     @Test
     public void authenticateToken() throws AuthnException {
-        Mockito.when(stravaService.userFromToken(any(String.class))).thenReturn(user);
-
-        IUser response = authenticationService.authenticateToken("token");
-        assertNotNull(response);
-        assertEquals(user.getUsername(), response.getUsername());
-        assertEquals(user.getToken(), response.getToken());
-        assertEquals(user.getId(), response.getId());
+        IUser user = authenticationService.authenticateToken("token");
+        assertNotNull(user);
+        assertEquals("mock@irunninglog.com", user.getUsername());
+        assertEquals("token", user.getToken());
+        assertEquals(-2, user.getId());
     }
 
     @Test
     public void authenticateCode() throws AuthnException {
-        Mockito.when(stravaService.userFromCode(any(String.class))).thenReturn(user);
-
-        IUser response = authenticationService.authenticateCode("code");
-        assertNotNull(response);
-        assertEquals(user.getUsername(), response.getUsername());
-        assertEquals(user.getToken(), response.getToken());
-        assertEquals(user.getId(), response.getId());
+        IUser user = authenticationService.authenticateCode("code");
+        assertNotNull(user);
+        assertEquals("mock@irunninglog.com", user.getUsername());
+        assertEquals("token", user.getToken());
+        assertEquals(-2, user.getId());
     }
 
 }

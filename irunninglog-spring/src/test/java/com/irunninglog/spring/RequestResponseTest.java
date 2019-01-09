@@ -18,7 +18,7 @@ public class RequestResponseTest extends AbstractTest {
     private IResponse response;
 
     @Override
-    protected void afterBefore(ApplicationContext applicationContext) {
+    protected void afterBefore(ApplicationContext applicationContext) throws Exception {
         super.afterBefore(applicationContext);
 
         request = applicationContext.getBean(IRequest.class);

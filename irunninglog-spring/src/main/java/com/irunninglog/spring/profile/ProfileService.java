@@ -1,11 +1,11 @@
 package com.irunninglog.spring.profile;
 
+import com.irunninglog.api.athletes.IAthlete;
 import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.profile.IProfile;
 import com.irunninglog.api.profile.IProfileService;
 import com.irunninglog.api.security.IUser;
-import com.irunninglog.strava.IStravaAthlete;
-import com.irunninglog.strava.IStravaService;
+import com.irunninglog.spring.strava.StravaApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,17 +13,17 @@ import org.springframework.stereotype.Service;
 final class ProfileService implements IProfileService {
 
     private final IFactory factory;
-    private final IStravaService stravaService;
+    private final StravaApiService stravaApiService;
 
     @Autowired
-    public ProfileService(IFactory factory, IStravaService stravaService) {
+    public ProfileService(IFactory factory, StravaApiService stravaApiService) {
         this.factory = factory;
-        this.stravaService = stravaService;
+        this.stravaApiService = stravaApiService;
     }
 
     @Override
     public IProfile get(IUser user) {
-        IStravaAthlete athlete = stravaService.athlete(user);
+        IAthlete athlete = stravaApiService.athlete(user);
 
         return factory.get(IProfile.class)
                 .setId(athlete.getId())

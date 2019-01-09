@@ -9,7 +9,7 @@ import com.irunninglog.api.streaks.IStreaks;
 import com.irunninglog.api.streaks.IStreaksService;
 import com.irunninglog.date.ApiDate;
 import com.irunninglog.math.ApiMath;
-import com.irunninglog.strava.IStravaService;
+import com.irunninglog.spring.strava.StravaApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,24 +26,23 @@ final class StreaksService implements IStreaksService {
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     private final IFactory factory;
-    private final IStravaService stravaService;
+    private final StravaApiService stravaApiService;
     private final ApiMath apiMath;
     private final ApiDate apiDate;
 
     @Autowired
-    public StreaksService(IFactory factory, IStravaService stravaService, ApiMath apiMath, ApiDate apiDate) {
+    public StreaksService(IFactory factory, StravaApiService stravaApiService, ApiMath apiMath, ApiDate apiDate) {
         super();
 
         this.factory = factory;
-        this.stravaService = stravaService;
+        this.stravaApiService = stravaApiService;
         this.apiMath = apiMath;
         this.apiDate = apiDate;
     }
 
     @Override
     public IStreaks getStreaks(IUser user, int offset) {
-        List<IRun> activities = stravaService.runs(user);
-        activities.sort((o1, o2) -> apiDate.parseZonedDateAsLocalDate(o2.getStartTime(), offset).compareTo(apiDate.parseZonedDateAsLocalDate(o1.getStartTime(), offset)));
+        List<IRun> activities = stravaApiService.runs(user);
 
         List<IStreak> streaksList = new ArrayList<>();
 
@@ -58,9 +57,7 @@ final class StreaksService implements IStreaksService {
             }
         }
 
-        List<IStreak> result = streaksList.stream().filter(item -> item.getDays() > 1).collect(Collectors.toList());
-
-        result.sort((o1, o2) -> Integer.compare(o2.getDays(), o1.getDays()));
+        List<IStreak> result = streaksList.stream().filter(item -> item.getDays() > 1).sorted((o1, o2) -> Integer.compare(o2.getDays(), o1.getDays())).collect(Collectors.toList());
 
         return populate(factory.get(IStreaks.class), result, offset);
     }
@@ -77,7 +74,7 @@ final class StreaksService implements IStreaksService {
         }
 
         for (IStreak value : streaksList) {
-            if (!LocalDate.parse(value.getStartDate(), FORMATTER).isBefore(yearStart(minutes))) {
+            if (!LocalDate.parse(value.getEndDate(), FORMATTER).isBefore(yearStart(minutes))) {
                 return copyOf(value, longest);
             }
         }

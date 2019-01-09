@@ -4,7 +4,6 @@ import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.mapping.IMapper;
 import com.irunninglog.api.security.IAuthenticationService;
 import com.irunninglog.spring.SpringConfig;
-import com.irunninglog.strava.impl.StravaConfig;
 import com.irunninglog.vertx.EndpointVerticle;
 import com.irunninglog.vertx.ServerVerticle;
 import io.github.classgraph.ClassGraph;
@@ -41,7 +40,7 @@ final class RunningLogApplication {
         LOG.info("start:logging:after");
 
         LOG.info("start:applicationContext:before");
-        ApplicationContext applicationContext = new AnnotationConfigApplicationContext(SpringConfig.class, StravaConfig.class);
+        ApplicationContext applicationContext = new AnnotationConfigApplicationContext(SpringConfig.class);
         LOG.info("start:applicationContext:after");
 
         LOG.info("start:server:before");

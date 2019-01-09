@@ -13,7 +13,7 @@ public class RunTest extends AbstractTest implements ApplicationContextAware {
     private ApplicationContext context;
 
     @Override
-    protected void afterBefore(ApplicationContext applicationContext) {
+    protected void afterBefore(ApplicationContext applicationContext) throws Exception {
         super.afterBefore(applicationContext);
 
         this.context = applicationContext;
@@ -24,7 +24,7 @@ public class RunTest extends AbstractTest implements ApplicationContextAware {
         IRun run1 = context.getBean(IRun.class);
         IRun run2 = context.getBean(IRun.class);
 
-        assertFalse(run1 == run2);
+        assertNotSame(run1, run2);
     }
 
     @Test
