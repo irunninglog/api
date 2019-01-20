@@ -21,7 +21,7 @@ final class PingService implements IPingService {
 
     @Override
     public IPing ping() {
-        return factory.get(IPing.class).setTimestamp(DateTimeFormatter.ISO_ZONED_DATE_TIME.format(ZonedDateTime.now()));
+        return factory.get(IPing.class).setTimestamp("PING:" + DateTimeFormatter.ISO_ZONED_DATE_TIME.format(ZonedDateTime.now()));
     }
 
 }
