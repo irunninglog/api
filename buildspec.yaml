@@ -17,4 +17,4 @@ phases:
       - echo Build completed on `date`
       - echo Pushing the Docker image...
       - docker push 329192577320.dkr.ecr.us-east-1.amazonaws.com/irunninglog/api:latest
-      - $(aws update-service --cluster irunninglog --service irunninglog-api-service --force-new-deployment)
+      - $(aws ecs update-service --cluster irunninglog --service irunninglog-api-service --force-new-deployment)
