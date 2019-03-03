@@ -1,17 +1,24 @@
 version: 0.2
 
 phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - $(aws ecr get-login --no-include-email --region us-east-1)
   build:
     commands:
       - echo Build started on `date`
+      - echo Building the Docker image...
       - mvn package
-      - docker build -t com.irunninglog.api:latest .
-#  post_build:
-#    commands:
-#      - echo Build completed on `date`
-#      - mvn package
+      - docker build -t irunninglog/api:latest .
+      - docker tag irunninglog/api:latest 329192577320.dkr.ecr.us-east-1.amazonaws.com/irunninglog/api:latest      
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the Docker image...
+      - docker push 329192577320.dkr.ecr.us-east-1.amazonaws.com/irunninglog/api:latest
+      - printf '[{"name":"irunninglog-api","imageUri":"%s"}]' 329192577320.dkr.ecr.us-east-1.amazonaws.com/irunninglog/api:latest > imagedefinitions.json
 
 artifacts:
   files:
-    - ./Dockerfile
-    - ./irunninglog-main/target/irunninglog.jar
+    - imagedefinitions.json
