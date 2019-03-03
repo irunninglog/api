@@ -37,11 +37,12 @@ public class StravaApiService {
 
         String config = environment.getProperty("strava");
         if (config != null && config.contains("|")) {
+            LOG.info("~!~Successfully loaded Strava configs");
             String [] tokens = config.split("\\|");
             id = tokens[0];
             secret = tokens[1];
         } else {
-            LOG.warn("Unable to find Strava configs; using defaults");
+            LOG.warn("~!~Unable to find Strava configs; using defaults");
             id = "1";
             secret = "1";
         }
