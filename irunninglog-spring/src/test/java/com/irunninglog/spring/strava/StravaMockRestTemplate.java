@@ -40,7 +40,7 @@ public class StravaMockRestTemplate extends RestTemplate {
             activity.setDistance(Float.parseFloat(run.getDistance().replace(" mi", "")));
             activity.setGear_id(run.getShoes());
             activity.setId(run.getId());
-            activity.setMoving_time(run.getDuration());
+            activity.setMovingTime(run.getDuration());
             activity.setType("Run");
             activity.setStart_date(run.getStartTime());
 

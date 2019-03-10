@@ -5,9 +5,9 @@ public class StravaApiDataActivity {
     private long id;
     private String name;
     private float distance;
-    private int moving_time;
-    private String start_date;
-    private String gear_id;
+    private int movingTime;
+    private String startDate;
+    private String gearId;
     private String type;
 
     public long getId() {
@@ -34,28 +34,28 @@ public class StravaApiDataActivity {
         this.distance = distance;
     }
 
-    public int getMoving_time() {
-        return moving_time;
+    public int getMovingTime() {
+        return movingTime;
     }
 
-    public void setMoving_time(int moving_time) {
-        this.moving_time = moving_time;
+    public void setMovingTime(int movingTime) {
+        this.movingTime = movingTime;
     }
 
     public String getStart_date() {
-        return start_date;
+        return startDate;
     }
 
-    public void setStart_date(String start_date) {
-        this.start_date = start_date;
+    public void setStart_date(String startDate) {
+        this.startDate = startDate;
     }
 
     public String getGear_id() {
-        return gear_id;
+        return gearId;
     }
 
-    public void setGear_id(String gear_id) {
-        this.gear_id = gear_id;
+    public void setGear_id(String gearId) {
+        this.gearId = gearId;
     }
 
     public String getType() {
