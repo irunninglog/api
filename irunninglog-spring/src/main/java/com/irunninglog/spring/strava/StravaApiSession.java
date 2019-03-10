@@ -30,6 +30,7 @@ import java.util.concurrent.atomic.AtomicReference;
 class StravaApiSession {
 
     private static final Logger LOG = LoggerFactory.getLogger(StravaApiSession.class);
+    private static final String LOG_STMT_LOAD = "load:{}";
     private static final long DELAY_FULL = 30;
     private static final long DELAY_POLL = 5;
 
@@ -87,7 +88,7 @@ class StravaApiSession {
         // Refresh everything each half-hour
         executor.scheduleWithFixedDelay(this::loadAll, DELAY_FULL, DELAY_FULL, TimeUnit.MINUTES);
 
-        LOG.info("load:{}", System.currentTimeMillis() - start);
+        LOG.info(LOG_STMT_LOAD, System.currentTimeMillis() - start);
     }
 
     private void poll() {
@@ -140,7 +141,7 @@ class StravaApiSession {
         long start = System.currentTimeMillis();
 
         try {
-            LOG.info("load:{}", loadAthlete);
+            LOG.info(LOG_STMT_LOAD, loadAthlete);
 
             if (loadAthlete) {
                 loadAthlete();
@@ -152,7 +153,7 @@ class StravaApiSession {
         } catch (Exception ex) {
             LOG.error("Unable to load", ex);
         } finally {
-            LOG.info("load:{}", System.currentTimeMillis() - start);
+            LOG.info(LOG_STMT_LOAD, System.currentTimeMillis() - start);
         }
     }
 
