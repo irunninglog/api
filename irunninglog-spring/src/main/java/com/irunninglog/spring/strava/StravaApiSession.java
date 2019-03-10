@@ -259,11 +259,4 @@ class StravaApiSession {
         return responseEntity.getBody();
     }
 
-    StravaApiEntryActivityCreate create(StravaApiEntryActivityCreate activity) {
-        throw new UnsupportedOperationException("create " + activity);
-    }
-
-    StravaApiEntryActivityUpdate update(StravaApiEntryActivityUpdate runToActivityUpdate) {
-        throw new UnsupportedOperationException("update " + runToActivityUpdate);
-    }
 }

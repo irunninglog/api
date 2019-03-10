@@ -82,7 +82,7 @@ public class StravaMockRestTemplate extends RestTemplate {
         } else if (url.equals("https://www.strava.com/oauth/token")) {
             StravaApiDataToken token = new StravaApiDataToken();
             token.setAthlete(stravaAthlete);
-            token.setAccess_token("token");
+            token.setAccessToken("token");
             return new ResponseEntity(token, HttpStatus.OK);
         } else {
             throw new IllegalArgumentException(url);

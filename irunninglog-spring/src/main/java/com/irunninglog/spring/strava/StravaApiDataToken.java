@@ -1,25 +1,29 @@
 package com.irunninglog.spring.strava;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 class StravaApiDataToken {
 
-    private String access_token;
-    private String token_type;
+    @JsonProperty("access_token")
+    private String accessToken;
+    @JsonProperty("token_type")
+    private String tokenType;
     private StravaApiDataAthlete athlete;
 
-    public String getAccess_token() {
-        return access_token;
+    public String getAccessToken() {
+        return accessToken;
     }
 
-    public void setAccess_token(String access_token) {
-        this.access_token = access_token;
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
     }
 
-    public String getToken_type() {
-        return token_type;
+    public String getTokenType() {
+        return tokenType;
     }
 
-    public void setToken_type(String token_type) {
-        this.token_type = token_type;
+    public void setTokenType(String tokenType) {
+        this.tokenType = tokenType;
     }
 
     public StravaApiDataAthlete getAthlete() {

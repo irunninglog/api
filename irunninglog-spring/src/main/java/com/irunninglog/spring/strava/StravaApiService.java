@@ -69,7 +69,7 @@ public class StravaApiService {
         return factory.get(IUser.class)
                 .setId(token.getAthlete().getId())
                 .setUsername(token.getAthlete().getEmail())
-                .setToken(token.getAccess_token());
+                .setToken(token.getAccessToken());
     }
 
     public IUser userFromToken(String token) {
@@ -91,34 +91,6 @@ public class StravaApiService {
 
     public List<IShoe> shoes(IUser user) {
         return cache.get(user.getToken()).shoes();
-    }
-
-    public IRun create(IUser user, IRun run) {
-        StravaApiEntryActivityCreate created = cache.get(user.getToken()).create(runToActivityCreate(user, run));
-
-        return activityCreateToRun(created);
-    }
-
-    public IRun update(IUser user, IRun run) {
-        StravaApiEntryActivityUpdate updated = cache.get(user.getToken()).update(runToActivityUpdate(user, run));
-
-        return activityUpdateToRun(updated);
-    }
-
-    private IRun activityUpdateToRun(StravaApiEntryActivityUpdate updated) {
-        return factory.get(IRun.class);
-    }
-
-    private StravaApiEntryActivityUpdate runToActivityUpdate(IUser user, IRun run) {
-        return new StravaApiEntryActivityUpdate();
-    }
-
-    private IRun activityCreateToRun(StravaApiEntryActivityCreate after) {
-        return factory.get(IRun.class);
-    }
-
-    private StravaApiEntryActivityCreate runToActivityCreate(IUser user, IRun run) {
-        return new StravaApiEntryActivityCreate();
     }
 
 }
