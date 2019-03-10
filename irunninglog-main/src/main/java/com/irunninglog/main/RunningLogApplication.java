@@ -60,9 +60,7 @@ final class RunningLogApplication {
             try {
                 verticles(applicationContext, vertx, asyncResultHandler);
             } catch (Exception ex) {
-                String errMsg = "Unable to deploy verticles";
-                LOG.error(errMsg, ex);
-                throw new IllegalStateException(errMsg, ex);
+                throw new IllegalStateException("Unable to deploy verticle(s)", ex);
             }
         });
     }
