@@ -41,6 +41,7 @@ class StravaApiSession {
     private final AtomicReference<Set<String>> shoeIdsAtomicReference = new AtomicReference<>();
     private final AtomicReference<List<IShoe>> shoesAtomicReference = new AtomicReference<>();
     private final AtomicReference<List<IRun>> runsAtomicReference = new AtomicReference<>();
+    private final AtomicReference<String> statsAtomicReference = new AtomicReference<>();
     private final HttpHeaders httpHeaders = new HttpHeaders();
 
     @Autowired
@@ -81,12 +82,50 @@ class StravaApiSession {
         executor.schedule(this::loadAllButAthlete, DELAY_POLL, TimeUnit.MILLISECONDS);
 
         // Poll for modifications every 5 minutes
-//        executor.scheduleWithFixedDelay(this::poll, DELAY_POLL, DELAY_POLL, TimeUnit.MINUTES);
+        executor.scheduleWithFixedDelay(this::poll, 30, 30, TimeUnit.SECONDS);
 
         // Refresh everything each half-hour
         executor.scheduleWithFixedDelay(this::loadAll, DELAY_FULL, DELAY_FULL, TimeUnit.MINUTES);
 
         LOG.info("load:{}", System.currentTimeMillis() - start);
+    }
+
+    private void poll() {
+        long start = System.currentTimeMillis();
+
+        try {
+            boolean update = Boolean.FALSE;
+
+            HttpEntity<String> httpEntity = new HttpEntity<>(null, httpHeaders);
+
+            ResponseEntity<String> stats = restTemplate.exchange("https://www.strava.com/api/v3/athletes/" + athleteAtomicReference.get().getId() + "/stats",
+                    HttpMethod.GET, httpEntity, String.class);
+
+            String oldValue = statsAtomicReference.get();
+            String newValue = stats.getBody();
+
+            statsAtomicReference.set(newValue);
+
+            if (oldValue == null && newValue == null) {
+                LOG.error("Didnt' get a stats value; something is wrong");
+            } if (oldValue == null && newValue != null) {
+                LOG.info("No old value; assuming this is the first update");
+            } else if (oldValue != null && !oldValue.equals(newValue)) {
+                LOG.info("Detected changes; reloading everything");
+
+                update = Boolean.TRUE;
+            } else {
+                LOG.info("No changes detected");
+            }
+
+            if (update) {
+                loadAll();
+            }
+        } catch (Exception ex) {
+            LOG.error("Unable to poll for updates", ex);
+        } finally {
+            LOG.info("poll:{}", System.currentTimeMillis() - start);
+        }
     }
 
     private void loadAll() {
@@ -221,10 +260,10 @@ class StravaApiSession {
     }
 
     StravaApiEntryActivityCreate create(StravaApiEntryActivityCreate activity) {
-        throw new UnsupportedOperationException("create");
+        throw new UnsupportedOperationException("create " + activity);
     }
 
     StravaApiEntryActivityUpdate update(StravaApiEntryActivityUpdate runToActivityUpdate) {
-        throw new UnsupportedOperationException("update");
+        throw new UnsupportedOperationException("update " + runToActivityUpdate);
     }
 }
