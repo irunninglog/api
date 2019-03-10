@@ -35,10 +35,4 @@ final class ChallengeDefinition {
         return this;
     }
 
-    @Deprecated
-    ChallengeDefinition setDistance(float distance) {
-        this.distance = BigDecimal.valueOf(distance);
-        return this;
-    }
-
 }

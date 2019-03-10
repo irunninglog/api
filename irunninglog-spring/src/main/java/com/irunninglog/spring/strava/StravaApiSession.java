@@ -231,7 +231,7 @@ class StravaApiSession {
                             .setId(activity.getId())
                             .setName(activity.getName())
                             .setShoes(activity.getGear_id())
-                            .setDistance(apiMath.format(new BigDecimal(activity.getDistance()), ApiMath.FORMAT_PLAIN))
+                            .setDistance(apiMath.format(BigDecimal.valueOf(activity.getDistance()), ApiMath.FORMAT_PLAIN))
                             .setDuration(activity.getMoving_time())
                             .setStartTime(activity.getStart_date()));
                 }

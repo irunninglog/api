@@ -51,4 +51,9 @@ public class ApiDateTest {
         assertEquals(LocalDate.now(), apiDate.current(offset));
     }
 
+    @Test
+    public void parseLocalDate() {
+        assertEquals(LocalDate.parse("2019-03-15"), apiDate.parseLocalDate("2019-03-15"));
+    }
+
 }

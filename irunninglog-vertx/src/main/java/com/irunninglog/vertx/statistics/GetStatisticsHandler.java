@@ -23,7 +23,7 @@ public class GetStatisticsHandler extends AbstractRouteHandler {
         String startDate = routingContext.request().getParam("startDate");
         String endDate = routingContext.request().getParam("endDate");
 
-        logger.info("Getting statstics from {} to {}");
+        logger.info("Getting statistics from {} to {}", startDate, endDate);
 
         request.getMap().put("startDate", startDate);
         request.getMap().put("endDate", endDate);

@@ -78,9 +78,7 @@ public abstract class AbstractRouteHandler implements Handler<RoutingContext> {
             if (result.succeeded()) {
                 String resultString = result.result().body();
 
-                if (logger.isDebugEnabled()) {
-                    logger.debug(LOG_STMT, endpoint.getAddress(), resultString);
-                }
+                logger.debug(LOG_STMT, endpoint.getAddress(), resultString);
 
                 IResponse response = mapper.decode(resultString, IResponse.class);
 
@@ -89,7 +87,7 @@ public abstract class AbstractRouteHandler implements Handler<RoutingContext> {
                 if (response.getStatus() == ResponseStatus.OK) {
                     succeed(routingContext, response);
                 } else {
-                    fail(routingContext, response.getStatus());
+                    fail(routingContext, response.getStatus() == null ? ResponseStatus.ERROR : response.getStatus());
                 }
             } else {
                 if (logger.isErrorEnabled()) {
@@ -117,10 +115,6 @@ public abstract class AbstractRouteHandler implements Handler<RoutingContext> {
     private void fail(RoutingContext routingContext, ResponseStatus error) {
         if (logger.isErrorEnabled()) {
             logger.error("fail:{}:{}", routingContext.normalisedPath(), error);
-        }
-
-        if (error == null) {
-            error = ResponseStatus.ERROR;
         }
 
         routingContext.request().response().setChunked(true)
