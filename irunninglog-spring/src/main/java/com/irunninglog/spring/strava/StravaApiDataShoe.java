@@ -1,29 +1,33 @@
 package com.irunninglog.spring.strava;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 class StravaApiDataShoe {
 
     private String id;
     private String name;
-    private String brand_name;
-    private String model_name;
+    @JsonProperty("brand_name")
+    private String brandName;
+    @JsonProperty("model_name")
+    private String modelName;
     private String description;
     private float distance;
     private boolean primary;
 
-    public String getBrand_name() {
-        return brand_name;
+    public String getBrandName() {
+        return brandName;
     }
 
-    public void setBrand_name(String brand_name) {
-        this.brand_name = brand_name;
+    public void setBrandName(String brandName) {
+        this.brandName = brandName;
     }
 
-    public String getModel_name() {
-        return model_name;
+    public String getModelName() {
+        return modelName;
     }
 
-    public void setModel_name(String model_name) {
-        this.model_name = model_name;
+    public void setModelName(String modelName) {
+        this.modelName = modelName;
     }
 
     public String getDescription() {

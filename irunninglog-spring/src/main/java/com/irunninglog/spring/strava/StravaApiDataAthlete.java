@@ -1,5 +1,7 @@
 package com.irunninglog.spring.strava;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,9 +9,12 @@ class StravaApiDataAthlete {
 
     private long id;
     private String email;
-    private String firstname;
-    private String lastname;
-    private String profile_medium;
+    @JsonProperty("firstname")
+    private String firstName;
+    @JsonProperty("lastname")
+    private String lastName;
+    @JsonProperty("profile_medium")
+    private String profileMedium;
     private final List<StravaApiDataShoe> shoes = new ArrayList<>();
 
     public long getId() {
@@ -28,28 +33,28 @@ class StravaApiDataAthlete {
         this.email = email;
     }
 
-    public String getFirstname() {
-        return firstname;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getLastname() {
-        return lastname;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
-    public String getProfile_medium() {
-        return profile_medium;
+    public String getProfileMedium() {
+        return profileMedium;
     }
 
-    public void setProfile_medium(String profile_medium) {
-        this.profile_medium = profile_medium;
+    public void setProfileMedium(String profileMedium) {
+        this.profileMedium = profileMedium;
     }
 
     public List<StravaApiDataShoe> getShoes() {

@@ -166,9 +166,9 @@ class StravaApiSession {
             athleteAtomicReference.set(factory.get(IAthlete.class)
                     .setId(stravaAthlete.getId())
                     .setEmail(stravaAthlete.getEmail())
-                    .setFirstname(stravaAthlete.getFirstname())
-                    .setLastname(stravaAthlete.getLastname())
-                    .setAvatar(stravaAthlete.getProfile_medium()));
+                    .setFirstname(stravaAthlete.getFirstName())
+                    .setLastname(stravaAthlete.getLastName())
+                    .setAvatar(stravaAthlete.getProfileMedium()));
 
             Set<String> shoeIds = new HashSet<>();
             for (StravaApiDataShoe shoe : stravaAthlete.getShoes()) {
@@ -196,8 +196,8 @@ class StravaApiSession {
             shoes.add(factory.get(IShoe.class)
                     .setId(apiDataShoe.getId())
                     .setName(apiDataShoe.getName())
-                    .setBrand(apiDataShoe.getBrand_name())
-                    .setModel(apiDataShoe.getModel_name())
+                    .setBrand(apiDataShoe.getBrandName())
+                    .setModel(apiDataShoe.getModelName())
                     .setDescription(apiDataShoe.getDescription())
                     .setPrimary(apiDataShoe.isPrimary())
                     .setPercentage(apiMath.percentage(BigDecimal.valueOf(804672.0F), BigDecimal.valueOf(apiDataShoe.getDistance())).intValue())
@@ -230,10 +230,10 @@ class StravaApiSession {
                     runs.add(factory.get(IRun.class)
                             .setId(activity.getId())
                             .setName(activity.getName())
-                            .setShoes(activity.getGear_id())
+                            .setShoes(activity.getGearId())
                             .setDistance(apiMath.format(BigDecimal.valueOf(activity.getDistance()), ApiMath.FORMAT_PLAIN))
                             .setDuration(activity.getMovingTime())
-                            .setStartTime(activity.getStart_date()));
+                            .setStartTime(activity.getStartDate()));
                 }
             }
 

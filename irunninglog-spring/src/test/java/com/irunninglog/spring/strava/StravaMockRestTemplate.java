@@ -28,21 +28,21 @@ public class StravaMockRestTemplate extends RestTemplate {
     public void setAthlete(IAthlete athlete) {
         stravaAthlete = new StravaApiDataAthlete();
         stravaAthlete.setId(athlete.getId());
-        stravaAthlete.setFirstname(athlete.getFirstname());
-        stravaAthlete.setLastname(athlete.getLastname());
+        stravaAthlete.setFirstName(athlete.getFirstname());
+        stravaAthlete.setLastName(athlete.getLastname());
         stravaAthlete.setEmail(athlete.getEmail());
-        stravaAthlete.setProfile_medium(athlete.getAvatar());
+        stravaAthlete.setProfileMedium(athlete.getAvatar());
     }
 
     public void setRuns(IRun... runs) {
         for (IRun run : runs) {
             StravaApiDataActivity activity = new StravaApiDataActivity();
             activity.setDistance(Float.parseFloat(run.getDistance().replace(" mi", "")));
-            activity.setGear_id(run.getShoes());
+            activity.setGearId(run.getShoes());
             activity.setId(run.getId());
             activity.setMovingTime(run.getDuration());
             activity.setType("Run");
-            activity.setStart_date(run.getStartTime());
+            activity.setStartDate(run.getStartTime());
 
             stravaActivities.add(activity);
         }
@@ -54,8 +54,8 @@ public class StravaMockRestTemplate extends RestTemplate {
             stravaShoe.setId(shoe.getId());
             stravaShoe.setName(shoe.getName());
             stravaShoe.setPrimary(shoe.isPrimary());
-            stravaShoe.setBrand_name(shoe.getBrand());
-            stravaShoe.setModel_name(shoe.getModel());
+            stravaShoe.setBrandName(shoe.getBrand());
+            stravaShoe.setModelName(shoe.getModel());
             stravaShoe.setDescription(shoe.getDescription());
             stravaShoe.setDistance(Float.parseFloat(shoe.getDistance().replace(" mi", "")));
 
