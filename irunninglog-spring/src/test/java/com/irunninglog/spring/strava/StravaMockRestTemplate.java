@@ -21,12 +21,12 @@ public class StravaMockRestTemplate extends RestTemplate {
 
     private static final Logger LOG = LoggerFactory.getLogger(StravaMockRestTemplate.class);
 
-    private StravaApiDataAthlete stravaAthlete;
-    private final Map<String, StravaApiDataShoe> stravaShoes = new HashMap<>();
-    private final List<StravaApiDataActivity> stravaActivities = new ArrayList<>();
+    private DataObjectDetailedAthlete stravaAthlete;
+    private final Map<String, DataObjectDetailedGear> stravaShoes = new HashMap<>();
+    private final List<DataObjectSummaryActivity> stravaActivities = new ArrayList<>();
 
     public void setAthlete(IAthlete athlete) {
-        stravaAthlete = new StravaApiDataAthlete();
+        stravaAthlete = new DataObjectDetailedAthlete();
         stravaAthlete.setId(athlete.getId());
         stravaAthlete.setFirstName(athlete.getFirstname());
         stravaAthlete.setLastName(athlete.getLastname());
@@ -36,7 +36,7 @@ public class StravaMockRestTemplate extends RestTemplate {
 
     public void setRuns(IRun... runs) {
         for (IRun run : runs) {
-            StravaApiDataActivity activity = new StravaApiDataActivity();
+            DataObjectSummaryActivity activity = new DataObjectSummaryActivity();
             activity.setDistance(Float.parseFloat(run.getDistance().replace(" mi", "")));
             activity.setGearId(run.getShoes());
             activity.setId(run.getId());
@@ -50,7 +50,7 @@ public class StravaMockRestTemplate extends RestTemplate {
 
     public void setShoes(IShoe... shoes) {
         for (IShoe shoe : shoes) {
-            StravaApiDataShoe stravaShoe = new StravaApiDataShoe();
+            DataObjectDetailedGear stravaShoe = new DataObjectDetailedGear();
             stravaShoe.setId(shoe.getId());
             stravaShoe.setName(shoe.getName());
             stravaShoe.setPrimary(shoe.isPrimary());
@@ -76,11 +76,11 @@ public class StravaMockRestTemplate extends RestTemplate {
             String key = tokens[tokens.length - 1];
             return new ResponseEntity(stravaShoes.get(key), HttpStatus.OK);
         } else if (url.equals("https://www.strava.com/api/v3/athlete/activities?page=1&per_page=200")) {
-            return new ResponseEntity(stravaActivities.toArray(new StravaApiDataActivity[0]), HttpStatus.OK);
+            return new ResponseEntity(stravaActivities.toArray(new DataObjectSummaryActivity[0]), HttpStatus.OK);
         }  else if (url.equals("https://www.strava.com/api/v3/athlete/activities?page=2&per_page=200")) {
-            return new ResponseEntity(new StravaApiDataActivity[0], HttpStatus.OK);
+            return new ResponseEntity(new DataObjectSummaryActivity[0], HttpStatus.OK);
         } else if (url.equals("https://www.strava.com/oauth/token")) {
-            StravaApiDataToken token = new StravaApiDataToken();
+            DataObjectAccessToken token = new DataObjectAccessToken();
             token.setAthlete(stravaAthlete);
             token.setAccessToken("token");
             return new ResponseEntity(token, HttpStatus.OK);

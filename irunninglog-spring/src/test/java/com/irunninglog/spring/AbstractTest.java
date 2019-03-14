@@ -3,9 +3,9 @@ package com.irunninglog.spring;
 import com.irunninglog.api.factory.IFactory;
 import com.irunninglog.api.runs.IRun;
 import com.irunninglog.api.security.IUser;
-import com.irunninglog.spring.strava.StravaApiService;
-import com.irunninglog.spring.strava.StravaApiSessionCache;
 import com.irunninglog.spring.strava.StravaMockRestTemplate;
+import com.irunninglog.spring.strava.StravaService;
+import com.irunninglog.spring.strava.StravaSessionCache;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -30,7 +30,7 @@ import java.util.concurrent.TimeUnit;
 public abstract class AbstractTest implements ApplicationContextAware {
 
     private ApplicationContext applicationContext;
-    protected StravaApiService stravaApiService;
+    protected StravaService stravaService;
     protected StravaMockRestTemplate restTemplate;
     protected IFactory factory;
 
@@ -38,12 +38,12 @@ public abstract class AbstractTest implements ApplicationContextAware {
     public final void before() throws Exception {
         restTemplate = (StravaMockRestTemplate) applicationContext.getBean(RestTemplate.class);
         factory = applicationContext.getBean(IFactory.class);
-        StravaApiSessionCache cache = applicationContext.getBean(StravaApiSessionCache.class);
+        StravaSessionCache cache = applicationContext.getBean(StravaSessionCache.class);
 
         cache.clear();
         restTemplate.clear();
 
-        stravaApiService = applicationContext.getBean(StravaApiService.class);
+        stravaService = applicationContext.getBean(StravaService.class);
 
         afterBefore(applicationContext);
     }
@@ -55,7 +55,7 @@ public abstract class AbstractTest implements ApplicationContextAware {
 
             @Override
             public void run() {
-                if (!stravaApiService.runs(user).isEmpty()) {
+                if (!stravaService.runs(user).isEmpty()) {
                     timer.cancel();
                     latch.countDown();
                 }
@@ -73,7 +73,7 @@ public abstract class AbstractTest implements ApplicationContextAware {
 
             @Override
             public void run() {
-                if (!stravaApiService.shoes(user).isEmpty()) {
+                if (!stravaService.shoes(user).isEmpty()) {
                     timer.cancel();
                     latch.countDown();
                 }

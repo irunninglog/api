@@ -7,7 +7,7 @@ import com.irunninglog.api.statistics.IDataPoint;
 import com.irunninglog.api.statistics.IStatistics;
 import com.irunninglog.api.statistics.IStatisticsService;
 import com.irunninglog.spring.AbstractTest;
-import com.irunninglog.spring.strava.StravaApiService;
+import com.irunninglog.spring.strava.StravaService;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 
@@ -31,7 +31,7 @@ public class DataSetsTest extends AbstractTest {
         super.afterBefore(applicationContext);
 
         statisticsService = applicationContext.getBean(IStatisticsService.class);
-        StravaApiService stravaService = applicationContext.getBean(StravaApiService.class);
+        StravaService stravaService = applicationContext.getBean(StravaService.class);
 
         restTemplate.setAthlete(factory.get(IAthlete.class)
                 .setId(-1)

@@ -2,7 +2,7 @@ package com.irunninglog.spring.strava;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-class StravaApiDataShoe {
+final class DataObjectDetailedGear {
 
     private String id;
     private String name;
@@ -14,59 +14,59 @@ class StravaApiDataShoe {
     private float distance;
     private boolean primary;
 
-    public String getBrandName() {
+    String getBrandName() {
         return brandName;
     }
 
-    public void setBrandName(String brandName) {
+    void setBrandName(String brandName) {
         this.brandName = brandName;
     }
 
-    public String getModelName() {
+    String getModelName() {
         return modelName;
     }
 
-    public void setModelName(String modelName) {
+    void setModelName(String modelName) {
         this.modelName = modelName;
     }
 
-    public String getDescription() {
+    String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
+    void setDescription(String description) {
         this.description = description;
     }
 
-    public float getDistance() {
+    float getDistance() {
         return distance;
     }
 
-    public void setDistance(float distance) {
+    void setDistance(float distance) {
         this.distance = distance;
     }
 
-    public boolean isPrimary() {
+    boolean isPrimary() {
         return primary;
     }
 
-    public void setPrimary(boolean primary) {
+    void setPrimary(boolean primary) {
         this.primary = primary;
     }
 
-    public String getId() {
+    String getId() {
         return id;
     }
 
-    public void setId(String id) {
+    void setId(String id) {
         this.id = id;
     }
 
-    public String getName() {
+    String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    void setName(String name) {
         this.name = name;
     }
 

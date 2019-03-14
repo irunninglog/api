@@ -7,7 +7,7 @@ import com.irunninglog.api.security.IUser;
 import com.irunninglog.api.shoes.IShoe;
 import com.irunninglog.api.shoes.IShoesService;
 import com.irunninglog.spring.AbstractTest;
-import com.irunninglog.spring.strava.StravaApiService;
+import com.irunninglog.spring.strava.StravaService;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 
@@ -25,7 +25,7 @@ public class ShoesServiceTest extends AbstractTest {
         super.afterBefore(applicationContext);
 
         shoesService = applicationContext.getBean(IShoesService.class);
-        StravaApiService stravaService = applicationContext.getBean(StravaApiService.class);
+        StravaService stravaService = applicationContext.getBean(StravaService.class);
         IFactory factory = applicationContext.getBean(IFactory.class);
 
         restTemplate.setAthlete(factory.get(IAthlete.class)

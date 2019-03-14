@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.ArrayList;
 import java.util.List;
 
-class StravaApiDataAthlete {
+final class DataObjectDetailedAthlete {
 
     private long id;
     private String email;
@@ -15,49 +15,49 @@ class StravaApiDataAthlete {
     private String lastName;
     @JsonProperty("profile_medium")
     private String profileMedium;
-    private final List<StravaApiDataShoe> shoes = new ArrayList<>();
+    private final List<DataObjectDetailedGear> shoes = new ArrayList<>();
 
-    public long getId() {
+    long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    void setId(long id) {
         this.id = id;
     }
 
-    public String getEmail() {
+    String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
+    void setEmail(String email) {
         this.email = email;
     }
 
-    public String getFirstName() {
+    String getFirstName() {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
+    void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
-    public String getLastName() {
+    String getLastName() {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
+    void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
-    public String getProfileMedium() {
+    String getProfileMedium() {
         return profileMedium;
     }
 
-    public void setProfileMedium(String profileMedium) {
+    void setProfileMedium(String profileMedium) {
         this.profileMedium = profileMedium;
     }
 
-    public List<StravaApiDataShoe> getShoes() {
+    List<DataObjectDetailedGear> getShoes() {
         return shoes;
     }
 

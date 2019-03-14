@@ -7,7 +7,7 @@ import com.irunninglog.api.progress.Progress;
 import com.irunninglog.api.runs.IRun;
 import com.irunninglog.api.security.IUser;
 import com.irunninglog.spring.AbstractTest;
-import com.irunninglog.spring.strava.StravaApiService;
+import com.irunninglog.spring.strava.StravaService;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 
@@ -26,7 +26,7 @@ public class ChallengesServiceTest extends AbstractTest {
         super.afterBefore(applicationContext);
 
         service = applicationContext.getBean(IChallengesService.class);
-        StravaApiService stravaApiService = applicationContext.getBean(StravaApiService.class);
+        StravaService stravaService = applicationContext.getBean(StravaService.class);
 
         restTemplate.setAthlete(factory.get(IAthlete.class)
                 .setId(-1)
@@ -37,7 +37,7 @@ public class ChallengesServiceTest extends AbstractTest {
 
         restTemplate.setRuns(factory.get(IRun.class).setDistance("1609344").setId(1).setName("run"));
 
-        user = stravaApiService.userFromToken("token");
+        user = stravaService.userFromToken("token");
     }
 
     @Test

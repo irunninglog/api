@@ -27,9 +27,9 @@ import java.util.concurrent.atomic.AtomicReference;
 
 @Component
 @Scope("prototype")
-class StravaApiSession {
+final class StravaSession {
 
-    private static final Logger LOG = LoggerFactory.getLogger(StravaApiSession.class);
+    private static final Logger LOG = LoggerFactory.getLogger(StravaSession.class);
     private static final String LOG_STMT_LOAD = "load:{}";
     private static final long DELAY_FULL = 30;
     private static final long DELAY_POLL = 5;
@@ -46,7 +46,7 @@ class StravaApiSession {
     private final HttpHeaders httpHeaders = new HttpHeaders();
 
     @Autowired
-    StravaApiSession(IFactory factory, RestTemplate restTemplate, ApiMath apiMath, ApiDate apiDate) {
+    StravaSession(IFactory factory, RestTemplate restTemplate, ApiMath apiMath, ApiDate apiDate) {
         this.factory = factory;
         this.restTemplate = restTemplate;
         this.apiMath = apiMath;
@@ -160,9 +160,9 @@ class StravaApiSession {
     private void loadAthlete() {
         HttpEntity<String> httpEntity = new HttpEntity<>(null, httpHeaders);
 
-        ResponseEntity<StravaApiDataAthlete> responseEntity = restTemplate.exchange("https://www.strava.com/api/v3/athlete", HttpMethod.GET, httpEntity, StravaApiDataAthlete.class);
+        ResponseEntity<DataObjectDetailedAthlete> responseEntity = restTemplate.exchange("https://www.strava.com/api/v3/athlete", HttpMethod.GET, httpEntity, DataObjectDetailedAthlete.class);
 
-        StravaApiDataAthlete stravaAthlete = responseEntity.getBody();
+        DataObjectDetailedAthlete stravaAthlete = responseEntity.getBody();
         if (stravaAthlete != null) {
             athleteAtomicReference.set(factory.get(IAthlete.class)
                     .setId(stravaAthlete.getId())
@@ -172,7 +172,7 @@ class StravaApiSession {
                     .setAvatar(stravaAthlete.getProfileMedium()));
 
             Set<String> shoeIds = new HashSet<>();
-            for (StravaApiDataShoe shoe : stravaAthlete.getShoes()) {
+            for (DataObjectDetailedGear shoe : stravaAthlete.getShoes()) {
                 shoeIds.add(shoe.getId());
             }
 
@@ -185,15 +185,15 @@ class StravaApiSession {
 
         LOG.info("loadShoes");
 
-        List<StravaApiDataShoe> stravaShoes = new ArrayList<>();
+        List<DataObjectDetailedGear> stravaShoes = new ArrayList<>();
         for (String id : shoeIdsAtomicReference.get()) {
             HttpEntity<String> httpEntity = new HttpEntity<>(null, httpHeaders);
 
-            stravaShoes.add(restTemplate.exchange("https://www.strava.com/api/v3/gear/" + id, HttpMethod.GET, httpEntity, StravaApiDataShoe.class).getBody());
+            stravaShoes.add(restTemplate.exchange("https://www.strava.com/api/v3/gear/" + id, HttpMethod.GET, httpEntity, DataObjectDetailedGear.class).getBody());
         }
 
         List<IShoe> shoes = new ArrayList<>();
-        for (StravaApiDataShoe apiDataShoe : stravaShoes) {
+        for (DataObjectDetailedGear apiDataShoe : stravaShoes) {
             shoes.add(factory.get(IShoe.class)
                     .setId(apiDataShoe.getId())
                     .setName(apiDataShoe.getName())
@@ -225,8 +225,8 @@ class StravaApiSession {
 
         List<IRun> runs = new ArrayList<>();
         while (count != 0) {
-            StravaApiDataActivity[] activities = loadActivities(page);
-            for (StravaApiDataActivity activity : activities) {
+            DataObjectSummaryActivity[] activities = loadActivities(page);
+            for (DataObjectSummaryActivity activity : activities) {
                 if ("run".equalsIgnoreCase(activity.getType())) {
                     runs.add(factory.get(IRun.class)
                             .setId(activity.getId())
@@ -252,10 +252,10 @@ class StravaApiSession {
         LOG.info("loadRuns:{}", System.currentTimeMillis() - start);
     }
 
-    private StravaApiDataActivity[] loadActivities(int page) {
+    private DataObjectSummaryActivity[] loadActivities(int page) {
         HttpEntity<String> httpEntity = new HttpEntity<>(null, httpHeaders);
 
-        ResponseEntity<StravaApiDataActivity[]> responseEntity = restTemplate.exchange("https://www.strava.com/api/v3/athlete/activities?page=" + page + "&per_page=" + 200, HttpMethod.GET, httpEntity, StravaApiDataActivity[].class);
+        ResponseEntity<DataObjectSummaryActivity[]> responseEntity = restTemplate.exchange("https://www.strava.com/api/v3/athlete/activities?page=" + page + "&per_page=" + 200, HttpMethod.GET, httpEntity, DataObjectSummaryActivity[].class);
 
         return responseEntity.getBody();
     }

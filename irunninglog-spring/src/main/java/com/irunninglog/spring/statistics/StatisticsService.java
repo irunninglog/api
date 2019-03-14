@@ -6,7 +6,7 @@ import com.irunninglog.api.security.IUser;
 import com.irunninglog.api.statistics.*;
 import com.irunninglog.date.ApiDate;
 import com.irunninglog.math.ApiMath;
-import com.irunninglog.spring.strava.StravaApiService;
+import com.irunninglog.spring.strava.StravaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,14 +19,14 @@ import java.util.*;
 final class StatisticsService implements IStatisticsService {
 
     private final IFactory factory;
-    private final StravaApiService stravaApiService;
+    private final StravaService stravaService;
     private final ApiMath apiMath;
     private final ApiDate apiDate;
 
     @Autowired
-    StatisticsService(IFactory factory, StravaApiService stravaApiService, ApiMath apiMath, ApiDate apiDate) {
+    StatisticsService(IFactory factory, StravaService stravaService, ApiMath apiMath, ApiDate apiDate) {
         this.factory = factory;
-        this.stravaApiService = stravaApiService;
+        this.stravaService = stravaService;
         this.apiMath = apiMath;
         this.apiDate = apiDate;
     }
@@ -34,7 +34,7 @@ final class StatisticsService implements IStatisticsService {
     @Override
     public IStatistics get(IUser user, int offset, LocalDate startDate, LocalDate endDate) {
         IStatistics statistics = factory.get(IStatistics.class);
-        List<IRun> runs = stravaApiService.runs(user);
+        List<IRun> runs = stravaService.runs(user);
 
         summary(statistics, runs, offset);
 

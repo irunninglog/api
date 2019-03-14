@@ -5,7 +5,7 @@ import com.irunninglog.api.profile.IProfile;
 import com.irunninglog.api.profile.IProfileService;
 import com.irunninglog.api.security.IUser;
 import com.irunninglog.spring.AbstractTest;
-import com.irunninglog.spring.strava.StravaApiService;
+import com.irunninglog.spring.strava.StravaService;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 
@@ -22,7 +22,7 @@ public class GetProfileTest extends AbstractTest {
         super.afterBefore(applicationContext);
 
         this.profileService = applicationContext.getBean(IProfileService.class);
-        StravaApiService stravaService = applicationContext.getBean(StravaApiService.class);
+        StravaService stravaService = applicationContext.getBean(StravaService.class);
 
         restTemplate.setAthlete(factory.get(IAthlete.class)
                 .setId(-1)

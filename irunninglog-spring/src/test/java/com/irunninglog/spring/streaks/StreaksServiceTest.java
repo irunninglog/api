@@ -45,7 +45,7 @@ public class StreaksServiceTest extends AbstractTest {
         runs.add(run(LocalDateTime.now().minusDays(1)));
         restTemplate.setRuns(runs.toArray(new IRun[]{}));
 
-        IUser user = stravaApiService.userFromToken("token");
+        IUser user = stravaService.userFromToken("token");
         waitForRuns(user);
 
         IStreaks streaks = streaksService.getStreaks(user, ZonedDateTime.now().getOffset().getTotalSeconds() / 60 * -1);
@@ -60,7 +60,7 @@ public class StreaksServiceTest extends AbstractTest {
         runs.add(run(LocalDateTime.now()));
         restTemplate.setRuns(runs.toArray(new IRun[]{}));
 
-        IUser user = stravaApiService.userFromToken("token");
+        IUser user = stravaService.userFromToken("token");
         waitForRuns(user);
 
         IStreaks streaks = streaksService.getStreaks(user, ZonedDateTime.now().getOffset().getTotalSeconds() / 60 * -1);
@@ -77,7 +77,7 @@ public class StreaksServiceTest extends AbstractTest {
         runs.add(run(LocalDateTime.now().minusYears(1).minusDays(1)));
         restTemplate.setRuns(runs.toArray(new IRun[]{}));
 
-        IUser user = stravaApiService.userFromToken("token");
+        IUser user = stravaService.userFromToken("token");
         waitForRuns(user);
 
         IStreaks streaks = streaksService.getStreaks(user, ZonedDateTime.now().getOffset().getTotalSeconds() / 60 * -1);
@@ -93,7 +93,7 @@ public class StreaksServiceTest extends AbstractTest {
         runs.add(run(LocalDateTime.now().minusDays(3)));
         restTemplate.setRuns(runs.toArray(new IRun[]{}));
 
-        IUser user = stravaApiService.userFromToken("token");
+        IUser user = stravaService.userFromToken("token");
         waitForRuns(user);
 
         IStreaks streaks = streaksService.getStreaks(user, ZonedDateTime.now().getOffset().getTotalSeconds() / 60 * -1);
@@ -107,7 +107,7 @@ public class StreaksServiceTest extends AbstractTest {
         runs.add(run(LocalDateTime.now().minusYears(2).minusDays(1)));
         restTemplate.setRuns(runs.toArray(new IRun[]{}));
 
-        IUser user = stravaApiService.userFromToken("token");
+        IUser user = stravaService.userFromToken("token");
         waitForRuns(user);
 
         IStreaks streaks = streaksService.getStreaks(user, ZonedDateTime.now().getOffset().getTotalSeconds() / 60 * -1);
@@ -127,7 +127,7 @@ public class StreaksServiceTest extends AbstractTest {
         runs.add(run(LocalDateTime.now().minusYears(1).minusDays(3)));
         restTemplate.setRuns(runs.toArray(new IRun[]{}));
 
-        IUser user = stravaApiService.userFromToken("token");
+        IUser user = stravaService.userFromToken("token");
         waitForRuns(user);
 
         IStreaks streaks = streaksService.getStreaks(user, ZonedDateTime.now().getOffset().getTotalSeconds() / 60 * -1);
@@ -156,7 +156,7 @@ public class StreaksServiceTest extends AbstractTest {
         runs.add(run(LocalDateTime.now().minusYears(1).minusDays(11)));
         restTemplate.setRuns(runs.toArray(new IRun[]{}));
 
-        IUser user = stravaApiService.userFromToken("token");
+        IUser user = stravaService.userFromToken("token");
         waitForRuns(user);
 
         IStreaks streaks = streaksService.getStreaks(user, ZonedDateTime.now().getOffset().getTotalSeconds() / 60 * -1);

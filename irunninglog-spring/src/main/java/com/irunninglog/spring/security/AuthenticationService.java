@@ -3,28 +3,28 @@ package com.irunninglog.spring.security;
 import com.irunninglog.api.security.AuthnException;
 import com.irunninglog.api.security.IAuthenticationService;
 import com.irunninglog.api.security.IUser;
-import com.irunninglog.spring.strava.StravaApiService;
+import com.irunninglog.spring.strava.StravaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 final class AuthenticationService implements IAuthenticationService {
 
-    private final StravaApiService stravaApiService;
+    private final StravaService stravaService;
 
     @Autowired
-    public AuthenticationService(StravaApiService stravaApiService) {
-        this.stravaApiService = stravaApiService;
+    public AuthenticationService(StravaService stravaService) {
+        this.stravaService = stravaService;
     }
 
     @Override
     public IUser authenticateToken(String token) {
-        return stravaApiService.userFromToken(token);
+        return stravaService.userFromToken(token);
     }
 
     @Override
     public IUser authenticateCode(String code) throws AuthnException {
-        return stravaApiService.userFromCode(code);
+        return stravaService.userFromCode(code);
     }
 
 }

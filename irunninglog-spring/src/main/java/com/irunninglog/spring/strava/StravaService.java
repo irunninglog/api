@@ -19,18 +19,18 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 
 @Component
-public class StravaApiService {
+public final class StravaService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(StravaApiService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(StravaService.class);
 
     private final IFactory factory;
-    private final StravaApiSessionCache cache;
+    private final StravaSessionCache cache;
     private final RestTemplate restTemplate;
     private final String id;
     private final String secret;
 
     @Autowired
-    public StravaApiService(Environment environment, IFactory factory, StravaApiSessionCache cache, RestTemplate restTemplate) {
+    public StravaService(Environment environment, IFactory factory, StravaSessionCache cache, RestTemplate restTemplate) {
         this.factory = factory;
         this.cache = cache;
         this.restTemplate = restTemplate;
@@ -59,8 +59,8 @@ public class StravaApiService {
 
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(map, headers);
 
-        ResponseEntity<StravaApiDataToken> responseEntity = restTemplate.exchange("https://www.strava.com/oauth/token", HttpMethod.POST, requestEntity, StravaApiDataToken.class);
-        StravaApiDataToken token = responseEntity.getBody();
+        ResponseEntity<DataObjectAccessToken> responseEntity = restTemplate.exchange("https://www.strava.com/oauth/token", HttpMethod.POST, requestEntity, DataObjectAccessToken.class);
+        DataObjectAccessToken token = responseEntity.getBody();
 
         if (token == null) {
             throw new AuthnException("Unable to read token");

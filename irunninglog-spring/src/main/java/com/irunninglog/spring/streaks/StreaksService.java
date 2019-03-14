@@ -9,7 +9,7 @@ import com.irunninglog.api.streaks.IStreaks;
 import com.irunninglog.api.streaks.IStreaksService;
 import com.irunninglog.date.ApiDate;
 import com.irunninglog.math.ApiMath;
-import com.irunninglog.spring.strava.StravaApiService;
+import com.irunninglog.spring.strava.StravaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,23 +26,23 @@ final class StreaksService implements IStreaksService {
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     private final IFactory factory;
-    private final StravaApiService stravaApiService;
+    private final StravaService stravaService;
     private final ApiMath apiMath;
     private final ApiDate apiDate;
 
     @Autowired
-    public StreaksService(IFactory factory, StravaApiService stravaApiService, ApiMath apiMath, ApiDate apiDate) {
+    public StreaksService(IFactory factory, StravaService stravaService, ApiMath apiMath, ApiDate apiDate) {
         super();
 
         this.factory = factory;
-        this.stravaApiService = stravaApiService;
+        this.stravaService = stravaService;
         this.apiMath = apiMath;
         this.apiDate = apiDate;
     }
 
     @Override
     public IStreaks getStreaks(IUser user, int offset) {
-        List<IRun> activities = stravaApiService.runs(user);
+        List<IRun> activities = stravaService.runs(user);
 
         List<IStreak> streaksList = new ArrayList<>();
 

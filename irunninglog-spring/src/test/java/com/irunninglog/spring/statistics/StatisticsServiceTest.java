@@ -8,7 +8,7 @@ import com.irunninglog.api.statistics.IStatisticsService;
 import com.irunninglog.api.statistics.ITotalByYear;
 import com.irunninglog.date.ApiDate;
 import com.irunninglog.spring.AbstractTest;
-import com.irunninglog.spring.strava.StravaApiService;
+import com.irunninglog.spring.strava.StravaService;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 
@@ -25,7 +25,7 @@ import static org.junit.Assert.assertNotNull;
 public class StatisticsServiceTest extends AbstractTest {
 
     private IStatisticsService statisticsService;
-    private StravaApiService stravaApiService;
+    private StravaService stravaService;
     private ApiDate apiDate;
 
     @Override
@@ -33,7 +33,7 @@ public class StatisticsServiceTest extends AbstractTest {
         super.afterBefore(applicationContext);
 
         statisticsService = applicationContext.getBean(IStatisticsService.class);
-        stravaApiService = applicationContext.getBean(StravaApiService.class);
+        stravaService = applicationContext.getBean(StravaService.class);
         apiDate = applicationContext.getBean(ApiDate.class);
 
         restTemplate.setAthlete(factory.get(IAthlete.class)
@@ -51,7 +51,7 @@ public class StatisticsServiceTest extends AbstractTest {
         runs.add(run(LocalDateTime.now().minusYears(1), 16093.44F));
         restTemplate.setRuns(runs.toArray(new IRun[2]));
 
-        IUser user = stravaApiService.userFromToken("token");
+        IUser user = stravaService.userFromToken("token");
 
         waitForRuns(user);
 
@@ -80,7 +80,7 @@ public class StatisticsServiceTest extends AbstractTest {
         runs.add(run(LocalDateTime.now().minusYears(1), 16093.44F));
         restTemplate.setRuns(runs.toArray(new IRun[]{}));
 
-        IUser user = stravaApiService.userFromToken("token");
+        IUser user = stravaService.userFromToken("token");
 
         waitForRuns(user);
 

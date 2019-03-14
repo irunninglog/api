@@ -2,7 +2,7 @@ package com.irunninglog.spring.strava;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class StravaApiDataActivity {
+final class DataObjectSummaryActivity {
 
     private long id;
     private String name;
@@ -15,59 +15,59 @@ public class StravaApiDataActivity {
     private String gearId;
     private String type;
 
-    public long getId() {
+    long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    void setId(long id) {
         this.id = id;
     }
 
-    public String getName() {
+    String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    void setName(String name) {
         this.name = name;
     }
 
-    public float getDistance() {
+    float getDistance() {
         return distance;
     }
 
-    public void setDistance(float distance) {
+    void setDistance(float distance) {
         this.distance = distance;
     }
 
-    public int getMovingTime() {
+    int getMovingTime() {
         return movingTime;
     }
 
-    public void setMovingTime(int movingTime) {
+    void setMovingTime(int movingTime) {
         this.movingTime = movingTime;
     }
 
-    public String getStartDate() {
+    String getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(String startDate) {
+    void setStartDate(String startDate) {
         this.startDate = startDate;
     }
 
-    public String getGearId() {
+    String getGearId() {
         return gearId;
     }
 
-    public void setGearId(String gearId) {
+    void setGearId(String gearId) {
         this.gearId = gearId;
     }
 
-    public String getType() {
+    String getType() {
         return type;
     }
 
-    public void setType(String type) {
+    void setType(String type) {
         this.type = type;
     }
 

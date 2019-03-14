@@ -7,7 +7,7 @@ import com.irunninglog.api.progress.ProgressThresholds;
 import com.irunninglog.api.runs.IRun;
 import com.irunninglog.api.security.IUser;
 import com.irunninglog.math.ApiMath;
-import com.irunninglog.spring.strava.StravaApiService;
+import com.irunninglog.spring.strava.StravaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,25 +20,25 @@ final class ChallengesService implements IChallengesService {
 
     private final ChallengeDefinitions definitions;
     private final IFactory factory;
-    private final StravaApiService stravaApiService;
+    private final StravaService stravaService;
     private final ApiMath apiMath;
 
     @Autowired
     ChallengesService(ChallengeDefinitions definitions,
                       IFactory factory,
-                      StravaApiService stravaApiService,
+                      StravaService stravaService,
                       ApiMath apiMath) {
         super();
 
         this.definitions = definitions;
         this.factory = factory;
-        this.stravaApiService = stravaApiService;
+        this.stravaService = stravaService;
         this.apiMath = apiMath;
     }
 
     @Override
     public List<IChallenge> getChallenges(IUser user) {
-        List<IRun> runs = stravaApiService.runs(user);
+        List<IRun> runs = stravaService.runs(user);
         BigDecimal total = BigDecimal.ZERO;
         for (IRun run : runs) {
             total = total.add(new BigDecimal(run.getDistance()));

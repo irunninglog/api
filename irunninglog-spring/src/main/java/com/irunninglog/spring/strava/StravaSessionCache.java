@@ -7,22 +7,22 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
-public class StravaApiSessionCache {
+public final class StravaSessionCache {
 
     private final IFactory factory;
-    private final Map<String, StravaApiSession> map = new HashMap<>();
+    private final Map<String, StravaSession> map = new HashMap<>();
 
-    StravaApiSessionCache(IFactory factory) {
+    StravaSessionCache(IFactory factory) {
         this.factory = factory;
     }
 
-    StravaApiSession get(String token) {
+    StravaSession get(String token) {
         return map.get(token);
     }
 
-    StravaApiSession create(String token) {
+    StravaSession create(String token) {
         return map.computeIfAbsent(token, s ->  {
-            StravaApiSession session = factory.get(StravaApiSession.class);
+            StravaSession session = factory.get(StravaSession.class);
             session.load(token);
             return session;
         });

@@ -3,7 +3,7 @@ package com.irunninglog.spring.shoes;
 import com.irunninglog.api.security.IUser;
 import com.irunninglog.api.shoes.IShoe;
 import com.irunninglog.api.shoes.IShoesService;
-import com.irunninglog.spring.strava.StravaApiService;
+import com.irunninglog.spring.strava.StravaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,19 +12,19 @@ import java.util.List;
 @Service
 final class ShoesService implements IShoesService {
 
-    private final StravaApiService stravaApiService;
+    private final StravaService stravaService;
 
     @Autowired
-    ShoesService(StravaApiService stravaApiService) {
+    ShoesService(StravaService stravaService) {
 
         super();
 
-        this.stravaApiService = stravaApiService;
+        this.stravaService = stravaService;
     }
 
     @Override
     public List<IShoe> getShoes(IUser user) {
-        return stravaApiService.shoes(user);
+        return stravaService.shoes(user);
     }
 
 }
