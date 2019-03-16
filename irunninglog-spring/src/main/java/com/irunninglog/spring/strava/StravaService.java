@@ -43,8 +43,8 @@ public final class StravaService {
             secret = tokens[1];
         } else {
             LOG.warn("Unable to find Strava configs; using defaults");
-            id = "1";
-            secret = "1";
+            id = "id";
+            secret = "secret";
         }
     }
 
