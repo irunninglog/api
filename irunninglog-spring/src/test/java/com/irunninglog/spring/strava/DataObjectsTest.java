@@ -39,4 +39,11 @@ public class DataObjectsTest {
         assertEquals("name", activity.getName());
     }
 
+    @Test
+    public void athlete() {
+        DataObjectDetailedAthlete athlete = new DataObjectDetailedAthlete();
+        athlete.setShoes(null);
+        assertNull(athlete.getShoes());
+    }
+
 }

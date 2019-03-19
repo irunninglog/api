@@ -2,7 +2,6 @@ package com.irunninglog.spring.strava;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.ArrayList;
 import java.util.List;
 
 final class DataObjectDetailedAthlete {
@@ -15,7 +14,7 @@ final class DataObjectDetailedAthlete {
     private String lastName;
     @JsonProperty("profile_medium")
     private String profileMedium;
-    private final List<DataObjectDetailedGear> shoes = new ArrayList<>();
+    private List<DataObjectDetailedGear> shoes;
 
     long getId() {
         return id;
@@ -59,6 +58,10 @@ final class DataObjectDetailedAthlete {
 
     List<DataObjectDetailedGear> getShoes() {
         return shoes;
+    }
+
+    void setShoes(List<DataObjectDetailedGear> shoes) {
+        this.shoes = shoes;
     }
 
 }
