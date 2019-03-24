@@ -15,6 +15,8 @@
     <packaging>pom</packaging>
 
     <properties>
+        <maven.compiler.release>9</maven.compiler.release>
+
         <version.classgraph>4.4.12</version.classgraph>
         <version.guava>27.0-jre</version.guava>
         <version.jackson>2.9.7</version.jackson>
@@ -119,11 +121,12 @@
                 </executions>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${version.maven-compiler-plugin}</version>
                 <configuration>
-                    <source>8</source>
-                    <target>8</target>
+                    <source>9</source>
+                    <target>9</target>
                 </configuration>
             </plugin>
         </plugins>
